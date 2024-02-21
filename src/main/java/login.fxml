@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="819.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="555.0" prefWidth="819.0" style="-fx-background-color: E0D7D2;">
+         <children>
+            <AnchorPane layoutX="364.0" layoutY="73.0" prefHeight="393.0" prefWidth="92.0" style="-fx-background-color: #F5A11C;" />
+            <AnchorPane layoutX="103.0" layoutY="69.0" prefHeight="400.0" prefWidth="295.0" style="-fx-border-width: 2; -fx-border-radius: 10; -fx-border-color: #F5A11C; -fx-background-color: #FFFFFF; -fx-background-radius: 14;">
+               <children>
+                  <TextField layoutX="31.0" layoutY="148.0" prefHeight="31.0" prefWidth="216.0" />
+                  <Label layoutX="98.0" layoutY="56.0" text="Log in">
+                     <font>
+                        <Font name="System Bold" size="32.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="32.0" layoutY="124.0" text="Email" />
+                  <Label layoutX="32.0" layoutY="191.0" text="Password" />
+                  <Button layoutX="31.0" layoutY="273.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="216.0" style="-fx-background-color: F1B049;" text="Employee" textFill="WHITE" />
+                  <Button layoutX="31.0" layoutY="316.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="216.0" style="-fx-background-color: #914D2A;" text="Admin" textFill="WHITE" />
+                  <PasswordField layoutX="31.0" layoutY="219.0" prefHeight="31.0" prefWidth="216.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="405.0" layoutY="69.0" prefHeight="400.0" prefWidth="295.0" style="-fx-border-width: 2; -fx-background-radius: 14; -fx-border-radius: 10; -fx-border-color: #F5A11C; -fx-background-color: #FFFFFF;">
+               <children>
+                  <ImageView fitHeight="371.0" fitWidth="243.0" layoutX="25.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/images/TeaAndBook.png" />
+                     </image>
+                  </ImageView>
+               </children></AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>
