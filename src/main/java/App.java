@@ -5,19 +5,31 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("../resources/example.fxml"));
+        try {
 
-        Scene scene = new Scene(root);
+            Parent root = FXMLLoader.load(getClass().getResource("../resources/view/mainScreen.fxml"));
 
-        stage.setTitle("FXML Welcome");
-        stage.setWidth(root.prefWidth(-1));
-        stage.setHeight(root.prefHeight(-1));
-        stage.setScene(scene);
-        stage.show();
+            stage.initStyle(StageStyle.TRANSPARENT);
+
+            Scene scene = new Scene(root);
+
+            scene.getStylesheets().add(getClass().getResource("../resources/css/style.css").toExternalForm());
+
+            stage.setTitle("FXML Welcome");
+
+            stage.setScene(scene);
+
+            stage.show();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

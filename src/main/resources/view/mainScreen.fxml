@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="718.0" prefWidth="1066.0" style="-fx-background-color: #F3F3F3;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.TitleControl">
+   <children>
+      <AnchorPane fx:id="TopPane" onMouseDragged="#handleMovementAction" onMousePressed="#handleClickAction" prefHeight="44.0" prefWidth="800.0" style="-fx-background-color: #914D2A;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-0.20000000000004547">
+         <children>
+            <AnchorPane layoutX="831.0" layoutY="4.0" prefHeight="34.0" prefWidth="110.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <FontAwesomeIcon fx:id="btnMinus" glyphName="MINUS" layoutX="46.0" layoutY="25.0" onMouseClicked="#handleMinusAction" size="2em" />
+                  <FontAwesomeIcon fx:id="btnClose" glyphName="CLOSE" layoutX="77.0" layoutY="25.0" onMouseClicked="#handleCloseAction" size="2em" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="44.0" prefHeight="673.0" prefWidth="215.0" style="-fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="44.0">
+         <children>
+            <FontAwesomeIcon glyphName="BOOK" layoutX="97.0" layoutY="73.0" size="4em" AnchorPane.bottomAnchor="593.2" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="97.0285697937012" AnchorPane.topAnchor="31.85714340209961" />
+            <Label layoutX="22.0" layoutY="120.0" styleClass="sideBarTitle" text="Manage" />
+            <VBox layoutY="156.0" prefHeight="267.0" prefWidth="240.0" style="-fx-background-color: #FFFFFF; -fx-border-radius: 0;">
+               <children>
+                  <Button alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="46.0" prefWidth="275.0" style="-fx-background-color: none; -fx-border-radius: 0;" styleClass="sideBarItem" text="User account">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="USER" size="1.3em" styleClass="graphic" />
+                     </graphic>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="24.0" />
+                     </padding>
+                  </Button>
+                  <Button alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="46.0" prefWidth="278.0" style="-fx-background-color: none; -fx-border-radius: 0;" styleClass="sideBarItem" text="Book revenue">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="BOOK" size="1.3em" styleClass="graphic" />
+                     </graphic>
+                     <padding>
+                        <Insets left="24.0" />
+                     </padding>
+                  </Button>
+                  <Button alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="46.0" prefWidth="275.0" style="-fx-background-color: none; -fx-border-radius: 0;" styleClass="sideBarItem" text="Category revenue">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="" size="1.3em" styleClass="graphic" />
+                     </graphic>
+                     <padding>
+                        <Insets left="24.0" />
+                     </padding>
+                  </Button>
+                  <Button alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="46.0" prefWidth="274.0" style="-fx-background-color: none; -fx-border-radius: 0;" styleClass="sideBarItem" text="Revenue by customer">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="GROUP" size="1.3em" styleClass="graphic" />
+                     </graphic>
+                     <padding>
+                        <Insets left="24.0" />
+                     </padding>
+                  </Button>
+                  <Button alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="46.0" prefWidth="274.0" style="-fx-background-color: none; -fx-border-radius: 0;" styleClass="sideBarItem" text="Revenue by  employee">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="LIST" size="1.3em" styleClass="graphic" />
+                     </graphic>
+                     <padding>
+                        <Insets left="24.0" />
+                     </padding>
+                  </Button>
+                  <Line endX="-258.5999755859375" endY="-113.67770385742188" startX="-496.84149169921875" startY="-113.67768859863281" style="-fx-opacity: 0.1;">
+                     <VBox.margin>
+                        <Insets bottom="6.0" top="6.0" />
+                     </VBox.margin>
+                  </Line>
+                  <Button alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="46.0" prefWidth="274.0" style="-fx-background-color: none; -fx-border-radius: 0;" styleClass="sideBarItem" text="Logout">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="LOGOUT" size="1.3em" styleClass="graphic" />
+                     </graphic>
+                     <padding>
+                        <Insets left="24.0" />
+                     </padding>
+                  </Button>
+               </children>
+            </VBox>
+         </children></AnchorPane>
+   </children>
+</AnchorPane>
