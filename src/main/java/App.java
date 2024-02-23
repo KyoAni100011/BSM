@@ -30,6 +30,17 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+
+        // Example query execution
+        // String query = "SELECT * FROM customer";
+        // DatabaseConnection.executeQuery(query, resultSet -> {
+        // while (resultSet.next()) {
+        // String name = resultSet.getString("name");
+
+        // System.out.println("Customer Name: " + name);
+        // }
+        // });
+
         launch(args);
     }
 }
