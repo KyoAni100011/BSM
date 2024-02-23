@@ -52,6 +52,7 @@ create table book (
     languages nvarchar(255) not null,
     isEnabled boolean default true, 
     quantity int not null default 0,
+    salePrice decimal(50, 2) not null default 0.0,
     foreign key(publisherID) references publisher(id),
     foreign key(authorID) references author(id)
 );

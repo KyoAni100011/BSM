@@ -34,7 +34,7 @@ insert into author (name) values ('Daniel Kahneman');
 insert into author (name) values ('Neil deGrasse Tyson');
 insert into author (name) values ('Noam Chomsky');
 insert into author (name) values ('Pablo Picasso');
-insert into author (name) values ('Tony Robbins');
+insert into author (name) values ('Tony Robbins'); -- Phat trien ban than
 select * from author;
 
 -- insert data for table publisher
@@ -130,6 +130,7 @@ insert into bookBatch(id, quantity, importPrice, importSheetID) values (@bookID,
 update importSheet set quantity = quantity + 100 where id = @importSheetID; 
 update importSheet set totalPrice = totalPrice + 70000 * 100 where id = @importSheetID;
 update book set quantity = quantity + 100 where isbn = @bookID;
+update book set salePrice = 70000 * 1.2 where isbn = @bookID;
 
 set @bookID = (select isbn from book where title = 'Harry Potter Va Chiec Coc Lua');
 set @categoryID = (select id from category where name = 'Tieu thuyet');
@@ -138,6 +139,7 @@ insert into bookBatch(id, quantity, importPrice, importSheetID) values (@bookID,
 update importSheet set quantity = quantity + 200 where id = @importSheetID; 
 update importSheet set totalPrice = totalPrice + 200000 * 200 where id = @importSheetID;
 update book set quantity = quantity + 200 where isbn = @bookID;
+update book set salePrice = 200000 * 1.4 where isbn = @bookID;
 
 set @bookID = (select isbn from book where title = 'Giao thua');
 set @categoryID = (select id from category where name = 'Truyen ngan');
@@ -146,6 +148,7 @@ insert into bookBatch(id, quantity, importPrice, importSheetID) values (@bookID,
 update importSheet set quantity = quantity + 300 where id = @importSheetID; 
 update importSheet set totalPrice = totalPrice + 55000 * 300 where id = @importSheetID;
 update book set quantity = quantity + 300 where isbn = @bookID;
+update book set salePrice = 55000 * 1.12 where isbn = @bookID;
 
 set @bookID = (select isbn from book where title = 'Conan Tap 12');
 set @categoryID = (select id from category where name = 'Truyen tranh');
@@ -154,6 +157,7 @@ insert into bookBatch(id, quantity, importPrice, importSheetID) values (@bookID,
 update importSheet set quantity = quantity + 200 where id = @importSheetID; 
 update importSheet set totalPrice = totalPrice + 15000 * 200 where id = @importSheetID;
 update book set quantity = quantity + 200 where isbn = @bookID;
+update book set salePrice = 15000 * 1.3 where isbn = @bookID;
 
 set @bookID = (select isbn from book where title = 'The Tell-Tale Heart');
 set @categoryID = (select id from category where name = 'Kinh di');
@@ -162,6 +166,7 @@ insert into bookBatch(id, quantity, importPrice, importSheetID) values (@bookID,
 update importSheet set quantity = quantity + 100 where id = @importSheetID; 
 update importSheet set totalPrice = totalPrice + 30000 * 100 where id = @importSheetID;
 update book set quantity = quantity + 100 where isbn = @bookID;
+update book set salePrice = 30000 * 1.25 where isbn = @bookID;
 
 set @bookID = (select isbn from book where title = 'Pride and Prejudice');
 set @categoryID = (select id from category where name = 'Tieu thuyet');
@@ -170,6 +175,7 @@ insert into bookBatch(id, quantity, importPrice, importSheetID) values (@bookID,
 update importSheet set quantity = quantity + 150 where id = @importSheetID; 
 update importSheet set totalPrice = totalPrice + 80000 * 150 where id = @importSheetID;
 update book set quantity = quantity + 150 where isbn = @bookID;
+update book set salePrice = 80000 * 1.25 where isbn = @bookID;
 
 set @bookID = (select isbn from book where title = 'Wolf Hall');
 set @categoryID = (select id from category where name = 'Lich su');
@@ -178,6 +184,7 @@ insert into bookBatch(id, quantity, importPrice, importSheetID) values (@bookID,
 update importSheet set quantity = quantity + 100 where id = @importSheetID; 
 update importSheet set totalPrice = totalPrice + 100000 * 100 where id = @importSheetID;
 update book set quantity = quantity + 100 where isbn = @bookID;
+update book set salePrice = 100000 * 1.2 where isbn = @bookID;
 
 set @bookID = (select isbn from book where title = 'Experience and Education');
 set @categoryID = (select id from category where name = 'Giao duc');
@@ -186,6 +193,7 @@ insert into bookBatch(id, quantity, importPrice, importSheetID) values (@bookID,
 update importSheet set quantity = quantity + 200 where id = @importSheetID; 
 update importSheet set totalPrice = totalPrice + 120000 * 200 where id = @importSheetID;
 update book set quantity = quantity + 200 where isbn = @bookID;
+update book set salePrice = 120000 * 1.4 where isbn = @bookID;
 
 set @bookID = (select isbn from book where title = 'Thinking, Fast and Slow');
 set @categoryID = (select id from category where name = 'Tu duy');
@@ -194,6 +202,7 @@ insert into bookBatch(id, quantity, importPrice, importSheetID) values (@bookID,
 update importSheet set quantity = quantity + 150 where id = @importSheetID; 
 update importSheet set totalPrice = totalPrice + 150000 * 150 where id = @importSheetID;
 update book set quantity = quantity + 150 where isbn = @bookID;
+update book set salePrice = 150000 * 1.4 where isbn = @bookID;
 
 select * from bookCategory;
 select * from bookBatch;
