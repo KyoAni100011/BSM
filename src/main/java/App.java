@@ -5,16 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         try {
 
-            Parent root = FXMLLoader.load(getClass().getResource("../resources/view/mainScreen.fxml"));
-
-            stage.initStyle(StageStyle.TRANSPARENT);
+            Parent root = FXMLLoader.load(getClass().getResource("../resources/view/login.fxml"));
 
             Scene scene = new Scene(root);
 
