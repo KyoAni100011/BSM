@@ -20,21 +20,26 @@ public class DatabaseConnection {
     // Method to get the connection instance
     public static Connection getConnection() throws SQLException {
         if (connection == null || connection.isClosed()) {
-            // Create a new connection if it doesn't exist or is closed
+
             connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
         }
         return connection;
     }
 
     // Method to execute a query
-    public static void executeQuery(String query, QueryResultHandler handler) {
+    public static void executeQuery(String query, QueryResultHandler handler, Object... parameters) {
         try (Connection connection = getConnection()) {
             System.out.println("Connected to the database!");
 
-            try (var statement = connection.createStatement();
-                    var resultSet = statement.executeQuery(query)) {
+            try (var preparedStatement = connection.prepareStatement(query)) {
+                // Set parameters for prepared statement
+                for (int i = 0; i < parameters.length; i++) {
+                    preparedStatement.setObject(i + 1, parameters[i]);
+                }
 
-                handler.handleResult(resultSet);
+                try (var resultSet = preparedStatement.executeQuery()) {
+                    handler.handleResult(resultSet);
+                }
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -43,4 +48,5 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
     }
+
 }

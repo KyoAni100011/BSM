@@ -8,12 +8,7 @@ public class LoginService {
         this.loginDAO = new LoginDAO();
     }
 
-    // Add methods for business logic related to login functionality
-
-    // Example
-    public boolean authenticateUser(String username, String password) {
-        // Example authentication logic, you should implement your own
-        // You might interact with LoginDAO for database-related operations
-        return username.equals("exampleUser") && password.equals("examplePassword");
+    public UserModel authenticateUser(String username, String password) {
+        return loginDAO.getUserInfo(username, password);
     }
 }
