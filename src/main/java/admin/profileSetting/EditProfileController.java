@@ -1,4 +1,4 @@
-package main.java.admin.userAccount;
+package main.java.admin.profileSetting;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,6 +9,8 @@ import javafx.scene.control.TextField;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javafx.util.StringConverter;
+import javafx.scene.input.KeyEvent;
+import javafx.event.EventHandler;
 
 public class EditProfileController {
 
@@ -52,6 +54,9 @@ public class EditProfileController {
                 }
             }
         });
+
+        // Add event filter to allow only numbers to be entered in the dobPicker
+        dobPicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, numericValidation(10));
     }
 
     @FXML
@@ -114,5 +119,39 @@ public class EditProfileController {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    // Method to filter key events and allow only numeric input
+    private EventHandler<KeyEvent> numericValidation(final Integer maxLength) {
+        return e -> {
+            TextField textField = (TextField) e.getSource();
+            if (textField.getText().length() >= maxLength) {
+                e.consume();
+                return;
+            }
+
+            if (e.getCharacter().matches("[0-9]") || e.getCharacter().equals("/")) {
+                String text = textField.getText();
+                int caretPosition = textField.getCaretPosition();
+
+                if (e.getCharacter().equals("/") && (caretPosition != 2 && caretPosition != 5)) {
+                    e.consume();
+                    return;
+                }
+
+                if (e.getCharacter().matches("[0-9]")) {
+                    if ((caretPosition == 2 || caretPosition == 5) && !text.contains("/")) {
+                        textField.appendText("/");
+                    }
+
+                    if (caretPosition == 2 || caretPosition == 5) {
+                        e.consume();
+                        return;
+                    }
+                }
+            } else {
+                e.consume();
+            }
+        };
     }
 }

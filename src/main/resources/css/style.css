@@ -23,3 +23,17 @@
 .sideBarTitle {
   -fx-font-size: 16px !important;
 }
+
+.profile-setting-button-selected {
+    -fx-border-width: 0px 0px 2px;
+    -fx-border-color: #914D2A;
+    -fx-background-color: transparent;
+    -fx-text-fill: #914D2A;
+}
+
+.profile-setting-button-unselected {
+    -fx-border-width: 0px 0px 2px;
+    -fx-border-color: #f4f4f4;
+    -fx-background-color: #fff-fff;
+    -fx-text-fill: #000000;
+}

@@ -1,4 +1,4 @@
-package main.java.admin.userAccount;
+package main.java.admin.profileSetting;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

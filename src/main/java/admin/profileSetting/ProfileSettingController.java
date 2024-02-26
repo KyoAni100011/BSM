@@ -10,7 +10,7 @@ import javafx.scene.layout.BorderPane;
 import java.io.IOException;
 import java.net.URL;
 
-public class profileSettingController {
+public class ProfileSettingController {
 
     public Button editProfileButton;
     public Button changePasswordButton;
@@ -53,5 +53,4 @@ public class profileSettingController {
         Parent root = FXMLLoader.load(resourceUrl);
         bp.setCenter(root);
     }
-
 }

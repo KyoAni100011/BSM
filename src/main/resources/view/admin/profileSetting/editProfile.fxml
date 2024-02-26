@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.admin.userAccount.EditProfileController">
+<AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.admin.profileSetting.EditProfileController">
     <Label fx:id="fullNameErrorLabel" layoutX="178.0" layoutY="107.0" textFill="red" />
     <TextField fx:id="fullNameField" layoutX="178.0" layoutY="77.0" prefHeight="30.0" prefWidth="350.0" promptText="Enter your full name" />
     <Label fx:id="emailErrorLabel" layoutX="178.0" layoutY="157.0" textFill="red" />
