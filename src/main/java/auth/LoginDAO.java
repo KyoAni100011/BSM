@@ -8,7 +8,6 @@ import main.java.database.DatabaseConnection;
 public class LoginDAO {
 
     private static final String SELECT_USER_QUERY = "SELECT * FROM user WHERE email = ? AND password = ?";
-    private static final String SELECT_USER_INFO_QUERY = "SELECT ID, EMAIL, DOB, NAME FROM user WHERE email = ? AND password = ?";
 
     public boolean validateUser(String email, String password) {
         AtomicBoolean isValidUser = new AtomicBoolean(false);
@@ -20,19 +19,19 @@ public class LoginDAO {
         return isValidUser.get();
     }
 
-    public UserModel getUserInfo(String username, String password) {
+    public UserModel getUserInfo(String email, String password) {
         AtomicReference<UserModel> userModelRef = new AtomicReference<>();
 
-        DatabaseConnection.executeQuery(SELECT_USER_INFO_QUERY, resultSet -> {
+        DatabaseConnection.executeQuery(SELECT_USER_QUERY, resultSet -> {
             if (resultSet.next()) {
-                byte[] id = resultSet.getBytes("id");
-                String email = resultSet.getString("email");
+                String id = resultSet.getBytes("id").toString();
                 String dob = resultSet.getString("dob");
                 String name = resultSet.getString("name");
+                Boolean isEnabled = resultSet.getBoolean("isEnabled");
 
-                userModelRef.set(new UserModel(id, name, email, dob));
+                userModelRef.set(new UserModel(id, name, email, password, dob, isEnabled));
             }
-        }, username, password);
+        }, email, password);
 
         return userModelRef.get();
     }

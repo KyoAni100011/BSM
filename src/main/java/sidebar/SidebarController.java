@@ -8,6 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+import main.java.utils.FXMLLoaderHelper;
 
 public class SidebarController {
 
@@ -19,6 +21,9 @@ public class SidebarController {
 
     @FXML
     private Button categoryRevenue;
+
+    @FXML
+    private Button btnLogOut;
 
     @FXML
     private Button revenueByCustomer;
@@ -52,6 +57,11 @@ public class SidebarController {
     @FXML
     void SwitchUserAccount(ActionEvent event) throws IOException {
         loadPage("userAccount");
+    }
+
+    @FXML
+    void handleLogOut(ActionEvent event) throws IOException {
+        FXMLLoaderHelper.loadFXML((Stage) bp.getScene().getWindow(), "login");
     }
 
     private void loadPage(String page) throws IOException {
