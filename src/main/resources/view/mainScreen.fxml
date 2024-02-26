@@ -69,7 +69,7 @@
                               <Insets bottom="6.0" top="6.0" />
                            </VBox.margin>
                         </Line>
-                        <Button alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="46.0" prefWidth="274.0" style="-fx-background-color: none; -fx-border-radius: 0;" styleClass="sideBarItem" text="Logout">
+                        <Button fx:id="btnLogOut" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleLogOut" prefHeight="46.0" prefWidth="274.0" style="-fx-background-color: none; -fx-border-radius: 0;" styleClass="sideBarItem" text="Logout">
                            <graphic>
                               <FontAwesomeIcon glyphName="LOGOUT" size="1.3em" styleClass="graphic" />
                            </graphic>
