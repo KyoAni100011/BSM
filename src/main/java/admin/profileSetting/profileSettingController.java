@@ -1,4 +1,4 @@
-package main.java.admin;
+package main.java.admin.profileSetting;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -43,7 +43,7 @@ public class profileSettingController {
     }
 
     private void loadPage(String page) throws IOException {
-        String resourcePath = "../../resources/view/admin/profileSetting/" + page + ".fxml";
+        String resourcePath = "../../../resources/view/admin/profileSetting/" + page + ".fxml";
         System.out.println("Resource Path: " + resourcePath);
         URL resourceUrl = getClass().getResource(resourcePath);
         if (resourceUrl == null) {
