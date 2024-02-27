@@ -11,22 +11,16 @@ public class App extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../resources/PasswordResetUI.fxml"));
 
-            Parent root = FXMLLoader.load(getClass().getResource("../resources/view/mainScreen.fxml"));
+        Scene scene = new Scene(root);
 
-            Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("../resources/css/style.css").toExternalForm());
 
-            scene.getStylesheets().add(getClass().getResource("../resources/css/style.css").toExternalForm());
+        stage.setTitle("FXML Welcome");
 
-            stage.setTitle("FXML Welcome");
+        stage.setScene(scene);
 
-            stage.setScene(scene);
+        stage.show();
 
-            stage.show();
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
     }
 
     public static void main(String[] args) {

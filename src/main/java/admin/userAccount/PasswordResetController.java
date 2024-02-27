@@ -1,4 +1,4 @@
-package main.java;
+package main.java.admin.userAccount;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
