@@ -4,7 +4,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.admin.profileSetting.ProfileSettingController">
    <children>
@@ -12,21 +11,12 @@
          <top>
             <HBox prefHeight="46.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="editProfileButton" mnemonicParsing="false" onAction="#handleEditProfile" prefHeight="44.0" prefWidth="300.0" style="-fx-background-color: transparent; -fx-border-color: #914D2A; -fx-border-width: 0px 0px 2px; -fx-font-size: 12px;" text="Edit profile" textAlignment="CENTER">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="changePasswordButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleChangePassword" prefHeight="44.0" prefWidth="313.0" style="-fx-background-color: transparent; text: left;" text="Change Password" textAlignment="CENTER">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Button>
+                  <Button fx:id="editProfileButton" mnemonicParsing="false" onAction="#handleEditProfile" prefHeight="44.0" prefWidth="300.0" style="-fx-background-color: transparent;" text="Edit profile" textAlignment="CENTER" />
+                  <Button fx:id="changePasswordButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleChangePassword" prefHeight="44.0" prefWidth="313.0" style="-fx-background-color: transparent;" text="Change Password" textAlignment="CENTER" />
                </children>
             </HBox>
          </top>
          <center>
-
          </center>
       </BorderPane>
    </children>

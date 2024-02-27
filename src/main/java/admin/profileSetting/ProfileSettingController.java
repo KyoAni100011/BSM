@@ -20,6 +20,8 @@ public class ProfileSettingController {
     @FXML
     private void initialize() {
         try {
+            editProfileButton.getStyleClass().add("profile-setting-button-selected");
+            changePasswordButton.getStyleClass().remove("profile-setting-button-selected");
             loadPage("editProfile");
         } catch (IOException e) {
             e.printStackTrace();
@@ -28,17 +30,15 @@ public class ProfileSettingController {
 
     @FXML
     private void handleEditProfile(ActionEvent event) throws IOException {
-
-
-
-
+        editProfileButton.getStyleClass().add("profile-setting-button-selected");
+        changePasswordButton.getStyleClass().remove("profile-setting-button-selected");
         loadPage("editProfile");
     }
 
     @FXML
     private void handleChangePassword(ActionEvent event) throws IOException {
-
-
+        changePasswordButton.getStyleClass().add("profile-setting-button-selected");
+        editProfileButton.getStyleClass().remove("profile-setting-button-selected");
         loadPage("changePassword");
     }
 
