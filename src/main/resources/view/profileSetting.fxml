@@ -9,8 +9,8 @@
          <top>
             <HBox prefHeight="46.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="editProfileButton" mnemonicParsing="false" onAction="#handleEditProfile" prefHeight="44.0" prefWidth="300.0" style="-fx-background-color: transparent;" text="Edit profile" textAlignment="CENTER" />
-                  <Button fx:id="changePasswordButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleChangePassword" prefHeight="44.0" prefWidth="313.0" style="-fx-background-color: transparent;" text="Change Password" textAlignment="CENTER" />
+                  <Button fx:id="editProfileButton" mnemonicParsing="false" onAction="#handleEditProfile" prefHeight="44.0" prefWidth="300.0" style="-fx-background-color: transparent; -fx-font-weight: 900;" text="Edit profile" textAlignment="CENTER" />
+                  <Button fx:id="changePasswordButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleChangePassword" prefHeight="44.0" prefWidth="313.0" style="-fx-background-color: transparent; -fx-font-weight: 900;" text="Change Password" textAlignment="CENTER" />
                </children>
             </HBox>
          </top>

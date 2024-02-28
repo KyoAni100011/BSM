@@ -1,34 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="200.0" prefWidth="200.0"
+            BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            fx:controller="main.java.admin.profileSetting.EditProfileController">
+    <children>
+        <Label fx:id="fullNameErrorLabel" layoutX="131.0" layoutY="90.0" styleClass="error-label" />
+        <Label fx:id="emailErrorLabel" layoutX="131.0" layoutY="175.0" styleClass="error-label" />
+        <Label fx:id="dobErrorLabel" layoutX="131.0" layoutY="260.0" styleClass="error-label" />
 
-<AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.admin.profileSetting.EditProfileController">
-    <Label fx:id="fullNameErrorLabel" layoutX="178.0" layoutY="107.0" textFill="red" />
-    <TextField fx:id="fullNameField" layoutX="178.0" layoutY="77.0" prefHeight="30.0" prefWidth="350.0" promptText="Enter your full name" />
-    <Label fx:id="emailErrorLabel" layoutX="178.0" layoutY="157.0" textFill="red" />
-    <TextField fx:id="emailTextField" layoutX="178.0" layoutY="127.0" prefHeight="30.0" prefWidth="350.0" promptText="Enter your email address" />
-    <Label fx:id="dobErrorLabel" layoutX="178.0" layoutY="207.0" textFill="red" />
-    <DatePicker fx:id="dobPicker" layoutX="178.0" layoutY="177.0" prefHeight="30.0" prefWidth="350.0" promptText="Select your date of birth" />
-    <Label layoutX="98.0" layoutY="79.0" text="Name">
-        <font>
-            <Font size="18.0" />
-        </font>
-    </Label>
-    <Label layoutX="98.0" layoutY="129.0" text="Email">
-        <font>
-            <Font size="18.0" />
-        </font>
-    </Label>
-    <Label layoutX="98.0" layoutY="179.0" text="Dob">
-        <font>
-            <Font size="18.0" />
-        </font>
-    </Label>
-    <Button fx:id="saveChangesButton" layoutX="375.0" layoutY="247.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="30.0" prefWidth="153.0" style="-fx-background-color: #914D2A; -fx-padding: 1px;" text="Save Changes" textFill="WHITE">
-        <font>
-            <Font size="18.0" />
-        </font>
-    </Button>
+        <Label layoutX="131.0" layoutY="25.0" styleClass="label-bold" text="Name">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+        <Label layoutX="131.0" layoutY="110.0" styleClass="label-bold" text="Email">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+        <Label layoutX="131.0" layoutY="195.0" styleClass="label-bold" text="Dob">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+
+        <TextField fx:id="fullNameField" styleClass="input-field-add" layoutX="130.0" layoutY="50.0" prefHeight="40.0" prefWidth="350.0"
+        promptText="Enter your full name"/>
+        <TextField fx:id="emailTextField" styleClass="input-field-add" layoutX="130.0" layoutY="135.0" prefHeight="40.0" prefWidth="350.0"
+        promptText="Enter your email address"/>
+        <DatePicker fx:id="dobPicker" styleClass="input-field-add" layoutX="130.0" layoutY="220.0" prefHeight="40.0" prefWidth="350.0"
+        promptText="Select your date of birth"/>
+
+
+        <Button fx:id="saveChangesButton" styleClass="button-custom" layoutX="370.0" layoutY="282.0" mnemonicParsing="false"
+                onAction="#handleSaveChanges" prefHeight="40.0" prefWidth="153.0"
+                style="-fx-background-color: #914D2A; -fx-padding: 1px;" text="Save Changes" textFill="WHITE">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Button>
+    </children>
 </AnchorPane>

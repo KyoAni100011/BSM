@@ -2,9 +2,15 @@ package main.java.admin.profileSetting;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 
 public class ChangePasswordController {
+    public Button showHideCurrentPasswordButton;
+    public Button showHideNewPasswordButton;
+    public Button showHideConfirmPasswordButton;
     @FXML
     private Label currentPasswordErrorLabel;
     @FXML
@@ -12,17 +18,19 @@ public class ChangePasswordController {
     @FXML
     private Label confirmPasswordErrorLabel;
     @FXML
-    private PasswordField currentPasswordField;
+    public TextField currentPasswordField;
     @FXML
-    private PasswordField newPasswordField;
+    public TextField newPasswordField;
     @FXML
-    private PasswordField confirmPasswordField;
+    public PasswordField confirmPasswordField;
     @FXML
     private Button saveChangesButton;
 
     @FXML
     public void initialize() {
-
+        showHideCurrentPasswordButton.setOnAction(event -> togglePasswordVisibility(currentPasswordField, showHideCurrentPasswordButton));
+        showHideNewPasswordButton.setOnAction(event -> togglePasswordVisibility(newPasswordField, showHideNewPasswordButton));
+        showHideConfirmPasswordButton.setOnAction(event -> togglePasswordVisibility(confirmPasswordField, showHideConfirmPasswordButton));
     }
 
     @FXML
@@ -83,4 +91,20 @@ public class ChangePasswordController {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
+    private void togglePasswordVisibility(TextField passwordField, Button showHideButton) {
+        if (passwordField.getStyleClass().contains("password-field")) {
+            // Hiển thị mật khẩu
+            System.out.println(passwordField.getStyleClass());
+            passwordField.getStyleClass().remove("password-field");
+            System.out.println(passwordField.getStyleClass());
+        } else {
+            // Ẩn mật khẩu
+            System.out.println(passwordField.getStyleClass());
+            passwordField.getStyleClass().add("password-field");
+            System.out.println(passwordField.getStyleClass());
+        }
+    }
+
+
 }
