@@ -2,10 +2,7 @@ package main.java.admin.profileSetting;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 
 public class ChangePasswordController {
     public Button showHideCurrentPasswordButton;
@@ -28,9 +25,12 @@ public class ChangePasswordController {
 
     @FXML
     public void initialize() {
-        showHideCurrentPasswordButton.setOnAction(event -> togglePasswordVisibility(currentPasswordField, showHideCurrentPasswordButton));
-        showHideNewPasswordButton.setOnAction(event -> togglePasswordVisibility(newPasswordField, showHideNewPasswordButton));
-        showHideConfirmPasswordButton.setOnAction(event -> togglePasswordVisibility(confirmPasswordField, showHideConfirmPasswordButton));
+        showHideCurrentPasswordButton
+                .setOnAction(event -> togglePasswordVisibility(currentPasswordField, showHideCurrentPasswordButton));
+        showHideNewPasswordButton
+                .setOnAction(event -> togglePasswordVisibility(newPasswordField, showHideNewPasswordButton));
+        showHideConfirmPasswordButton
+                .setOnAction(event -> togglePasswordVisibility(confirmPasswordField, showHideConfirmPasswordButton));
     }
 
     @FXML
@@ -105,6 +105,5 @@ public class ChangePasswordController {
             System.out.println(passwordField.getStyleClass());
         }
     }
-
 
 }
