@@ -1,14 +1,15 @@
 @font-face {
   font-family: "Roboto";
-  src: url("../font/Roboto-Regular.ttf");
+  src: url("../font/Roboto-Medium.ttf");
 }
 
 .text {
   -fx-font-family: "Roboto";
+  -fx-text-fill: #ff0000;
 }
 
 .sideBarItem {
-  -fx-font-size: 16px !important;
+  -fx-font-size: 16px;
 }
 
 .sideBarItem:hover {
@@ -22,4 +23,11 @@
 
 .sideBarTitle {
   -fx-font-size: 16px !important;
+}
+
+.profile-setting-button-selected {
+  -fx-font-weight: 900 !important;
+  -fx-border-width: 0px 0px 2px;
+  -fx-border-color: #914d2a;
+  -fx-text-fill: #914d2a;
 }

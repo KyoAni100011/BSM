@@ -1,16 +1,16 @@
 package main.java.admin.profileSetting;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
-import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.net.URL;
 
-public class profileSettingController {
+public class ProfileSettingController {
 
     public Button editProfileButton;
     public Button changePasswordButton;
@@ -18,8 +18,10 @@ public class profileSettingController {
     public BorderPane bp;
 
     @FXML
-    private void initialize()  {
+    private void initialize() {
         try {
+            editProfileButton.getStyleClass().add("profile-setting-button-selected");
+            changePasswordButton.getStyleClass().remove("profile-setting-button-selected");
             loadPage("editProfile");
         } catch (IOException e) {
             e.printStackTrace();
@@ -27,18 +29,16 @@ public class profileSettingController {
     }
 
     @FXML
-    private void handleEditProfile(ActionEvent event) throws IOException{
-        System.out.println("Edit Profile button clicked");
-        editProfileButton.setStyle("-fx-border-width: 0px 0px 2px; -fx-border-color: #914D2A; -fx-background-color: transparent; -fx-text-fill: #914D2A;");
-        changePasswordButton.setStyle("-fx-background-color: #ffffff; -fx-border-color: #f4f4f4; -fx-border-width: 0px 0px 2px; -fx-text-fill: #000000;");
+    private void handleEditProfile(ActionEvent event) throws IOException {
+        editProfileButton.getStyleClass().add("profile-setting-button-selected");
+        changePasswordButton.getStyleClass().remove("profile-setting-button-selected");
         loadPage("editProfile");
     }
 
     @FXML
     private void handleChangePassword(ActionEvent event) throws IOException {
-        System.out.println("Change Password button clicked");
-        changePasswordButton.setStyle("-fx-border-width: 0px 0px 2px; -fx-border-color: #914D2A; -fx-background-color: transparent; -fx-text-fill: #914D2A;");
-        editProfileButton.setStyle("-fx-background-color: #ffffff; -fx-border-color: #f4f4f4; -fx-border-width: 0px 0px 2px; -fx-text-fill: #000000;");
+        changePasswordButton.getStyleClass().add("profile-setting-button-selected");
+        editProfileButton.getStyleClass().remove("profile-setting-button-selected");
         loadPage("changePassword");
     }
 
@@ -53,5 +53,4 @@ public class profileSettingController {
         Parent root = FXMLLoader.load(resourceUrl);
         bp.setCenter(root);
     }
-
 }
