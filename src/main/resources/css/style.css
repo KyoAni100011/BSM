@@ -26,8 +26,53 @@
 }
 
 .profile-setting-button-selected {
-  -fx-font-weight: 900 !important;
   -fx-border-width: 0px 0px 2px;
   -fx-border-color: #914d2a;
   -fx-text-fill: #914d2a;
+}
+
+.text-input {
+    -fx-font-weight: 700;
+}
+
+.error-label {
+    -fx-text-fill: #ff0000;
+}
+
+.label-bold {
+    -fx-font-weight: 700;
+    -fx-font-size: 14px;
+}
+
+.password-field-add {
+    -fx-background-color: transparent;
+    -fx-border-width: 1px 0px 1px 1px;
+    -fx-border-color: black;
+    -fx-border-radius: 5px 0px 0px 5px;
+}
+
+.input-field-add {
+    -fx-background-color: transparent;
+    -fx-border-width: 1px;
+    -fx-border-color: black;
+    -fx-border-radius: 5px;
+}
+
+.button-custom {
+    -fx-background-color: #914D2A;
+    -fx-padding: 1px;
+    -fx-font-weight: 700;
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+}
+
+.button-eye {
+    -fx-background-color: transparent;
+    -fx-border-width: 1px 1px 1px 0px;
+    -fx-border-color: black;
+    -fx-border-radius: 0px 5px 5px 0px;
+}
+
+.anchor-pane {
+    -fx-padding: 5px;
 }
