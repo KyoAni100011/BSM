@@ -32,47 +32,47 @@
 }
 
 .text-input {
-    -fx-font-weight: 700;
+  -fx-font-weight: 700;
 }
 
 .error-label {
-    -fx-text-fill: #ff0000;
+  -fx-text-fill: #ff0000;
 }
 
 .label-bold {
-    -fx-font-weight: 700;
-    -fx-font-size: 14px;
+  -fx-font-weight: 700;
+  -fx-font-size: 14px;
 }
 
 .password-field-add {
-    -fx-background-color: transparent;
-    -fx-border-width: 1px 0px 1px 1px;
-    -fx-border-color: black;
-    -fx-border-radius: 5px 0px 0px 5px;
+  -fx-background-color: transparent;
+  -fx-border-width: 1px 0px 1px 1px;
+  -fx-border-color: black;
+  -fx-border-radius: 5px 0px 0px 5px;
 }
 
 .input-field-add {
-    -fx-background-color: transparent;
-    -fx-border-width: 1px;
-    -fx-border-color: black;
-    -fx-border-radius: 5px;
+  -fx-background-color: transparent;
+  -fx-border-width: 1px;
+  -fx-border-color: black;
+  -fx-border-radius: 5px;
 }
 
 .button-custom {
-    -fx-background-color: #914D2A;
-    -fx-padding: 1px;
-    -fx-font-weight: 700;
-    -fx-font-size: 16px;
-    -fx-text-fill: white;
+  -fx-background-color: #914d2a;
+  -fx-padding: 1px;
+  -fx-font-weight: 700;
+  -fx-font-size: 16px;
+  -fx-text-fill: white;
 }
 
 .button-eye {
-    -fx-background-color: transparent;
-    -fx-border-width: 1px 1px 1px 0px;
-    -fx-border-color: black;
-    -fx-border-radius: 0px 5px 5px 0px;
+  -fx-background-color: transparent;
+  -fx-border-width: 1px 1px 1px 0px;
+  -fx-border-color: black;
+  -fx-border-radius: 0px 5px 5px 0px;
 }
 
 .anchor-pane {
-    -fx-padding: 5px;
+  -fx-padding: 5px;
 }
