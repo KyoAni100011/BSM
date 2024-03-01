@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.admin.profileSetting.EditProfileController">
+    <Label fx:id="fullNameErrorLabel" layoutX="178.0" layoutY="107.0" textFill="red" />
+    <TextField fx:id="fullNameField" layoutX="178.0" layoutY="77.0" prefHeight="30.0" prefWidth="350.0" promptText="Enter your full name" />
+    <Label fx:id="emailErrorLabel" layoutX="178.0" layoutY="157.0" textFill="red" />
+    <TextField fx:id="emailTextField" layoutX="178.0" layoutY="127.0" prefHeight="30.0" prefWidth="350.0" promptText="Enter your email address" />
+    <Label fx:id="dobErrorLabel" layoutX="178.0" layoutY="207.0" textFill="red" />
+    <DatePicker fx:id="dobPicker" layoutX="178.0" layoutY="177.0" prefHeight="30.0" prefWidth="350.0" promptText="Select your date of birth" />
+    <Label layoutX="98.0" layoutY="79.0" text="Name">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+    <Label layoutX="98.0" layoutY="129.0" text="Email">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+    <Label layoutX="98.0" layoutY="179.0" text="Dob">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+    <Button fx:id="saveChangesButton" layoutX="375.0" layoutY="247.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="30.0" prefWidth="153.0" style="-fx-background-color: #914D2A; -fx-padding: 1px;" text="Save Changes" textFill="WHITE">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Button>
+</AnchorPane>
