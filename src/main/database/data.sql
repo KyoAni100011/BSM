@@ -121,7 +121,7 @@ set @employeeID2 = (select e.id from user u join employee e on u.id = e.userID w
 insert into importSheet (employeeID) values (@employeeID1);
 
 -- insert data for table bookCategory and bookBatch and update quantity in table book
-set @importSheetID = (select id from importSheet where employeeID = @employeeID1 and importDate = '2024-02-23');
+set @importSheetID = (select id from importSheet where employeeID = @employeeID1 and importDate = '2024-03-01');
 
 set @bookID = (select isbn from book where title = 'Toi thay hoa vang tren co xanh');
 set @categoryID = (select id from category where name = 'Truyen ngan');
@@ -226,7 +226,7 @@ select * from orderSheet;
 set @orderID = (
     select id 
     from orderSheet 
-    where employeeID = @employeeID2 and customerID = @customerID and orderDate = '2024-02-23'
+    where employeeID = @employeeID2 and customerID = @customerID and orderDate = '2024-03-01'
 );
 set @bookID = (select isbn from book where title = 'Toi thay hoa vang tren co xanh');
 set @salePrice = (select importPrice from bookBatch where id = @bookID) * 1.2;
@@ -237,7 +237,7 @@ update book set quantity = quantity - 1 where isbn = @bookID;
 set @orderID = (
     select id 
     from orderSheet 
-    where employeeID = @employeeID2 and customerID = @customerID and orderDate = '2024-02-23'
+    where employeeID = @employeeID2 and customerID = @customerID and orderDate = '2024-03-01'
 );
 set @bookID = (select isbn from book where title = 'Harry Potter Va Chiec Coc Lua');
 set @salePrice = (select importPrice from bookBatch where id = @bookID) * 1.2;

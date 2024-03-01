@@ -5,11 +5,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import main.java.database.DatabaseConnection;
 
 public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("../resources/view/mainScreen.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../resources/view/login.fxml"));
 
         Scene scene = new Scene(root);
 
@@ -26,14 +27,14 @@ public class App extends Application {
     public static void main(String[] args) {
 
         // Example query execution
-        // String query = "SELECT * FROM customer";
-        // DatabaseConnection.executeQuery(query, resultSet -> {
-        // while (resultSet.next()) {
-        // String name = resultSet.getString("name");
+         String query = "SELECT * FROM customer";
+         DatabaseConnection.executeQuery(query, resultSet -> {
+         while (resultSet.next()) {
+         String name = resultSet.getString("name");
 
-        // System.out.println("Customer Name: " + name);
-        // }
-        // });
+         System.out.println("Customer Name: " + name);
+         }
+         });
 
         launch(args);
     }

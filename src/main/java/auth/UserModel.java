@@ -61,10 +61,6 @@ public class UserModel {
         isEnabled = enabled;
     }
 
-    public void setDisabled(boolean disabled) {
-        // Implementation...
-    }
-
     public UserModel getProfile() {
         return null;
     }
