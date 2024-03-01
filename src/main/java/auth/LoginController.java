@@ -61,10 +61,26 @@ public class LoginController {
         if (userInfo != null) {
             System.out.println("Login successful!");
             System.out.println(userInfo.toString());
-            FXMLLoaderHelper.loadFXML((Stage) close.getScene().getWindow(), "mainScreen");
-
+            System.out.println(getEmailSuffix(userInfo.getEmail()));
+            if (".admin@bms.com".equals(getEmailSuffix(userInfo.getEmail()))) {
+                FXMLLoaderHelper.loadFXML((Stage) close.getScene().getWindow(), "mainScreen");
+            } else if (".employee@bms.com".equals(getEmailSuffix(userInfo.getEmail()))) {
+                FXMLLoaderHelper.loadFXML((Stage) close.getScene().getWindow(), "employeeScreen");
+            } else {
+                System.out.println("Unknown user type.");
+                return;
+            }
         } else {
             System.out.println("Invalid username or password.");
+        }
+    }
+
+    private String getEmailSuffix(String email) {
+        int atIndex = email.indexOf(".");
+        if (atIndex != -1) {
+            return email.substring(atIndex);
+        } else {
+            return "";
         }
     }
 }
