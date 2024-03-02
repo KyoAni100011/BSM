@@ -56,7 +56,7 @@ public class SidebarController {
 
     @FXML
     void SwitchUserAccount(ActionEvent event) throws IOException {
-        loadPage("profileSetting");
+        loadPage("admin/profileSetting/profileSetting");
     }
 
     @FXML

@@ -27,9 +27,17 @@
 
 .profile-setting-button-selected {
   -fx-border-width: 0px 0px 2px;
-  -fx-border-color: #914d2a;
-  -fx-text-fill: #914d2a;
 }
+
+.profile-setting-button-employee {
+  -fx-text-fill: #F5A11C;
+    -fx-border-color: #F5A11C;
+}
+
+ .profile-setting-button-admin {
+   -fx-text-fill: #914d2a;
+     -fx-border-color: #914d2a;
+ }
 
 .text-input {
   -fx-font-weight: 700;
@@ -59,7 +67,7 @@
 }
 
 .button-custom {
-  -fx-background-color: #914d2a;
+
   -fx-padding: 1px;
   -fx-font-weight: 700;
   -fx-font-size: 16px;

@@ -64,7 +64,7 @@ public class SideBarControllerEmployee {
 
     @FXML
     void SwitchOrder(ActionEvent event) throws IOException {
-        loadPage("order");
+        loadPage("/employee/profileSetting/profileSetting");
     }
 
     @FXML
