@@ -2,7 +2,14 @@ package main.java.admin.profileSetting;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 public class ChangePasswordController {
     @FXML
@@ -38,8 +45,18 @@ public class ChangePasswordController {
         boolean validNewPassword = validateNewPassword(newPassword);
         boolean validConfirmPassword = validateConfirmPassword(newPassword, confirmPassword);
 
-        //get email from login
-        String email = "thu.admin@bms.com";
+        //get email from saveEmailTemp.txt
+        String email = null;
+        try (DataInputStream dataStream = new DataInputStream(new FileInputStream("saveEmailTemp.txt"))) {
+            email = dataStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        if (email.isEmpty()) {
+            System.out.println("cannot get email");
+        }
+
         if (validCurrentPassword && validNewPassword && validConfirmPassword) {
             if (changePasswordService.getChangePasswordDAO().changePassword(email, currentPassword, newPassword)) {
                 showAlert("Success", "Password changed successfully", Alert.AlertType.INFORMATION);

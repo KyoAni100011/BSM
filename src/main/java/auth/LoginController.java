@@ -1,7 +1,6 @@
 package main.java.auth;
 
 import javafx.fxml.FXML;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -9,6 +8,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import main.java.utils.FXMLLoaderHelper;
 
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class LoginController {
@@ -61,6 +62,14 @@ public class LoginController {
         if (userInfo != null) {
             System.out.println("Login successful!");
             System.out.println(userInfo.toString());
+
+            //save user in file txt
+            String path = "saveEmailTemp.txt";
+            try (DataOutputStream dataStream = new DataOutputStream(new FileOutputStream(path))) {
+                dataStream.writeUTF(email);
+                System.out.println("Save successfully");
+            }
+
             FXMLLoaderHelper.loadFXML((Stage) close.getScene().getWindow(), "mainScreen");
 
         } else {
