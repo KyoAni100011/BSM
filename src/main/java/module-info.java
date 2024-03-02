@@ -6,6 +6,7 @@ module com.bsm.bsm {
     requires java.sql;
     requires jjwt.api;
     requires fontawesomefx;
+    requires jbcrypt;
 
     opens com.bsm.bsm to javafx.fxml;
     opens com.bsm.bsm.auth to javafx.fxml;

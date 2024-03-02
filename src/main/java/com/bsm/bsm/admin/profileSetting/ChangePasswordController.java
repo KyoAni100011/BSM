@@ -4,6 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+
 public class ChangePasswordController {
     @FXML
     private Label currentPasswordErrorLabel, newPasswordErrorLabel , confirmPasswordErrorLabel;
@@ -22,6 +25,8 @@ public class ChangePasswordController {
 
     @FXML
     private Button saveChangesButton;
+
+    private final  ChangePasswordService changePasswordService = new ChangePasswordService();
 
     @FXML
     public void initialize() {
@@ -60,9 +65,25 @@ public class ChangePasswordController {
         boolean validNewPassword = validateNewPassword(newPassword, currentPassword);
         boolean validConfirmPassword = validateConfirmPassword(newPassword, confirmPassword);
 
+//        String email = "thu.admin@bms.com";
+        String email = null;
+        try (DataInputStream dataStream = new DataInputStream(new FileInputStream("saveEmailTemp.txt"))) {
+            email = dataStream.readUTF();
+            System.out.println("Email: " + email);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        if (email.isEmpty()) {
+            System.out.println("Email is empty");
+        }
+
         if (validCurrentPassword && validNewPassword && validConfirmPassword) {
-            // Save the changes
-            showAlert("Success", "Password changed successfully", Alert.AlertType.INFORMATION);
+            if (changePasswordService.getChangePasswordDAO().changePassword(email, currentPassword, newPassword)) {
+                showAlert("Success", "Password changed successfully", Alert.AlertType.INFORMATION);
+            } else {
+                showAlert("Error", "Password change failed", Alert.AlertType.ERROR);
+            }
         }
     }
 

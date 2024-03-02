@@ -1,6 +1,5 @@
 package com.bsm.bsm.auth;
 
-import com.bsm.bsm.database.DatabaseConnection;
 import com.bsm.bsm.user.UserModel;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
 import javafx.fxml.FXML;
@@ -10,12 +9,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
-
-import static com.bsm.bsm.security.JWTProvider.decodeJwtToken;
-import static com.bsm.bsm.utils.convertProvider.bytesToHexString;
-import static com.bsm.bsm.utils.convertProvider.reverseHexString;
 
 public class AuthController {
     @FXML
@@ -72,12 +68,26 @@ public class AuthController {
         passwordErrorText.setVisible(passwordLength < 8 || passwordLength > 255);
         emailErrorLabel.setVisible(!validateEmail(email));
 
+        System.out.println(validateEmail(email));
+
         UserModel userInfo = AuthService.authenticateUser(email, password);
         if (userInfo != null) {
+            System.out.println("Login successful!");
+
+            //save email from saveEmailTemp.txt
+            try (DataOutputStream dataStream = new DataOutputStream(new FileOutputStream("saveEmailTemp.txt"))) {
+                dataStream.writeUTF(email);
+                System.out.println("Saved successfully!");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            System.out.println(userInfo);
+            System.out.println(getEmailSuffix(userInfo.getEmail()));
             if (".admin@bms.com".equals(getEmailSuffix(userInfo.getEmail()))) {
-                FXMLLoaderHelper.loadFXML((Stage) close.getScene().getWindow(), "admin/adminMainScreen");
+                FXMLLoaderHelper.loadFXML((Stage) close.getScene().getWindow(), "adminMainScreen");
             } else if (".employee@bms.com".equals(getEmailSuffix(userInfo.getEmail()))) {
-                FXMLLoaderHelper.loadFXML((Stage) close.getScene().getWindow(), "employee/employeeMainScreen");
+                FXMLLoaderHelper.loadFXML((Stage) close.getScene().getWindow(), "employeeMainScreen");
             } else {
                 System.out.println("Unknown user type.");
             }
