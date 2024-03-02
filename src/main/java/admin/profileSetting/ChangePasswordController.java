@@ -20,6 +20,8 @@ public class ChangePasswordController {
     @FXML
     private Button saveChangesButton;
 
+    private final ChangePasswordService changePasswordService = new ChangePasswordService();
+
     @FXML
     public void initialize() {
 
@@ -36,9 +38,14 @@ public class ChangePasswordController {
         boolean validNewPassword = validateNewPassword(newPassword);
         boolean validConfirmPassword = validateConfirmPassword(newPassword, confirmPassword);
 
+        //get email from login
+        String email = "thu.admin@bms.com";
         if (validCurrentPassword && validNewPassword && validConfirmPassword) {
-            // Save the changes
-            showAlert("Success", "Password changed successfully", Alert.AlertType.INFORMATION);
+            if (changePasswordService.getChangePasswordDAO().changePassword(email, currentPassword, newPassword)) {
+                showAlert("Success", "Password changed successfully", Alert.AlertType.INFORMATION);
+            } else {
+                showAlert("Error", "Password change failed", Alert.AlertType.ERROR);
+            }
         }
     }
 

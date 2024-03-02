@@ -1,4 +1,4 @@
-package main.java.admin.userAccount;
+package main.java.admin.profileSetting;
 
 
 import main.java.database.DatabaseConnection;
@@ -21,7 +21,7 @@ public class ChangePasswordDAO {
 
     public static void main(String[] args) {
         String email = "thu.admin@bms.com";
-        String currentPassword = "31052003";
+        String currentPassword = "01052003";
         String newPassword = "31052003";
 
         changePassword(email, currentPassword, newPassword);

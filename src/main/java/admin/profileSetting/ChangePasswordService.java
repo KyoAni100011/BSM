@@ -1,4 +1,4 @@
-package main.java.admin.userAccount;
+package main.java.admin.profileSetting;
 
 public class ChangePasswordService {
 
