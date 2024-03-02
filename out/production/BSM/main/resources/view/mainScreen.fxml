@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="718.0" prefWidth="1066.0" style="-fx-background-color: #F3F3F3;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.sidebar.SidebarController">
+   <children>
+      <BorderPane fx:id="bp" layoutY="-2.0" prefHeight="718.0" prefWidth="1066.0" AnchorPane.bottomAnchor="1.2000000000000455" AnchorPane.leftAnchor="0.3999999999998636" AnchorPane.rightAnchor="-0.40000000000009095" AnchorPane.topAnchor="-2.0">
+         <left>
+            <AnchorPane prefHeight="654.0" prefWidth="240.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
+               <children>
+                  <Label layoutX="14.0" layoutY="148.0" styleClass="sideBarTitle" text="Manage" AnchorPane.bottomAnchor="504.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="167.6" AnchorPane.topAnchor="148.0" />
+                  <VBox layoutY="222.0" prefHeight="267.0" prefWidth="240.0" style="-fx-background-color: #FFFFFF; -fx-border-radius: 0;" AnchorPane.bottomAnchor="182.80000000000007" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="222.0">
+                     <children>
+                        <Button fx:id="userAccount" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#SwitchUserAccount" prefHeight="46.0" prefWidth="275.0" style="-fx-background-color: none; -fx-border-radius: 0;" styleClass="sideBarItem" text="User account">
+                           <graphic>
+                              <FontAwesomeIcon glyphName="USER" size="1.3em" styleClass="graphic" />
+                           </graphic>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets left="24.0" />
+                           </padding>
+                        </Button>
+                        <Button fx:id="bookRevenue" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#SwitchBookRevenue" prefHeight="46.0" prefWidth="278.0" style="-fx-background-color: none; -fx-border-radius: 0;" styleClass="sideBarItem" text="Book revenue">
+                           <graphic>
+                              <FontAwesomeIcon glyphName="BOOK" size="1.3em" styleClass="graphic" />
+                           </graphic>
+                           <padding>
+                              <Insets left="24.0" />
+                           </padding>
+                        </Button>
+                        <Button fx:id="categoryRevenue" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#SwitchCategoryRevenue" prefHeight="46.0" prefWidth="275.0" style="-fx-background-color: none; -fx-border-radius: 0;" styleClass="sideBarItem" text="Category revenue">
+                           <graphic>
+                              <FontAwesomeIcon glyphName="" size="1.3em" styleClass="graphic" />
+                           </graphic>
+                           <padding>
+                              <Insets left="24.0" />
+                           </padding>
+                        </Button>
+                        <Button fx:id="revenueByCustomer" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#SwitchRevenueByCustomer" prefHeight="46.0" prefWidth="274.0" style="-fx-background-color: none; -fx-border-radius: 0;" styleClass="sideBarItem" text="Revenue by customer">
+                           <graphic>
+                              <FontAwesomeIcon glyphName="GROUP" size="1.3em" styleClass="graphic" />
+                           </graphic>
+                           <padding>
+                              <Insets left="24.0" />
+                           </padding>
+                        </Button>
+                        <Button fx:id="revenueByEmployee" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#SwitchRevenueByEmployee" prefHeight="46.0" prefWidth="274.0" style="-fx-background-color: none; -fx-border-radius: 0;" styleClass="sideBarItem" text="Revenue by  employee">
+                           <graphic>
+                              <FontAwesomeIcon glyphName="LIST" size="1.3em" styleClass="graphic" />
+                           </graphic>
+                           <padding>
+                              <Insets left="24.0" />
+                           </padding>
+                        </Button>
+                        <Line endX="-258.5999755859375" endY="-113.67770385742188" startX="-496.84149169921875" startY="-113.67768859863281" style="-fx-opacity: 0.1;">
+                           <VBox.margin>
+                              <Insets bottom="6.0" top="6.0" />
+                           </VBox.margin>
+                        </Line>
+                        <Button fx:id="btnLogOut" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleLogOut" prefHeight="46.0" prefWidth="274.0" style="-fx-background-color: none; -fx-border-radius: 0;" styleClass="sideBarItem" text="Logout">
+                           <graphic>
+                              <FontAwesomeIcon glyphName="LOGOUT" size="1.3em" styleClass="graphic" />
+                           </graphic>
+                           <padding>
+                              <Insets left="24.0" />
+                           </padding>
+                        </Button>
+                     </children>
+                  </VBox>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="20.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/logo.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+         </left>
+         <center>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="482.0" fitWidth="598.0" layoutX="115.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/catWelcome.jpg" />
+                     </image>
+                  </ImageView>
+                  <Text layoutX="242.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 45px;" text="Welcome to BSM" />
+               </children>
+            </AnchorPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
