@@ -1,5 +1,7 @@
 package com.bsm.bsm.admin.userAccount;
 
+import com.bsm.bsm.utils.AlertUtils;
+import com.bsm.bsm.utils.ValidationUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -8,7 +10,6 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 
 public class PasswordResetController {
-
     @FXML
     private TextField emailField, customPassword;
     @FXML
@@ -24,18 +25,29 @@ public class PasswordResetController {
     @FXML
     private void handleResetButtonAction(ActionEvent event) {
         clearErrorMessages();
-        boolean isEmailValid = validateEmail(emailField.getText());
-        boolean isPasswordValid = validatePassword(customPassword.getText()).equals("Valid");
+        String email = emailField.getText().trim();
+        String password = customPassword.getText();
 
-        if (isEmailValid && isPasswordValid) {
+        String emailValidationMessage = ValidationUtils.validateEmail(email);
+        String passwordValidationMessage = ValidationUtils.validatePassword(password);
+
+        if (emailValidationMessage == null && passwordValidationMessage == null) {
             // Logic to reset the password here
-            System.out.println("Password reset successful for " + emailField.getText().trim());
+            System.out.println("Password reset successful for " + email);
 
             // Show success alert
-            showAlert("Success", "Password reset successful!", Alert.AlertType.INFORMATION);
+            AlertUtils.showAlert("Success", "Password reset successful!", Alert.AlertType.INFORMATION);
 
             // Reset error messages
             clearErrorMessages();
+            clearInputs();
+        } else {
+            if (emailValidationMessage != null) {
+                emailErrorLabel.setText(emailValidationMessage);
+            }
+            if (passwordValidationMessage != null) {
+                passwordErrorLabel.setText(passwordValidationMessage);
+            }
         }
     }
 
@@ -44,50 +56,8 @@ public class PasswordResetController {
         passwordErrorLabel.setText("");
     }
 
-    private boolean validateEmail(String email) {
-        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-        if (email.isEmpty()) {
-            emailErrorLabel.setText("Please enter your email.");
-            return false;
-        } else if (!email.matches(emailRegex)) {
-            emailErrorLabel.setText("Invalid email format.");
-            return false;
-        }
-        return true;
-    }
-
-    private String validatePassword(String password) {
-        if (password.isEmpty()) {
-            return "Valid";
-        }
-        if (password.length() < 8 || password.length() > 255) {
-            passwordErrorLabel.setText("Your password should be between 8 and 255 characters.");
-            return "Invalid";
-        }
-        if (!password.matches(".*[A-Z].*")) {
-            passwordErrorLabel.setText("Your password should include at least one uppercase letter (A-Z).");
-            return "Invalid";
-        }
-        if (!password.matches(".*[a-z].*")) {
-            passwordErrorLabel.setText("Your password should include at least one lowercase letter (a-z).");
-            return "Invalid";
-        }
-        if (!password.matches(".*[0-9].*")) {
-            passwordErrorLabel.setText("Your password should include at least one number (0-9).");
-            return "Invalid";
-        }
-        if (!password.matches(".*[!@#$%&*()_+=|<>?{}\\[\\]~-].*")) {
-            passwordErrorLabel.setText("Your password should include at least one special character.");
-            return "Invalid";
-        }
-        return "Valid";
-    }
-
-    private void showAlert(String title, String content, Alert.AlertType alertType) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
+    private void clearInputs() {
+        emailField.clear();
+        customPassword.clear();
     }
 }
