@@ -25,7 +25,6 @@ public class JWTProvider {
                 .signWith(SECRET_KEY)
                 .compact();
 
-        System.out.println(token);
         return token;
     }
 

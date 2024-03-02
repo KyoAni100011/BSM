@@ -1,4 +1,4 @@
-package com.bsm.bsm.admin.profileSetting;
+package com.bsm.bsm.employee.profileSetting;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,17 +11,15 @@ import java.io.IOException;
 import java.net.URL;
 
 public class ProfileSettingController {
-
-    public Button editProfileButton;
-    public Button changePasswordButton;
+    public Button editProfileButton, changePasswordButton;
 
     public BorderPane bp;
 
     @FXML
     private void initialize() {
         try {
-            editProfileButton.getStyleClass().add("profile-setting-button-selected");
-            changePasswordButton.getStyleClass().remove("profile-setting-button-selected");
+            editProfileButton.getStyleClass().addAll("profile-setting-button-selected", "profile-setting-button-employee");
+            changePasswordButton.getStyleClass().removeAll("profile-setting-button", "profile-setting-button-employee");
             loadPage("editProfile");
         } catch (IOException e) {
             e.printStackTrace();
@@ -30,20 +28,20 @@ public class ProfileSettingController {
 
     @FXML
     private void handleEditProfile(ActionEvent event) throws IOException {
-        editProfileButton.getStyleClass().add("profile-setting-button-selected");
-        changePasswordButton.getStyleClass().remove("profile-setting-button-selected");
+        editProfileButton.getStyleClass().addAll("profile-setting-button-selected", "profile-setting-button-employee");
+        changePasswordButton.getStyleClass().removeAll("profile-setting-button", "profile-setting-button-employee");
         loadPage("editProfile");
     }
 
     @FXML
     private void handleChangePassword(ActionEvent event) throws IOException {
-        changePasswordButton.getStyleClass().add("profile-setting-button-selected");
-        editProfileButton.getStyleClass().remove("profile-setting-button-selected");
+        changePasswordButton.getStyleClass().addAll("profile-setting-button-selected", "profile-setting-button-employee");
+        editProfileButton.getStyleClass().removeAll("profile-setting-button", "profile-setting-button-employee");
         loadPage("changePassword");
     }
 
     private void loadPage(String page) throws IOException {
-        String resourcePath = "/com/bsm/bsm/view/admin/profileSetting/" + page + ".fxml";
+        String resourcePath = "../../../resources/view/employee/profileSetting/" + page + ".fxml";
         URL resourceUrl = getClass().getResource(resourcePath);
         if (resourceUrl == null) {
             System.err.println("Resource not found: " + resourcePath);

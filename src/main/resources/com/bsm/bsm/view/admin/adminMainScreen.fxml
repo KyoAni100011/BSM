@@ -81,7 +81,7 @@
                   </VBox>
                   <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="20.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/logo.png" />
+                        <Image url="@../../images/logo.png" />
                      </image>
                   </ImageView>
                </children>
@@ -92,7 +92,7 @@
                <children>
                   <ImageView fitHeight="482.0" fitWidth="598.0" layoutX="115.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/catWelcome.jpg" />
+                        <Image url="@../../images/catWelcome.jpg" />
                      </image>
                   </ImageView>
                   <Text layoutX="242.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 45px;" text="Welcome to BSM" />

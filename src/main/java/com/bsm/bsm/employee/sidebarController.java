@@ -41,32 +41,32 @@ public class sidebarController {
 
     @FXML
     void SwitchBook(ActionEvent event) throws IOException {
-        loadPage("book");
+        loadPage("book/book");
     }
 
     @FXML
     void SwitchBookAuthors(ActionEvent event) throws IOException {
-        loadPage("bookAuthors");
+        loadPage("bookAuthors/bookAuthors");
     }
 
     @FXML
     void SwitchBookCategories(ActionEvent event) throws IOException {
-        loadPage("bookCategories");
+        loadPage("bookCategories/bookCategories");
     }
 
     @FXML
     void SwitchBookPublishers(ActionEvent event) throws IOException {
-        loadPage("bookPublishers");
+        loadPage("bookPublishers/bookPublishers");
     }
 
     @FXML
     void SwitchImportSheet(ActionEvent event) throws IOException {
-        loadPage("importSheets");
+        loadPage("importSheets/importSheets");
     }
 
     @FXML
     void SwitchOrder(ActionEvent event) throws IOException {
-        loadPage("order");
+        loadPage("order/order");
     }
 
     @FXML
@@ -75,7 +75,7 @@ public class sidebarController {
     }
 
     private void loadPage(String page) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/bsm/bsm/view/" + page + ".fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/bsm/bsm/view/employee/" + page + ".fxml")));
         bp.setCenter(root);
     }
 }

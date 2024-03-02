@@ -36,27 +36,27 @@ public class sidebarController {
 
     @FXML
     void SwitchBookRevenue(ActionEvent event) throws IOException {
-        loadPage("bookRevenue");
+        loadPage("bookRevenue/bookRevenue");
     }
 
     @FXML
     void SwitchCategoryRevenue(ActionEvent event) throws IOException {
-        loadPage("revenueByCustomer");
+        loadPage("categoryRevenue/categoryRevenue");
     }
 
     @FXML
     void SwitchRevenueByCustomer(ActionEvent event) throws IOException {
-        loadPage("revenueByCustomer");
+        loadPage("revenueByCustomer/revenueByCustomer");
     }
 
     @FXML
     void SwitchRevenueByEmployee(ActionEvent event) throws IOException {
-        loadPage("revenueByEmployee");
+        loadPage("revenueByEmployee/revenueByEmployee");
     }
 
     @FXML
     void SwitchUserAccount(ActionEvent event) throws IOException {
-        loadPage("profileSetting");
+        loadPage("profileSetting/profileSetting");
     }
 
     @FXML
@@ -65,7 +65,7 @@ public class sidebarController {
     }
 
     private void loadPage(String page) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/bsm/bsm/view/" + page + ".fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/bsm/bsm/view/admin/" + page + ".fxml")));
         bp.setCenter(root);
     }
 

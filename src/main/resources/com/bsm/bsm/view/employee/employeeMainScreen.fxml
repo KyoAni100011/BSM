@@ -89,7 +89,7 @@
                   </VBox>
                   <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="20.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/logo.png" />
+                        <Image url="@../../images/logo.png" />
                      </image>
                   </ImageView>
                   <Button alignment="BASELINE_LEFT" layoutX="-1.0" layoutY="202.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="240.0" style="-fx-background-color: none;" styleClass="sideBarItem" text="Add order">
@@ -108,7 +108,7 @@
                <children>
                   <ImageView fitHeight="482.0" fitWidth="598.0" layoutX="115.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/catWelcome.jpg" />
+                        <Image url="@../../images/catWelcome.jpg" />
                      </image>
                   </ImageView>
                   <Text layoutX="242.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 45px;" text="Welcome to BSM" />
