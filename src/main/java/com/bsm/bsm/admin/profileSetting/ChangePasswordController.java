@@ -67,7 +67,7 @@ public class ChangePasswordController {
 
 //        String email = "thu.admin@bms.com";
         String email = null;
-        try (DataInputStream dataStream = new DataInputStream(new FileInputStream("saveEmailTemp.txt"))) {
+        try (DataInputStream dataStream = new DataInputStream(new FileInputStream("src/main/java/com/bsm/bsm/auth/saveEmailTemp.txt"))) {
             email = dataStream.readUTF();
             System.out.println("Email: " + email);
         } catch (Exception e) {
