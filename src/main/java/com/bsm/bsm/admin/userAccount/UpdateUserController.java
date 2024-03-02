@@ -28,8 +28,6 @@ public class UpdateUserController {
     @FXML
     private DatePicker dobPicker;
 
-    private EditProfileService editProfileService = new EditProfileService();
-
     @FXML
     public void initialize() {
         // Set the prompt text for the DatePicker

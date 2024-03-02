@@ -9,6 +9,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class AuthController {
@@ -71,6 +73,15 @@ public class AuthController {
         UserModel userInfo = AuthService.authenticateUser(email, password);
         if (userInfo != null) {
             System.out.println("Login successful!");
+
+            //save email from saveEmailTemp.txt
+            try (DataOutputStream dataStream = new DataOutputStream(new FileOutputStream("saveEmailTemp.txt"))) {
+                dataStream.writeUTF(email);
+                System.out.println("Saved successfully!");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
             System.out.println(userInfo);
             System.out.println(getEmailSuffix(userInfo.getEmail()));
             if (".admin@bms.com".equals(getEmailSuffix(userInfo.getEmail()))) {
