@@ -1,47 +1,63 @@
 package com.bsm.bsm.admin.profileSetting;
-
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 public class ChangePasswordController {
-    public Button showHideCurrentPasswordButton;
-    public Button showHideNewPasswordButton;
-    public Button showHideConfirmPasswordButton;
     @FXML
-    private Label currentPasswordErrorLabel;
+    private Label currentPasswordErrorLabel, newPasswordErrorLabel , confirmPasswordErrorLabel;
+
     @FXML
-    private Label newPasswordErrorLabel;
+    public TextField currentPasswordTextField, confirmPasswordTextField, newPasswordTextField;
+
     @FXML
-    private Label confirmPasswordErrorLabel;
+    public Button showHideCurrentPasswordButton, showHideNewPasswordButton, showHideConfirmPasswordButton;
+
     @FXML
-    public TextField currentPasswordField;
+    public FontAwesomeIcon eyeIcon1, eyeIcon2, eyeIcon3;
+
     @FXML
-    public TextField newPasswordField;
-    @FXML
-    public PasswordField confirmPasswordField;
+    public PasswordField currentPasswordField, confirmPasswordField, newPasswordField;
+
     @FXML
     private Button saveChangesButton;
 
     @FXML
     public void initialize() {
-        showHideCurrentPasswordButton
-                .setOnAction(event -> togglePasswordVisibility(currentPasswordField, showHideCurrentPasswordButton));
-        showHideNewPasswordButton
-                .setOnAction(event -> togglePasswordVisibility(newPasswordField, showHideNewPasswordButton));
-        showHideConfirmPasswordButton
-                .setOnAction(event -> togglePasswordVisibility(confirmPasswordField, showHideConfirmPasswordButton));
+        confirmPasswordTextField.setVisible(false);
+        currentPasswordTextField.setVisible(false);
+        newPasswordTextField.setVisible(false);
+
+        showHideCurrentPasswordButton.setOnAction(event -> handleShowHidePassword(event, currentPasswordField, currentPasswordTextField, eyeIcon1));
+        showHideNewPasswordButton.setOnAction(event -> handleShowHidePassword(event, newPasswordField, newPasswordTextField, eyeIcon2));
+        showHideConfirmPasswordButton.setOnAction(event -> handleShowHidePassword(event, confirmPasswordField, confirmPasswordTextField, eyeIcon3));
+    }
+
+    private void handleShowHidePassword(ActionEvent event, PasswordField passwordField ,TextField textField, FontAwesomeIcon eyeIcon) {
+        if (passwordField.isVisible()) {
+            passwordField.setVisible(false);
+            textField.setText(passwordField.getText());
+            textField.setVisible(true);
+            eyeIcon.setGlyphName("EYE");
+        } else {
+            passwordField.setText(textField.getText());
+            passwordField.setVisible(true);
+            textField.setVisible(false);
+            eyeIcon.setGlyphName("EYE_SLASH");
+        }
     }
 
     @FXML
     private void handleSaveChanges(ActionEvent event) {
         clearErrorMessages();
-        String currentPassword = currentPasswordField.getText();
-        String newPassword = newPasswordField.getText();
-        String confirmPassword = confirmPasswordField.getText();
+
+        String currentPassword = currentPasswordField.isVisible() ? currentPasswordField.getText() : currentPasswordTextField.getText();
+        String newPassword = newPasswordField.isVisible() ? newPasswordField.getText() : newPasswordTextField.getText();
+        String confirmPassword = confirmPasswordField.isVisible() ? confirmPasswordField.getText() : confirmPasswordTextField.getText();
 
         boolean validCurrentPassword = validateCurrentPassword(currentPassword);
-        boolean validNewPassword = validateNewPassword(newPassword);
+        boolean validNewPassword = validateNewPassword(newPassword, currentPassword);
         boolean validConfirmPassword = validateConfirmPassword(newPassword, confirmPassword);
 
         if (validCurrentPassword && validNewPassword && validConfirmPassword) {
@@ -64,9 +80,13 @@ public class ChangePasswordController {
         return true;
     }
 
-    private boolean validateNewPassword(String newPassword) {
+    private boolean validateNewPassword(String newPassword, String currentPassword) {
         if (newPassword.isEmpty()) {
             newPasswordErrorLabel.setText("New password is required");
+            return false;
+        }
+        else if (newPassword.equals(currentPassword)) {
+            newPasswordErrorLabel.setText("New password cannot be the same as the current password");
             return false;
         }
         return true;
@@ -78,7 +98,7 @@ public class ChangePasswordController {
             return false;
         }
         if (!newPassword.equals(confirmPassword)) {
-            confirmPasswordErrorLabel.setText("Passwords do not match");
+            confirmPasswordErrorLabel.setText("Passwords do not match new password");
             return false;
         }
         return true;
@@ -91,19 +111,4 @@ public class ChangePasswordController {
         alert.setContentText(content);
         alert.showAndWait();
     }
-
-    private void togglePasswordVisibility(TextField passwordField, Button showHideButton) {
-        if (passwordField.getStyleClass().contains("password-field")) {
-            // Hiển thị mật khẩu
-            System.out.println(passwordField.getStyleClass());
-            passwordField.getStyleClass().remove("password-field");
-            System.out.println(passwordField.getStyleClass());
-        } else {
-            // Ẩn mật khẩu
-            System.out.println(passwordField.getStyleClass());
-            passwordField.getStyleClass().add("password-field");
-            System.out.println(passwordField.getStyleClass());
-        }
-    }
-
 }
