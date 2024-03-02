@@ -46,9 +46,9 @@ public class ValidationUtils {
     }
 
     public static String validatePassword(String password) {
-//        if (password.isEmpty()) {
-//            return "Please enter your password.";
-//        }
+        if (password.isEmpty()) {
+            return "Please enter your password.";
+        }
         if (password.length() < 8 || password.length() > 255) {
             return "Your password should be between 8 and 255 characters.";
         }

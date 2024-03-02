@@ -52,6 +52,11 @@
   -fx-font-size: 14px;
 }
 
+.title-form {
+  -fx-font-size: 24px;
+  -fx-font-weight: 700;
+}
+
 .password-field-add {
   -fx-background-color: transparent;
   -fx-border-width: 1px 0px 1px 1px;

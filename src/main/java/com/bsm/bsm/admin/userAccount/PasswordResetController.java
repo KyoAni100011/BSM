@@ -25,30 +25,32 @@ public class PasswordResetController {
     @FXML
     private void handleResetButtonAction(ActionEvent event) {
         clearErrorMessages();
-        String email = emailField.getText().trim();
+        String email = emailField.getText();
         String password = customPassword.getText();
 
+        if (validateInputs(email, password)) {
+            AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
+            clearInputs();
+            clearErrorMessages();
+        }
+    }
+
+    private boolean validateInputs(String email, String password) {
         String emailValidationMessage = ValidationUtils.validateEmail(email);
         String passwordValidationMessage = ValidationUtils.validatePassword(password);
 
-        if (emailValidationMessage == null && passwordValidationMessage == null) {
-            // Logic to reset the password here
-            System.out.println("Password reset successful for " + email);
-
-            // Show success alert
-            AlertUtils.showAlert("Success", "Password reset successful!", Alert.AlertType.INFORMATION);
-
-            // Reset error messages
-            clearErrorMessages();
-            clearInputs();
-        } else {
-            if (emailValidationMessage != null) {
-                emailErrorLabel.setText(emailValidationMessage);
-            }
-            if (passwordValidationMessage != null) {
-                passwordErrorLabel.setText(passwordValidationMessage);
-            }
+        if (emailValidationMessage != null) {
+            emailErrorLabel.setText(emailValidationMessage);
         }
+
+        if (password.isEmpty()) {
+            passwordValidationMessage = null;
+        }
+        else if (passwordValidationMessage != null) {
+            passwordErrorLabel.setText(passwordValidationMessage);
+        }
+
+        return emailValidationMessage == null && passwordValidationMessage == null;
     }
 
     private void clearErrorMessages() {
