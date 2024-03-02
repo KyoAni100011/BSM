@@ -1,4 +1,4 @@
-package main.java.utils;
+package com.bsm.bsm.utils;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,11 +15,11 @@ public class FXMLLoaderHelper {
             throw new IllegalArgumentException("currentStage and fxmlPath cannot be null");
         }
 
-        Parent root = FXMLLoader
-                .load(Objects.requireNonNull(FXMLLoaderHelper.class.getClassLoader().getResource("main/resources/view/" + fxmlPath + ".fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(FXMLLoaderHelper.class.getResource("/com/bsm/bsm/view/" + fxmlPath + ".fxml")));
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(
-                Objects.requireNonNull(FXMLLoaderHelper.class.getClassLoader().getResource("main/resources/css/style.css")).toExternalForm());
+
+        scene.getStylesheets().add(Objects.requireNonNull(FXMLLoaderHelper.class.getResource("/com/bsm/bsm/style/style.css")).toExternalForm());
+
         currentStage.setTitle("Welcome to FXML");
         currentStage.setScene(scene);
         currentStage.show();
