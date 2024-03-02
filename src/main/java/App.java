@@ -10,7 +10,7 @@ import main.java.database.DatabaseConnection;
 public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("../resources/view/login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../resources/view/mainScreen.fxml"));
 
         Scene scene = new Scene(root);
 
