@@ -41,7 +41,7 @@ public class ProfileSettingController {
     }
 
     private void loadPage(String page) throws IOException {
-        String resourcePath = "../../../resources/view/employee/profileSetting/" + page + ".fxml";
+        String resourcePath = "/com/bsm/bsm/view/employee/profileSetting/" + page + ".fxml";
         URL resourceUrl = getClass().getResource(resourcePath);
         if (resourceUrl == null) {
             System.err.println("Resource not found: " + resourcePath);

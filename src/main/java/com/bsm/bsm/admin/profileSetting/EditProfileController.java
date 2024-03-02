@@ -11,18 +11,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.event.EventHandler;
 
 public class EditProfileController {
-
+    @FXML
     public Button saveChangesButton;
     @FXML
-    private Label fullNameErrorLabel;
+    private Label fullNameErrorLabel, emailErrorLabel, dobErrorLabel;
     @FXML
-    private Label emailErrorLabel;
-    @FXML
-    private Label dobErrorLabel;
-    @FXML
-    private TextField fullNameField;
-    @FXML
-    private TextField emailTextField;
+    private TextField fullNameField, emailTextField;
     @FXML
     private DatePicker dobPicker;
 

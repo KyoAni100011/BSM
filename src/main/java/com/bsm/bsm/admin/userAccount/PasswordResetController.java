@@ -10,15 +10,11 @@ import javafx.scene.control.Alert;
 public class PasswordResetController {
 
     @FXML
-    private TextField emailField;
-    @FXML
-    private TextField customPassword;
+    private TextField emailField, customPassword;
     @FXML
     private Button resetButton;
     @FXML
-    private Label emailErrorLabel;
-    @FXML
-    private Label passwordErrorLabel;
+    private Label emailErrorLabel, passwordErrorLabel;
 
     @FXML
     public void initialize() {

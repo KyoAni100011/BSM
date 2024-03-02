@@ -35,7 +35,7 @@
         <DatePicker fx:id="dobPicker" layoutX="130.0" layoutY="220.0" prefHeight="40.0" prefWidth="350.0" promptText="Select your date of birth" styleClass="input-field-add" />
 
 
-        <Button fx:id="saveChangesButton" layoutX="370.0" layoutY="282.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="40.0" prefWidth="153.0" style="-fx-background-color: #914D2A; -fx-padding: 1px;" styleClass="button-custom" text="Save Changes" textFill="WHITE">
+        <Button fx:id="saveChangesButton" layoutX="370.0" layoutY="282.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="40.0" prefWidth="153.0" style="-fx-background-color: #914D2A; -fx-padding: 1px;" styleClass="button-custom" text="Save changes" textFill="WHITE">
             <font>
                 <Font size="18.0" />
             </font>
