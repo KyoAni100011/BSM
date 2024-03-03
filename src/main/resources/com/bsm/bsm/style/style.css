@@ -1,0 +1,87 @@
+@font-face {
+  font-family: "Roboto";
+  src: url("../font/Roboto-Medium.ttf");
+}
+
+.text {
+  -fx-font-family: "Roboto";
+  -fx-text-fill: #ff0000;
+}
+
+.sideBarItem {
+  -fx-font-size: 16px;
+  -fx-font-weight : 700;
+  -fx-background-color : none;
+}
+
+.sideBarItem:hover {
+  -fx-background-color: #f7e4db !important;
+  -fx-text-fill: #914d2a;
+}
+
+.sideBarItem:hover .graphic {
+  -fx-fill: #914d2a;
+}
+
+.sideBarTitle {
+  -fx-font-size: 16px !important;
+}
+
+.profile-setting-button-selected {
+  -fx-border-width: 0px 0px 2px;
+}
+
+.profile-setting-button-employee {
+  -fx-text-fill: #F5A11C;
+    -fx-border-color: #F5A11C;
+}
+
+ .profile-setting-button-admin {
+   -fx-text-fill: #914d2a;
+     -fx-border-color: #914d2a;
+ }
+
+.text-input {
+  -fx-font-weight: 700;
+}
+
+.error-label {
+  -fx-text-fill: #ff0000;
+}
+
+.label-bold {
+  -fx-font-weight: 700;
+  -fx-font-size: 14px;
+}
+
+.password-field-add {
+  -fx-background-color: transparent;
+  -fx-border-width: 1px 0px 1px 1px;
+  -fx-border-color: black;
+  -fx-border-radius: 5px 0px 0px 5px;
+}
+
+.input-field-add {
+  -fx-background-color: transparent;
+  -fx-border-width: 1px;
+  -fx-border-color: black;
+  -fx-border-radius: 5px;
+}
+
+.button-custom {
+  -fx-padding: 1px;
+  -fx-font-weight: 700;
+  -fx-font-size: 16px;
+  -fx-text-fill: white;
+}
+
+.button-eye {
+  -fx-background-color: transparent;
+  -fx-border-width: 1px 1px 1px 0px;
+  -fx-border-color: black;
+  -fx-border-radius: 0px 5px 5px 0px;
+}
+
+.anchor-pane {
+  -fx-padding: 5px;
+}
