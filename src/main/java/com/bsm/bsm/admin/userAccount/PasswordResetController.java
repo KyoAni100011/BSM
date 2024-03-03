@@ -1,7 +1,5 @@
 package com.bsm.bsm.admin.userAccount;
 
-import com.bsm.bsm.utils.AlertUtils;
-import com.bsm.bsm.utils.ValidationUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 
 public class PasswordResetController {
+
     @FXML
     private TextField emailField, customPassword;
     @FXML
@@ -25,32 +24,19 @@ public class PasswordResetController {
     @FXML
     private void handleResetButtonAction(ActionEvent event) {
         clearErrorMessages();
-        String email = emailField.getText();
-        String password = customPassword.getText();
+        boolean isEmailValid = validateEmail(emailField.getText());
+        boolean isPasswordValid = validatePassword(customPassword.getText()).equals("Valid");
 
-        if (validateInputs(email, password)) {
-            AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
-            clearInputs();
+        if (isEmailValid && isPasswordValid) {
+            // Logic to reset the password here
+            System.out.println("Password reset successful for " + emailField.getText().trim());
+
+            // Show success alert
+            showAlert("Success", "Password reset successful!", Alert.AlertType.INFORMATION);
+
+            // Reset error messages
             clearErrorMessages();
         }
-    }
-
-    private boolean validateInputs(String email, String password) {
-        String emailValidationMessage = ValidationUtils.validateEmail(email);
-        String passwordValidationMessage = ValidationUtils.validatePassword(password);
-
-        if (emailValidationMessage != null) {
-            emailErrorLabel.setText(emailValidationMessage);
-        }
-
-        if (password.isEmpty()) {
-            passwordValidationMessage = null;
-        }
-        else if (passwordValidationMessage != null) {
-            passwordErrorLabel.setText(passwordValidationMessage);
-        }
-
-        return emailValidationMessage == null && passwordValidationMessage == null;
     }
 
     private void clearErrorMessages() {
@@ -58,8 +44,50 @@ public class PasswordResetController {
         passwordErrorLabel.setText("");
     }
 
-    private void clearInputs() {
-        emailField.clear();
-        customPassword.clear();
+    private boolean validateEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        if (email.isEmpty()) {
+            emailErrorLabel.setText("Please enter your email.");
+            return false;
+        } else if (!email.matches(emailRegex)) {
+            emailErrorLabel.setText("Invalid email format.");
+            return false;
+        }
+        return true;
+    }
+
+    private String validatePassword(String password) {
+        if (password.isEmpty()) {
+            return "Valid";
+        }
+        if (password.length() < 8 || password.length() > 255) {
+            passwordErrorLabel.setText("Your password should be between 8 and 255 characters.");
+            return "Invalid";
+        }
+        if (!password.matches(".*[A-Z].*")) {
+            passwordErrorLabel.setText("Your password should include at least one uppercase letter (A-Z).");
+            return "Invalid";
+        }
+        if (!password.matches(".*[a-z].*")) {
+            passwordErrorLabel.setText("Your password should include at least one lowercase letter (a-z).");
+            return "Invalid";
+        }
+        if (!password.matches(".*[0-9].*")) {
+            passwordErrorLabel.setText("Your password should include at least one number (0-9).");
+            return "Invalid";
+        }
+        if (!password.matches(".*[!@#$%&*()_+=|<>?{}\\[\\]~-].*")) {
+            passwordErrorLabel.setText("Your password should include at least one special character.");
+            return "Invalid";
+        }
+        return "Valid";
+    }
+
+    private void showAlert(String title, String content, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }

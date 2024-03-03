@@ -10,6 +10,8 @@
 
 .sideBarItem {
   -fx-font-size: 16px;
+  -fx-font-weight : 700;
+  -fx-background-color : none;
 }
 
 .sideBarItem:hover {
@@ -52,11 +54,6 @@
   -fx-font-size: 14px;
 }
 
-.title-form {
-  -fx-font-size: 24px;
-  -fx-font-weight: 700;
-}
-
 .password-field-add {
   -fx-background-color: transparent;
   -fx-border-width: 1px 0px 1px 1px;
@@ -87,14 +84,4 @@
 
 .anchor-pane {
   -fx-padding: 5px;
-}
-
-.text-menu-item {
--fx-font-size: 16px;
--fx-font-weight: 700;
-}
-
-.text-menu-button {
--fx-font-size: 16px;
--fx-font-weight: 700;
 }
