@@ -19,10 +19,10 @@ public class ChangePasswordDAO {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         String email = "thu.admin@bms.com";
-        String currentPassword = "31052003";
-        String newPassword = "31052003";
+        String currentPassword = "01062003";
+        String newPassword = "01052003";
 
         changePassword(email, currentPassword, newPassword);
     }
@@ -61,7 +61,7 @@ public class ChangePasswordDAO {
         ResultSet resultSet_ = statement.executeQuery(QUERY_PASSWORD);
 
         if (resultSet_.next()) {
-            String storedPass = resultSet_.getString("password");
+            String storedPass = resultSet_.getString("password").trim();
 
             //compare the current password with the password in the database
             if (BCrypt.checkpw(currentPassword, storedPass)) {

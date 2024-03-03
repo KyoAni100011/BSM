@@ -79,7 +79,7 @@ public class ChangePasswordController {
         }
 
         if (validCurrentPassword && validNewPassword && validConfirmPassword) {
-            if (changePasswordService.getChangePasswordDAO().changePassword(email, currentPassword, newPassword)) {
+            if (ChangePasswordDAO.changePassword(email, currentPassword, newPassword)) {
                 showAlert("Success", "Password changed successfully", Alert.AlertType.INFORMATION);
             } else {
                 showAlert("Error", "Password change failed", Alert.AlertType.ERROR);

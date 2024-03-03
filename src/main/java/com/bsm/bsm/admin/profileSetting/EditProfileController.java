@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javafx.util.StringConverter;
@@ -25,6 +26,8 @@ public class EditProfileController {
     private TextField emailTextField;
     @FXML
     private DatePicker dobPicker;
+
+    private final EditProfileService editProfileService = new EditProfileService();
 
     @FXML
     public void initialize() {
@@ -65,8 +68,19 @@ public class EditProfileController {
         String email = emailTextField.getText();
         String dob = dobPicker.getEditor().getText();
 
+        System.out.println("dob: " + dob);
+
         if (validateFullName(fullName) & validateEmail(email) & validateDOB(dob)) {
-            showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
+
+            if (EditProfileDAO.updateProfile(email, fullName, dob)) {
+                showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
+
+                fullNameField.setText("");
+                emailTextField.setText("");
+                dobPicker.getEditor().setText("");
+            } else {
+                showAlert("Error", "Profile update failed.", Alert.AlertType.ERROR);
+            }
         }
     }
 
