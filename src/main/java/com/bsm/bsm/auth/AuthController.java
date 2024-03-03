@@ -75,7 +75,8 @@ public class AuthController {
             System.out.println("Login successful!");
 
             //save email from saveEmailTemp.txt
-            try (DataOutputStream dataStream = new DataOutputStream(new FileOutputStream("saveEmailTemp.txt"))) {
+
+            try (DataOutputStream dataStream = new DataOutputStream(new FileOutputStream("src/main/java/com/bsm/bsm/auth/saveEmailTemp.txt"))) {
                 dataStream.writeUTF(email);
                 System.out.println("Saved successfully!");
             } catch (IOException e) {
