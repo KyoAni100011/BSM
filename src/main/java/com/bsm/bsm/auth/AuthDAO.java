@@ -15,39 +15,30 @@ public class AuthDAO {
     private static final String SELECT_USER_QUERY = "SELECT * FROM user WHERE email = ?";
 
     public static boolean validateUser(String email, String password) {
+        AtomicBoolean isValid = new AtomicBoolean(false);
         String QUERY_PASSWORD = "SELECT PASSWORD FROM user WHERE email='%s'".formatted(email);
 
-        try (ResultSet resultSet_ = DatabaseConnection.getConnection().createStatement().executeQuery(QUERY_PASSWORD)){
-            if (resultSet_.next()) {
-                String storedPass = resultSet_.getString("password").trim();
+        DatabaseConnection.executeQuery(QUERY_PASSWORD, resultSet -> {
+            if (resultSet.next()) {
+                String storedPass = resultSet.getString("password").trim();
 
                 if (BCrypt.checkpw(password, storedPass)) {
                     String QUERY_EMAIL = "SELECT EMAIL FROM user WHERE email='%s'".formatted(email);
 
-                    try (Statement secondStatement = DatabaseConnection.getConnection().createStatement();
-                         ResultSet resultSet = secondStatement.executeQuery(QUERY_EMAIL)) {
-
-                        if (resultSet.next()) {
-                            if (email.equals(resultSet.getString("email"))){
-                                return true;
+                    DatabaseConnection.executeQuery(QUERY_EMAIL, resultSet_ -> {
+                        if (resultSet_.next()) {
+                            if (email.equals(resultSet_.getString("email"))) {
+                                isValid.set(true);
                             }
                         } else {
                             System.out.println("Email not found");
-                            return false;
                         }
-                    }
+                    });
                 } else {
                     System.out.println("Password is incorrect");
-                    return false;
                 }
-            } else {
-                System.out.println("User not found");
-                return false;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return false;
+            }});
+        return isValid.get();
     }
 
     public static UserModel getUserInfo(String email, String password) {
