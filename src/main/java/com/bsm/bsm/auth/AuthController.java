@@ -86,9 +86,9 @@ public class AuthController {
             System.out.println(userInfo);
             System.out.println(getEmailSuffix(userInfo.getEmail()));
             if (".admin@bms.com".equals(getEmailSuffix(userInfo.getEmail()))) {
-                FXMLLoaderHelper.loadFXML((Stage) close.getScene().getWindow(), "adminMainScreen");
+                FXMLLoaderHelper.loadFXML((Stage) close.getScene().getWindow(), "admin/adminMainScreen");
             } else if (".employee@bms.com".equals(getEmailSuffix(userInfo.getEmail()))) {
-                FXMLLoaderHelper.loadFXML((Stage) close.getScene().getWindow(), "employeeMainScreen");
+                FXMLLoaderHelper.loadFXML((Stage) close.getScene().getWindow(), "employee/employeeMainScreen");
             } else {
                 System.out.println("Unknown user type.");
             }

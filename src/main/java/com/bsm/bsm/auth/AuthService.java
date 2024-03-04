@@ -17,8 +17,6 @@ public class AuthService {
             user.setToken(JWTProvider.generateJwtToken(user.getId()));
         }
 
-
-
         return user;
     }
 }

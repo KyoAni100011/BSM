@@ -14,34 +14,27 @@ import org.mindrot.jbcrypt.BCrypt;
 public class AuthDAO {
     private static final String SELECT_USER_QUERY = "SELECT * FROM user WHERE email = ?";
 
-    private static final Statement statement;
-
-    static {
-        try {
-            statement = DatabaseConnection.getConnection().createStatement();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static boolean validateUser(String email, String password) {
         String QUERY_PASSWORD = "SELECT PASSWORD FROM user WHERE email='%s'".formatted(email);
 
-        try (ResultSet resultSet_ = statement.executeQuery(QUERY_PASSWORD)){
+        try (ResultSet resultSet_ = DatabaseConnection.getConnection().createStatement().executeQuery(QUERY_PASSWORD)){
             if (resultSet_.next()) {
                 String storedPass = resultSet_.getString("password").trim();
 
                 if (BCrypt.checkpw(password, storedPass)) {
                     String QUERY_EMAIL = "SELECT EMAIL FROM user WHERE email='%s'".formatted(email);
-                    ResultSet resultSet = DatabaseConnection.getConnection().createStatement().executeQuery(QUERY_EMAIL);
 
-                    if (resultSet.next()) {
-                        if (email.equals(resultSet.getString("email"))){
-                            return true;
+                    try (Statement secondStatement = DatabaseConnection.getConnection().createStatement();
+                         ResultSet resultSet = secondStatement.executeQuery(QUERY_EMAIL)) {
+
+                        if (resultSet.next()) {
+                            if (email.equals(resultSet.getString("email"))){
+                                return true;
+                            }
+                        } else {
+                            System.out.println("Email not found");
+                            return false;
                         }
-                    } else {
-                        System.out.println("Email not found");
-                        return false;
                     }
                 } else {
                     System.out.println("Password is incorrect");
@@ -54,12 +47,6 @@ public class AuthDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-//        AtomicBoolean isValidUser = new AtomicBoolean(false);
-//
-//        DatabaseConnection.executeQuery(SELECT_USER_QUERY, resultSet -> {
-//            isValidUser.set(resultSet.next());
-//        }, email, password);
-
         return false;
     }
 
