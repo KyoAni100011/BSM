@@ -84,3 +84,13 @@
 .anchor-pane {
   -fx-padding: 5px;
 }
+
+.text-menu-item {
+-fx-font-size: 16px;
+-fx-font-weight: 700;
+}
+
+.text-menu-button {
+-fx-font-size: 16px;
+-fx-font-weight: 700;
+}
