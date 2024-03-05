@@ -158,7 +158,10 @@
 }
 
 .text-menu-item {
--fx-font-size: 16px;
+  -fx-font-size: 16px;
+  -fx-font-family: "Roboto", sans-serif !important;
+  -fx-font-weight: 300 !important;
+  -fx-font-style: italic !important;
 }
 
 .text-menu-button {
