@@ -39,7 +39,7 @@ public class AuthController {
     public void initialize() {
         btnLoginAsEmployee.setOnAction(event -> {
             try {
-                handleLoginButtonClicked();
+                handleLoginAsEmployeeButtonClicked();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -47,7 +47,7 @@ public class AuthController {
 
         btnLoginAsAdmin.setOnAction(event -> {
             try {
-                handleLoginButtonClicked();
+                handleLoginAsAdminButtonClicked();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -59,19 +59,27 @@ public class AuthController {
         return email.matches(emailRegex) && !email.isEmpty() && email.length() <= 255;
     }
 
-
-    private void handleLoginButtonClicked() throws IOException {
+    private void handleLoginAsEmployeeButtonClicked() throws IOException {
         String password = passwordField.getText();
         String email = emailTextField.getText();
         int passwordLength = password.length();
 
+        if (!(".employee@bms.com".equals(getEmailSuffix(email)))) {
+            System.out.println("Wrong type of user");
+            return;
+        }
+
         passwordErrorText.setVisible(passwordLength < 8 || passwordLength > 255);
         emailErrorLabel.setVisible(!validateEmail(email));
 
-        System.out.println(validateEmail(email));
 
         UserModel userInfo = AuthService.authenticateUser(email, password);
         if (userInfo != null) {
+            if (!(".employee@bms.com".equals(getEmailSuffix(userInfo.getEmail())))) {
+                System.out.println("Wrong type of user");
+                return;
+            }
+
             System.out.println("Login successful!");
 
             //save email from saveEmailTemp.txt
@@ -83,15 +91,45 @@ public class AuthController {
                 throw new RuntimeException(e);
             }
 
-            System.out.println(userInfo);
-            System.out.println(getEmailSuffix(userInfo.getEmail()));
-            if (".admin@bms.com".equals(getEmailSuffix(userInfo.getEmail()))) {
-                FXMLLoaderHelper.loadFXML((Stage) close.getScene().getWindow(), "admin/adminMainScreen");
-            } else if (".employee@bms.com".equals(getEmailSuffix(userInfo.getEmail()))) {
-                FXMLLoaderHelper.loadFXML((Stage) close.getScene().getWindow(), "employee/employeeMainScreen");
-            } else {
-                System.out.println("Unknown user type.");
+            FXMLLoaderHelper.loadFXML((Stage) close.getScene().getWindow(), "employee/employeeMainScreen");
+        } else {
+            System.out.println("Invalid username or password.");
+        }
+    }
+
+    private void handleLoginAsAdminButtonClicked() throws IOException {
+        String password = passwordField.getText();
+        String email = emailTextField.getText();
+        int passwordLength = password.length();
+
+        if (!(".admin@bms.com".equals(getEmailSuffix(email)))) {
+            System.out.println("Wrong type of user");
+            return;
+        }
+
+        passwordErrorText.setVisible(passwordLength < 8 || passwordLength > 255);
+        emailErrorLabel.setVisible(!validateEmail(email));
+
+
+        UserModel userInfo = AuthService.authenticateUser(email, password);
+        if (userInfo != null) {
+            if (!(".admin@bms.com".equals(getEmailSuffix(userInfo.getEmail())))) {
+                System.out.println("Wrong type of user");
+                return;
             }
+
+            System.out.println("Login successful!");
+
+            //save email from saveEmailTemp.txt
+
+            try (DataOutputStream dataStream = new DataOutputStream(new FileOutputStream("src/main/java/com/bsm/bsm/auth/saveEmailTemp.txt"))) {
+                dataStream.writeUTF(email);
+                System.out.println("Saved successfully!");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            FXMLLoaderHelper.loadFXML((Stage) close.getScene().getWindow(), "admin/adminMainScreen");
         } else {
             System.out.println("Invalid username or password.");
         }
