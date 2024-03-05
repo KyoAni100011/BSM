@@ -7,17 +7,9 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ChangePasswordDAO {
-    private static final Statement statement;
-
-    static {
-        try {
-            statement = DatabaseConnection.getConnection().createStatement();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public static void main(String[] args) throws SQLException {
         String email = "thu.admin@bms.com";
@@ -41,7 +33,7 @@ public class ChangePasswordDAO {
             //Change password
             String hashedNewPassword = hashPassword(newPassword);
             String QUERY_CHANGE_PASSWORD = "UPDATE user SET password='%s' WHERE email='%s'".formatted(hashedNewPassword, email);
-            int rowsAffected =  statement.executeUpdate(QUERY_CHANGE_PASSWORD);
+            int rowsAffected =  DatabaseConnection.executeUpdate(QUERY_CHANGE_PASSWORD);
             if (rowsAffected > 0) {
                 System.out.println("Password changed successfully");
                 return true;
@@ -57,22 +49,24 @@ public class ChangePasswordDAO {
     }
 
     private static boolean validatePassword(String email, String currentPassword) throws SQLException {
+        AtomicBoolean isValid = new AtomicBoolean(false);
         String QUERY_PASSWORD = "SELECT PASSWORD FROM user WHERE email='%s'".formatted(email);
-        ResultSet resultSet_ = statement.executeQuery(QUERY_PASSWORD);
 
-        if (resultSet_.next()) {
-            String storedPass = resultSet_.getString("password").trim();
+        DatabaseConnection.executeQuery(QUERY_PASSWORD, resultSet -> {
+            if (resultSet.next()) {
+                String storedPass = resultSet.getString("password").trim();
 
-            //compare the current password with the password in the database
-            if (BCrypt.checkpw(currentPassword, storedPass)) {
-                return true;
+                //compare the current password with the password in the database
+                if (BCrypt.checkpw(currentPassword, storedPass)) {
+                    isValid.set(true);
+                } else {
+                    System.out.println("Password is incorrect");
+                }
             } else {
-                System.out.println("Password is incorrect");
-                return false;
+                System.out.println("User not found");
             }
-        } else {
-            System.out.println("User not found");
-            return false;
-        }
+        });
+
+        return isValid.get();
     }
 }

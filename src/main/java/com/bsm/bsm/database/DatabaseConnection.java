@@ -7,8 +7,8 @@ import java.sql.SQLException;
 public class DatabaseConnection {
 
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/book_store_db";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "123456";
+    private static final String USERNAME = "thu_dev";
+    private static final String PASSWORD = "Minhthu3105@";
 
     // Singleton instance
     private static Connection connection;
@@ -49,4 +49,26 @@ public class DatabaseConnection {
         }
     }
 
+    // Method to execute an update
+    public static int executeUpdate(String query, Object... parameters) {
+        int linesAffected = 0;
+        try (Connection connection = getConnection()) {
+            System.out.println("Connected to the database!");
+
+            try (var preparedStatement = connection.prepareStatement(query)) {
+                // Set parameters for prepared statement
+                for (int i = 0; i < parameters.length; i++) {
+                    preparedStatement.setObject(i + 1, parameters[i]);
+                }
+
+                linesAffected = preparedStatement.executeUpdate();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return linesAffected;
+    }
 }
