@@ -8,19 +8,20 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="518.0" prefWidth="787.0" style="-fx-background-color: #E0D7D2;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.auth.AuthController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="625.0" style="-fx-background-radius: 30; -fx-background-color: transparent;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.auth.AuthController">
    <children>
-      <AnchorPane prefHeight="518.0" prefWidth="788.0">
+      <AnchorPane prefHeight="401.0" prefWidth="632.0" style="-fx-background-color: transparent; -fx-background-radius: 30;">
          <children>
-            <AnchorPane layoutX="385.0" layoutY="66.0" prefHeight="385.0" prefWidth="38.0" style="-fx-background-color: #F5A11C;" />
-            <AnchorPane layoutX="82.0" layoutY="59.0" prefHeight="400.0" prefWidth="313.0" style="-fx-border-width: 2; -fx-border-radius: 10; -fx-border-color: #F5A11C; -fx-background-color: #FFFFFF; -fx-background-radius: 14;">
+            <AnchorPane layoutX="303.0" layoutY="8.0" prefHeight="385.0" prefWidth="38.0" style="-fx-background-color: #F5A11C;" />
+            <AnchorPane layoutY="1.0" prefHeight="400.0" prefWidth="313.0" style="-fx-border-width: 2; -fx-border-radius: 10; -fx-border-color: #F5A11C; -fx-background-color: #FFFFFF; -fx-background-radius: 14;">
                <children>
                   <TextField fx:id="emailTextField" layoutX="49.0" layoutY="143.0" prefHeight="31.0" prefWidth="216.0" promptText="Enter your email" styleClass="input-field-add" />
-                  <VBox layoutX="32.0" layoutY="173.0">
+                  <VBox layoutX="50.0" layoutY="178.0">
                      <children>
                         <Text fx:id="emailErrorLabel" fill="red" text="Invalid email format." visible="false" />
                      </children>
@@ -43,14 +44,14 @@
                   <Button fx:id="btnLoginAsEmployee" layoutX="49.0" layoutY="276.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="216.0" style="-fx-background-color: F1B049;" styleClass="button-custom" text="Employee" textFill="WHITE" />
                   <Button fx:id="btnLoginAsAdmin" layoutX="49.0" layoutY="319.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="216.0" style="-fx-background-color: #914D2A;" styleClass="button-custom" text="Admin" textFill="WHITE" />
                   <PasswordField fx:id="passwordField" layoutX="49.0" layoutY="222.0" prefHeight="31.0" prefWidth="216.0" promptText="Enter your password" styleClass="input-field-add" />
-                  <VBox layoutX="32.0" layoutY="252.0" prefHeight="17.0" prefWidth="248.0">
+                  <VBox layoutX="48.0" layoutY="256.0" prefHeight="17.0" prefWidth="248.0">
                      <children>
-                        <Text fx:id="passwordErrorText" fill="red" text="Password should be in range 8-255 character" visible="false" />
+                        <Text fx:id="passwordErrorText" fill="red" text="Password should be in range 8-20 character" visible="false" wrappingWidth="233.767578125" />
                      </children>
                   </VBox>
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="410.0" layoutY="59.0" prefHeight="400.0" prefWidth="295.0" style="-fx-border-width: 2; -fx-background-radius: 14; -fx-border-radius: 10; -fx-border-color: #F5A11C; -fx-background-color: #FFFFFF;">
+            <AnchorPane layoutX="328.0" layoutY="1.0" prefHeight="400.0" prefWidth="295.0" style="-fx-border-width: 2; -fx-background-radius: 14; -fx-border-radius: 10; -fx-border-color: #F5A11C; -fx-background-color: #FFFFFF;">
                <children>
                   <Button fx:id="close" layoutX="253.0" layoutY="10.0" mnemonicParsing="false">
                      <graphic>
@@ -67,4 +68,4 @@
          </children>
       </AnchorPane>
    </children>
-</AnchorPane>
+</StackPane>
