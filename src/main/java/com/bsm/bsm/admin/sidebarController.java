@@ -51,7 +51,7 @@ public class sidebarController {
 
     @FXML
     void SwitchRevenueByEmployee(ActionEvent event) throws IOException {
-        loadPage("revenueByEmployee/revenueByEmployee");
+        loadPage("userAccount/passwordReset");
     }
 
     @FXML
