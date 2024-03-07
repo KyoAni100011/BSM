@@ -13,7 +13,10 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 
+import static com.bsm.bsm.utils.ValidationUtils.validateEmailRegex;
+
 public class AuthController {
+    private final AuthService authService = new AuthService();
 
     @FXML
     private AnchorPane AnchorPaneLogin;
@@ -68,14 +71,13 @@ public class AuthController {
         }
 
         passwordErrorText.setVisible(passwordLength < 8 || passwordLength > 255);
-        emailErrorLabel.setVisible(!validateEmail(email));
+        emailErrorLabel.setVisible(!validateEmailRegex(email));
 
-        UserModel userInfo = AuthService.authenticateUser(email, password);
+        UserModel userInfo = authService.authenticateUser(email, password);
         if (userInfo != null && suffix.equals(getEmailSuffix(userInfo.getEmail()))) {
             System.out.println("Login successful!");
             UserSingleton.getInstance().setUser(userInfo);
 
-            // Load different FXML files based on the email suffix
             String fxmlPath = (suffix.equals(EMPLOYEE_SUFFIX)) ?
                     "/com/bsm/bsm/view/employee/employeeMainScreen.fxml" :
                     "/com/bsm/bsm/view/admin/adminMainScreen.fxml";
@@ -86,15 +88,8 @@ public class AuthController {
         }
     }
 
-
-
     private String getEmailSuffix(String email) {
         int atIndex = email.indexOf(".");
         return (atIndex != -1) ? email.substring(atIndex) : "";
-    }
-
-    private boolean validateEmail(String email) {
-        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-        return email.matches(emailRegex) && !email.isEmpty() && email.length() <= 255;
     }
 }

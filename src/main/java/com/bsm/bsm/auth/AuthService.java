@@ -1,16 +1,23 @@
 package com.bsm.bsm.auth;
 
 import com.bsm.bsm.user.UserModel;
-
+import com.bsm.bsm.user.UserSingleton;
 
 public class AuthService {
-    private AuthDAO loginDAO;
+    public AuthDAO authDAO;
 
-    public static UserModel authenticateUser(String username, String password) {
+    public AuthService() {
+        this.authDAO = new AuthDAO();
+    }
 
-        UserModel user = AuthDAO.getUserInfo(username, password);
+    public UserModel authenticateUser(String email, String password) {
+        if (authDAO.validateUser(email, password)) {
+            return authDAO.getUserInfo(email);
+        }
+        return null;
+    }
 
-        return user;
+    public void logOut(){
+        UserSingleton.getInstance().destroyInstance();
     }
 }
-

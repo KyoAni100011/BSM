@@ -1,61 +1,43 @@
 package com.bsm.bsm.auth;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-
 import com.bsm.bsm.database.DatabaseConnection;
 import com.bsm.bsm.user.UserModel;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+
 import static com.bsm.bsm.utils.convertProvider.bytesToHexString;
 
 public class AuthDAO {
+    private static final String SELECT_PASSWORD_QUERY = "SELECT PASSWORD FROM user WHERE email = ?";
     private static final String SELECT_USER_QUERY = "SELECT * FROM user WHERE email = ?";
 
-    public static boolean validateUser(String email, String password) {
-        AtomicBoolean isValid = new AtomicBoolean(false);
-        String QUERY_PASSWORD = "SELECT PASSWORD FROM user WHERE email='%s'".formatted(email);
+    public boolean validateUser(String email, String password) {
+        AtomicBoolean isPasswordValid = new AtomicBoolean(false);
 
-        DatabaseConnection.executeQuery(QUERY_PASSWORD, resultSet -> {
+        DatabaseConnection.executeQuery(SELECT_PASSWORD_QUERY, resultSet -> {
             if (resultSet.next()) {
                 String storedPass = resultSet.getString("password").trim();
+                isPasswordValid.set(BCrypt.checkpw(password, storedPass));
+            }
+        }, email);
 
-                if (BCrypt.checkpw(password, storedPass)) {
-                    String QUERY_EMAIL = "SELECT EMAIL FROM user WHERE email='%s'".formatted(email);
-
-                    DatabaseConnection.executeQuery(QUERY_EMAIL, resultSet_ -> {
-                        if (resultSet_.next()) {
-                            if (email.equals(resultSet_.getString("email"))) {
-                                isValid.set(true);
-                            }
-                        } else {
-                            System.out.println("Email not found");
-                        }
-                    });
-                } else {
-                    System.out.println("Password is incorrect");
-                }
-            }});
-        return isValid.get();
+        return isPasswordValid.get();
     }
 
-    public static UserModel getUserInfo(String email, String password) {
+    public UserModel getUserInfo(String email) {
         AtomicReference<UserModel> userModelRef = new AtomicReference<>();
 
-        if (validateUser(email, password)) {
-            DatabaseConnection.executeQuery(SELECT_USER_QUERY, resultSet -> {
-                if (resultSet.next()) {
-                    String id = bytesToHexString(resultSet.getBytes("id"));
-                    String dob = resultSet.getString("dob");
-                    String name = resultSet.getString("name");
-                    boolean isEnabled = resultSet.getBoolean("isEnabled");
-
-                    userModelRef.set(new UserModel(id, name, email, dob, isEnabled));
-                }
-            }, email);
-        } else {
-            userModelRef.set(null);
-        }
+        DatabaseConnection.executeQuery(SELECT_USER_QUERY, resultSet -> {
+            if (resultSet.next()) {
+                String id = bytesToHexString(resultSet.getBytes("id"));
+                String dob = resultSet.getString("dob");
+                String name = resultSet.getString("name");
+                boolean isEnabled = resultSet.getBoolean("isEnabled");
+                userModelRef.set(new UserModel(id, name, email, dob, isEnabled));
+            }
+        }, email);
 
         return userModelRef.get();
     }

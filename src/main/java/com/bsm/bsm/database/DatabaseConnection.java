@@ -2,6 +2,8 @@ package com.bsm.bsm.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
@@ -10,65 +12,51 @@ public class DatabaseConnection {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "123456";
 
-    // Singleton instance
     private static Connection connection;
 
-    // Private constructor to prevent instantiation
     private DatabaseConnection() {
+        // Private constructor to prevent instantiation
     }
 
-    // Method to get the connection instance
     public static Connection getConnection() throws SQLException {
         if (connection == null || connection.isClosed()) {
-
             connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
         }
         return connection;
     }
 
-    // Method to execute a query
     public static void executeQuery(String query, QueryResultHandler handler, Object... parameters) {
-        try (Connection connection = getConnection()) {
-            System.out.println("Connected to the database!");
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            try (var preparedStatement = connection.prepareStatement(query)) {
-                // Set parameters for prepared statement
-                for (int i = 0; i < parameters.length; i++) {
-                    preparedStatement.setObject(i + 1, parameters[i]);
-                }
+            setParameters(preparedStatement, parameters);
 
-                try (var resultSet = preparedStatement.executeQuery()) {
-                    handler.handleResult(resultSet);
-                }
-
-            } catch (SQLException e) {
-                e.printStackTrace();
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                handler.handleResult(resultSet);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    // Method to execute an update
     public static int executeUpdate(String query, Object... parameters) {
         int linesAffected = 0;
-        try (Connection connection = getConnection()) {
-            System.out.println("Connected to the database!");
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            try (var preparedStatement = connection.prepareStatement(query)) {
-                // Set parameters for prepared statement
-                for (int i = 0; i < parameters.length; i++) {
-                    preparedStatement.setObject(i + 1, parameters[i]);
-                }
+            setParameters(preparedStatement, parameters);
+            linesAffected = preparedStatement.executeUpdate();
 
-                linesAffected = preparedStatement.executeUpdate();
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return linesAffected;
+    }
+
+    private static void setParameters(PreparedStatement preparedStatement, Object... parameters) throws SQLException {
+        for (int i = 0; i < parameters.length; i++) {
+            preparedStatement.setObject(i + 1, parameters[i]);
+        }
     }
 }
