@@ -1,10 +1,10 @@
 package com.bsm.bsm.admin.profileSetting;
 
+import com.bsm.bsm.user.UserModel;
+import com.bsm.bsm.user.UserSingleton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javafx.util.StringConverter;
@@ -22,9 +22,12 @@ public class EditProfileController {
     private DatePicker dobPicker;
 
     private final EditProfileService editProfileService = new EditProfileService();
+    private UserModel userInfo = UserSingleton.getInstance().getUser();
 
     @FXML
     public void initialize() {
+        fullNameField.setText(UserSingleton.getInstance().getUser().getName());
+        emailTextField.setText(UserSingleton.getInstance().getUser().getEmail());
         // Set the prompt text for the DatePicker
         dobPicker.setPromptText("dd/mm/yyyy");
 

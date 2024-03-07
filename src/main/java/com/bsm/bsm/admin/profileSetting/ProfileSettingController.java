@@ -1,5 +1,6 @@
 package com.bsm.bsm.admin.profileSetting;
 
+import com.bsm.bsm.user.UserSingleton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

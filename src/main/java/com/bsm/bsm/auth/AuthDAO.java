@@ -1,15 +1,13 @@
 package com.bsm.bsm.auth;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.bsm.bsm.database.DatabaseConnection;
 import com.bsm.bsm.user.UserModel;
 import org.mindrot.jbcrypt.BCrypt;
+
+import static com.bsm.bsm.utils.convertProvider.bytesToHexString;
 
 public class AuthDAO {
     private static final String SELECT_USER_QUERY = "SELECT * FROM user WHERE email = ?";
@@ -47,13 +45,12 @@ public class AuthDAO {
         if (validateUser(email, password)) {
             DatabaseConnection.executeQuery(SELECT_USER_QUERY, resultSet -> {
                 if (resultSet.next()) {
-                    String id = Arrays.toString(resultSet.getBytes("id"));
+                    String id = bytesToHexString(resultSet.getBytes("id"));
                     String dob = resultSet.getString("dob");
                     String name = resultSet.getString("name");
                     boolean isEnabled = resultSet.getBoolean("isEnabled");
-                    String password_ = resultSet.getString("password");
 
-                    userModelRef.set(new UserModel(id, name, email, password_, dob, isEnabled));
+                    userModelRef.set(new UserModel(id, name, email, dob, isEnabled));
                 }
             }, email);
         } else {
