@@ -23,21 +23,8 @@ public class AuthDAO {
                 String storedPass = resultSet.getString("password").trim();
 
                 if (BCrypt.checkpw(password, storedPass)) {
-                    String QUERY_EMAIL = "SELECT EMAIL FROM user WHERE email='%s'".formatted(email);
-
-                    DatabaseConnection.executeQuery(QUERY_EMAIL, resultSet_ -> {
-                        if (resultSet_.next()) {
-                            if (email.equals(resultSet_.getString("email"))) {
-                                isValid.set(true);
-                            }
-                        } else {
-                            System.out.println("Email not found");
-                        }
-                    });
-                } else {
-                    System.out.println("Password is incorrect");
-                }
-            }});
+                    isValid.set(true);
+            }}});
         return isValid.get();
     }
 

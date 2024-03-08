@@ -13,8 +13,8 @@ public class ChangePasswordDAO {
 
     public static void main(String[] args) throws SQLException {
         String email = "thu.admin@bms.com";
-        String currentPassword = "01062003";
-        String newPassword = "01052003";
+        String currentPassword = "01052003";
+        String newPassword = "01062003";
 
         changePassword(email, currentPassword, newPassword);
     }
@@ -32,8 +32,8 @@ public class ChangePasswordDAO {
 
             //Change password
             String hashedNewPassword = hashPassword(newPassword);
-            String QUERY_CHANGE_PASSWORD = "UPDATE user SET password='%s' WHERE email='%s'".formatted(hashedNewPassword, email);
-            int rowsAffected =  DatabaseConnection.executeUpdate(QUERY_CHANGE_PASSWORD);
+            String QUERY_CHANGE_PASSWORD = "UPDATE user SET password = ? WHERE email= ?";
+            int rowsAffected =  DatabaseConnection.executeUpdate(QUERY_CHANGE_PASSWORD, hashedNewPassword, email);
             if (rowsAffected > 0) {
                 System.out.println("Password changed successfully");
                 return true;
@@ -50,7 +50,7 @@ public class ChangePasswordDAO {
 
     private static boolean validatePassword(String email, String currentPassword) throws SQLException {
         AtomicBoolean isValid = new AtomicBoolean(false);
-        String QUERY_PASSWORD = "SELECT PASSWORD FROM user WHERE email='%s'".formatted(email);
+        String QUERY_PASSWORD = "SELECT PASSWORD FROM user WHERE email = ?";
 
         DatabaseConnection.executeQuery(QUERY_PASSWORD, resultSet -> {
             if (resultSet.next()) {
@@ -65,7 +65,7 @@ public class ChangePasswordDAO {
             } else {
                 System.out.println("User not found");
             }
-        });
+        }, email);
 
         return isValid.get();
     }

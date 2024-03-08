@@ -8,7 +8,7 @@ public class ChangePasswordService {
         this.changePasswordDAO = new ChangePasswordDAO();
     }
 
-    public ChangePasswordDAO getChangePasswordDAO() {
-        return changePasswordDAO;
+    public boolean changeUserPassword(String email, String currentPassword, String newPassword) {
+        return changePasswordDAO.changePassword(email, currentPassword, newPassword);
     }
 }

@@ -27,7 +27,7 @@ public class ChangePasswordController {
     @FXML
     private Button saveChangesButton;
 
-    private final  ChangePasswordService changePasswordService = new ChangePasswordService();
+    private final ChangePasswordService changePasswordService = new ChangePasswordService();
 
     @FXML
     public void initialize() {
@@ -66,7 +66,6 @@ public class ChangePasswordController {
         boolean validNewPassword = validateNewPassword(newPassword, currentPassword);
         boolean validConfirmPassword = validateConfirmPassword(newPassword, confirmPassword);
 
-//        String email = "thu.admin@bms.com";
         String email = null;
         try (DataInputStream dataStream = new DataInputStream(new FileInputStream("src/main/java/com/bsm/bsm/auth/saveEmailTemp.txt"))) {
             email = dataStream.readUTF();
@@ -80,7 +79,7 @@ public class ChangePasswordController {
         }
 
         if (validCurrentPassword && validNewPassword && validConfirmPassword) {
-            if (ChangePasswordDAO.changePassword(email, currentPassword, newPassword)) {
+            if (changePasswordService.changeUserPassword(email, currentPassword, newPassword)) {
                 showAlert("Success", "Password changed successfully", Alert.AlertType.INFORMATION);
             } else {
                 showAlert("Error", "Password change failed", Alert.AlertType.ERROR);
