@@ -1,13 +1,12 @@
 use book_store_db;
 
 -- insert data for table user
-insert user (name, email, password, dob) values ('Minh Thu', 'thu.admin@bms.com', '$2a$12$4USYbZyH0x77oZgTd2Oji.C3aJXgkb3K8PmYP3o47TUS6I3Vt03wG
-', '2003-06-01'); -- password: 01062003
-insert user (name, email, password, dob) values ('Hoang Kha', 'kha.admin@bms.com', '$2a$12$vdz7/qrIG4Fb1Z5YHzYEX.5sImzChCKjr6Sb88dEpTZCqZcJhb1Gi
-', '2003-11-11'); -- password: 11112003
-insert user (name, email, password, dob) values ('Bao Khanh', 'khanh.employee@bms.com', '$2a$12$bHxUp74tZNStRJCAi0PyE.5/NpP5Ay0z.UozP8Me2V/LgToy8B1DW', '2003-09-12'); -- password: 12092003
-insert user (name, email, password, dob) values ('Minh Triet', 'triet.employee@bms.com', '$2a$12$ZiOQq1mZ5kRkPHjYXoBpNO.Xmw4jnykkEpKD/2qtP51DiYQM2fxpC
-', '2003-10-10'); -- password: 10102003
+insert user (id, name, email, password, dob, telephone) values ('11115678', 'Minh Thu', 'thu.admin@bms.com', '$2a$12$4USYbZyH0x77oZgTd2Oji.C3aJXgkb3K8PmYP3o47TUS6I3Vt03wG
+', '2003-06-01', '0101012345'); -- password: 01062003
+insert user (id, name, email, password, dob, telephone) values ('11115679', 'Hoang Kha', 'kha.admin@bms.com', '$2a$12$vdz7/qrIG4Fb1Z5YHzYEX.5sImzChCKjr6Sb88dEpTZCqZcJhb1Gi
+', '2003-11-11', '0101012346'); -- password: 11112003
+insert user (id, name, email, password, dob, telephone) values ('22225678', 'Bao Khanh', 'khanh.employee@bms.com', '$2a$12$bHxUp74tZNStRJCAi0PyE.5/NpP5Ay0z.UozP8Me2V/LgToy8B1DW', '2003-09-12', '0101012347'); -- password: 12092003
+insert user (id, name, email, password, dob, telephone) values ('22225679', 'Minh Triet', 'triet.employee@bms.com', '$2a$12$ZiOQq1mZ5kRkPHjYXoBpNO.Xmw4jnykkEpKD/2qtP51DiYQM2fxpC', '2003-10-10', '0101012348'); -- password: 10102003
 select * from user;
 
 -- insert data for table admin
@@ -15,14 +14,12 @@ set @adminID1 = (select id from user where email = 'thu.admin@bms.com');
 insert admin (userId) values(@adminID1);
 set @adminID2 = (select id from user where email = 'kha.admin@bms.com');
 insert admin (userId) values(@adminID2);
-select bin_to_uuid(ad.id), bin_to_uuid(userID), name from admin ad join user u on ad.userId = u.id;
 
 -- insert data for table employee
 set @employeeID1 = (select id from user where email = 'khanh.employee@bms.com');
 insert employee (userId) values(@employeeID1);
 set @employeeID2 = (select id from user where email = 'triet.employee@bms.com');
 insert employee (userId) values(@employeeID2);
-select bin_to_uuid(emp.id), bin_to_uuid(userID), name from employee emp join user u on emp.userId = u.id;
 
 -- insert data for table author
 insert into author (name) values ('Nguyen Nhat Anh');
@@ -37,7 +34,7 @@ insert into author (name) values ('Daniel Kahneman');
 insert into author (name) values ('Neil deGrasse Tyson');
 insert into author (name) values ('Noam Chomsky');
 insert into author (name) values ('Pablo Picasso');
-insert into author (name) values ('Tony Robbins'); -- Phat trien ban than
+insert into author (name) values ('Tony Robbins'); 
 select * from author;
 
 -- insert data for table publisher
@@ -124,7 +121,7 @@ set @employeeID2 = (select e.id from user u join employee e on u.id = e.userID w
 insert into importSheet (employeeID) values (@employeeID1);
 
 -- insert data for table bookCategory and bookBatch and update quantity in table book
-set @importSheetID = (select id from importSheet where employeeID = @employeeID1 and importDate = '2024-03-03');
+set @importSheetID = (select id from importSheet where employeeID = @employeeID1 and importDate = CURRENT_DATE());
 
 set @bookID = (select isbn from book where title = 'Toi thay hoa vang tren co xanh');
 set @categoryID = (select id from category where name = 'Short Stories');
@@ -229,7 +226,7 @@ select * from orderSheet;
 set @orderID = (
     select id
     from orderSheet
-    where employeeID = @employeeID2 and customerID = @customerID and orderDate = '2024-03-03'
+    where employeeID = @employeeID2 and customerID = @customerID and orderDate = CURRENT_DATE()
 );
 set @bookID = (select isbn from book where title = 'Toi thay hoa vang tren co xanh');
 set @salePrice = (select importPrice from bookBatch where id = @bookID) * 1.2;
@@ -240,7 +237,7 @@ update book set quantity = quantity - 1 where isbn = @bookID;
 set @orderID = (
     select id
     from orderSheet
-    where employeeID = @employeeID2 and customerID = @customerID and orderDate = '2024-03-03'
+    where employeeID = @employeeID2 and customerID = @customerID and orderDate = current_date()
 );
 set @bookID = (select isbn from book where title = 'Harry Potter Va Chiec Coc Lua');
 set @salePrice = (select importPrice from bookBatch where id = @bookID) * 1.2;

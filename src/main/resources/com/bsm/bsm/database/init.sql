@@ -3,53 +3,55 @@ create database book_store_db;
 use book_store_db;
 
 create table user (
-    id binary(16) default (uuid_to_bin(uuid())) primary key,
-    name nvarchar(255) not null,
-    email nvarchar(255) not null,
-    password nvarchar(255) not null,
+    id int auto_increment primary key,
+    name varchar(255) not null,
+    email varchar(255) not null unique,
+    password varchar(255) not null,
     dob date not null,
+    telephone char(10) not null unique,
+    address char(255),
     isEnabled boolean default true,
     createdAt datetime default current_timestamp(),
     lastLogin datetime default current_timestamp()
 );
 
 create table admin (
-    id binary(16) default (uuid_to_bin(uuid())) primary key,
-    userID binary(16) not null,
+    id int auto_increment primary key,
+    userID int not null,
     foreign key (userID) references user(id)
 );
 
 create table employee (
-    id binary(16) default (uuid_to_bin(uuid())) primary key,
-    userID binary(16) not null,
+    id int auto_increment primary key,
+    userID int not null,
     foreign key (userID) references user(id)
 );
 
 create table author (
     id binary(16) default (uuid_to_bin(uuid())) primary key,
-    name nvarchar(255) not null,
+    name varchar(255) not null,
     isEnabled boolean default true
 );
 
 create table publisher (
     id binary(16) default (uuid_to_bin(uuid())) primary key,
-    name nvarchar(255) not null,
+    name varchar(255) not null,
     isEnabled boolean default true
 );
 
 create table category (
     id binary(16) default (uuid_to_bin(uuid())) primary key,
-    name nvarchar(255) not null,
+    name varchar(255) not null,
     isEnabled boolean default true
 );
 
 create table book (
     isbn varchar(13) not null primary key,
-    title nvarchar(255) not null,
+    title varchar(255) not null,
     publisherID binary(16) not null,
     authorID binary(16) not null,
     publishingDate date not null,
-    languages nvarchar(255) not null,
+    languages varchar(255) not null,
     isEnabled boolean default true,
     quantity int not null default 0,
     salePrice decimal(50, 2) not null default 0.0,
@@ -67,7 +69,7 @@ create table bookCategory (
 
 create table importSheet (
     id binary(16) default (uuid_to_bin(uuid())) primary key,
-    employeeID binary(16) not null,
+    employeeID int not null,
     importDate date not null default (CURRENT_DATE),
     quantity int not null default 0,
     totalPrice decimal(50, 2) not null default 0.0,
@@ -87,13 +89,13 @@ create table bookBatch (
 
 create table customer (
     id binary(16) default (uuid_to_bin(uuid())) primary key,
-    name nvarchar(255) not null default 'Anonymous',
-    phone nvarchar(12) not null default '0000000000'
+    name varchar(255) not null default 'Anonymous',
+    phone varchar(12) not null default '0000000000'
 );
 
 create table orderSheet (
     id binary(16) default (uuid_to_bin(uuid())) primary key,
-    employeeID binary(16) not null,
+    employeeID int not null,
     customerID binary(16) not null,
     orderDate date not null default (CURRENT_DATE),
     totalPrice decimal(50, 2) not null default 0.0,

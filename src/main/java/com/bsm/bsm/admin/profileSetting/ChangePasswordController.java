@@ -31,7 +31,7 @@ public class ChangePasswordController {
     @FXML
     private Button saveChangesButton;
 
-    private final  ChangePasswordService changePasswordService = new ChangePasswordService();
+    private final ChangePasswordService changePasswordService = new ChangePasswordService();
 
     @FXML
     public void initialize() {
@@ -56,21 +56,11 @@ public class ChangePasswordController {
         boolean validNewPassword = validateNewPassword(newPassword, currentPassword);
         boolean validConfirmPassword = validateConfirmPassword(newPassword, confirmPassword);
 
-//        String email = "thu.admin@bms.com";
-        String email = null;
-        try (DataInputStream dataStream = new DataInputStream(new FileInputStream("saveEmailTemp.txt"))) {
-            email = dataStream.readUTF();
-            System.out.println("Email: " + email);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        if (email.isEmpty()) {
-            System.out.println("Email is empty");
-        }
+//        need call id!!!
+        String id = "11115678";
 
         if (validCurrentPassword && validNewPassword && validConfirmPassword) {
-            if (changePasswordService.getChangePasswordDAO().changePassword(email, currentPassword, newPassword)) {
+            if (changePasswordService.changeUserPassword(id, currentPassword, newPassword)) {
                 AlertUtils.showAlert("Success", "Password changed successfully", Alert.AlertType.INFORMATION);
                 clearInputs();
             } else {

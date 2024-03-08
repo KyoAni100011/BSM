@@ -83,4 +83,10 @@ public class ValidationUtils {
         }
         return null;
     }
+
+
+    public static boolean validateEmailRegex(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        return email.matches(emailRegex) && !email.isEmpty() && email.length() <= 255;
+    }
 }
