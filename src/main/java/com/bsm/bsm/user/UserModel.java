@@ -6,13 +6,18 @@ public class UserModel {
     private String name;
     private String email;
     private String dob;
+
+    private String address;
+    private String phone;
     private boolean isEnabled;
 
-    public UserModel(String id, String name, String email, String dob, boolean isEnabled) {
+    public UserModel(String id, String name, String email, String dob, String phone, String address, boolean isEnabled) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.dob = dob;
+        this.phone = phone;
+        this.address = address;
         this.isEnabled = isEnabled;
     }
 
@@ -20,6 +25,22 @@ public class UserModel {
 
     public String getId() {
         return id;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getName() {
@@ -65,6 +86,7 @@ public class UserModel {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", dob='" + dob + '\'' +
+                ", phone='" + phone + '\'' +
                 ", isEnabled=" + isEnabled +
                 '}';
     }

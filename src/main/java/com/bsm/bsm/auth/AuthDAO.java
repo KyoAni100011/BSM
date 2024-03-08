@@ -36,8 +36,10 @@ public class AuthDAO {
                 String email = resultSet.getString("email");
                 String dob = resultSet.getString("dob");
                 String name = resultSet.getString("name");
+                String phone = resultSet.getString("telephone");
+                String address = resultSet.getString("address");
                 boolean isEnabled = resultSet.getBoolean("isEnabled");
-                userModelRef.set(new UserModel(id, name, email, dob, isEnabled));
+                userModelRef.set(new UserModel(id, name, email, dob, phone, address, isEnabled));
             }
         }, id);
 
