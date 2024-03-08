@@ -42,7 +42,7 @@
                         </Button>
                         <Button fx:id="bookAuthors" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#SwitchBookAuthors" prefHeight="46.0" prefWidth="275.0" style="-fx-background-color: none; -fx-border-radius: 0;" styleClass="sideBarItem" text="Book authors">
                            <graphic>
-                              <FontAwesomeIcon glyphName="" size="1.3em" styleClass="graphic" />
+                              <FontAwesomeIcon glyphName="USER_MD" size="1.3em" styleClass="graphic" />
                            </graphic>
                            <padding>
                               <Insets left="24.0" />
@@ -64,22 +64,19 @@
                               <Insets left="24.0" />
                            </padding>
                         </Button>
-                        <Button fx:id="importSheet" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#SwitchImportSheet" prefHeight="46.0" prefWidth="274.0" style="-fx-background-color: none; -fx-border-radius: 0;" styleClass="sideBarItem" text="Import sheets">
-                           <graphic>
-                              <FontAwesomeIcon glyphName="LIST" size="1.3em" styleClass="graphic" />
-                           </graphic>
-                           <padding>
-                              <Insets left="24.0" />
-                           </padding>
-                        </Button>
                         <Line endX="-258.5999755859375" endY="-113.67770385742188" startX="-496.84149169921875" startY="-113.67768859863281" style="-fx-opacity: 0.1;">
                            <VBox.margin>
                               <Insets bottom="6.0" top="6.0" />
                            </VBox.margin>
                         </Line>
+                        <Button fx:id="importSheet" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#SwitchImportSheet" prefHeight="46.0" prefWidth="274.0" style="-fx-background-color: none; -fx-border-radius: 0;" styleClass="sideBarItem" text="Import sheets">
+                           <padding>
+                              <Insets left="24.0" />
+                           </padding>
+                        </Button>
                         <Button fx:id="btnLogOut" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleLogOut" prefHeight="46.0" prefWidth="274.0" style="-fx-background-color: none; -fx-border-radius: 0;" styleClass="sideBarItem" text="Logout">
                            <graphic>
-                              <FontAwesomeIcon glyphName="LOGOUT" size="1.3em" styleClass="graphic" />
+                              <FontAwesomeIcon glyphName="ARROW_CIRCLE_RIGHT" size="1.3em" styleClass="graphic" />
                            </graphic>
                            <padding>
                               <Insets left="24.0" />

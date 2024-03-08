@@ -12,8 +12,7 @@ import java.net.URL;
 
 public class ProfileSettingController {
 
-    public Button editProfileButton;
-    public Button changePasswordButton;
+    public Button editProfileButton, changePasswordButton;
 
     public BorderPane bp;
 
