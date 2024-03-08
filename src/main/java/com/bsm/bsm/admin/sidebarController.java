@@ -75,5 +75,4 @@ public class sidebarController {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/bsm/bsm/view/admin/" + page + ".fxml")));
         bp.setCenter(root);
     }
-
 }

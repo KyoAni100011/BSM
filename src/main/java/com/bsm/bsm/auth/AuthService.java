@@ -1,23 +1,31 @@
 package com.bsm.bsm.auth;
 
 import com.bsm.bsm.user.UserModel;
-
-import com.bsm.bsm.security.JWTProvider;
-
+import com.bsm.bsm.user.UserSingleton;
 
 public class AuthService {
-    private AuthDAO loginDAO;
-    static JWTProvider jwtProvider = new JWTProvider();
+    private final AuthDAO authDAO;
 
-    public static UserModel authenticateUser(String username, String password) {
+    public AuthService() {
+        this.authDAO = new AuthDAO();
+    }
 
-        UserModel user = AuthDAO.getUserInfo(username, password);
-
-        if (user != null) {
-            user.setToken(JWTProvider.generateJwtToken(user.getId()));
+    public UserModel authenticateUser(String id, String password) {
+        if (authDAO.validateUser(id, password)) {
+            return authDAO.getUserInfo(id);
         }
+        return null;
+    }
 
-        return user;
+    public boolean isAdmin(String id) {
+        return authDAO.getAdminID(id) != null;
+    }
+
+    public boolean isEmployee(String id) {
+        return authDAO.getEmployeeID(id) != null;
+    }
+
+    public void logOut() {
+        UserSingleton.getInstance().destroyInstance();
     }
 }
-
