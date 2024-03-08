@@ -3,6 +3,8 @@ package com.bsm.bsm.auth;
 import com.bsm.bsm.user.UserModel;
 import com.bsm.bsm.user.UserSingleton;
 
+import java.util.Objects;
+
 public class AuthService {
     private final AuthDAO authDAO;
 
@@ -18,11 +20,11 @@ public class AuthService {
     }
 
     public boolean isAdmin(String id) {
-        return authDAO.getAdminID(id) != null;
+        return !Objects.equals(authDAO.getAdminID(id), "");
     }
 
     public boolean isEmployee(String id) {
-        return authDAO.getEmployeeID(id) != null;
+        return !Objects.equals(authDAO.getEmployeeID(id), "");
     }
 
     public void logOut() {

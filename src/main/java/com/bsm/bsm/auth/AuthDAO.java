@@ -12,8 +12,8 @@ import static com.bsm.bsm.utils.convertProvider.bytesToHexString;
 public class AuthDAO {
     private static final String SELECT_PASSWORD_QUERY = "SELECT PASSWORD FROM user WHERE id = ?";
     private static final String SELECT_USER_QUERY = "SELECT * FROM user WHERE id = ?";
-    private static final String SELECT_ADMIN_QUERY = "SELECT userID FROM admin WHERE id = ?";
-    private static final String SELECT_EMPLOYEE_QUERY = "SELECT userID FROM employee id = ?";
+    private static final String SELECT_ADMIN_QUERY = "SELECT * FROM admin WHERE userID = ?";
+    private static final String SELECT_EMPLOYEE_QUERY = "SELECT * FROM employee WHERE userID = ?";
 
     public boolean validateUser(String id, String password) {
         AtomicBoolean isPasswordValid = new AtomicBoolean(false);
