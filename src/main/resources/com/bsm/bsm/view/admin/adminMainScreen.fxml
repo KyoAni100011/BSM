@@ -70,18 +70,6 @@
                               <Insets bottom="6.0" top="6.0" />
                            </VBox.margin>
                         </Line>
-                        <Button fx:id="btnLogOut" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleLogOut" prefHeight="46.0" prefWidth="274.0" style="-fx-background-color: none; -fx-border-radius: 0;" styleClass="sideBarItem" text="Logout">
-                           <padding>
-                              <Insets left="24.0" />
-                           </padding>
-                           <graphic>
-                              <Group>
-                                 <children>
-                                    <SVGPath content="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 192 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l210.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128zM160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 32C43 32 0 75 0 128L0 384c0 53 43 96 96 96l64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l64 0z" layoutX="-31.0" layoutY="1.0" scaleX="0.04" scaleY="0.04" />
-                                 </children>
-                              </Group>
-                           </graphic>
-                        </Button>
                      </children>
                   </VBox>
                   <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="20.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true">
@@ -115,7 +103,7 @@
          <children>
             <MenuButton layoutX="634.0" layoutY="21.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="140.0" style="-fx-background-color: white;">
                <items>
-                  <MenuItem mnemonicParsing="false" style="-fx-padding: 8px;" styleClass="text-menu" text="Edit profile">
+                  <MenuItem fx:id="buttonProfileSetting" mnemonicParsing="false" onAction="#handleProfileSetting" style="-fx-padding: 8px;" styleClass="text-menu" text="Profile setting">
                      <graphic>
                         <Group>
                            <children>
@@ -124,16 +112,7 @@
                         </Group>
                      </graphic>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" style="-fx-padding: 8px;" styleClass="text-menu" text="Change password">
-                     <graphic>
-                        <Group>
-                           <children>
-                              <SVGPath content="M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z" layoutX="-31.0" layoutY="1.0" scaleX="0.04" scaleY="0.04" />
-                           </children>
-                        </Group>
-                     </graphic>
-                  </MenuItem>
-                  <MenuItem mnemonicParsing="false" style="-fx-padding: 8px;" styleClass="text-menu" text="Logout">
+                  <MenuItem fx:id="buttonLogOut" mnemonicParsing="false" onAction="#handleLogOut" style="-fx-padding: 8px;" styleClass="text-menu" text="Logout">
                      <graphic>
                         <Group>
                            <children>
