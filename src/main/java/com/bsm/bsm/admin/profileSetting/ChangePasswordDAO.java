@@ -4,42 +4,31 @@ package com.bsm.bsm.admin.profileSetting;
 import com.bsm.bsm.database.DatabaseConnection;
 import org.mindrot.jbcrypt.BCrypt;
 
+import javax.xml.transform.Result;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ChangePasswordDAO {
 
-    public static void main(String[] args) throws SQLException {
-        String email = "thu.admin@bms.com";
-        String currentPassword = "01062003";
-        String newPassword = "01052003";
+    private final String QUERY_CHANGE_PASSWORD = "UPDATE user SET password = ? WHERE id = ?";
+    private final String QUERY_PASSWORD = "SELECT PASSWORD FROM user WHERE id = ?";
 
-        changePassword(email, currentPassword, newPassword);
+    public static void main(String[] args) {
+        ChangePasswordDAO changePasswordDAO = new ChangePasswordDAO();
+        System.out.println(changePasswordDAO.changePassword("11115678", "01062003", "01052003"));
     }
-
-    private static String hashPassword(String password) {
+    public String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
 
-    public static boolean changePassword(String email, String currentPassword, String newPassword) {
+    public boolean changePassword(String id, String currentPassword, String newPassword) {
         try  {
-            //Validate the current password
-            if (!validatePassword(email, currentPassword)) {
-                return false;
-            }
-
-            //Change password
             String hashedNewPassword = hashPassword(newPassword);
-            String QUERY_CHANGE_PASSWORD = "UPDATE user SET password='%s' WHERE email='%s'".formatted(hashedNewPassword, email);
-            int rowsAffected =  DatabaseConnection.executeUpdate(QUERY_CHANGE_PASSWORD);
+            int rowsAffected =  DatabaseConnection.executeUpdate(QUERY_CHANGE_PASSWORD, hashedNewPassword, id);
             if (rowsAffected > 0) {
                 System.out.println("Password changed successfully");
                 return true;
-            } else {
-                System.out.println("Password change failed");
-                return false;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -48,24 +37,19 @@ public class ChangePasswordDAO {
         return false;
     }
 
-    private static boolean validatePassword(String email, String currentPassword) throws SQLException {
+    public boolean validatePassword(String id, String currentPassword) throws SQLException {
         AtomicBoolean isValid = new AtomicBoolean(false);
-        String QUERY_PASSWORD = "SELECT PASSWORD FROM user WHERE email='%s'".formatted(email);
 
         DatabaseConnection.executeQuery(QUERY_PASSWORD, resultSet -> {
             if (resultSet.next()) {
                 String storedPass = resultSet.getString("password").trim();
 
                 //compare the current password with the password in the database
-                if (BCrypt.checkpw(currentPassword, storedPass)) {
+                if (BCrypt.checkpw(currentPassword.trim(), storedPass)) {
                     isValid.set(true);
-                } else {
-                    System.out.println("Password is incorrect");
                 }
-            } else {
-                System.out.println("User not found");
             }
-        });
+        }, id);
 
         return isValid.get();
     }

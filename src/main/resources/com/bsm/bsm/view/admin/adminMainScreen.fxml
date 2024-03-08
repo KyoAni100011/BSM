@@ -113,7 +113,7 @@
       </BorderPane>
       <AnchorPane layoutX="239.0" prefHeight="89.0" prefWidth="827.0">
          <children>
-            <MenuButton layoutX="634.0" layoutY="21.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="140.0">
+            <MenuButton layoutX="634.0" layoutY="21.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="140.0" style="-fx-background-color: white;">
                <items>
                   <MenuItem mnemonicParsing="false" style="-fx-padding: 8px;" styleClass="text-menu" text="Edit profile">
                      <graphic>
@@ -144,7 +144,7 @@
                   </MenuItem>
                </items>
                <graphic>
-                  <AnchorPane prefHeight="37.0" prefWidth="117.0">
+                  <AnchorPane prefHeight="37.0" prefWidth="117.0" style="-fx-background-color: white;">
                      <children>
                         <Group layoutX="-133.0" layoutY="-237.0">
                            <children>
