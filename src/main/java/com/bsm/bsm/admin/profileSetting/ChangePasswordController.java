@@ -1,5 +1,6 @@
 package com.bsm.bsm.admin.profileSetting;
 
+import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.PasswordUtils;
 import com.bsm.bsm.utils.ValidationUtils;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
