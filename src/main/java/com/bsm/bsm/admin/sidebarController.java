@@ -1,5 +1,7 @@
 package com.bsm.bsm.admin;
 
+import com.bsm.bsm.user.UserModel;
+import com.bsm.bsm.user.UserSingleton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,11 +11,13 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.Objects;
 
 public class sidebarController {
+    public UserModel adminInfo = UserSingleton.getInstance().getUser();
     public MenuItem buttonProfileSetting, buttonLogOut;
     @FXML
     private Button bookRevenue;
@@ -23,6 +27,12 @@ public class sidebarController {
 
     @FXML
     private Button categoryRevenue;
+
+    @FXML
+    private Text roleText;
+
+    @FXML
+    private Text nameText;
 
     @FXML
     private Button btnLogOut;
@@ -35,6 +45,13 @@ public class sidebarController {
 
     @FXML
     private Button userAccount;
+
+    @FXML
+    public void initialize()
+    {
+        nameText.setText(adminInfo.getName().split(" ")[1]);
+        roleText.setText("Admin");
+    }
 
     @FXML
     void SwitchBookRevenue(ActionEvent event) throws IOException {
