@@ -12,7 +12,11 @@ import java.util.Objects;
 public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/bsm/bsm/view/admin/adminMainScreen.fxml")));
+//        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/bsm/bsm/view/admin/adminMainScreen.fxml")));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/login.fxml"));
+        Parent root = loader.load();
+
+        stage.setTitle("FXML Welcome");
         Scene scene = new Scene(root);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/bsm/bsm/style/style.css")).toExternalForm());
         stage.setTitle("FXML Welcome");

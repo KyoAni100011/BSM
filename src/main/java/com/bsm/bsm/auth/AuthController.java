@@ -20,8 +20,6 @@ public class AuthController {
     @FXML
     private Button btnLoginAsEmployee;
 
-    @FXML
-    private Button close;
 
     @FXML
     private Text emailErrorLabel;
@@ -82,15 +80,45 @@ public class AuthController {
                 throw new RuntimeException(e);
             }
 
-            System.out.println(userInfo);
-            System.out.println(getEmailSuffix(userInfo.getEmail()));
-            if (".admin@bms.com".equals(getEmailSuffix(userInfo.getEmail()))) {
-                FXMLLoaderHelper.loadFXML((Stage) close.getScene().getWindow(), "adminMainScreen");
-            } else if (".employee@bms.com".equals(getEmailSuffix(userInfo.getEmail()))) {
-                FXMLLoaderHelper.loadFXML((Stage) close.getScene().getWindow(), "employeeMainScreen");
-            } else {
-                System.out.println("Unknown user type.");
+            FXMLLoaderHelper.loadFXML((Stage) btnLoginAsEmployee.getScene().getWindow(), "employee/employeeMainScreen");
+        } else {
+            System.out.println("Invalid username or password.");
+        }
+    }
+
+    private void handleLoginAsAdminButtonClicked() throws IOException {
+        String password = passwordField.getText();
+        String email = emailTextField.getText();
+        int passwordLength = password.length();
+
+        if (!(".admin@bms.com".equals(getEmailSuffix(email)))) {
+            System.out.println("Wrong type of user");
+            return;
+        }
+
+        passwordErrorText.setVisible(passwordLength < 8 || passwordLength > 255);
+        emailErrorLabel.setVisible(!validateEmail(email));
+
+
+        UserModel userInfo = AuthService.authenticateUser(email, password);
+        if (userInfo != null) {
+            if (!(".admin@bms.com".equals(getEmailSuffix(userInfo.getEmail())))) {
+                System.out.println("Wrong type of user");
+                return;
             }
+
+            System.out.println("Login successful!");
+
+            //save email from saveEmailTemp.txt
+
+            try (DataOutputStream dataStream = new DataOutputStream(new FileOutputStream("src/main/java/com/bsm/bsm/auth/saveEmailTemp.txt"))) {
+                dataStream.writeUTF(email);
+                System.out.println("Saved successfully!");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            FXMLLoaderHelper.loadFXML((Stage) btnLoginAsEmployee.getScene().getWindow(), "admin/adminMainScreen");
         } else {
             System.out.println("Invalid username or password.");
         }
