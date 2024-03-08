@@ -65,11 +65,6 @@
                               <FontAwesomeIcon glyphName="LIST" size="1.3em" styleClass="graphic" />
                            </graphic>
                         </Button>
-                        <Line endX="-258.5999755859375" endY="-113.67770385742188" startX="-496.84149169921875" startY="-113.67768859863281" style="-fx-opacity: 0.1;">
-                           <VBox.margin>
-                              <Insets bottom="6.0" top="6.0" />
-                           </VBox.margin>
-                        </Line>
                      </children>
                   </VBox>
                   <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="20.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true">
