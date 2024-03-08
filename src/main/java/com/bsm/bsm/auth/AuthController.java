@@ -29,7 +29,7 @@ public class AuthController {
     private Text emailErrorLabel;
 
     @FXML
-    private TextField emailTextField;
+    private TextField idTextField;
 
     @FXML
     private Text passwordErrorText;
@@ -60,28 +60,37 @@ public class AuthController {
 
     private void handleLoginButtonClicked(String role) throws IOException {
         String password = passwordField.getText();
-        String id = emailTextField.getText();
+        String id = idTextField.getText();
         int passwordLength = password.length();
 
         passwordErrorText.setVisible(passwordLength < 8 || passwordLength > 255);
 
-        boolean isRoleValid = false;
         String fxmlPath = "";
 
         if (ADMIN_ROLE.equals(role)) {
-            isRoleValid = authService.isAdmin(id);
+            if (!authService.isAdmin(id)) {
+                System.out.println("Invalid username or password.");
+                return;
+            }
             fxmlPath = "/com/bsm/bsm/view/admin/adminMainScreen.fxml";
         } else if (EMPLOYEE_ROLE.equals(role)) {
-            isRoleValid = authService.isEmployee(id);
+            if (!authService.isEmployee(id)) {
+                System.out.println("Invalid username or password.");
+                return;
+            }
             fxmlPath = "/com/bsm/bsm/view/employee/employeeMainScreen.fxml";
+        } else {
+            System.out.println("Invalid role.");
+            return;
         }
 
-        if (isRoleValid) {
-            UserModel userInfo = authService.authenticateUser(id, password);
-            UserSingleton.getInstance().setUser(userInfo);
-            new SceneSwitch(AnchorPaneLogin, fxmlPath);
-        } else {
+        UserModel userInfo = authService.authenticateUser(id, password);
+        if (userInfo == null) {
             System.out.println("Invalid username or password.");
+            return;
         }
+
+        UserSingleton.getInstance().setUser(userInfo);
+        new SceneSwitch(AnchorPaneLogin, fxmlPath);
     }
 }
