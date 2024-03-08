@@ -69,9 +69,12 @@ public class EditProfileController {
 
         System.out.println("dob: " + dob);
 
-        if (validateInputs(fullName, email, dob, phone, address)) {
 
-            if (EditProfileDAO.updateProfile(email, fullName, dob)) {
+        if (validateInputs(fullName, dob, phone, address)) {
+
+            String id = "11115678";
+
+            if (editProfileService.updateUserProfile(fullName, phone, dob, address)) {
                 AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
 
                 clearInputs();

@@ -8,7 +8,7 @@ public class EditProfileService {
         this.editProfileDAO = new EditProfileDAO();
     }
 
-    public EditProfileDAO getEditProfileDAO() {
-        return editProfileDAO;
+    public boolean updateUserProfile(String fullName, String telephone, String dob, String address) {
+        return editProfileDAO.updateProfile(fullName, telephone, dob, address);
     }
 }

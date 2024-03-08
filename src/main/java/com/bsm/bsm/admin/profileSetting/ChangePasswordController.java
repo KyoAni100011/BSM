@@ -56,20 +56,22 @@ public class ChangePasswordController {
         boolean validNewPassword = validateNewPassword(newPassword, currentPassword);
         boolean validConfirmPassword = validateConfirmPassword(newPassword, confirmPassword);
 
-        String email = null;
         try (DataInputStream dataStream = new DataInputStream(new FileInputStream("saveEmailTemp.txt"))) {
-            email = dataStream.readUTF();
-            System.out.println("Email: " + email);
+//        String id = null;
+        String id = "11115678";
+        try (DataInputStream dataStream = new DataInputStream(new FileInputStream("saveIDTemp.txt"))) {
+            id = dataStream.readUTF();
+            System.out.println("Email: " + id);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-        if (email.isEmpty()) {
-            System.out.println("Email is empty");
+        if (id.isEmpty()) {
+            System.out.println("Id is empty");
         }
 
         if (validCurrentPassword && validNewPassword && validConfirmPassword) {
-            if (changePasswordService.getChangePasswordDAO().changePassword(email, currentPassword, newPassword)) {
+            if (changePasswordService.changeUserPassword(id, currentPassword, newPassword)) {
                 AlertUtils.showAlert("Success", "Password changed successfully", Alert.AlertType.INFORMATION);
                 clearInputs();
             } else {
