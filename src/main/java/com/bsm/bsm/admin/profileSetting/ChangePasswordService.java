@@ -1,5 +1,7 @@
 package com.bsm.bsm.admin.profileSetting;
 
+import java.sql.SQLException;
+
 public class ChangePasswordService {
 
     private final ChangePasswordDAO changePasswordDAO;
@@ -18,9 +20,8 @@ public class ChangePasswordService {
     public boolean validateCurrentPassword(String id, String currentPassword) {
         try {
             return changePasswordDAO.validatePassword(id, currentPassword);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return false;
     }
 }

@@ -67,14 +67,10 @@ public class EditProfileController {
         String phone = phoneTextField.getText();
         String address = addressTextField.getText();
 
-        System.out.println("dob: " + dob);
-
-
-        if (validateInputs(fullName, dob, phone, address)) {
-
+        if (validateInputs(fullName, email, dob, phone, address)) {
+            // need to call ID
             String id = "11115678";
-
-            if (editProfileService.updateUserProfile(fullName, phone, dob, address)) {
+            if (editProfileService.updateUserProfile(id, fullName, phone, dob, address)){
                 AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
 
                 clearInputs();

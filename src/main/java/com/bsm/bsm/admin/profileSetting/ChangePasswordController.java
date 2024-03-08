@@ -56,18 +56,8 @@ public class ChangePasswordController {
         boolean validNewPassword = validateNewPassword(newPassword, currentPassword);
         boolean validConfirmPassword = validateConfirmPassword(newPassword, confirmPassword);
 
-//        String id = null;
+//        need call id!!!
         String id = "11115678";
-        try (DataInputStream dataStream = new DataInputStream(new FileInputStream("saveIDTemp.txt"))) {
-            id = dataStream.readUTF();
-            System.out.println("Email: " + id);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        if (id.isEmpty()) {
-            System.out.println("Id is empty");
-        }
 
         if (validCurrentPassword && validNewPassword && validConfirmPassword) {
             if (changePasswordService.changeUserPassword(id, currentPassword, newPassword)) {

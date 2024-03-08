@@ -14,22 +14,9 @@ public class EditProfileDAO {
 //        updateProfile("Minh Thu", "0707070707", "01/05/2003", "123 abc");
     }
 
-    public boolean updateProfile(String fullName, String telephone, String dob, String address) {
-//        String idTemp = fetchUserIdFromFile();
-//        if (idTemp.isEmpty()) {
-//            System.out.println("Cannot read id from file");
-//            return false;
-//        }
-        String idTemp = "11115678";
-
+    public boolean updateProfile(String id, String fullName, String telephone, String dob, String address) {
         try {
-            String formattedDate = formatDate(dob);
-            if (formattedDate.isEmpty()) {
-                System.out.println("Date is invalid");
-                return false;
-            }
-
-            int rowsAffected = DatabaseConnection.executeUpdate(QUERY_UPDATE_USER, fullName, formattedDate, telephone, address, idTemp);
+            int rowsAffected = DatabaseConnection.executeUpdate(QUERY_UPDATE_USER, fullName, dob, telephone, address, id);
             if (rowsAffected > 0) {
                 System.out.println("Profile updated successfully");
                 return true;
@@ -43,22 +30,4 @@ public class EditProfileDAO {
         }
     }
 
-    public String fetchUserIdFromFile() {
-        try (DataInputStream dataStream = new DataInputStream(new FileInputStream("src/main/java/com/bsm/bsm/auth/saveEmailTemp.txt"))) {
-            return dataStream.readUTF();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public String formatDate(String dob) {
-        try {
-            java.util.Date date = new SimpleDateFormat("dd/MM/yyyy").parse(dob);
-            return new SimpleDateFormat("yyyy-MM-dd").format(date);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }
