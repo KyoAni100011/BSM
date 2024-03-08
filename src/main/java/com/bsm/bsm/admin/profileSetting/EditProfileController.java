@@ -1,6 +1,5 @@
 package com.bsm.bsm.admin.profileSetting;
 
-import com.bsm.bsm.user.UserModel;
 import com.bsm.bsm.user.UserSingleton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,7 +16,6 @@ import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.NumericValidationUtils;
 
 public class EditProfileController {
-    public UserModel adminInfo = UserSingleton.getInstance().getUser();
     @FXML
     public Button saveChangesButton;
     @FXML
@@ -31,10 +29,6 @@ public class EditProfileController {
 
     @FXML
     public void initialize() {
-        fullNameField.setText(adminInfo.getName());
-        emailTextField.setText(adminInfo.getEmail());
-        phoneErrorLabel.setText(adminInfo.getPhone());
-
         // Set the prompt text for the DatePicker
         dobPicker.setPromptText("dd/mm/yyyy");
 
@@ -75,8 +69,7 @@ public class EditProfileController {
         String address = addressTextField.getText();
 
         if (validateInputs(fullName, email, dob, phone, address)) {
-            // need to call ID
-            String id = "11115678";
+            String id = UserSingleton.getInstance().getUser().getId();
             if (editProfileService.updateUserProfile(id, fullName, phone, dob, address)){
                 AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
 
