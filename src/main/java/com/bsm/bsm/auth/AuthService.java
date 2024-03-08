@@ -4,20 +4,28 @@ import com.bsm.bsm.user.UserModel;
 import com.bsm.bsm.user.UserSingleton;
 
 public class AuthService {
-    public AuthDAO authDAO;
+    private final AuthDAO authDAO;
 
     public AuthService() {
         this.authDAO = new AuthDAO();
     }
 
-    public UserModel authenticateUser(String email, String password) {
-        if (authDAO.validateUser(email, password)) {
-            return authDAO.getUserInfo(email);
+    public UserModel authenticateUser(String id, String password) {
+        if (authDAO.validateUser(id, password)) {
+            return authDAO.getUserInfo(id);
         }
         return null;
     }
 
-    public void logOut(){
+    public boolean isAdmin(String id) {
+        return authDAO.getAdminID(id) != null;
+    }
+
+    public boolean isEmployee(String id) {
+        return authDAO.getEmployeeID(id) != null;
+    }
+
+    public void logOut() {
         UserSingleton.getInstance().destroyInstance();
     }
 }

@@ -10,7 +10,7 @@ public class DatabaseConnection {
 
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/book_store_db";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "admin";
+    private static final String PASSWORD = "123456";
 
     private static Connection connection;
 
