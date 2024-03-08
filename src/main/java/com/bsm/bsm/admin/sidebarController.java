@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class sidebarController {
+    public MenuItem buttonProfileSetting, buttonLogOut;
     @FXML
     private Button bookRevenue;
 
@@ -51,17 +53,22 @@ public class sidebarController {
 
     @FXML
     void SwitchRevenueByEmployee(ActionEvent event) throws IOException {
-        loadPage("userAccount/passwordReset");
+        loadPage("revenueByEmployee/revenueByEmployee");
     }
 
     @FXML
     void SwitchUserAccount(ActionEvent event) throws IOException {
-        loadPage("profileSetting/profileSetting");
+        loadPage("userAccount/passwordReset");
     }
 
     @FXML
     void handleLogOut(ActionEvent event) throws IOException {
         FXMLLoaderHelper.loadFXML((Stage) bp.getScene().getWindow(), "login");
+    }
+
+    @FXML
+    void handleProfileSetting(ActionEvent event) throws IOException {
+        loadPage("profileSetting/profileSetting");
     }
 
     private void loadPage(String page) throws IOException {
