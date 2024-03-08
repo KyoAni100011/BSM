@@ -14,7 +14,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 //        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/bsm/bsm/view/admin/adminMainScreen.fxml")));
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/admin/adminMainScreen.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/login.fxml"));
         Parent root = loader.load();
 
         // Check if the loaded FXML file is the login screen
