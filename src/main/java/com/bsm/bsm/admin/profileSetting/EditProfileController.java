@@ -1,5 +1,6 @@
 package com.bsm.bsm.admin.profileSetting;
 
+import com.bsm.bsm.user.UserSingleton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -68,8 +69,7 @@ public class EditProfileController {
         String address = addressTextField.getText();
 
         if (validateInputs(fullName, email, dob, phone, address)) {
-            // need to call ID
-            String id = "11115678";
+            String id = UserSingleton.getInstance().getUser().getId();
             if (editProfileService.updateUserProfile(id, fullName, phone, dob, address)){
                 AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
 

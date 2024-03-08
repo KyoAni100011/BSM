@@ -57,8 +57,7 @@ public class ChangePasswordController {
         boolean validNewPassword = validateNewPassword(newPassword, currentPassword);
         boolean validConfirmPassword = validateConfirmPassword(newPassword, confirmPassword);
 
-//        need call id!!!
-        String id = "11115678";
+        String id = UserSingleton.getInstance().getUser().getId();
 
         if (validCurrentPassword && validNewPassword && validConfirmPassword) {
             if (changePasswordService.changeUserPassword(id, currentPassword, newPassword)) {
