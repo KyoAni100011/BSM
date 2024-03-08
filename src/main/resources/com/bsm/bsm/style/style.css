@@ -98,18 +98,19 @@
   -fx-font-size: 16px !important;
 }
 
-.profile-setting-button-selected {
-  -fx-border-width: 0px 0px 2px;
+.profile-setting-button {
+    -fx-border-width: 0px 0px 2px;
+    -fx-font-size: 16px;
 }
 
 .profile-setting-button-employee {
   -fx-text-fill: #F5A11C;
-    -fx-border-color: #F5A11C;
+  -fx-border-color: #F5A11C;
 }
 
  .profile-setting-button-admin {
    -fx-text-fill: #914d2a;
-     -fx-border-color: #914d2a;
+   -fx-border-color: #914d2a;
  }
 
 .text-input {
@@ -125,6 +126,12 @@
   -fx-font-size: 14px;
 }
 
+.title-form {
+  -fx-font-size: 24px;
+  -fx-font-weight: 700;
+}
+
+
 .password-field-add {
   -fx-background-color: transparent;
   -fx-border-width: 1px 0px 1px 1px;
@@ -139,11 +146,28 @@
   -fx-border-radius: 5px;
 }
 
-.button-custom {
+.button-custom-admin {
   -fx-padding: 1px;
   -fx-font-weight: 700;
   -fx-font-size: 16px;
   -fx-text-fill: white;
+    -fx-background-color: #914d2a;
+}
+
+.button-custom-admin:hover {
+  -fx-background-color: #6A381E;
+}
+
+.button-custom-employee {
+  -fx-padding: 1px;
+  -fx-font-weight: 700;
+  -fx-font-size: 16px;
+  -fx-text-fill: white;
+  -fx-background-color: #F5A11C;
+}
+
+.button-custom-employee:hover {
+  -fx-background-color: #D68C19;
 }
 
 .button-eye {

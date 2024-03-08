@@ -249,4 +249,4 @@ values (@orderID, @bookID, @importSheetID, 1, @salePrice);
 update book set quantity = quantity - 1 where isbn = @bookID;
 
 select * from orderBooksDetails;
-select * from book;
+select * from author;

@@ -1,10 +1,16 @@
 package com.bsm.bsm.employee.profileSetting;
+
+import com.bsm.bsm.utils.PasswordUtils;
+import com.bsm.bsm.utils.ValidationUtils;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+
+import com.bsm.bsm.utils.AlertUtils;
 
 public class ChangePasswordController {
     @FXML
@@ -31,23 +37,9 @@ public class ChangePasswordController {
         currentPasswordTextField.setVisible(false);
         newPasswordTextField.setVisible(false);
 
-        showHideCurrentPasswordButton.setOnAction(event -> handleShowHidePassword(event, currentPasswordField, currentPasswordTextField, eyeIcon1));
-        showHideNewPasswordButton.setOnAction(event -> handleShowHidePassword(event, newPasswordField, newPasswordTextField, eyeIcon2));
-        showHideConfirmPasswordButton.setOnAction(event -> handleShowHidePassword(event, confirmPasswordField, confirmPasswordTextField, eyeIcon3));
-    }
-
-    private void handleShowHidePassword(ActionEvent event, PasswordField passwordField ,TextField textField, FontAwesomeIcon eyeIcon) {
-        if (passwordField.isVisible()) {
-            passwordField.setVisible(false);
-            textField.setText(passwordField.getText());
-            textField.setVisible(true);
-            eyeIcon.setGlyphName("EYE");
-        } else {
-            passwordField.setText(textField.getText());
-            passwordField.setVisible(true);
-            textField.setVisible(false);
-            eyeIcon.setGlyphName("EYE_SLASH");
-        }
+        showHideCurrentPasswordButton.setOnAction(event -> PasswordUtils.handleShowHidePassword(event, currentPasswordField, currentPasswordTextField, eyeIcon1));
+        showHideNewPasswordButton.setOnAction(event -> PasswordUtils.handleShowHidePassword(event, newPasswordField, newPasswordTextField, eyeIcon2));
+        showHideConfirmPasswordButton.setOnAction(event -> PasswordUtils.handleShowHidePassword(event, confirmPasswordField, confirmPasswordTextField, eyeIcon3));
     }
 
     @FXML
@@ -63,8 +55,8 @@ public class ChangePasswordController {
         boolean validConfirmPassword = validateConfirmPassword(newPassword, confirmPassword);
 
         if (validCurrentPassword && validNewPassword && validConfirmPassword) {
-            // Save the changes
-            showAlert("Success", "Password changed successfully", Alert.AlertType.INFORMATION);
+            AlertUtils.showAlert("Success", "Password changed successfully", Alert.AlertType.INFORMATION);
+            clearInputs();
         }
     }
 
@@ -72,6 +64,15 @@ public class ChangePasswordController {
         currentPasswordErrorLabel.setText("");
         newPasswordErrorLabel.setText("");
         confirmPasswordErrorLabel.setText("");
+    }
+
+    private void clearInputs() {
+        currentPasswordField.clear();
+        newPasswordField.clear();
+        confirmPasswordField.clear();
+        currentPasswordTextField.clear();
+        newPasswordTextField.clear();
+        confirmPasswordTextField.clear();
     }
 
     private boolean validateCurrentPassword(String currentPassword) {
@@ -91,6 +92,10 @@ public class ChangePasswordController {
             newPasswordErrorLabel.setText("New password cannot be the same as the current password");
             return false;
         }
+        else if (ValidationUtils.validatePassword(newPassword) != null) {
+            newPasswordErrorLabel.setText(ValidationUtils.validatePassword(newPassword));
+            return false;
+        }
         return true;
     }
 
@@ -104,13 +109,5 @@ public class ChangePasswordController {
             return false;
         }
         return true;
-    }
-
-    private void showAlert(String title, String content, Alert.AlertType alertType) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
     }
 }
