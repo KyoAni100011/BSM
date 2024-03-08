@@ -1,5 +1,6 @@
 package com.bsm.bsm.admin.profileSetting;
 
+import com.bsm.bsm.user.UserSingleton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,8 +20,8 @@ public class ProfileSettingController {
     @FXML
     private void initialize() {
         try {
-            editProfileButton.getStyleClass().addAll("profile-setting-button-selected", "profile-setting-button-admin");
-            changePasswordButton.getStyleClass().removeAll("profile-setting-button", "profile-setting-button-admin");
+            editProfileButton.getStyleClass().addAll("profile-setting-button", "profile-setting-button-admin");
+            changePasswordButton.getStyleClass().add("profile-setting-button");
             loadPage("editProfile");
         } catch (IOException e) {
             e.printStackTrace();
@@ -29,15 +30,17 @@ public class ProfileSettingController {
 
     @FXML
     private void handleEditProfile(ActionEvent event) throws IOException {
-        editProfileButton.getStyleClass().addAll("profile-setting-button-selected", "profile-setting-button-admin");
-        changePasswordButton.getStyleClass().removeAll("profile-setting-button", "profile-setting-button-admin");
+        editProfileButton.getStyleClass().remove("profile-setting-button-admin");
+        editProfileButton.getStyleClass().add("profile-setting-button-admin");
+        changePasswordButton.getStyleClass().remove("profile-setting-button-admin");
         loadPage("editProfile");
     }
 
     @FXML
     private void handleChangePassword(ActionEvent event) throws IOException {
-        changePasswordButton.getStyleClass().addAll("profile-setting-button-selected", "profile-setting-button-admin");
-        editProfileButton.getStyleClass().removeAll("profile-setting-button", "profile-setting-button-admin");
+        changePasswordButton.getStyleClass().remove("profile-setting-button-admin");
+        changePasswordButton.getStyleClass().add( "profile-setting-button-admin");
+        editProfileButton.getStyleClass().remove( "profile-setting-button-admin");
         loadPage("changePassword");
     }
 

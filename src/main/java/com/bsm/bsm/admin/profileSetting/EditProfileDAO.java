@@ -10,15 +10,6 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 
 public class EditProfileDAO {
-    private static final Statement statement;
-
-    static {
-        try {
-            statement = DatabaseConnection.getConnection().createStatement();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public static void main(String[] args) {
 
@@ -46,7 +37,7 @@ public class EditProfileDAO {
 
             String QUERY_UPDATE_USER = "UPDATE user SET EMAIL = '%s', NAME = '%s', DOB='%s' WHERE EMAIL='%s'".formatted(email, fullName, formattedDate, emailTemp);
 
-            int rowsAffected = statement.executeUpdate(QUERY_UPDATE_USER);
+            int rowsAffected = DatabaseConnection.executeUpdate(QUERY_UPDATE_USER);
             if (rowsAffected > 0) {
                 System.out.println("Profile updated successfully");
                 printUserDetails(email);
@@ -98,11 +89,13 @@ public class EditProfileDAO {
 
     private static void printUserDetails(String email) throws SQLException {
         String QUERY_SELECT_USER = "SELECT * FROM user WHERE email='%s'".formatted(email);
-        ResultSet resultSet = statement.executeQuery(QUERY_SELECT_USER);
-        if (resultSet.next()) {
-            for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
-                System.out.println(resultSet.getMetaData().getColumnName(i) + ": " + resultSet.getString(i));
+
+        DatabaseConnection.executeQuery(QUERY_SELECT_USER, resultSet -> {
+            if (resultSet.next()) {
+                for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
+                    System.out.println(resultSet.getMetaData().getColumnName(i) + ": " + resultSet.getString(i));
+                }
             }
-        }
+        });
     }
 }

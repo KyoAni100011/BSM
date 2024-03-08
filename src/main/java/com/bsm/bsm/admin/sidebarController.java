@@ -51,7 +51,7 @@ public class sidebarController {
 
     @FXML
     void SwitchRevenueByEmployee(ActionEvent event) throws IOException {
-        loadPage("revenueByEmployee/revenueByEmployee");
+        loadPage("userAccount/passwordReset");
     }
 
     @FXML
@@ -68,5 +68,4 @@ public class sidebarController {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/bsm/bsm/view/admin/" + page + ".fxml")));
         bp.setCenter(root);
     }
-
 }

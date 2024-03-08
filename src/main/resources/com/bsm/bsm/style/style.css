@@ -1,87 +1,34 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap')
-
-.roboto-thin {
-  font-family: "Roboto", sans-serif;
-  font-weight: 100;
-  font-style: normal;
+@font-face {
+  src: url('../fonts/RobotoBold.ttf');
 }
 
-.roboto-light {
-  font-family: "Roboto", sans-serif;
-  font-weight: 300;
-  font-style: normal;
+@font-face {
+  src: url('../fonts/RobotoBlack.ttf');
 }
 
-.roboto-regular {
-  font-family: "Roboto", sans-serif;
-  font-weight: 400;
-  font-style: normal;
+@font-face {
+  src: url('../fonts/RobotoRegular.ttf');
 }
 
-.roboto-medium {
-  font-family: "Roboto", sans-serif;
-  font-weight: 500;
-  font-style: normal;
+@font-face {
+  src: url('../fonts/RobotoLight.ttf');
 }
 
-.roboto-bold {
-  font-family: "Roboto", sans-serif;
-  font-weight: 700;
-  font-style: normal;
+@font-face {
+  src: url('../fonts/RobotoMedium.ttf');
 }
 
-.roboto-black {
-  font-family: "Roboto", sans-serif;
-  font-weight: 900;
-  font-style: normal;
-}
-
-.roboto-thin-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 100;
-  font-style: italic;
-}
-
-.roboto-light-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 300;
-  font-style: italic;
-}
-
-.roboto-regular-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 400;
-  font-style: italic;
-}
-
-.roboto-medium-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 500;
-  font-style: italic;
-}
-
-.roboto-bold-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 700;
-  font-style: italic;
-}
-
-.roboto-black-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 900;
-  font-style: italic;
+@font-face {
+  src: url('../fonts/RobotoThin.ttf');
 }
 
 .text {
-  -fx-font-family: "Roboto", sans-serif;
-  -font-weight: 500;
-  -font-style: normal;
   -fx-text-fill: #ff0000;
 }
 
 .sideBarItem {
   -fx-font-size: 16px;
-  -fx-font-weight : 700;
+   -fx-font-family: "Roboto Bold";
   -fx-background-color : none;
 }
 
@@ -98,32 +45,36 @@
   -fx-font-size: 16px !important;
 }
 
-.profile-setting-button-selected {
-  -fx-border-width: 0px 0px 2px;
+.profile-setting-button {
+   -fx-font-family: "Roboto Bold";
+    -fx-border-width: 0px 0px 2px;
+    -fx-font-size: 16px;
 }
 
 .profile-setting-button-employee {
   -fx-text-fill: #F5A11C;
-    -fx-border-color: #F5A11C;
+  -fx-border-color: #F5A11C;
 }
 
  .profile-setting-button-admin {
    -fx-text-fill: #914d2a;
-     -fx-border-color: #914d2a;
+   -fx-border-color: #914d2a;
  }
 
-.text-input {
-  -fx-font-weight: 700;
-}
 
 .error-label {
   -fx-text-fill: #ff0000;
 }
 
 .label-bold {
-  -fx-font-weight: 700;
   -fx-font-size: 14px;
+    -fx-font-family: "Roboto Bold";
 }
+
+.title-form {
+  -fx-font-size: 24px;
+}
+
 
 .password-field-add {
   -fx-background-color: transparent;
@@ -139,11 +90,28 @@
   -fx-border-radius: 5px;
 }
 
-.button-custom {
+.button-custom-admin {
+  -fx-font-family: "Roboto Bold";
   -fx-padding: 1px;
-  -fx-font-weight: 700;
   -fx-font-size: 16px;
   -fx-text-fill: white;
+    -fx-background-color: #914d2a;
+}
+
+.button-custom-admin:hover {
+  -fx-background-color: #6A381E;
+}
+
+.button-custom-employee {
+  -fx-font-family: "Roboto Bold";
+  -fx-padding: 1px;
+  -fx-font-size: 16px;
+  -fx-text-fill: white;
+  -fx-background-color: #F5A11C;
+}
+
+.button-custom-employee:hover {
+  -fx-background-color: #D68C19;
 }
 
 .button-eye {
@@ -157,11 +125,45 @@
   -fx-padding: 5px;
 }
 
-.text-menu-item {
+.text-menu {
+  -fx-font-family: "Roboto Bold";
   -fx-font-size: 16px;
-  -fx-font-family: "Roboto", sans-serif !important;
-  -fx-font-weight: 300 !important;
-  -fx-font-style: italic !important;
+}
+
+.text-menu:focused {
+  -fx-background-color: #f7e4db;
+  -fx-text-fill: #914d2a !important;
+}
+
+
+.text-menu-item-1 {
+  -fx-font-family: "Roboto Black";
+  -fx-font-size: 16px;
+}
+
+.text-menu-item-2 {
+    -fx-font-family: "Roboto Thin";
+    -fx-font-size: 16px;
+}
+
+.text-menu-item-3 {
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 16px;
+}
+
+.text-menu-item-4 {
+    -fx-font-family: "Roboto Regular";
+    -fx-font-size: 16px;
+}
+
+.text-menu-item-5 {
+    -fx-font-family: "Roboto Medium";
+    -fx-font-size: 16px;
+}
+
+.text-menu-item-6 {
+    -fx-font-family: "Roboto Bold";
+    -fx-font-size: 16px;
 }
 
 .text-menu-button {
