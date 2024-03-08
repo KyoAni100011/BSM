@@ -56,7 +56,6 @@ public class ChangePasswordController {
         boolean validNewPassword = validateNewPassword(newPassword, currentPassword);
         boolean validConfirmPassword = validateConfirmPassword(newPassword, confirmPassword);
 
-        try (DataInputStream dataStream = new DataInputStream(new FileInputStream("saveEmailTemp.txt"))) {
 //        String id = null;
         String id = "11115678";
         try (DataInputStream dataStream = new DataInputStream(new FileInputStream("saveIDTemp.txt"))) {
