@@ -66,4 +66,21 @@ public class ValidationUtils {
         }
         return null;
     }
+
+    public static String validatePhone(String phone) {
+        if (phone.isEmpty()) {
+            return "Please enter your phone number.";
+        }
+        if (!phone.matches("^[0-9]{10}$")) {
+            return "Invalid phone number format.";
+        }
+        return null;
+    }
+
+    public static String validateAddress(String address) {
+        if (address.isEmpty()) {
+            return "Please enter your address.";
+        }
+        return null;
+    }
 }

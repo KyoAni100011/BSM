@@ -18,8 +18,8 @@ public class ProfileSettingController {
     @FXML
     private void initialize() {
         try {
-            editProfileButton.getStyleClass().addAll("profile-setting-button-selected", "profile-setting-button-employee");
-            changePasswordButton.getStyleClass().removeAll("profile-setting-button", "profile-setting-button-employee");
+            editProfileButton.getStyleClass().addAll("profile-setting-button", "profile-setting-button-employee");
+            changePasswordButton.getStyleClass().add("profile-setting-button");
             loadPage("editProfile");
         } catch (IOException e) {
             e.printStackTrace();
@@ -28,15 +28,17 @@ public class ProfileSettingController {
 
     @FXML
     private void handleEditProfile(ActionEvent event) throws IOException {
-        editProfileButton.getStyleClass().addAll("profile-setting-button-selected", "profile-setting-button-employee");
-        changePasswordButton.getStyleClass().removeAll("profile-setting-button", "profile-setting-button-employee");
+        editProfileButton.getStyleClass().remove("profile-setting-button-employee");
+        editProfileButton.getStyleClass().add("profile-setting-button-employee");
+        changePasswordButton.getStyleClass().remove("profile-setting-button-employee");
         loadPage("editProfile");
     }
 
     @FXML
     private void handleChangePassword(ActionEvent event) throws IOException {
-        changePasswordButton.getStyleClass().addAll("profile-setting-button-selected", "profile-setting-button-employee");
-        editProfileButton.getStyleClass().removeAll("profile-setting-button", "profile-setting-button-employee");
+        changePasswordButton.getStyleClass().remove("profile-setting-button-employee");
+        changePasswordButton.getStyleClass().add( "profile-setting-button-employee");
+        editProfileButton.getStyleClass().remove( "profile-setting-button-employee");
         loadPage("changePassword");
     }
 
