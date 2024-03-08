@@ -2,7 +2,6 @@ package com.bsm.bsm.utils;
 
 import com.bsm.bsm.App;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -30,13 +29,29 @@ public class SceneSwitch {
     }
 
     private void resizeSceneAndStage(AnchorPane anchorPane) {
-        Scene scene = anchorPane.getScene();
-        if (scene != null) {
-            scene.getWindow().sizeToScene();
-        }
-
+        // Set the resizable property for the stage
         Stage stage = (Stage) anchorPane.getScene().getWindow();
         if (stage != null) {
+            stage.setResizable(true); // Ensure the stage is resizable
+
+            // Set preferred width and height based on the content
+            double prefWidth = anchorPane.getPrefWidth();
+            double prefHeight = anchorPane.getPrefHeight();
+
+            // Ensure the preferred width and height are not zero
+            if (prefWidth > 0 && prefHeight > 0) {
+                stage.setMinWidth(prefWidth);
+                stage.setMinHeight(prefHeight);
+                stage.setMaxWidth(prefWidth);
+                stage.setMaxHeight(prefHeight);
+            }
+
+            // Resize the scene and stage based on the content
+            Scene scene = anchorPane.getScene();
+            if (scene != null) {
+                scene.getWindow().sizeToScene();
+            }
+
             stage.sizeToScene();
         }
     }

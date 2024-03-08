@@ -29,7 +29,7 @@ public class AuthController {
     private Text emailErrorLabel;
 
     @FXML
-    private TextField emailTextField;
+    private TextField idTextField;
 
     @FXML
     private Text passwordErrorText;
@@ -60,7 +60,7 @@ public class AuthController {
 
     private void handleLoginButtonClicked(String role) throws IOException {
         String password = passwordField.getText();
-        String id = emailTextField.getText();
+        String id = idTextField.getText();
         int passwordLength = password.length();
 
         passwordErrorText.setVisible(passwordLength < 8 || passwordLength > 255);
