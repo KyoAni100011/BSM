@@ -75,7 +75,7 @@ public class sidebarController {
 
     @FXML
     void SwitchUserAccount(ActionEvent event) throws IOException {
-        loadPage("userAccount/passwordReset");
+        loadPage("userAccount/userAccount");
     }
 
     @FXML
