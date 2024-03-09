@@ -17,7 +17,7 @@ public class UserAccountController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Node[] nodes = new Node[8];
+        Node[] nodes = new Node[9];
         for (int i = 0; i < nodes.length; i++) {
             try {
                 nodes[i] = (Node) FXMLLoader.load(getClass().getResource("/com/bsm/bsm/view/admin/userAccount/tableItem.fxml"));
