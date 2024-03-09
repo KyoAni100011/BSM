@@ -9,8 +9,8 @@ public class AdminModel extends UserModel {
 
     private List<UserModel> users = new ArrayList<>();
 
-    public AdminModel(String id, String name, String email, String dob, boolean isEnabled) {
-        super(id, name, email, dob, isEnabled);
+    public AdminModel(String id, String name, String email, String dob, String phone, String address, boolean isEnabled) {
+        super(id, name, email, dob, phone, address, isEnabled);
     }
 
     //    View a list of user accounts. Search or sort on the list.
