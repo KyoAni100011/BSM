@@ -96,7 +96,7 @@
       </BorderPane>
       <AnchorPane layoutX="239.0" prefHeight="89.0" prefWidth="827.0">
          <children>
-            <MenuButton layoutX="634.0" layoutY="21.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="140.0" style="-fx-background-color: white;">
+            <MenuButton layoutX="634.0" layoutY="1.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="140.0" style="-fx-background-color: white;">
                <items>
                   <MenuItem fx:id="buttonProfileSetting" mnemonicParsing="false" onAction="#handleProfileSetting" style="-fx-padding: 8px;" styleClass="text-menu" text="Profile setting">
                      <graphic>

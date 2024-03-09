@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Group?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.SVGPath?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.admin.userAccount.UserAccountController">
    <children>
       <VBox alignment="CENTER_LEFT" layoutY="-1.0" prefHeight="600.0" prefWidth="700.0">
          <children>
             <AnchorPane prefHeight="56.0" prefWidth="693.0" style="-fx-background-color: white; -fx-background-radius: 10px;">
                <children>
-                  <Button layoutX="295.0" layoutY="14.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 20px;" text="Filter">
+                  <Button layoutX="300.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 20px;" text="Filter">
                      <graphic>
                         <Group>
                            <children>
@@ -25,7 +21,7 @@
                         </Group>
                      </graphic>
                   </Button>
-                  <Button layoutX="409.0" layoutY="15.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 20px;" text="Add user">
+                  <Button layoutX="410.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 20px;" text="Add user">
                      <graphic>
                         <Group>
                            <children>
@@ -34,7 +30,7 @@
                         </Group>
                      </graphic>
                   </Button>
-                  <Button layoutX="520.0" layoutY="15.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 20px;" text="Update">
+                  <Button layoutX="520.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 20px;" text="Update">
                      <graphic>
                         <Group>
                            <children>
@@ -43,7 +39,7 @@
                         </Group>
                      </graphic>
                   </Button>
-                  <AnchorPane layoutX="25.0" layoutY="14.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #f5f5f5; -fx-background-radius: 20px;">
+                  <AnchorPane layoutX="25.0" layoutY="10.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #f5f5f5; -fx-background-radius: 20px;">
                      <children>
                         <TextField layoutX="29.0" prefHeight="30.0" prefWidth="221.0" promptText="Search" style="-fx-background-color: #f5f5f5; -fx-background-radius: 0px 20px 20px 0px;" />
                         <Group layoutX="-242.0" layoutY="-239.0">
@@ -57,51 +53,51 @@
             </AnchorPane>
             <AnchorPane prefHeight="543.0" prefWidth="700.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" layoutY="11.0" prefHeight="45.0" prefWidth="700.0" style="-fx-background-color: #ff0000; -fx-background-radius: 10px 10px 0px 0px;">
+                  <HBox alignment="CENTER_LEFT" layoutY="11.0" prefHeight="45.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 10px 10px 0px 0px; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: #F3F3F3;">
                      <children>
                         <Label text="Employee">
                            <HBox.margin>
-                              <Insets left="70.0" />
+                              <Insets left="45.0" />
                            </HBox.margin>
                         </Label>
                         <Label text="Admin">
                            <HBox.margin>
-                              <Insets left="70.0" />
+                              <Insets left="90.0" />
                            </HBox.margin>
                         </Label>
                      </children>
                   </HBox>
-                  <VBox layoutY="101.0" prefHeight="449.0" prefWidth="700.0" style="-fx-background-color: #ff0000; -fx-background-radius: 0px 0px 10px 10px;" />
-                  <HBox alignment="CENTER_LEFT" layoutY="56.0" prefHeight="45.0" prefWidth="700.0" style="-fx-background-color: white;">
+                  <VBox fx:id="pnItems" layoutY="101.0" prefHeight="449.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 0px 0px 10px 10px;" />
+                  <HBox alignment="CENTER_LEFT" layoutY="56.0" prefHeight="45.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-color: #F3F3F3; -fx-border-width: 0px 0px 2px 0px;">
                      <children>
-                        <Label text="#">
+                        <Label alignment="CENTER" prefWidth="20.0" text="#">
                            <HBox.margin>
                               <Insets left="30.0" />
                            </HBox.margin>
                         </Label>
-                        <Label text="ID">
+                        <Label alignment="CENTER" prefWidth="100.0" text="ID">
                            <HBox.margin>
-                              <Insets left="50.0" />
+                              <Insets />
                            </HBox.margin>
                         </Label>
-                        <Label text="Employee">
+                        <Label alignment="CENTER" prefWidth="150.0" text="Employee">
                            <HBox.margin>
-                              <Insets left="50.0" />
+                              <Insets />
                            </HBox.margin>
                         </Label>
-                        <Label text="Date of Birth">
+                        <Label alignment="CENTER" prefWidth="100.0" text="Date of Birth">
                            <HBox.margin>
-                              <Insets left="50.0" />
+                              <Insets />
                            </HBox.margin>
                         </Label>
-                        <Label text="Email">
+                        <Label alignment="CENTER" prefWidth="200.0" text="Email">
                            <HBox.margin>
-                              <Insets left="50.0" />
+                              <Insets />
                            </HBox.margin>
                         </Label>
-                        <Label text="Action">
+                        <Label alignment="CENTER" text="Action">
                            <HBox.margin>
-                              <Insets left="100.0" />
+                              <Insets left="20.0" />
                            </HBox.margin>
                         </Label>
                      </children>
