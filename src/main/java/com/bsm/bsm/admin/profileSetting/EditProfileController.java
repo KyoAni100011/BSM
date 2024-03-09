@@ -14,7 +14,6 @@ import javafx.util.StringConverter;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 public class EditProfileController {
 
@@ -32,6 +31,11 @@ public class EditProfileController {
 
     @FXML
     public void initialize() {
+        setupDatePicker();
+        setUserInfo();
+    }
+
+    private void setupDatePicker() {
         // Set the prompt text for the DatePicker
         dobPicker.setPromptText("dd/mm/yyyy");
 
@@ -50,21 +54,18 @@ public class EditProfileController {
 
         // Add event filter to allow only numbers to be entered in the dobPicker with a delay of 500 milliseconds
         dobPicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
+    }
 
+    private void setUserInfo() {
         // Set initial values for other fields
         fullNameField.setText(adminInfo.getName());
         emailTextField.setText(adminInfo.getEmail());
         phoneTextField.setText(adminInfo.getPhone());
         addressTextField.setText(adminInfo.getAddress());
 
-        // Set the initial value for the DatePicker using the admin's DOB
-        try {
-            LocalDate adminDOB = LocalDate.parse(adminInfo.getDob(), dateFormatter);
-            dobPicker.setValue(adminDOB);
-        } catch (DateTimeParseException e) {
-            // Handle the exception if parsing the admin's DOB fails
-            e.printStackTrace(); // Replace with appropriate error handling
-        }
+        String dob = editProfileService.convertDOBFormat(adminInfo.getDob());
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        dobPicker.setValue(LocalDate.parse(dob, dateFormatter));
     }
 
 
@@ -82,6 +83,7 @@ public class EditProfileController {
             if (editProfileService.updateUserProfile(id, fullName, phone, dob, address)) {
                 AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
                 clearInputs();
+                setUserInfo();
             } else {
                 AlertUtils.showAlert("Error", "Profile update failed.", Alert.AlertType.ERROR);
             }
