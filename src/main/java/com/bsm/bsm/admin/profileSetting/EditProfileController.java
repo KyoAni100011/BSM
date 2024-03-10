@@ -16,18 +16,22 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class EditProfileController {
+    @FXML
+    private Label fullNameErrorLabel, dobErrorLabel, phoneErrorLabel, addressErrorLabel;
 
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private final EditProfileService editProfileService = new EditProfileService();
-    @FXML
-    public Button saveChangesButton;
-    private final UserModel adminInfo = UserSingleton.getInstance().getUser();
-    @FXML
-    private Label fullNameErrorLabel, emailErrorLabel, dobErrorLabel, phoneErrorLabel, addressErrorLabel;
     @FXML
     private TextField fullNameField, emailTextField, phoneTextField, addressTextField;
+
     @FXML
     private DatePicker dobPicker;
+
+    @FXML
+    public Button saveChangesButton;
+
+    private final EditProfileService editProfileService = new EditProfileService();
+    private final UserModel adminInfo = UserSingleton.getInstance().getUser();
+
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @FXML
     public void initialize() {
@@ -36,10 +40,8 @@ public class EditProfileController {
     }
 
     private void setupDatePicker() {
-        // Set the prompt text for the DatePicker
         dobPicker.setPromptText("dd/mm/yyyy");
 
-        // Set the date format for the DatePicker
         dobPicker.setConverter(new StringConverter<LocalDate>() {
             @Override
             public String toString(LocalDate date) {
@@ -52,33 +54,30 @@ public class EditProfileController {
             }
         });
 
-        // Add event filter to allow only numbers to be entered in the dobPicker with a delay of 500 milliseconds
         dobPicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
     }
 
     private void setUserInfo() {
-        // Set initial values for other fields
         fullNameField.setText(adminInfo.getName());
         emailTextField.setText(adminInfo.getEmail());
         phoneTextField.setText(adminInfo.getPhone());
         addressTextField.setText(adminInfo.getAddress());
 
         String dob = editProfileService.convertDOBFormat(adminInfo.getDob());
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        dobPicker.setValue(LocalDate.parse(dob, dateFormatter));
+        dobPicker.setValue(LocalDate.parse(dob, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
 
 
     @FXML
     private void handleSaveChanges(ActionEvent event) throws ParseException {
         clearErrorMessages();
+
         String fullName = fullNameField.getText();
-        String email = emailTextField.getText();
         String dob = dobPicker.getEditor().getText();
         String phone = phoneTextField.getText();
         String address = addressTextField.getText();
 
-        if (validateInputs(fullName, email, dob, phone, address)) {
+        if (validateInputs(fullName, dob, phone, address)) {
             String id = UserSingleton.getInstance().getUser().getId();
             if (editProfileService.updateUserProfile(id, fullName, phone, dob, address)) {
                 AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
@@ -90,9 +89,9 @@ public class EditProfileController {
         }
     }
 
-    private boolean validateInputs(String fullName, String email, String dob, String phone, String address) {
+
+    private boolean validateInputs(String fullName, String dob, String phone, String address) {
         String fullNameError = ValidationUtils.validateFullName(fullName);
-        String emailError = ValidationUtils.validateEmail(email);
         String dobError = ValidationUtils.validateDOB(dob);
         String phoneError = ValidationUtils.validatePhone(phone);
         String addressError = ValidationUtils.validateAddress(address);
@@ -113,7 +112,7 @@ public class EditProfileController {
             addressErrorLabel.setText(addressError);
         }
 
-        return fullNameError == null && emailError == null && dobError == null && phoneError == null && addressError == null;
+        return fullNameError == null && dobError == null && phoneError == null && addressError == null;
     }
 
     private void clearErrorMessages() {
@@ -126,6 +125,7 @@ public class EditProfileController {
     private void clearInputs() {
         fullNameField.clear();
         dobPicker.getEditor().clear();
+        setupDatePicker();
         phoneTextField.clear();
         addressTextField.clear();
     }
