@@ -17,7 +17,6 @@ public class AdminModel extends UserModel {
         super();
     }
 
-
     //    View a list of user accounts. Search or sort on the list.
     public List<UserModel> viewUsers() {
         return users;
@@ -34,9 +33,10 @@ public class AdminModel extends UserModel {
         return null;
     }
 
-    public UserModel addNewUser(String name, String email, String password, String dob, boolean isEnabled) {
-        //TODO
-        return null;
+    public UserModel addNewUser(String id, String name, String email, String dob, String phone, String address, boolean isEnabled) {
+        UserModel newUser= new UserModel(id, name, email, dob, phone, address, isEnabled);
+        users.add(newUser);
+        return newUser;
     }
 
     @Override

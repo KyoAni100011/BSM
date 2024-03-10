@@ -84,6 +84,12 @@
                      </image>
                   </ImageView>
                   <Text layoutX="242.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 45px;" text="Welcome to BSM" />
+                  <Label layoutX="52.0" layoutY="199.0" styleClass="text-menu-item-1" text="Roboto Black" />
+                  <Label layoutX="44.0" layoutY="233.0" styleClass="text-menu-item-2" text="Roboto Thin" />
+                  <Label layoutX="48.0" layoutY="266.0" styleClass="text-menu-item-3" text="Roboto Light" />
+                  <Label layoutX="48.0" layoutY="294.0" styleClass="text-menu-item-4" text="Roboto Regular" />
+                  <Label layoutX="48.0" layoutY="319.0" styleClass="text-menu-item-5" text="Roboto Medium" />
+                  <Label layoutX="48.0" layoutY="350.0" styleClass="text-menu-item-6" text="Roboto Bold" />
                </children>
             </AnchorPane>
          </center>

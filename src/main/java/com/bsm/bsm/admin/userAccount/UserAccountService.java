@@ -1,5 +1,6 @@
 package com.bsm.bsm.admin.userAccount;
 
+import com.bsm.bsm.admin.AdminModel;
 import com.bsm.bsm.user.UserModel;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public class UserAccountService {
         this.userAccountDAO = new UserAccountDAO();
     }
 
-    public List<UserModel> getAllUsersInfo() {
+    public AdminModel getAllUsersInfo() {
         return userAccountDAO.getAllUsersInfo();
     }
 }
