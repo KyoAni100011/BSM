@@ -21,6 +21,10 @@ public class UserModel {
         this.isEnabled = isEnabled;
     }
 
+    public UserModel() {
+
+    }
+
     // Getters and setters
 
     public String getId() {

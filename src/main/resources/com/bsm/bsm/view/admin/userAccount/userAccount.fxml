@@ -25,16 +25,7 @@
                         </Group>
                      </graphic>
                   </Button>
-                  <Button layoutX="375.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 20px;" text="Add user">
-                     <graphic>
-                        <Group>
-                           <children>
-                              <SVGPath content="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" scaleX="0.03" scaleY="0.03" />
-                           </children>
-                        </Group>
-                     </graphic>
-                  </Button>
-                  <Button layoutX="465.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 20px;" text="Update">
+                  <Button layoutX="472.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 20px;" text="Update">
                      <graphic>
                         <Group>
                            <children>
@@ -53,11 +44,20 @@
                         </Group>
                      </children>
                   </AnchorPane>
-                  <Button layoutX="555.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" style="-fx-background-radius: 20px;" text="Reset Password">
+                  <Button layoutX="562.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" style="-fx-background-radius: 20px;" text="Reset Password">
                      <graphic>
                         <Group>
                            <children>
                               <SVGPath content="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" scaleX="0.03" scaleY="0.03" />
+                           </children>
+                        </Group>
+                     </graphic>
+                  </Button>
+                  <Button layoutX="374.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="88.0" style="-fx-background-radius: 20px;" text="Add User">
+                     <graphic>
+                        <Group>
+                           <children>
+                              <SVGPath content="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" scaleX="0.028" scaleY="0.028" />
                            </children>
                         </Group>
                      </graphic>
@@ -83,7 +83,7 @@
                   <VBox fx:id="pnItems" layoutY="101.0" prefHeight="449.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 0px 0px 10px 10px;" />
                   <HBox alignment="CENTER_LEFT" layoutY="56.0" prefHeight="45.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-color: #F3F3F3; -fx-border-width: 0px 0px 2px 0px;">
                      <children>
-                        <Label alignment="CENTER" prefWidth="20.0" text="#">
+                        <Label alignment="CENTER" prefWidth="20.0">
                            <HBox.margin>
                               <Insets left="30.0" />
                            </HBox.margin>
@@ -98,19 +98,19 @@
                               <Insets />
                            </HBox.margin>
                         </Label>
-                        <Label alignment="CENTER" prefWidth="100.0" text="Date of Birth">
+                        <Label alignment="CENTER" prefWidth="200.0" text="Email">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                         </Label>
-                        <Label alignment="CENTER" prefWidth="200.0" text="Email">
+                        <Label alignment="CENTER" prefWidth="100.0" text="Last login">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                         </Label>
                         <Label alignment="CENTER" text="Action">
                            <HBox.margin>
-                              <Insets left="20.0" />
+                              <Insets left="30.0" />
                            </HBox.margin>
                         </Label>
                      </children>
