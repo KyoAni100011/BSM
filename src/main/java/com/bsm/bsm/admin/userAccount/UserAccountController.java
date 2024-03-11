@@ -8,15 +8,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class UserAccountController{
-    public Button employeeButton, adminButton;
+    public Button employeeButton, adminButton, addUserButton, passwordResetButton;
     @FXML
     private VBox pnItems = null;
 
@@ -42,6 +46,16 @@ public class UserAccountController{
     private void handleAdminButton(ActionEvent event) throws IOException {
         updateUsersList(".admin@bms.com");
         updateButtonStyle(adminButton);
+    }
+
+    @FXML
+    private void handlePasswordResetButton(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/admin/userAccount/passwordReset.fxml"));
+        Parent root = fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
     }
 
     private void updateButtonStyle(Button activeButton) {
