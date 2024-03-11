@@ -12,8 +12,10 @@ public class UserAccountService {
         this.userAccountDAO = new UserAccountDAO();
     }
 
-    public AdminModel getAllUsersInfo() {
-        List<UserModel> users = userAccountDAO.getAllUsersInfo();
+
+
+    public AdminModel getAllUsersInfo(String excludedUserId) {
+        List<UserModel> users = userAccountDAO.getAllUsersInfo(excludedUserId);
         return new AdminModel(users);
     }
 }

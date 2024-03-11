@@ -2,6 +2,7 @@ package com.bsm.bsm.admin.userAccount;
 
 import com.bsm.bsm.admin.AdminModel;
 import com.bsm.bsm.user.UserModel;
+import com.bsm.bsm.user.UserSingleton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +21,7 @@ public class UserAccountController{
     private VBox pnItems = null;
 
     private final UserAccountService userAccountService = new UserAccountService();
+    private final UserModel adminInfo = UserSingleton.getInstance().getUser();
 
     @FXML
     private void initialize() throws IOException {
@@ -59,7 +61,7 @@ public class UserAccountController{
         // Clear current items in the list
         pnItems.getChildren().clear();
 
-        AdminModel adminModel = userAccountService.getAllUsersInfo();
+        AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId());
         for (UserModel user : adminModel.viewUsers()) {
             if (user.getEmail().endsWith(emailSuffix) || emailSuffix.isEmpty()) {
                 try {

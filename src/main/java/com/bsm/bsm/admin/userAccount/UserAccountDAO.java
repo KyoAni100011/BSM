@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserAccountDAO {
-    private static final String GET_ALL_USERS_INFO_QUERY = "SELECT * FROM user";
 
-    public List<UserModel> getAllUsersInfo() {
+    public List<UserModel> getAllUsersInfo(String excludedUserId) {
     List<UserModel> userModel = new ArrayList<>();
+        String GET_ALL_USERS_INFO_QUERY = "SELECT * FROM user WHERE id != " + excludedUserId;
 
         DatabaseConnection.executeQuery(GET_ALL_USERS_INFO_QUERY, resultSet -> {
             while (resultSet.next()) {
