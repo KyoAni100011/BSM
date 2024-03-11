@@ -6,7 +6,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox fx:controller="com.bsm.bsm.admin.userAccount.TableItemController" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: #F3F3F3;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: #F3F3F3;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.admin.userAccount.TableItemController">
    <children>
       <RadioButton mnemonicParsing="false" prefWidth="20.0">
          <HBox.margin>
@@ -33,7 +33,7 @@
             <Insets />
          </HBox.margin>
       </Label>
-      <Button fx:id="isEnabledLabel" alignment="CENTER" mnemonicParsing="false" style="-fx-background-radius: 20px;" text="Enable">
+      <Button fx:id="isEnabledLabel" alignment="CENTER" mnemonicParsing="false" prefHeight="24.0" prefWidth="73.0" styleClass="text-menu-item-5" text="Disable">
          <HBox.margin>
             <Insets left="20.0" />
          </HBox.margin>
