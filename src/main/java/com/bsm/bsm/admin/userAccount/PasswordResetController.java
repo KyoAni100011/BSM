@@ -1,5 +1,6 @@
 package com.bsm.bsm.admin.userAccount;
 
+import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.ValidationUtils;
 import javafx.fxml.FXML;
@@ -17,6 +18,8 @@ public class PasswordResetController {
     @FXML
     private Label emailErrorLabel, passwordErrorLabel;
 
+    private final PasswordResetService passwordResetService = new PasswordResetService();
+
     @FXML
     public void initialize() {
         clearErrorMessages();
@@ -25,10 +28,24 @@ public class PasswordResetController {
     @FXML
     private void handleResetButtonAction(ActionEvent event) {
         clearErrorMessages();
-        String email = emailField.getText();
+        String userEmail = emailField.getText();
         String password = customPassword.getText();
 
-        if (validateInputs(email, password)) {
+        if (validateInputs(userEmail, password)) {
+            //check user not admin by email
+            String adminEmail = UserSingleton.getInstance().getUser().getEmail();
+            if (adminEmail.equals(userEmail)) {
+                emailErrorLabel.setText("Admin cannot reset password for themselves.");
+                return;
+            }
+
+            if (!passwordResetService.hasUserExist(userEmail)) {
+                emailErrorLabel.setText("User does not exist.");
+                return;
+            }
+
+            String adminID = UserSingleton.getInstance().getUser().getId();
+            passwordResetService.updatePassword(adminID, userEmail, password);
             AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
             clearInputs();
             clearErrorMessages();

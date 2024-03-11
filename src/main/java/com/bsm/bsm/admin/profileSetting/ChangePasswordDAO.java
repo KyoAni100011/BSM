@@ -14,10 +14,6 @@ public class ChangePasswordDAO {
     private final String QUERY_CHANGE_PASSWORD = "UPDATE user SET password = ? WHERE id = ?";
     private final String QUERY_PASSWORD = "SELECT PASSWORD FROM user WHERE id = ?";
 
-    public static void main(String[] args) {
-        ChangePasswordDAO changePasswordDAO = new ChangePasswordDAO();
-        System.out.println(changePasswordDAO.changePassword("11115678", "01062003", "01052003"));
-    }
     public String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
