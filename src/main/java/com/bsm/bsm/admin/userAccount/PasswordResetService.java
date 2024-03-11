@@ -8,16 +8,17 @@ public class PasswordResetService {
         passwordResetDAO = new PasswordResetDAO();
     }
 
-    public boolean updatePassword(String adminID, String userID, String password) {
+    public boolean updatePassword(String adminID, String userEmail, String password) {
+        System.out.println(userEmail);
         if (!isAdmin(adminID)) {
             return false;
         }
 
         if (password.isEmpty()) {
-            return updatePasswordUsingDOB(userID);
+            return updatePasswordUsingDOB(userEmail);
         }
 
-        return passwordResetDAO.updatePassword(hashPassword(password), userID);
+        return passwordResetDAO.updatePassword(hashPassword(password), userEmail);
     }
 
     public boolean isAdmin(String id) {
