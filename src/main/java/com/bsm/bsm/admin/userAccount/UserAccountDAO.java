@@ -12,8 +12,8 @@ public class UserAccountDAO {
     private static final String GET_ALL_USERS_INFO_QUERY = "SELECT * FROM user";
 
     
-    public AdminModel getAllUsersInfo() {
-    AdminModel adminModel = new AdminModel();
+    public List<UserModel> getAllUsersInfo() {
+    List<UserModel> userModel = new ArrayList<>();
 
         DatabaseConnection.executeQuery(GET_ALL_USERS_INFO_QUERY, resultSet -> {
             while (resultSet.next()) {
@@ -24,10 +24,10 @@ public class UserAccountDAO {
                 String phone = resultSet.getString("telephone");
                 String address = resultSet.getString("address");
                 boolean isEnabled = resultSet.getBoolean("isEnabled");
-                adminModel.addNewUser(id, name, email, dob, phone, address, isEnabled);
+                userModel.add(new UserModel(id, name, email, dob, phone, address, isEnabled));
             }
         });
 
-        return adminModel;
+        return userModel;
 }
 }

@@ -13,6 +13,7 @@ public class UserAccountService {
     }
 
     public AdminModel getAllUsersInfo() {
-        return userAccountDAO.getAllUsersInfo();
+        List<UserModel> users = userAccountDAO.getAllUsersInfo();
+        return new AdminModel(users);
     }
 }
