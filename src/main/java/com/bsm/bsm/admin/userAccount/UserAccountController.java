@@ -30,10 +30,6 @@ public class UserAccountController{
         updateButtonStyle(employeeButton);
     }
 
-//    @Override
-//    public void initialize(URL location, ResourceBundle resources) {
-//    }
-
     @FXML
     private void handleEmployeeButton(ActionEvent event) throws IOException {
         updateUsersList(".employee@bms.com");

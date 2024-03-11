@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 
 public class TableItemController {
     public Button isEnabled;
+    public Button isEnabledLabel;
     @FXML
     private Label idLabel, nameLabel, emailLabel, lastLoginLabel,dobLabel, phoneLabel, addressLabel;
 
@@ -19,6 +20,6 @@ public class TableItemController {
 //        dobLabel.setText(user.getDob());
 //        phoneLabel.setText(user.getPhone());
 //        addressLabel.setText(user.getAddress());
-//        isEnabledLabel.setText(user.isEnabled() ? "Enabled" : "Disabled");
+        isEnabledLabel.setText(user.isEnabled() ? "Enabled" : "Disabled");
     }
 }

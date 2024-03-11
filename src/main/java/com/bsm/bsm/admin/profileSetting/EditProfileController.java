@@ -15,6 +15,8 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import static com.bsm.bsm.utils.DateUtils.convertDOBFormat;
+
 public class EditProfileController {
     @FXML
     private Label fullNameErrorLabel, dobErrorLabel, phoneErrorLabel, addressErrorLabel;
@@ -63,7 +65,7 @@ public class EditProfileController {
         phoneTextField.setText(adminInfo.getPhone());
         addressTextField.setText(adminInfo.getAddress());
 
-        String dob = editProfileService.convertDOBFormat(adminInfo.getDob());
+        String dob = convertDOBFormat(adminInfo.getDob());
         dobPicker.setValue(LocalDate.parse(dob, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
 
