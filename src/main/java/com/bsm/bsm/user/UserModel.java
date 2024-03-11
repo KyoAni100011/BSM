@@ -11,6 +11,27 @@ public class UserModel {
     private String phone;
     private boolean isEnabled;
 
+    // temp code
+    private String lastLogin;
+
+    public UserModel(String id, String name, String email, String dob, String phone, String address, boolean isEnabled, String lastLogin) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.dob = dob;
+        this.phone = phone;
+        this.address = address;
+        this.isEnabled = isEnabled;
+        this.lastLogin = lastLogin;
+    }
+
+    public String getLastLogin() {
+        return lastLogin;
+    }
+
+    // temp code
+
+
     public UserModel(String id, String name, String email, String dob, String phone, String address, boolean isEnabled) {
         this.id = id;
         this.name = name;

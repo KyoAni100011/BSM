@@ -28,7 +28,7 @@
             <Insets />
          </HBox.margin>
       </Label>
-      <Label fx:id="dobLabel" alignment="CENTER" prefWidth="100.0" text="24/04/2003">
+      <Label fx:id="lastLoginLabel" alignment="CENTER" prefWidth="100.0" text="24/04/2003">
          <HBox.margin>
             <Insets />
          </HBox.margin>

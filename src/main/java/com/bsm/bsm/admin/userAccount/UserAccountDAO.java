@@ -11,7 +11,6 @@ import java.util.List;
 public class UserAccountDAO {
     private static final String GET_ALL_USERS_INFO_QUERY = "SELECT * FROM user";
 
-    
     public List<UserModel> getAllUsersInfo() {
     List<UserModel> userModel = new ArrayList<>();
 
@@ -24,7 +23,8 @@ public class UserAccountDAO {
                 String phone = resultSet.getString("telephone");
                 String address = resultSet.getString("address");
                 boolean isEnabled = resultSet.getBoolean("isEnabled");
-                userModel.add(new UserModel(id, name, email, dob, phone, address, isEnabled));
+                String lastLogin = resultSet.getString("lastLogin");
+                userModel.add(new UserModel(id, name, email, dob, phone, address, isEnabled, lastLogin));
             }
         });
 
