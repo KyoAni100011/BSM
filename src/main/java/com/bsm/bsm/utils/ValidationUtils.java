@@ -72,7 +72,7 @@ public class ValidationUtils {
             return "Please enter your phone number.";
         }
         if (!phone.matches("^[0-9]{10}$")) {
-            return "Invalid phone number format.";
+            return "Please enter a 10-digit phone number..";
         }
         return null;
     }

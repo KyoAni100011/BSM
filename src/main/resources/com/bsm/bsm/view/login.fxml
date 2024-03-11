@@ -21,7 +21,7 @@
                   <TextField fx:id="idTextField" layoutX="49.0" layoutY="143.0" prefHeight="31.0" prefWidth="216.0" promptText="Enter your id" styleClass="input-field-add" />
                   <VBox layoutX="50.0" layoutY="178.0">
                      <children>
-                        <Text fx:id="emailErrorLabel" fill="red" text="Invalid email format." visible="false" />
+                        <Text fx:id="idErrorLabel" fill="red" text="Invalid id format." visible="false" />
                      </children>
                   </VBox>
                   <Label layoutX="109.0" layoutY="51.0" style="-fx-font-size: 32px; -fx-font-weight: bold;" text="Log in">

@@ -1,6 +1,7 @@
 package com.bsm.bsm.admin.profileSetting;
 
 import com.bsm.bsm.user.UserSingleton;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +11,7 @@ import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 
 public class ProfileSettingController {
 
@@ -18,14 +20,10 @@ public class ProfileSettingController {
     public BorderPane bp;
 
     @FXML
-    private void initialize() {
-        try {
-            editProfileButton.getStyleClass().addAll("profile-setting-button", "profile-setting-button-admin");
-            changePasswordButton.getStyleClass().add("profile-setting-button");
-            loadPage("editProfile");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void initialize() throws IOException {
+        editProfileButton.getStyleClass().addAll("profile-setting-button", "profile-setting-button-admin");
+        changePasswordButton.getStyleClass().add("profile-setting-button");
+        loadPage("editProfile");
     }
 
     @FXML
@@ -45,13 +43,7 @@ public class ProfileSettingController {
     }
 
     private void loadPage(String page) throws IOException {
-        String resourcePath = "/com/bsm/bsm/view/admin/profileSetting/" + page + ".fxml";
-        URL resourceUrl = getClass().getResource(resourcePath);
-        if (resourceUrl == null) {
-            System.err.println("Resource not found: " + resourcePath);
-            return;
-        }
-        Parent root = FXMLLoader.load(resourceUrl);
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/bsm/bsm/view/admin/profileSetting/" + page + ".fxml")));
         bp.setCenter(root);
     }
 }

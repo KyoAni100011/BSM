@@ -1,98 +1,103 @@
 package com.bsm.bsm.admin.profileSetting;
 
+import com.bsm.bsm.user.UserModel;
 import com.bsm.bsm.user.UserSingleton;
+import com.bsm.bsm.utils.AlertUtils;
+import com.bsm.bsm.utils.NumericValidationUtils;
+import com.bsm.bsm.utils.ValidationUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
+import javafx.util.StringConverter;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import javafx.util.StringConverter;
-import javafx.scene.input.KeyEvent;
-import javafx.event.EventHandler;
-
-import com.bsm.bsm.utils.ValidationUtils;
-import com.bsm.bsm.utils.AlertUtils;
-import com.bsm.bsm.utils.NumericValidationUtils;
 
 public class EditProfileController {
     @FXML
-    public Button saveChangesButton;
-    @FXML
-    private Label fullNameErrorLabel, emailErrorLabel, dobErrorLabel, phoneErrorLabel, addressErrorLabel;
+    private Label fullNameErrorLabel, dobErrorLabel, phoneErrorLabel, addressErrorLabel;
+
     @FXML
     private TextField fullNameField, emailTextField, phoneTextField, addressTextField;
+
     @FXML
     private DatePicker dobPicker;
 
+    @FXML
+    public Button saveChangesButton;
+
     private final EditProfileService editProfileService = new EditProfileService();
+    private final UserModel adminInfo = UserSingleton.getInstance().getUser();
+
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @FXML
     public void initialize() {
-        // Set the prompt text for the DatePicker
+        setupDatePicker();
+        setUserInfo();
+    }
+
+    private void setupDatePicker() {
         dobPicker.setPromptText("dd/mm/yyyy");
 
-        // Set the date format for the DatePicker
         dobPicker.setConverter(new StringConverter<LocalDate>() {
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
             @Override
             public String toString(LocalDate date) {
-                if (date != null) {
-                    return dateFormatter.format(date);
-                } else {
-                    return "";
-                }
+                return date != null ? dateFormatter.format(date) : "";
             }
 
             @Override
             public LocalDate fromString(String string) {
-                if (string != null && !string.isEmpty()) {
-                    return LocalDate.parse(string, dateFormatter);
-                } else {
-                    return null;
-                }
+                return string != null && !string.isEmpty() ? LocalDate.parse(string, dateFormatter) : null;
             }
         });
 
-        // Add event filter to allow only numbers to be entered in the dobPicker
         dobPicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
     }
 
+    private void setUserInfo() {
+        fullNameField.setText(adminInfo.getName());
+        emailTextField.setText(adminInfo.getEmail());
+        phoneTextField.setText(adminInfo.getPhone());
+        addressTextField.setText(adminInfo.getAddress());
+
+        String dob = editProfileService.convertDOBFormat(adminInfo.getDob());
+        dobPicker.setValue(LocalDate.parse(dob, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+    }
+
+
     @FXML
-    private void handleSaveChanges(ActionEvent event) {
+    private void handleSaveChanges(ActionEvent event) throws ParseException {
         clearErrorMessages();
+
         String fullName = fullNameField.getText();
-        String email = emailTextField.getText();
         String dob = dobPicker.getEditor().getText();
         String phone = phoneTextField.getText();
         String address = addressTextField.getText();
 
-        if (validateInputs(fullName, email, dob, phone, address)) {
+        if (validateInputs(fullName, dob, phone, address)) {
             String id = UserSingleton.getInstance().getUser().getId();
-            if (editProfileService.updateUserProfile(id, fullName, phone, dob, address)){
+            if (editProfileService.updateUserProfile(id, fullName, phone, dob, address)) {
                 AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
-
                 clearInputs();
+                setUserInfo();
             } else {
                 AlertUtils.showAlert("Error", "Profile update failed.", Alert.AlertType.ERROR);
             }
         }
     }
 
-    private boolean validateInputs(String fullName, String email, String dob, String phone, String address) {
+
+    private boolean validateInputs(String fullName, String dob, String phone, String address) {
         String fullNameError = ValidationUtils.validateFullName(fullName);
-        String emailError = ValidationUtils.validateEmail(email);
         String dobError = ValidationUtils.validateDOB(dob);
         String phoneError = ValidationUtils.validatePhone(phone);
         String addressError = ValidationUtils.validateAddress(address);
 
         if (fullNameError != null) {
             fullNameErrorLabel.setText(fullNameError);
-        }
-
-        if (emailError != null) {
-            emailErrorLabel.setText(emailError);
         }
 
         if (dobError != null) {
@@ -107,11 +112,10 @@ public class EditProfileController {
             addressErrorLabel.setText(addressError);
         }
 
-        return fullNameError == null && emailError == null && dobError == null && phoneError == null && addressError == null;
+        return fullNameError == null && dobError == null && phoneError == null && addressError == null;
     }
 
     private void clearErrorMessages() {
-        emailErrorLabel.setText("");
         fullNameErrorLabel.setText("");
         dobErrorLabel.setText("");
         phoneErrorLabel.setText("");
@@ -120,8 +124,8 @@ public class EditProfileController {
 
     private void clearInputs() {
         fullNameField.clear();
-        emailTextField.clear();
         dobPicker.getEditor().clear();
+        setupDatePicker();
         phoneTextField.clear();
         addressTextField.clear();
     }

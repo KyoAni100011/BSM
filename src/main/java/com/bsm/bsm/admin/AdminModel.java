@@ -9,8 +9,16 @@ public class AdminModel extends UserModel {
 
     private List<UserModel> users = new ArrayList<>();
 
-    public AdminModel(String id, String name, String email, String dob, boolean isEnabled) {
-        super(id, name, email, dob, isEnabled);
+    public AdminModel(String id, String name, String email, String dob, String phone, String address, boolean isEnabled) {
+        super(id, name, email, dob, phone, address, isEnabled);
+    }
+
+    public AdminModel(List<UserModel> users) {
+        this.users = users;
+    }
+
+    public AdminModel() {
+        super();
     }
 
     //    View a list of user accounts. Search or sort on the list.
@@ -29,9 +37,10 @@ public class AdminModel extends UserModel {
         return null;
     }
 
-    public UserModel addNewUser(String name, String email, String password, String dob, boolean isEnabled) {
-        //TODO
-        return null;
+    public UserModel addNewUser(String id, String name, String email, String dob, String phone, String address, boolean isEnabled) {
+        UserModel newUser= new UserModel(id, name, email, dob, phone, address, isEnabled);
+        users.add(newUser);
+        return newUser;
     }
 
     @Override
