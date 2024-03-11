@@ -117,7 +117,7 @@
       </VBox>
       <HBox alignment="CENTER" layoutY="549.0" prefHeight="50.0" prefWidth="700.0" spacing="15.0">
          <children>
-            <Button mnemonicParsing="false" text=" Previous">
+            <Button fx:id="previousPaginationButton" mnemonicParsing="false" text=" Previous">
                <graphic>
                   <Group>
                      <children>
@@ -129,12 +129,12 @@
                   <Insets />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="1" />
-            <Button mnemonicParsing="false" text="2" />
-            <Button mnemonicParsing="false" text="3" />
-            <Button mnemonicParsing="false" text="4" />
-            <Button mnemonicParsing="false" text="5" />
-            <Button contentDisplay="RIGHT" mnemonicParsing="false" text="Next ">
+            <Button fx:id="firstPaginationButton" mnemonicParsing="false" text="1" />
+            <Button fx:id="secondPaginationButton" mnemonicParsing="false" text="2" />
+            <Button fx:id="thirdPaginationButton" mnemonicParsing="false" text="3" />
+            <Button fx:id="fourthPaginationButton" mnemonicParsing="false" text="4" />
+            <Button fx:id="fifthPaginationButton"  mnemonicParsing="false" text="5" />
+            <Button fx:id="nextPaginationButton" contentDisplay="RIGHT" mnemonicParsing="false" text="Next ">
                <graphic>
                   <Group>
                      <children>
