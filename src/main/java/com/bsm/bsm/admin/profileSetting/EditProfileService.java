@@ -21,15 +21,7 @@ public class EditProfileService {
 
     public boolean updateUserProfile(String id, String fullName, String telephone, String dob, String address) throws ParseException {
         String formattedDOB = DateUtils.formatDOB(dob);
-        updateUserInformation(fullName, telephone, formattedDOB, address);
         return editProfileDAO.updateProfile(id, fullName, telephone, formattedDOB, address);
     }
 
-    private void updateUserInformation(String fullName, String telephone, String dob, String address) throws ParseException {
-        UserModel user = UserSingleton.getInstance().getUser();
-        user.setName(fullName);
-        user.setPhone(telephone);
-        user.setAddress(address);
-        user.setDob(dob);
-    }
 }

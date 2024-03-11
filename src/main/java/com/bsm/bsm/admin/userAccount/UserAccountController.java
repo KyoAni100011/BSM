@@ -2,24 +2,30 @@ package com.bsm.bsm.admin.userAccount;
 
 import com.bsm.bsm.admin.AdminModel;
 import com.bsm.bsm.user.UserModel;
+import com.bsm.bsm.user.UserSingleton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class UserAccountController{
-    public Button employeeButton, adminButton;
+    public Button employeeButton, adminButton, addUserButton, passwordResetButton;
     @FXML
     private VBox pnItems = null;
 
     private final UserAccountService userAccountService = new UserAccountService();
+    private final UserModel adminInfo = UserSingleton.getInstance().getUser();
 
     @FXML
     private void initialize() throws IOException {
@@ -42,6 +48,16 @@ public class UserAccountController{
         updateButtonStyle(adminButton);
     }
 
+    @FXML
+    private void handlePasswordResetButton(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/admin/userAccount/passwordReset.fxml"));
+        Parent root = fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+    }
+
     private void updateButtonStyle(Button activeButton) {
         if (activeButton == employeeButton) {
             employeeButton.getStyleClass().remove("profile-setting-button-admin");
@@ -59,7 +75,7 @@ public class UserAccountController{
         // Clear current items in the list
         pnItems.getChildren().clear();
 
-        AdminModel adminModel = userAccountService.getAllUsersInfo();
+        AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId());
         for (UserModel user : adminModel.viewUsers()) {
             if (user.getEmail().endsWith(emailSuffix) || emailSuffix.isEmpty()) {
                 try {

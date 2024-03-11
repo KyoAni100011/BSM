@@ -12,6 +12,8 @@ import javafx.scene.control.Alert;
 
 public class PasswordResetController {
     @FXML
+    public Label textNote;
+    @FXML
     private TextField emailField, customPassword;
     @FXML
     private Button resetButton;
@@ -23,6 +25,8 @@ public class PasswordResetController {
     @FXML
     public void initialize() {
         clearErrorMessages();
+        textNote.setVisible(true);
+        customPassword.setOnMouseClicked(event -> textNote.setVisible(false)); // Add event handler to hide textNote when customPassword is clicked
     }
 
     @FXML
