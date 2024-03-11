@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class UserAccountController implements Initializable {
+public class UserAccountController{
     public Button employeeButton, adminButton;
     @FXML
     private VBox pnItems = null;
@@ -30,9 +30,9 @@ public class UserAccountController implements Initializable {
         updateButtonStyle(employeeButton);
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-    }
+//    @Override
+//    public void initialize(URL location, ResourceBundle resources) {
+//    }
 
     @FXML
     private void handleEmployeeButton(ActionEvent event) throws IOException {
