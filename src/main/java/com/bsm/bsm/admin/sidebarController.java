@@ -49,7 +49,8 @@ public class sidebarController {
     @FXML
     public void initialize()
     {
-        nameText.setText(adminInfo.getName().split(" ")[1]);
+        String []displayName = adminInfo.getName().split(" ");
+        nameText.setText(displayName[displayName.length-1]);
         roleText.setText("Admin");
     }
 

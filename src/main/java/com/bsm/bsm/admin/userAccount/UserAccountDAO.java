@@ -2,18 +2,13 @@ package com.bsm.bsm.admin.userAccount;
 
 import com.bsm.bsm.admin.AdminModel;
 import com.bsm.bsm.database.DatabaseConnection;
-import com.bsm.bsm.user.UserModel;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UserAccountDAO {
     private static final String GET_ALL_USERS_INFO_QUERY = "SELECT * FROM user";
 
-    
+
     public AdminModel getAllUsersInfo() {
-    AdminModel adminModel = new AdminModel();
+        AdminModel adminModel = new AdminModel();
 
         DatabaseConnection.executeQuery(GET_ALL_USERS_INFO_QUERY, resultSet -> {
             while (resultSet.next()) {
@@ -29,5 +24,5 @@ public class UserAccountDAO {
         });
 
         return adminModel;
-}
+    }
 }

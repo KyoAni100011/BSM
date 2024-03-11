@@ -1,12 +1,10 @@
 package com.bsm.bsm.user;
 
 public class UserModel {
-
     private String id;
     private String name;
     private String email;
     private String dob;
-
     private String address;
     private String phone;
     private boolean isEnabled;
@@ -24,8 +22,6 @@ public class UserModel {
     public UserModel() {
 
     }
-
-    // Getters and setters
 
     public String getId() {
         return id;

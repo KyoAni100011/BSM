@@ -65,6 +65,7 @@ public class UserAccountController implements Initializable {
 
         AdminModel adminModel = userAccountService.getAllUsersInfo();
         for (UserModel user : adminModel.viewUsers()) {
+            System.out.println(user);
             if (user.getEmail().endsWith(emailSuffix) || emailSuffix.isEmpty()) {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader();
