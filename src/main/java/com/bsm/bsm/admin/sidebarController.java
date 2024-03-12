@@ -50,7 +50,7 @@ public class sidebarController {
     public void initialize()
     {
         nameText.setText(adminInfo.getName().split(" ")[1]);
-        roleText.setText("Admin");
+        roleText.setText("Employee");
     }
 
     @FXML
