@@ -1,2 +1,4 @@
-package com.bsm.bsm.admin.userAccount;public class AddUserController {
+package com.bsm.bsm.admin.userAccount;
+
+public class AddUserController {
 }

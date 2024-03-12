@@ -21,7 +21,7 @@
                         </Group>
                      </graphic>
                   </Button>
-                  <Button layoutX="472.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 20px;" text="Update">
+                  <Button fx:id="updateUserButton" layoutX="472.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleAddUserButton" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 20px;" text="Update">
                      <graphic>
                         <Group>
                            <children>

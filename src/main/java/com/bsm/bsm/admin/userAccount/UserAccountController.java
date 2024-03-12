@@ -89,9 +89,15 @@ public class UserAccountController implements Initializable {
 
         }
     }
+
+    @FXML void handleAddUserButton(ActionEvent event) throws IOException {
+        FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/addUser");
+    }
     static  void handleTableItemSelection(UserModel user) {
         selectedUser = user; // Store the selected user
     }
+
+
     @FXML
     private void handlePaginationButton(ActionEvent event) {
         Button buttonClicked = (Button) event.getSource();
