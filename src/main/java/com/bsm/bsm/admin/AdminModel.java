@@ -13,6 +13,10 @@ public class AdminModel extends UserModel {
         super(id, name, email, dob, phone, address, isEnabled);
     }
 
+    public AdminModel(List<UserModel> users) {
+        this.users = users;
+    }
+
     public AdminModel() {
         super();
     }

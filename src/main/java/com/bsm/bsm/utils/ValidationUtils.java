@@ -4,7 +4,7 @@ public class ValidationUtils {
     public static String validateEmail(String email) {
         if (email.isEmpty()) {
             return "Please enter your email.";
-        } else if (!email.endsWith("@bms.com")) {
+        } else if (!email.toLowerCase().endsWith("@bms.com")) {
             return "Email domain must be '@bms.com'.";
         } else {
             String[] parts = email.split("@");
@@ -15,7 +15,7 @@ public class ValidationUtils {
                 if (usernameParts.length != 2) {
                     return "Username must have the format '.<role>'.";
                 } else {
-                    if (!usernameParts[0].isEmpty() && (usernameParts[1].equals("admin") || usernameParts[1].equals("employee"))) {
+                    if (!usernameParts[0].isEmpty() && (usernameParts[1].equalsIgnoreCase("admin") || usernameParts[1].equalsIgnoreCase("employee"))) {
                         return null; // Email is valid
                     } else {
                         return "Invalid username role.";
@@ -78,7 +78,7 @@ public class ValidationUtils {
     }
 
     public static String validateAddress(String address) {
-        if (address.isEmpty()) {
+        if (address == null || address.isEmpty()) {
             return "Please enter your address.";
         }
         return null;
