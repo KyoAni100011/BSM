@@ -5,11 +5,13 @@ import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.ValidationUtils;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
+import javafx.stage.Stage;
 
 public class PasswordResetController {
     @FXML
@@ -59,6 +61,9 @@ public class PasswordResetController {
             AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
             clearInputs();
             clearErrorMessages();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            // Close the stage
+            stage.close();
         }
     }
 

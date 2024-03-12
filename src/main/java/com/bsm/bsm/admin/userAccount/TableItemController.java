@@ -8,7 +8,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,6 +37,12 @@ public class TableItemController {
     }
     public void setToggleGroup(ToggleGroup toggleGroup) {
         radioButton.setToggleGroup(toggleGroup);
+    }
+    @FXML
+    private void handleTableItemDoubleClick(MouseEvent event) throws IOException {
+        if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
+            UserAccountController.handleTableItemDoubleClick(userModel);
+        }
     }
     public void setUserModel(UserModel user) {
         this.userModel = user;
@@ -64,8 +73,8 @@ public class TableItemController {
         // Set the last login label with the time elapsed
         lastLoginLabel.setText(timeElapsed );
 
-        isEnabledLabel.setText(user.isEnabled() ? "Enable" : "Disable");
-        if(user.isEnabled()){
+        isEnabledLabel.setText(user.isEnabled() ? "Disable" : "Enable");
+        if(!user.isEnabled()){
             isEnabledLabel.getStyleClass().add("enable-button");
         }else {
             isEnabledLabel.getStyleClass().add("disable-button");
