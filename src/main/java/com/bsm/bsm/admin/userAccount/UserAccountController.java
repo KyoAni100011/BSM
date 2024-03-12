@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -42,6 +43,7 @@ public class UserAccountController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         employeeButton.getStyleClass().add("profile-setting-button");
         adminButton.getStyleClass().add("profile-setting-button");
+
         // Load all users initially
         try {
             updateUsersList(".employee@bms.com");
@@ -56,6 +58,8 @@ public class UserAccountController implements Initializable {
         thirdPaginationButton.setOnAction(this::handlePaginationButton);
         fourthPaginationButton.setOnAction(this::handlePaginationButton);
         fifthPaginationButton.setOnAction(this::handlePaginationButton);
+        previousPaginationButton.setOnAction(this::handlePaginationButton);
+        nextPaginationButton.setOnAction(this::handlePaginationButton);
     }
 
     @FXML
@@ -107,11 +111,26 @@ public class UserAccountController implements Initializable {
         }
     }
 
+    public List<UserModel> generateDataAdminModel(int size) {
+        List<UserModel> userList = new ArrayList<>();
+
+        // Generate sample user data
+        for (int i = 0; i < size; i++) {
+            UserModel user = new UserModel(String.valueOf(i), "User " + i, "user" + i + ".employee@bms.com", "06-01-2003", "123456789", "1234 Main St, City, State, 12345", true, "2024-03-11 18:36:04");
+            userList.add(user);
+        }
+
+        return userList;
+    }
+
     private void updateUsersList(String emailSuffix) throws IOException {
         pnItems.getChildren().clear();
 
-        AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId());
-        List<UserModel> users = adminModel.viewUsers();
+//        AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId());
+//        List<UserModel> users = adminModel.viewUsers();
+        List<UserModel> users = generateDataAdminModel(25);
+        System.out.println(users.size());
+        System.out.println(users.get(0).getEmail());
         int startIndex = (currentPage - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, users.size());
 
@@ -134,6 +153,7 @@ public class UserAccountController implements Initializable {
         // Clear all pagination buttons visibility
         for (Button button : Arrays.asList(firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton)) {
             button.setVisible(false);
+            button.setManaged(false);
         }
 
         // Show pagination buttons based on the current page and total pages
@@ -170,7 +190,10 @@ public class UserAccountController implements Initializable {
             }
         } else {
             previousPaginationButton.setVisible(false);
+            previousPaginationButton.setManaged(false);
             nextPaginationButton.setVisible(false);
+            nextPaginationButton.setManaged(false);
         }
+
     }
 }
