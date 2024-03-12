@@ -8,7 +8,7 @@
 
 <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: #F3F3F3;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.admin.userAccount.TableItemController">
    <children>
-      <RadioButton mnemonicParsing="false" prefWidth="20.0">
+      <RadioButton fx:id="radioButton" onAction="#handleRadioButtonClick" mnemonicParsing="false" prefWidth="20.0">
          <HBox.margin>
             <Insets left="30.0" />
          </HBox.margin>

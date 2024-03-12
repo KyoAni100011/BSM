@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -31,12 +32,14 @@ public class UserAccountController implements Initializable {
     public Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
     @FXML
     private VBox pnItems = null;
-
+    private final ToggleGroup toggleGroup = new ToggleGroup();
     private final UserAccountService userAccountService = new UserAccountService();
     private final UserModel adminInfo = UserSingleton.getInstance().getUser();
-
+    private final AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId());
+    private final List<UserModel> users = adminModel.viewUsers();
     private int currentPage = 1;
     private final int itemsPerPage = 9;
+    private static UserModel selectedUser; // Variable to store the selected user
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -72,9 +75,19 @@ public class UserAccountController implements Initializable {
 
     @FXML
     private void handlePasswordResetButton(ActionEvent event) throws IOException {
-        FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/passwordReset");
-    }
+        PasswordResetController controller = new PasswordResetController();
+        if (selectedUser != null) {
+            System.out.println(selectedUser.toString());
+            PasswordResetController.handleTableItemSelection(selectedUser);
+            FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/passwordReset");
+        } else {
+            System.out.println("no user");
 
+        }
+    }
+    static  void handleTableItemSelection(UserModel user) {
+        selectedUser = user; // Store the selected user
+    }
     @FXML
     private void handlePaginationButton(ActionEvent event) {
         Button buttonClicked = (Button) event.getSource();
@@ -110,8 +123,6 @@ public class UserAccountController implements Initializable {
     private void updateUsersList(String emailSuffix) throws IOException {
         pnItems.getChildren().clear();
 
-        AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId());
-        List<UserModel> users = adminModel.viewUsers();
         int startIndex = (currentPage - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, users.size());
 
@@ -121,6 +132,7 @@ public class UserAccountController implements Initializable {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/admin/userAccount/tableItem.fxml"));
                 Node item = fxmlLoader.load();
                 TableItemController tableItemController = fxmlLoader.getController();
+                tableItemController.setToggleGroup(toggleGroup);
                 tableItemController.setUserModel(user);
                 pnItems.getChildren().add(item);
             }

@@ -2,8 +2,12 @@ package com.bsm.bsm.admin.userAccount;
 
 import com.bsm.bsm.user.UserModel;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -11,13 +15,28 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class TableItemController {
+    @FXML
+    public RadioButton radioButton;
+    @FXML
     public Button isEnabled;
+    @FXML
     public Button isEnabledLabel;
     @FXML
     private Label idLabel, nameLabel, emailLabel, lastLoginLabel,dobLabel, phoneLabel, addressLabel;
+    private UserModel userModel;
+    @FXML
+    private void handleRadioButtonClick() {
+        UserAccountController.handleTableItemSelection(userModel);
+    }
+    @FXML
+    private void initialize() {
 
-
+    }
+    public void setToggleGroup(ToggleGroup toggleGroup) {
+        radioButton.setToggleGroup(toggleGroup);
+    }
     public void setUserModel(UserModel user) {
+        this.userModel = user;
         idLabel.setText(user.getId());
         nameLabel.setText(user.getName());
         emailLabel.setText(user.getEmail());

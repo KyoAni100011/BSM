@@ -1,5 +1,6 @@
 package com.bsm.bsm.admin.userAccount;
 
+import com.bsm.bsm.user.UserModel;
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.ValidationUtils;
@@ -19,14 +20,19 @@ public class PasswordResetController {
     private Button resetButton;
     @FXML
     private Label emailErrorLabel, passwordErrorLabel;
+    private static UserModel selectedUser; // Variable to store the selected user
 
     private final PasswordResetService passwordResetService = new PasswordResetService();
 
     @FXML
     public void initialize() {
+        emailField.setText(selectedUser.getEmail());
         clearErrorMessages();
         textNote.setVisible(true);
         customPassword.setOnMouseClicked(event -> textNote.setVisible(false)); // Add event handler to hide textNote when customPassword is clicked
+    }
+    static  void handleTableItemSelection(UserModel user) {
+        selectedUser = user; // Store the selected user
     }
 
     @FXML
