@@ -111,4 +111,7 @@ public class UserModel {
                 ", isEnabled=" + isEnabled +
                 '}';
     }
+
+    public void setLastLogin(String s) {
+    }
 }

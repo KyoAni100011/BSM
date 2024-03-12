@@ -12,12 +12,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -31,17 +33,20 @@ public class UserAccountController implements Initializable {
     public Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
     @FXML
     private VBox pnItems = null;
-
+    private final ToggleGroup toggleGroup = new ToggleGroup();
     private final UserAccountService userAccountService = new UserAccountService();
     private final UserModel adminInfo = UserSingleton.getInstance().getUser();
-
+    private final AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId());
+    private final List<UserModel> users = adminModel.viewUsers();
     private int currentPage = 1;
     private final int itemsPerPage = 9;
+    private static UserModel selectedUser; // Variable to store the selected user
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         employeeButton.getStyleClass().add("profile-setting-button");
         adminButton.getStyleClass().add("profile-setting-button");
+
         // Load all users initially
         try {
             updateUsersList(".employee@bms.com");
@@ -56,6 +61,8 @@ public class UserAccountController implements Initializable {
         thirdPaginationButton.setOnAction(this::handlePaginationButton);
         fourthPaginationButton.setOnAction(this::handlePaginationButton);
         fifthPaginationButton.setOnAction(this::handlePaginationButton);
+        previousPaginationButton.setOnAction(this::handlePaginationButton);
+        nextPaginationButton.setOnAction(this::handlePaginationButton);
     }
 
     @FXML
@@ -72,13 +79,35 @@ public class UserAccountController implements Initializable {
 
     @FXML
     private void handlePasswordResetButton(ActionEvent event) throws IOException {
-        FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/passwordReset");
+        PasswordResetController controller = new PasswordResetController();
+        if (selectedUser != null) {
+            System.out.println(selectedUser.toString());
+            PasswordResetController.handleTableItemSelection(selectedUser);
+            FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/passwordReset");
+        } else {
+            System.out.println("no user");
+
+        }
     }
+
+    @FXML void handleAddUserButton(ActionEvent event) throws IOException {
+        FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/addUser");
+    }
+    static  void handleTableItemSelection(UserModel user) {
+        selectedUser = user; // Store the selected user
+    }
+
 
     @FXML
     private void handlePaginationButton(ActionEvent event) {
         Button buttonClicked = (Button) event.getSource();
-        currentPage = Integer.parseInt(buttonClicked.getText());
+        if (buttonClicked == previousPaginationButton) {
+            currentPage--;
+        } else if (buttonClicked == nextPaginationButton) {
+            currentPage++;
+        } else {
+            currentPage = Integer.parseInt(buttonClicked.getText());
+        }
         // Call updateUsersList with the appropriate email suffix
         if (employeeButton.getStyleClass().contains("profile-setting-button-admin")) {
             try {
@@ -107,11 +136,14 @@ public class UserAccountController implements Initializable {
         }
     }
 
+
     private void updateUsersList(String emailSuffix) throws IOException {
         pnItems.getChildren().clear();
 
         AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId());
         List<UserModel> users = adminModel.viewUsers();
+        System.out.println(users.size());
+        System.out.println(users.get(0).getEmail());
         int startIndex = (currentPage - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, users.size());
 
@@ -121,6 +153,7 @@ public class UserAccountController implements Initializable {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/admin/userAccount/tableItem.fxml"));
                 Node item = fxmlLoader.load();
                 TableItemController tableItemController = fxmlLoader.getController();
+                tableItemController.setToggleGroup(toggleGroup);
                 tableItemController.setUserModel(user);
                 pnItems.getChildren().add(item);
             }
@@ -134,6 +167,8 @@ public class UserAccountController implements Initializable {
         // Clear all pagination buttons visibility
         for (Button button : Arrays.asList(firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton)) {
             button.setVisible(false);
+            button.setManaged(false);
+            button.getStyleClass().add("pagination-button-admin");
         }
 
         // Show pagination buttons based on the current page and total pages
@@ -141,36 +176,107 @@ public class UserAccountController implements Initializable {
             int startPage = Math.max(1, Math.min(currentPage - 2, totalPages - 4));
             int endPage = Math.min(startPage + 4, totalPages);
 
-            previousPaginationButton.setVisible(currentPage > 1);
-            nextPaginationButton.setVisible(currentPage < totalPages);
+            previousPaginationButton.setDisable(!(currentPage > 1));
+            nextPaginationButton.setDisable(!(currentPage < totalPages));
 
             for (int i = startPage; i <= endPage; i++) {
                 Button button;
-                switch (i - startPage) {
-                    case 0:
-                        button = firstPaginationButton;
-                        break;
-                    case 1:
-                        button = secondPaginationButton;
-                        break;
-                    case 2:
-                        button = thirdPaginationButton;
-                        break;
-                    case 3:
-                        button = fourthPaginationButton;
-                        break;
-                    case 4:
-                        button = fifthPaginationButton;
-                        break;
-                    default:
-                        throw new IllegalStateException("Unexpected value: " + (i - startPage));
+                if(totalPages > 5 && startPage <6){
+                    switch (i - startPage) {
+                        case 0:
+                            button = firstPaginationButton;
+                            button.setText(String.valueOf(i));
+                            break;
+                        case 1:
+                            button = secondPaginationButton;
+                            button.setDisable(false);
+                            button.setText(String.valueOf(i));
+                            break;
+                        case 2:
+                            button = thirdPaginationButton;
+                            button.setText(String.valueOf(i));
+                            break;
+                        case 3:
+                            button = fourthPaginationButton;
+                            button.setText("...");
+                            button.setDisable(true);
+                            break;
+                        case 4:
+                            button = fifthPaginationButton;
+                            button.setText(String.valueOf(totalPages));
+                            break;
+                        default:
+                            throw new IllegalStateException("Unexpected value: " + (i - startPage));
+                    }
+                }else if(totalPages > 5 && startPage >= 6){
+                    switch (i - startPage) {
+                        case 0:
+                            button = firstPaginationButton;
+                            button.setText(String.valueOf(1));
+                            break;
+                        case 1:
+                            button = secondPaginationButton;
+                            button.setText("...");
+                            button.setDisable(true);
+                            break;
+                        case 2:
+                            button = thirdPaginationButton;
+                            button.setText(String.valueOf(i));
+                            break;
+                        case 3:
+                            button = fourthPaginationButton;
+                            button.setDisable(false);
+                            button.setText(String.valueOf(i));
+                            break;
+                        case 4:
+                            button = fifthPaginationButton;
+                            button.setText(String.valueOf(i));
+                            break;
+                        default:
+                            throw new IllegalStateException("Unexpected value: " + (i - startPage));
+                    }
                 }
-                button.setText(String.valueOf(i));
+                else{
+                    switch (i - startPage) {
+                        case 0:
+                            button = firstPaginationButton;
+                            break;
+                        case 1:
+                            button = secondPaginationButton;
+                            button.setDisable(false);
+                            break;
+                        case 2:
+                            button = thirdPaginationButton;
+                            break;
+                        case 3:
+                            button = fourthPaginationButton;
+                            break;
+                        case 4:
+                            button = fifthPaginationButton;
+                            break;
+                        default:
+                            throw new IllegalStateException("Unexpected value: " + (i - startPage));
+                    }
+                    button.setText(String.valueOf(i));
+                }
+
+                button.setManaged(true);
                 button.setVisible(true);
+
+
+                if (i == currentPage) {
+                    button.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
+                } else {
+                    button.setStyle(null);
+                }
             }
         } else {
-            previousPaginationButton.setVisible(false);
-            nextPaginationButton.setVisible(false);
+            previousPaginationButton.setDisable(true);
+            firstPaginationButton.setText("1");
+            firstPaginationButton.setVisible(true);
+            firstPaginationButton.setManaged(true);
+            firstPaginationButton.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
+            nextPaginationButton.setDisable(true);
         }
     }
 }

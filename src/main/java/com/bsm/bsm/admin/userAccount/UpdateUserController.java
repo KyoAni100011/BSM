@@ -14,6 +14,8 @@ import com.bsm.bsm.utils.ValidationUtils;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.NumericValidationUtils;
 
+import static com.bsm.bsm.utils.DateUtils.convertDOBFormat;
+
 public class UpdateUserController {
     @FXML
     public Button saveChangesButton;
@@ -23,39 +25,40 @@ public class UpdateUserController {
     private TextField fullNameField, phoneTextField, addressTextField;
     @FXML
     private DatePicker dobPicker;
+    @FXML
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private final UpdateUserService updateUserService = new UpdateUserService();
 
     @FXML
     public void initialize() {
         // Set the prompt text for the DatePicker
+        setupDatePicker();
+        setUserInfo();
+    }
+    private void setupDatePicker() {
         dobPicker.setPromptText("dd/mm/yyyy");
 
-        // Set the date format for the DatePicker
         dobPicker.setConverter(new StringConverter<LocalDate>() {
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
             @Override
             public String toString(LocalDate date) {
-                if (date != null) {
-                    return dateFormatter.format(date);
-                } else {
-                    return "";
-                }
+                return date != null ? dateFormatter.format(date) : "";
             }
 
             @Override
             public LocalDate fromString(String string) {
-                if (string != null && !string.isEmpty()) {
-                    return LocalDate.parse(string, dateFormatter);
-                } else {
-                    return null;
-                }
+                return string != null && !string.isEmpty() ? LocalDate.parse(string, dateFormatter) : null;
             }
         });
 
-        // Add event filter to allow only numbers to be entered in the dobPicker
         dobPicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
+    }
+    private void setUserInfo() {
+        fullNameField.setText("Nguyen Van A");
+        phoneTextField.setText("0000000000");
+        addressTextField.setText("59 NVC");
+        String dob = convertDOBFormat("2003-06-01");
+        dobPicker.setValue(LocalDate.parse(dob, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
 
     @FXML
@@ -117,5 +120,6 @@ public class UpdateUserController {
         dobPicker.getEditor().clear();
         phoneTextField.clear();
         addressTextField.clear();
+        setupDatePicker();
     }
 }

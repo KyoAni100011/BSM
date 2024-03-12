@@ -1,5 +1,6 @@
 package com.bsm.bsm.utils;
 
+import com.bsm.bsm.user.UserModel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
