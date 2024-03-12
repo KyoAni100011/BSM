@@ -64,10 +64,7 @@ public class AuthController {
         String password = passwordField.getText();
         String id = idTextField.getText();
         int passwordLength = password.length();
-        boolean checkWrongField = false;
-        if(passwordLength < 8 || passwordLength > 255 || id.isEmpty()){
-            checkWrongField = true;
-        }
+        boolean checkWrongField = passwordLength < 8 || passwordLength > 255 || id.isEmpty();
         passwordErrorText.setVisible(passwordLength < 8 || passwordLength > 255);
         idErrorLabel.setVisible(id.isEmpty());
         String fxmlPath = "";
@@ -77,7 +74,6 @@ public class AuthController {
                 if(!checkWrongField){
                    AlertUtils.showAlert("Error", "Invalid username or password.", Alert.AlertType.ERROR);
                 }
-                System.out.println("Invalid username or password.");
                 return;
             }
             fxmlPath = "/com/bsm/bsm/view/admin/adminMainScreen.fxml";
@@ -94,7 +90,6 @@ public class AuthController {
             if(!checkWrongField){
                 AlertUtils.showAlert("Error", "Invalid username or password.", Alert.AlertType.ERROR);
             }
-            System.out.println("Invalid role.");
             return;
         }
 
@@ -103,7 +98,6 @@ public class AuthController {
             if(!checkWrongField){
                 AlertUtils.showAlert("Error", "Invalid username or password.", Alert.AlertType.ERROR);
             }
-            System.out.println("Invalid username or password.");
             return;
         }
 

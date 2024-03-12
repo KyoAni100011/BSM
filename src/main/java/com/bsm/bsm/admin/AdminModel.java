@@ -2,6 +2,7 @@ package com.bsm.bsm.admin;
 
 import com.bsm.bsm.user.UserModel;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +10,8 @@ public class AdminModel extends UserModel {
 
     private List<UserModel> users = new ArrayList<>();
 
-    public AdminModel(String id, String name, String email, String dob, String phone, String address, boolean isEnabled) {
-        super(id, name, email, dob, phone, address, isEnabled);
+    public AdminModel(String id, String name, String email, String dob, String phone, String address, boolean isEnabled, String lastLogin) {
+        super(id, name, email, dob, phone, address, isEnabled, lastLogin);
     }
 
     public AdminModel(List<UserModel> users) {

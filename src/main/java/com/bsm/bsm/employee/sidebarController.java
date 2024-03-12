@@ -22,7 +22,7 @@ import java.util.Objects;
 
 
 public class sidebarController {
-    public UserModel adminInfo = UserSingleton.getInstance().getUser();
+    public UserModel employeeInfo = UserSingleton.getInstance().getUser();
     public MenuItem buttonProfileSetting, buttonLogOut;
 
     @FXML
@@ -57,8 +57,10 @@ public class sidebarController {
 
     public void initialize()
     {
-        nameText.setText(adminInfo.getName().split(" ")[1]);
-        roleText.setText("Admin");
+        nameText.setText(employeeInfo.getName().split(" ")[1]);
+        if (employeeInfo instanceof EmployeeModel) {
+            roleText.setText("Employee");
+        }
     }
 
 

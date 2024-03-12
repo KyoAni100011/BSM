@@ -1,5 +1,6 @@
 package com.bsm.bsm.admin;
 
+import com.bsm.bsm.employee.EmployeeModel;
 import com.bsm.bsm.user.UserModel;
 import com.bsm.bsm.user.UserSingleton;
 import javafx.event.ActionEvent;
@@ -50,7 +51,9 @@ public class sidebarController {
     public void initialize()
     {
         nameText.setText(adminInfo.getName().split(" ")[1]);
-        roleText.setText("Admin");
+        if (adminInfo instanceof AdminModel) {
+            roleText.setText("Admin");
+        }
     }
 
     @FXML
@@ -72,7 +75,6 @@ public class sidebarController {
     void SwitchRevenueByEmployee(ActionEvent event) throws IOException {
 //        loadPage("revenueByEmployee/revenueByEmployee");
         loadPage("userAccount/passwordReset");
-
     }
 
     @FXML
