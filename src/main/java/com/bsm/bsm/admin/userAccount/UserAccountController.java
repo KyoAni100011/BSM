@@ -3,6 +3,7 @@ package com.bsm.bsm.admin.userAccount;
 import com.bsm.bsm.admin.AdminModel;
 import com.bsm.bsm.user.UserModel;
 import com.bsm.bsm.user.UserSingleton;
+import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
@@ -28,11 +30,14 @@ public class UserAccountController implements Initializable {
     @FXML
     public Button employeeButton, adminButton;
     @FXML
-    public Button addUserButton, passwordResetButton;
+    public Button addUserButton, passwordResetButton, updateUserButton;
     @FXML
     public Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
     @FXML
     private VBox pnItems = null;
+    @FXML
+    private static UserModel selectedUser; // Variable to store the selected user
+
     private final ToggleGroup toggleGroup = new ToggleGroup();
     private final UserAccountService userAccountService = new UserAccountService();
     private final UserModel adminInfo = UserSingleton.getInstance().getUser();
@@ -40,7 +45,7 @@ public class UserAccountController implements Initializable {
     private final List<UserModel> users = adminModel.viewUsers();
     private int currentPage = 1;
     private final int itemsPerPage = 9;
-    private static UserModel selectedUser; // Variable to store the selected user
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -79,13 +84,32 @@ public class UserAccountController implements Initializable {
 
     @FXML
     private void handlePasswordResetButton(ActionEvent event) throws IOException {
-        PasswordResetController controller = new PasswordResetController();
         if (selectedUser != null) {
-            System.out.println(selectedUser.toString());
             PasswordResetController.handleTableItemSelection(selectedUser);
             FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/passwordReset");
         } else {
-            System.out.println("no user");
+            AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
+        }
+    }
+    @FXML
+    private void handleUpdateUserButton(ActionEvent event) throws IOException {
+        if (selectedUser != null) {
+            UpdateUserController.handleTableItemSelection(selectedUser);
+            FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/updateUser");
+        } else {
+            AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
+        }
+    }
+    @FXML
+    private void handleAddUserButton(ActionEvent event) throws IOException {
+
+    }
+    public static void handleTableItemDoubleClick(UserModel user) throws IOException {
+        if (user != null) {
+            UserDetailController.handleTableItemSelection(user);
+            FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/userDetail");
+        } else {
+            AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
 
         }
     }

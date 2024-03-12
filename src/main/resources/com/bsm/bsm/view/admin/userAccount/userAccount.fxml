@@ -21,7 +21,7 @@
                         </Group>
                      </graphic>
                   </Button>
-                  <Button fx:id="updateUserButton" layoutX="472.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleAddUserButton" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 20px;" text="Update">
+                  <Button fx:id="updateUserButton" onAction="#handleUpdateUserButton" layoutX="472.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 20px;" text="Update">
                      <graphic>
                         <Group>
                            <children>
@@ -49,7 +49,7 @@
                         </Group>
                      </graphic>
                   </Button>
-                  <Button fx:id="addUserButton" layoutX="374.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="88.0" style="-fx-background-radius: 20px;" text="Add User">
+                  <Button fx:id="addUserButton" onAction="#handleAddUserButton" layoutX="374.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="88.0" style="-fx-background-radius: 20px;" text="Add User">
                      <graphic>
                         <Group>
                            <children>

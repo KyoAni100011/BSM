@@ -1,11 +1,18 @@
 package com.bsm.bsm.admin.userAccount;
 
+import com.bsm.bsm.user.UserModel;
+import com.bsm.bsm.user.UserSingleton;
+import com.bsm.bsm.utils.DateUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.scene.input.KeyEvent;
 import javafx.event.EventHandler;
@@ -26,6 +33,9 @@ public class UpdateUserController {
     @FXML
     private DatePicker dobPicker;
     @FXML
+    private static UserModel selectedUser; // Variable to store the selected user
+
+    @FXML
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private final UpdateUserService updateUserService = new UpdateUserService();
@@ -36,6 +46,10 @@ public class UpdateUserController {
         setupDatePicker();
         setUserInfo();
     }
+    static  void handleTableItemSelection(UserModel user) {
+        selectedUser = user; // Store the selected user
+    }
+
     private void setupDatePicker() {
         dobPicker.setPromptText("dd/mm/yyyy");
 
@@ -54,15 +68,21 @@ public class UpdateUserController {
         dobPicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
     }
     private void setUserInfo() {
-        fullNameField.setText("Nguyen Van A");
-        phoneTextField.setText("0000000000");
-        addressTextField.setText("59 NVC");
-        String dob = convertDOBFormat("2003-06-01");
+        fullNameField.setText(selectedUser.getName());
+        phoneTextField.setText(selectedUser.getPhone());
+        addressTextField.setText(selectedUser.getAddress());
+        String dob = convertDOBFormat(selectedUser.getDob());
         dobPicker.setValue(LocalDate.parse(dob, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
-
+    private void updateUserInformation(String fullName, String telephone, String dob, String address) throws ParseException {
+        String formattedDOB = DateUtils.formatDOB(dob);
+        selectedUser.setName(fullName);
+        selectedUser.setPhone(telephone);
+        selectedUser.setAddress(address);
+        selectedUser.setDob(formattedDOB);
+    }
     @FXML
-    private void handleSaveChanges(ActionEvent event) {
+    private void handleSaveChanges(ActionEvent event) throws ParseException {
         clearErrorMessages();
         String fullName = fullNameField.getText();
         String dob = dobPicker.getEditor().getText();
@@ -71,11 +91,14 @@ public class UpdateUserController {
 
         if (validateInputs(fullName, dob, phone, address)) {
             // need to call ID
-            String id = "11115678";
+            String id = selectedUser.getId();
             if (updateUserService.updateUserProfile(id, fullName, phone, dob, address)){
                 AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
-
+                updateUserInformation(fullName, phone, dob, address);
                 clearInputs();
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                // Close the stage
+                stage.close();
             } else {
                 AlertUtils.showAlert("Error", "Profile update failed.", Alert.AlertType.ERROR);
             }
@@ -122,4 +145,5 @@ public class UpdateUserController {
         addressTextField.clear();
         setupDatePicker();
     }
+
 }
