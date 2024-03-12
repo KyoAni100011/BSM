@@ -82,7 +82,13 @@ public class UserAccountController implements Initializable {
     @FXML
     private void handlePaginationButton(ActionEvent event) {
         Button buttonClicked = (Button) event.getSource();
-        currentPage = Integer.parseInt(buttonClicked.getText());
+        if (buttonClicked == previousPaginationButton) {
+            currentPage--;
+        } else if (buttonClicked == nextPaginationButton) {
+            currentPage++;
+        } else {
+            currentPage = Integer.parseInt(buttonClicked.getText());
+        }
         // Call updateUsersList with the appropriate email suffix
         if (employeeButton.getStyleClass().contains("profile-setting-button-admin")) {
             try {
@@ -128,7 +134,7 @@ public class UserAccountController implements Initializable {
 
 //        AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId());
 //        List<UserModel> users = adminModel.viewUsers();
-        List<UserModel> users = generateDataAdminModel(25);
+        List<UserModel> users = generateDataAdminModel(90);
         System.out.println(users.size());
         System.out.println(users.get(0).getEmail());
         int startIndex = (currentPage - 1) * itemsPerPage;
@@ -186,7 +192,13 @@ public class UserAccountController implements Initializable {
                         throw new IllegalStateException("Unexpected value: " + (i - startPage));
                 }
                 button.setText(String.valueOf(i));
+                button.setManaged(true);
                 button.setVisible(true);
+                if (i == currentPage) {
+                    button.getStyleClass().add("pagination-button-admin");
+                } else {
+                    button.getStyleClass().remove("pagination-button-admin");
+                }
             }
         } else {
             previousPaginationButton.setVisible(false);
