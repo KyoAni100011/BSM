@@ -11,9 +11,19 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import com.bsm.bsm.user.UserModel;
+import com.bsm.bsm.user.UserSingleton;
+import javafx.scene.control.MenuItem;
+import com.bsm.bsm.utils.FXMLLoaderHelper;
+import javafx.scene.text.Text;
+
+import java.io.IOException;
+import java.util.Objects;
 
 
 public class sidebarController {
+    public UserModel adminInfo = UserSingleton.getInstance().getUser();
+    public MenuItem buttonProfileSetting, buttonLogOut;
 
     @FXML
     private Button book;
@@ -35,9 +45,22 @@ public class sidebarController {
 
     @FXML
     private Button importSheet;
+    @FXML
+    private Text roleText;
+
+    @FXML
+    private Text nameText;
 
     @FXML
     private Button order;
+
+
+    public void initialize()
+    {
+        nameText.setText(adminInfo.getName().split(" ")[1]);
+        roleText.setText("Admin");
+    }
+
 
     @FXML
     void SwitchBook(ActionEvent event) throws IOException {
@@ -72,6 +95,11 @@ public class sidebarController {
     @FXML
     void handleLogOut(ActionEvent event) throws IOException {
         FXMLLoaderHelper.loadFXML((Stage) bp.getScene().getWindow(), "login");
+    }
+
+    @FXML
+    void handleProfileSetting(ActionEvent event) throws IOException {
+        loadPage("profileSetting/profileSetting");
     }
 
     private void loadPage(String page) throws IOException {
