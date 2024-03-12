@@ -130,24 +130,12 @@ public class UserAccountController implements Initializable {
         }
     }
 
-    public List<UserModel> generateDataAdminModel(int size) {
-        List<UserModel> userList = new ArrayList<>();
-
-        // Generate sample user data
-        for (int i = 0; i < size; i++) {
-            UserModel user = new UserModel(String.valueOf(i), "User " + i, "user" + i + ".employee@bms.com", "06-01-2003", "123456789", "1234 Main St, City, State, 12345", true, "2024-03-11 18:36:04");
-            userList.add(user);
-        }
-
-        return userList;
-    }
 
     private void updateUsersList(String emailSuffix) throws IOException {
         pnItems.getChildren().clear();
 
-//        AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId());
-//        List<UserModel> users = adminModel.viewUsers();
-        List<UserModel> users = generateDataAdminModel(90);
+        AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId());
+        List<UserModel> users = adminModel.viewUsers();
         System.out.println(users.size());
         System.out.println(users.get(0).getEmail());
         int startIndex = (currentPage - 1) * itemsPerPage;
@@ -174,6 +162,7 @@ public class UserAccountController implements Initializable {
         for (Button button : Arrays.asList(firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton)) {
             button.setVisible(false);
             button.setManaged(false);
+            button.getStyleClass().add("pagination-button-admin");
         }
 
         // Show pagination buttons based on the current page and total pages
@@ -181,45 +170,107 @@ public class UserAccountController implements Initializable {
             int startPage = Math.max(1, Math.min(currentPage - 2, totalPages - 4));
             int endPage = Math.min(startPage + 4, totalPages);
 
-            previousPaginationButton.setVisible(currentPage > 1);
-            nextPaginationButton.setVisible(currentPage < totalPages);
+            previousPaginationButton.setDisable(!(currentPage > 1));
+            nextPaginationButton.setDisable(!(currentPage < totalPages));
 
             for (int i = startPage; i <= endPage; i++) {
                 Button button;
-                switch (i - startPage) {
-                    case 0:
-                        button = firstPaginationButton;
-                        break;
-                    case 1:
-                        button = secondPaginationButton;
-                        break;
-                    case 2:
-                        button = thirdPaginationButton;
-                        break;
-                    case 3:
-                        button = fourthPaginationButton;
-                        break;
-                    case 4:
-                        button = fifthPaginationButton;
-                        break;
-                    default:
-                        throw new IllegalStateException("Unexpected value: " + (i - startPage));
+                if(totalPages > 5 && startPage <6){
+                    switch (i - startPage) {
+                        case 0:
+                            button = firstPaginationButton;
+                            button.setText(String.valueOf(i));
+                            break;
+                        case 1:
+                            button = secondPaginationButton;
+                            button.setDisable(false);
+                            button.setText(String.valueOf(i));
+                            break;
+                        case 2:
+                            button = thirdPaginationButton;
+                            button.setText(String.valueOf(i));
+                            break;
+                        case 3:
+                            button = fourthPaginationButton;
+                            button.setText("...");
+                            button.setDisable(true);
+                            break;
+                        case 4:
+                            button = fifthPaginationButton;
+                            button.setText(String.valueOf(totalPages));
+                            break;
+                        default:
+                            throw new IllegalStateException("Unexpected value: " + (i - startPage));
+                    }
+                }else if(totalPages > 5 && startPage >= 6){
+                    switch (i - startPage) {
+                        case 0:
+                            button = firstPaginationButton;
+                            button.setText(String.valueOf(1));
+                            break;
+                        case 1:
+                            button = secondPaginationButton;
+                            button.setText("...");
+                            button.setDisable(true);
+                            break;
+                        case 2:
+                            button = thirdPaginationButton;
+                            button.setText(String.valueOf(i));
+                            break;
+                        case 3:
+                            button = fourthPaginationButton;
+                            button.setDisable(false);
+                            button.setText(String.valueOf(i));
+                            break;
+                        case 4:
+                            button = fifthPaginationButton;
+                            button.setText(String.valueOf(i));
+                            break;
+                        default:
+                            throw new IllegalStateException("Unexpected value: " + (i - startPage));
+                    }
                 }
-                button.setText(String.valueOf(i));
+                else{
+                    switch (i - startPage) {
+                        case 0:
+                            button = firstPaginationButton;
+                            break;
+                        case 1:
+                            button = secondPaginationButton;
+                            button.setDisable(false);
+                            break;
+                        case 2:
+                            button = thirdPaginationButton;
+                            break;
+                        case 3:
+                            button = fourthPaginationButton;
+                            break;
+                        case 4:
+                            button = fifthPaginationButton;
+                            break;
+                        default:
+                            throw new IllegalStateException("Unexpected value: " + (i - startPage));
+                    }
+                    button.setText(String.valueOf(i));
+                }
+
                 button.setManaged(true);
                 button.setVisible(true);
+
+
                 if (i == currentPage) {
-                    button.getStyleClass().add("pagination-button-admin");
+                    button.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
                 } else {
-                    button.getStyleClass().remove("pagination-button-admin");
+                    button.setStyle(null);
                 }
             }
         } else {
-            previousPaginationButton.setVisible(false);
-            previousPaginationButton.setManaged(false);
-            nextPaginationButton.setVisible(false);
-            nextPaginationButton.setManaged(false);
+            previousPaginationButton.setDisable(true);
+            firstPaginationButton.setText("1");
+            firstPaginationButton.setVisible(true);
+            firstPaginationButton.setManaged(true);
+            firstPaginationButton.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
+            nextPaginationButton.setDisable(true);
         }
-
     }
 }

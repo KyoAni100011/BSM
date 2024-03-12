@@ -186,5 +186,5 @@
 }
 
 .pagination-button-admin {
-  -fx-background-color: #914d2a;
+    -fx-background-color: transparent;
 }
