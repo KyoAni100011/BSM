@@ -175,6 +175,7 @@
   -fx-font-family: "Roboto Medium";
    -fx-font-size: 12px;
 }
+
 .disable-button{
   -fx-background-radius: 20px;
   -fx-background-color: #FEF5D6;
@@ -182,4 +183,8 @@
   -fx-border-radius: 20px;
   -fx-font-family: "Roboto Medium";
   -fx-font-size: 12px;
+}
+
+.pagination-button-admin {
+    -fx-background-color: transparent;
 }
