@@ -5,16 +5,13 @@ import com.bsm.bsm.user.UserModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class UserAccountController implements Initializable {
+public class UserAccountController{
     public Button employeeButton, adminButton;
     @FXML
     private VBox pnItems = null;
@@ -26,12 +23,10 @@ public class UserAccountController implements Initializable {
         employeeButton.getStyleClass().add("profile-setting-button");
         adminButton.getStyleClass().add("profile-setting-button");
         // Load all users initially
+        System.out.println("Banana1");
         updateUsersList(".employee@bms.com");
         updateButtonStyle(employeeButton);
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("Banana2");
     }
 
     @FXML
