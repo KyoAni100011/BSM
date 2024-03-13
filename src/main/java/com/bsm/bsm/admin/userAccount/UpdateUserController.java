@@ -33,8 +33,9 @@ public class UpdateUserController {
     @FXML
     private DatePicker dobPicker;
     @FXML
-    private static UserModel selectedUser; // Variable to store the selected user
-
+    private static String email; // Variable to store the selected user
+    @FXML
+    private UserModel userModel;
     @FXML
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -46,8 +47,8 @@ public class UpdateUserController {
         setupDatePicker();
         setUserInfo();
     }
-    static  void handleTableItemSelection(UserModel user) {
-        selectedUser = user; // Store the selected user
+    static  void handleTableItemSelection(String userEmail) {
+        email = userEmail; // Store the selected user
     }
 
     private void setupDatePicker() {
@@ -68,18 +69,19 @@ public class UpdateUserController {
         dobPicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
     }
     private void setUserInfo() {
-        fullNameField.setText(selectedUser.getName());
-        phoneTextField.setText(selectedUser.getPhone());
-        addressTextField.setText(selectedUser.getAddress());
-        String dob = convertDOBFormat(selectedUser.getDob());
+        userModel = UpdateUserService.getUserProfile(email);
+        fullNameField.setText(userModel.getName());
+        phoneTextField.setText(userModel.getPhone());
+        addressTextField.setText(userModel.getAddress());
+        String dob = convertDOBFormat(userModel.getDob());
         dobPicker.setValue(LocalDate.parse(dob, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
     private void updateUserInformation(String fullName, String telephone, String dob, String address) throws ParseException {
         String formattedDOB = DateUtils.formatDOB(dob);
-        selectedUser.setName(fullName);
-        selectedUser.setPhone(telephone);
-        selectedUser.setAddress(address);
-        selectedUser.setDob(formattedDOB);
+        userModel.setName(fullName);
+        userModel.setPhone(telephone);
+        userModel.setAddress(address);
+        userModel.setDob(formattedDOB);
     }
     @FXML
     private void handleSaveChanges(ActionEvent event) throws ParseException {
@@ -91,7 +93,7 @@ public class UpdateUserController {
 
         if (validateInputs(fullName, dob, phone, address)) {
             // need to call ID
-            String id = selectedUser.getId();
+            String id = userModel.getId();
             if (updateUserService.updateUserProfile(id, fullName, phone, dob, address)){
                 AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
                 updateUserInformation(fullName, phone, dob, address);

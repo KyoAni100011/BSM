@@ -26,10 +26,11 @@ public class TableItemController {
     public Button isEnabledLabel;
     @FXML
     private Label idLabel, nameLabel, emailLabel, lastLoginLabel,dobLabel, phoneLabel, addressLabel;
-    private UserModel userModel;
+    @FXML
+    private String email ="kha.admin@bms.com";
     @FXML
     private void handleRadioButtonClick() {
-        UserAccountController.handleTableItemSelection(userModel);
+        UserAccountController.handleTableItemSelection(email);
     }
     @FXML
     private void initialize() {
@@ -41,11 +42,10 @@ public class TableItemController {
     @FXML
     private void handleTableItemDoubleClick(MouseEvent event) throws IOException {
         if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
-            UserAccountController.handleTableItemDoubleClick(userModel);
+            UserAccountController.handleTableItemDoubleClick(email);
         }
     }
     public void setUserModel(UserModel user) {
-        this.userModel = user;
         idLabel.setText(user.getId());
         nameLabel.setText(user.getName());
         emailLabel.setText(user.getEmail());

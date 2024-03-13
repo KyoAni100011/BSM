@@ -36,8 +36,7 @@ public class UserAccountController implements Initializable {
     @FXML
     private VBox pnItems = null;
     @FXML
-    private static UserModel selectedUser; // Variable to store the selected user
-
+    private static String email; // Variable to store the selected user
     private final ToggleGroup toggleGroup = new ToggleGroup();
     private final UserAccountService userAccountService = new UserAccountService();
     private final UserModel adminInfo = UserSingleton.getInstance().getUser();
@@ -84,8 +83,8 @@ public class UserAccountController implements Initializable {
 
     @FXML
     private void handlePasswordResetButton(ActionEvent event) throws IOException {
-        if (selectedUser != null) {
-            PasswordResetController.handleTableItemSelection(selectedUser);
+        if (email != null) {
+            PasswordResetController.handleTableItemSelection(email);
             FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/passwordReset");
         } else {
             AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
@@ -93,20 +92,16 @@ public class UserAccountController implements Initializable {
     }
     @FXML
     private void handleUpdateUserButton(ActionEvent event) throws IOException {
-        if (selectedUser != null) {
-            UpdateUserController.handleTableItemSelection(selectedUser);
+        if (email != null) {
+            UpdateUserController.handleTableItemSelection(email);
             FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/updateUser");
         } else {
             AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
         }
     }
-    @FXML
-    private void handleAddUserButton(ActionEvent event) throws IOException {
-
-    }
-    public static void handleTableItemDoubleClick(UserModel user) throws IOException {
-        if (user != null) {
-            UserDetailController.handleTableItemSelection(user);
+    public static void handleTableItemDoubleClick(String Id) throws IOException {
+        if (Id != null) {
+            UserDetailController.handleTableItemSelection(Id);
             FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/userDetail");
         } else {
             AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
@@ -117,8 +112,8 @@ public class UserAccountController implements Initializable {
     @FXML void handleAddUserButton(ActionEvent event) throws IOException {
         FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/addUser");
     }
-    static  void handleTableItemSelection(UserModel user) {
-        selectedUser = user; // Store the selected user
+    static  void handleTableItemSelection(String userEmail) {
+        email =userEmail; // Store the selected user
     }
 
 
