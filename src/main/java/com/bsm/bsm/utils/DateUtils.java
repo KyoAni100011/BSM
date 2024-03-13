@@ -9,7 +9,9 @@ public class DateUtils {
     }
 
     public static String formatDOB(String dob) {
-        return LocalDate.parse(dob, DateTimeFormatter.ofPattern("dd/MM/yyyy")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate date = LocalDate.parse(dob, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
+
 
 }

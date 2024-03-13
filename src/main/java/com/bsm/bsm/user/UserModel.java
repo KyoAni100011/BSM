@@ -8,8 +8,6 @@ public class UserModel {
     private String address;
     private String phone;
     private boolean isEnabled;
-
-    // temp code
     private String lastLogin;
 
     public UserModel(String id, String name, String email, String dob, String phone, String address, boolean isEnabled, String lastLogin) {
@@ -23,13 +21,6 @@ public class UserModel {
         this.lastLogin = lastLogin;
     }
 
-    public String getLastLogin() {
-        return lastLogin;
-    }
-
-    // temp code
-
-
     public UserModel(String id, String name, String email, String dob, String phone, String address, boolean isEnabled) {
         this.id = id;
         this.name = name;
@@ -40,8 +31,18 @@ public class UserModel {
         this.isEnabled = isEnabled;
     }
 
+    // temp code
+
+
     public UserModel() {
 
+    }
+
+    public String getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(String s) {
     }
 
     public String getId() {
@@ -52,16 +53,16 @@ public class UserModel {
         return phone;
     }
 
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public String getName() {
@@ -110,8 +111,5 @@ public class UserModel {
                 ", phone='" + phone + '\'' +
                 ", isEnabled=" + isEnabled +
                 '}';
-    }
-
-    public void setLastLogin(String s) {
     }
 }

@@ -1,6 +1,8 @@
 package com.bsm.bsm.admin.profileSetting;
 
+import com.bsm.bsm.user.UserController;
 import com.bsm.bsm.user.UserModel;
+import com.bsm.bsm.user.UserService;
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.PasswordUtils;
 import com.bsm.bsm.utils.ValidationUtils;
@@ -13,7 +15,6 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 public class ChangePasswordController {
 
     private final UserModel adminInfo = UserSingleton.getInstance().getUser();
-    private final ChangePasswordService changePasswordService = new ChangePasswordService();
 
     @FXML
     private Label currentPasswordErrorLabel, newPasswordErrorLabel, confirmPasswordErrorLabel;
@@ -33,8 +34,15 @@ public class ChangePasswordController {
     @FXML
     private Button saveChangesButton;
 
+    private UserController userController;
+
+    public ChangePasswordController() {
+        userController = new UserService();
+    }
+
     @FXML
     public void initialize() {
+        new ChangePasswordController();
         hideTextFields();
         setupShowHidePasswordHandlers();
     }
@@ -52,7 +60,7 @@ public class ChangePasswordController {
     }
 
     @FXML
-    private void handleSaveChanges(ActionEvent event) {
+    private void handleSaveChanges(ActionEvent event) throws Exception {
         clearErrorMessages();
 
         String currentPassword = getPassword(currentPasswordField, currentPasswordTextField);
@@ -64,7 +72,7 @@ public class ChangePasswordController {
         boolean validConfirmPassword = validateConfirmPassword(newPassword, confirmPassword);
 
         if (validCurrentPassword && validNewPassword && validConfirmPassword) {
-            if (changePasswordService.changeUserPassword(adminInfo.getId(), currentPassword,newPassword)) {
+            if (userController.changePassword(adminInfo.getId(), currentPassword, newPassword)) {
                 showAlert("Success", "Password changed successfully", Alert.AlertType.INFORMATION);
                 clearInputs();
             } else {

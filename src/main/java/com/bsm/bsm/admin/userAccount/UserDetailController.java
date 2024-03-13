@@ -29,8 +29,6 @@ public class UserDetailController {
     @FXML
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    private final UpdateUserService updateUserService = new UpdateUserService();
-
     @FXML
     public void initialize() {
         // Set the prompt text for the DatePicker

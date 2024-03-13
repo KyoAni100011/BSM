@@ -1,18 +1,16 @@
-package com.bsm.bsm.admin.userAccount;
+package com.bsm.bsm.account;
 
-import com.bsm.bsm.admin.AdminModel;
 import com.bsm.bsm.database.DatabaseConnection;
 import com.bsm.bsm.user.UserModel;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserAccountDAO {
+public class AccountDAO {
+    private static final String GET_ALL_USERS_INFO_QUERY = "SELECT * FROM user WHERE id != ?";
 
     public List<UserModel> getAllUsersInfo(String excludedUserId) {
-    List<UserModel> userModel = new ArrayList<>();
-        String GET_ALL_USERS_INFO_QUERY = "SELECT * FROM user WHERE id != " + excludedUserId;
+        List<UserModel> userModel = new ArrayList<>();
 
         DatabaseConnection.executeQuery(GET_ALL_USERS_INFO_QUERY, resultSet -> {
             while (resultSet.next()) {
@@ -26,8 +24,8 @@ public class UserAccountDAO {
                 String lastLogin = resultSet.getString("lastLogin");
                 userModel.add(new UserModel(id, name, email, dob, phone, address, isEnabled, lastLogin));
             }
-        });
+        }, excludedUserId);
 
         return userModel;
-}
+    }
 }

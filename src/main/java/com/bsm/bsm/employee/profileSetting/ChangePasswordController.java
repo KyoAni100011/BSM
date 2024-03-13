@@ -1,5 +1,7 @@
 package com.bsm.bsm.employee.profileSetting;
 
+import com.bsm.bsm.user.UserController;
+import com.bsm.bsm.user.UserService;
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.PasswordUtils;
 import com.bsm.bsm.utils.ValidationUtils;
@@ -32,10 +34,15 @@ public class ChangePasswordController {
     @FXML
     private Button saveChangesButton;
 
-    private final ChangePasswordService changePasswordService = new ChangePasswordService();
+    private UserController userController;
+
+    public ChangePasswordController() {
+        userController = new UserService();
+    }
 
     @FXML
     public void initialize() {
+        new ChangePasswordController();
         confirmPasswordTextField.setVisible(false);
         currentPasswordTextField.setVisible(false);
         newPasswordTextField.setVisible(false);
@@ -46,7 +53,7 @@ public class ChangePasswordController {
     }
 
     @FXML
-    private void handleSaveChanges(ActionEvent event) {
+    private void handleSaveChanges(ActionEvent event) throws Exception {
         clearErrorMessages();
 
         String currentPassword = currentPasswordField.isVisible() ? currentPasswordField.getText() : currentPasswordTextField.getText();
@@ -60,7 +67,7 @@ public class ChangePasswordController {
         String id = UserSingleton.getInstance().getUser().getId();
 
         if (validCurrentPassword && validNewPassword && validConfirmPassword) {
-            if (changePasswordService.changeUserPassword(id, currentPassword, newPassword)) {
+            if (userController.changePassword(id, currentPassword, newPassword)) {
                 AlertUtils.showAlert("Success", "Password changed successfully", Alert.AlertType.INFORMATION);
                 clearInputs();
             } else {

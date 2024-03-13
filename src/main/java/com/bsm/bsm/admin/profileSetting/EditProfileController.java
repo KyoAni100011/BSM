@@ -1,6 +1,8 @@
 package com.bsm.bsm.admin.profileSetting;
 
+import com.bsm.bsm.user.UserController;
 import com.bsm.bsm.user.UserModel;
+import com.bsm.bsm.user.UserService;
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.DateUtils;
@@ -31,13 +33,19 @@ public class EditProfileController {
     @FXML
     public Button saveChangesButton;
 
-    private final EditProfileService editProfileService = new EditProfileService();
     private final UserModel adminInfo = UserSingleton.getInstance().getUser();
 
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+    private UserController userController;
+
+    public EditProfileController() {
+        userController = new UserService();
+    }
+
     @FXML
     public void initialize() {
+        new EditProfileController();
         setupDatePicker();
         setUserInfo();
     }
@@ -81,17 +89,17 @@ public class EditProfileController {
 
 
     @FXML
-    private void handleSaveChanges(ActionEvent event) throws ParseException {
+    private void handleSaveChanges(ActionEvent event) throws Exception {
         clearErrorMessages();
 
         String fullName = fullNameField.getText();
         String dob = dobPicker.getEditor().getText();
         String phone = phoneTextField.getText();
         String address = addressTextField.getText();
+        String id = UserSingleton.getInstance().getUser().getId();
 
         if (validateInputs(fullName, dob, phone, address)) {
-            String id = UserSingleton.getInstance().getUser().getId();
-            if (editProfileService.updateUserProfile(id, fullName, phone, dob, address)) {
+            if (userController.editProfile(id, fullName, phone, dob, address)) {
                 AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
                 clearInputs();
                 updateUserInformation(fullName, phone, dob, address);

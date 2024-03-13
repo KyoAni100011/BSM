@@ -1,6 +1,10 @@
 package com.bsm.bsm.admin.userAccount;
 
+import com.bsm.bsm.account.AccountController;
+import com.bsm.bsm.account.AccountService;
+import com.bsm.bsm.user.UserController;
 import com.bsm.bsm.user.UserModel;
+import com.bsm.bsm.user.UserService;
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.DateUtils;
 import javafx.event.ActionEvent;
@@ -34,14 +38,18 @@ public class UpdateUserController {
     private DatePicker dobPicker;
     @FXML
     private static UserModel selectedUser; // Variable to store the selected user
-
     @FXML
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    private final UpdateUserService updateUserService = new UpdateUserService();
+    private AccountController accountController;
+
+    public void UpdateController() {
+        accountController = new AccountService();
+    }
 
     @FXML
     public void initialize() {
+    UpdateController();
         // Set the prompt text for the DatePicker
         setupDatePicker();
         setUserInfo();
@@ -92,7 +100,7 @@ public class UpdateUserController {
         if (validateInputs(fullName, dob, phone, address)) {
             // need to call ID
             String id = selectedUser.getId();
-            if (updateUserService.updateUserProfile(id, fullName, phone, dob, address)){
+            if (accountController.update(id, fullName, phone, dob, address)){
                 AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
                 updateUserInformation(fullName, phone, dob, address);
                 clearInputs();

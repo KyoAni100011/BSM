@@ -1,7 +1,11 @@
 package com.bsm.bsm.admin.userAccount;
 
+import com.bsm.bsm.account.AccountController;
+import com.bsm.bsm.account.AccountService;
 import com.bsm.bsm.admin.AdminModel;
+import com.bsm.bsm.user.UserController;
 import com.bsm.bsm.user.UserModel;
+import com.bsm.bsm.user.UserService;
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
@@ -39,16 +43,23 @@ public class UserAccountController implements Initializable {
     private static UserModel selectedUser; // Variable to store the selected user
 
     private final ToggleGroup toggleGroup = new ToggleGroup();
-    private final UserAccountService userAccountService = new UserAccountService();
     private final UserModel adminInfo = UserSingleton.getInstance().getUser();
-    private final AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId());
-    private final List<UserModel> users = adminModel.viewUsers();
+    private AdminModel adminModel = null;
+    private List<UserModel> users = null;
     private int currentPage = 1;
     private final int itemsPerPage = 9;
 
+    private AccountController accountController;
+
+    public UserAccountController() {
+        accountController = new AccountService();
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        new UserAccountController();
+        adminModel = accountController.view(adminInfo.getId());
+        users = adminModel.viewUsers();
         employeeButton.getStyleClass().add("profile-setting-button");
         adminButton.getStyleClass().add("profile-setting-button");
 
@@ -100,10 +111,7 @@ public class UserAccountController implements Initializable {
             AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
         }
     }
-    @FXML
-    private void handleAddUserButton(ActionEvent event) throws IOException {
 
-    }
     public static void handleTableItemDoubleClick(UserModel user) throws IOException {
         if (user != null) {
             UserDetailController.handleTableItemSelection(user);
@@ -164,7 +172,7 @@ public class UserAccountController implements Initializable {
     private void updateUsersList(String emailSuffix) throws IOException {
         pnItems.getChildren().clear();
 
-        AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId());
+        AdminModel adminModel = accountController.view(adminInfo.getId());
         List<UserModel> users = adminModel.viewUsers();
         System.out.println(users.size());
         System.out.println(users.get(0).getEmail());
