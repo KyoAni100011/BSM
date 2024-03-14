@@ -1,31 +1,13 @@
 package com.bsm.bsm.publisher;
 
-import com.bsm.bsm.generic.*;
+import com.bsm.bsm.commonInterface.*;
 import java.util.List;
 
-public class PublisherService implements Activable<Publisher>, Searchable<Publisher>, Sortable<Publisher>, Updatable<Publisher>, Addable<Publisher> {
+public class PublisherService implements Activable, Searchable<Publisher>, Sortable<Publisher>, Updatable<Publisher>, Addable<Publisher> {
     private PublisherDAO publisherDAO = null;
 
     public PublisherService() {
         this.publisherDAO = new PublisherDAO();
-    }
-
-    @Override
-    public void activate(Publisher item) {
-        item.setEnabled(true);
-        publisherDAO.update(item);
-    }
-
-    @Override
-    public void deactivate(Publisher item) {
-        item.setEnabled(false);
-        publisherDAO.update(item);
-    }
-
-    @Override
-    public boolean isActive(Publisher item) {
-        // Implement isActive logic
-        return false;
     }
 
     @Override
@@ -48,5 +30,10 @@ public class PublisherService implements Activable<Publisher>, Searchable<Publis
     @Override
     public void add(Publisher item) {
         // Implement add logic
+    }
+
+    @Override
+    public void setEnable(boolean state) {
+
     }
 }

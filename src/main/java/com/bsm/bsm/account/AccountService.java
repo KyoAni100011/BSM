@@ -40,11 +40,6 @@ public class AccountService implements AccountController{
     }
 
     @Override
-    public void setActive(String accountId, boolean active) {
-
-    }
-
-    @Override
     public void sort() {
 
     }

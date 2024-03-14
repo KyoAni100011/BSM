@@ -57,7 +57,6 @@ public class UserDAO {
                     userModel.set(new EmployeeModel(id, name, email, dob, phone, address, isEnabled, lastLogin));
                 }
 
-                //update last login
                 DatabaseConnection.executeUpdate(UPDATE_USER_LAST_LOGIN, new java.sql.Timestamp(System.currentTimeMillis()), id);
             }
         }, id);
@@ -85,18 +84,9 @@ public class UserDAO {
     }
 
     public boolean changePassword(String id, String newPassword) {
-        try {
-            String hashedNewPassword = hashPassword(newPassword);
-            int rowsAffected = DatabaseConnection.executeUpdate(QUERY_CHANGE_PASSWORD, hashedNewPassword, id);
-            if (rowsAffected > 0) {
-
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return false;
+        String hashedNewPassword = hashPassword(newPassword);
+        int rowsAffected = DatabaseConnection.executeUpdate(QUERY_CHANGE_PASSWORD, hashedNewPassword, id);
+        return rowsAffected > 0;
     }
 
     public boolean validatePassword(String id, String currentPassword) throws SQLException {

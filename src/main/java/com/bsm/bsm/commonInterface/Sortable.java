@@ -1,4 +1,4 @@
-package com.bsm.bsm.generic;
+package com.bsm.bsm.commonInterface;
 
 import java.util.List;
 
