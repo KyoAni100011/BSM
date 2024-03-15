@@ -14,7 +14,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -33,6 +35,7 @@ public class UserAccountController implements Initializable {
     public Button addUserButton, passwordResetButton, updateUserButton;
     @FXML
     public Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
+    public Label idLabel, nameLabel, emailLabel, lastLoginLabel;
     @FXML
     private VBox pnItems = null;
     @FXML
@@ -50,6 +53,11 @@ public class UserAccountController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         employeeButton.getStyleClass().add("profile-setting-button");
         adminButton.getStyleClass().add("profile-setting-button");
+
+        idLabel.setOnMouseClicked(this::handleLabelClick);
+        nameLabel.setOnMouseClicked(this::handleLabelClick);
+        emailLabel.setOnMouseClicked(this::handleLabelClick);
+        lastLoginLabel.setOnMouseClicked(this::handleLabelClick);
 
         // Load all users initially
         try {
@@ -287,6 +295,112 @@ public class UserAccountController implements Initializable {
             firstPaginationButton.setManaged(true);
             firstPaginationButton.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
             nextPaginationButton.setDisable(true);
+        }
+    }
+
+    public enum SortOrder {
+        ASCENDING,
+        DESCENDING,
+        DEFAULT
+    }
+
+    private SortOrder idSortOrder = SortOrder.DEFAULT;
+    private SortOrder employeeSortOrder = SortOrder.DEFAULT;
+    private SortOrder emailSortOrder = SortOrder.DEFAULT;
+    private SortOrder lastLoginSortOrder = SortOrder.DEFAULT;
+
+    private void sortUsersList(String columnName, SortOrder order) {
+        switch (columnName) {
+            case "ID":
+                users.sort((u1, u2) -> {
+                    int id1 = Integer.parseInt(u1.getId());
+                    int id2 = Integer.parseInt(u2.getId());
+                    if (order == SortOrder.ASCENDING) {
+                        return Integer.compare(id1, id2);
+                    } else if (order == SortOrder.DESCENDING) {
+                        return Integer.compare(id2, id1);
+                    } else {
+                        // Sort by default order (maybe by another criteria)
+                        return Integer.compare(id1, id2);
+                    }
+                });
+                break;
+            case "Employee":
+                // Sort by employee column
+                break;
+            case "Email":
+                // Sort by email column
+                break;
+            case "Last login":
+                // Sort by last login column
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    @FXML
+    private void handleLabelClick(MouseEvent event) {
+        Label clickedLabel = (Label) event.getSource();
+        String columnName = clickedLabel.getText();
+        SortOrder currentOrder;
+
+        // Determine the current sort order for the clicked column
+        switch (columnName) {
+            case "ID":
+                currentOrder = idSortOrder;
+                break;
+            case "Employee":
+                currentOrder = employeeSortOrder;
+                break;
+            case "Email":
+                currentOrder = emailSortOrder;
+                break;
+            case "Last login":
+                currentOrder = lastLoginSortOrder;
+                break;
+            default:
+                currentOrder = SortOrder.DEFAULT;
+                break;
+        }
+
+        // Update sort order for the clicked column
+        switch (currentOrder) {
+            case ASCENDING:
+                sortUsersList(columnName, SortOrder.DESCENDING);
+                break;
+            case DESCENDING:
+                sortUsersList(columnName, SortOrder.DEFAULT);
+                break;
+            default:
+                sortUsersList(columnName, SortOrder.ASCENDING);
+                break;
+        }
+
+        // Update sort order for the clicked column
+        switch (columnName) {
+            case "ID":
+                idSortOrder = currentOrder == SortOrder.DEFAULT ? SortOrder.ASCENDING : currentOrder;
+                break;
+            case "Employee":
+                employeeSortOrder = currentOrder == SortOrder.DEFAULT ? SortOrder.ASCENDING : currentOrder;
+                break;
+            case "Email":
+                emailSortOrder = currentOrder == SortOrder.DEFAULT ? SortOrder.ASCENDING : currentOrder;
+                break;
+            case "Last login":
+                lastLoginSortOrder = currentOrder == SortOrder.DEFAULT ? SortOrder.ASCENDING : currentOrder;
+                break;
+            default:
+                break;
+        }
+
+        // Refresh the UI to reflect the sorted list
+        try {
+            updateUsersList(".employee@bms.com"); // Or whichever email suffix is appropriate
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
