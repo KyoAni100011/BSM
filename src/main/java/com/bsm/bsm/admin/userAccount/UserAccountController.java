@@ -104,7 +104,7 @@ public class UserAccountController implements Initializable {
         FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/addUser");
     }
     static  void handleTableItemSelection(String userEmail) {
-        email =userEmail; // Store the selected user
+        email = userEmail; // Store the selected user
     }
 
 
