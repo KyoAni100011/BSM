@@ -33,7 +33,7 @@
             <Insets />
          </HBox.margin>
       </Label>
-      <Button fx:id="isEnabledLabel" alignment="CENTER" mnemonicParsing="false" prefHeight="24.0" prefWidth="73.0" styleClass="text-menu-item-5" text="Disable">
+      <Button fx:id="isEnabledButton" onAction="#handleIsEnabledButtonClick" alignment="CENTER" mnemonicParsing="false" prefHeight="24.0" prefWidth="73.0" styleClass="text-menu-item-5" text="Disable">
          <HBox.margin>
             <Insets left="20.0" />
          </HBox.margin>

@@ -1,11 +1,7 @@
 package com.bsm.bsm.admin.userAccount;
 
-import com.bsm.bsm.account.AccountController;
-import com.bsm.bsm.account.AccountService;
 import com.bsm.bsm.admin.AdminModel;
-import com.bsm.bsm.user.UserController;
 import com.bsm.bsm.user.UserModel;
-import com.bsm.bsm.user.UserService;
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
@@ -40,26 +36,18 @@ public class UserAccountController implements Initializable {
     @FXML
     private VBox pnItems = null;
     @FXML
-    private static UserModel selectedUser; // Variable to store the selected user
-
+    private static String email; // Variable to store the selected user
     private final ToggleGroup toggleGroup = new ToggleGroup();
+    private final UserAccountService userAccountService = new UserAccountService();
     private final UserModel adminInfo = UserSingleton.getInstance().getUser();
-    private AdminModel adminModel = null;
-    private List<UserModel> users = null;
+    private final AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId());
+    private final List<UserModel> users = adminModel.viewUsers();
     private int currentPage = 1;
     private final int itemsPerPage = 9;
 
-    private AccountController accountController;
-
-    public UserAccountController() {
-        accountController = new AccountService();
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        new UserAccountController();
-        adminModel = accountController.view(adminInfo.getId());
-        users = adminModel.viewUsers();
         employeeButton.getStyleClass().add("profile-setting-button");
         adminButton.getStyleClass().add("profile-setting-button");
 
@@ -95,8 +83,8 @@ public class UserAccountController implements Initializable {
 
     @FXML
     private void handlePasswordResetButton(ActionEvent event) throws IOException {
-        if (selectedUser != null) {
-            PasswordResetController.handleTableItemSelection(selectedUser);
+        if (email != null) {
+            PasswordResetController.handleTableItemSelection(email);
             FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/passwordReset");
         } else {
             AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
@@ -104,29 +92,19 @@ public class UserAccountController implements Initializable {
     }
     @FXML
     private void handleUpdateUserButton(ActionEvent event) throws IOException {
-        if (selectedUser != null) {
-            UpdateUserController.handleTableItemSelection(selectedUser);
+        if (email != null) {
+            UpdateUserController.handleTableItemSelection(email);
             FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/updateUser");
         } else {
             AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
         }
     }
 
-    public static void handleTableItemDoubleClick(UserModel user) throws IOException {
-        if (user != null) {
-            UserDetailController.handleTableItemSelection(user);
-            FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/userDetail");
-        } else {
-            AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
-
-        }
-    }
-
     @FXML void handleAddUserButton(ActionEvent event) throws IOException {
         FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/addUser");
     }
-    static  void handleTableItemSelection(UserModel user) {
-        selectedUser = user; // Store the selected user
+    static  void handleTableItemSelection(String userEmail) {
+        email = userEmail; // Store the selected user
     }
 
 
@@ -172,7 +150,7 @@ public class UserAccountController implements Initializable {
     private void updateUsersList(String emailSuffix) throws IOException {
         pnItems.getChildren().clear();
 
-        AdminModel adminModel = accountController.view(adminInfo.getId());
+        AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId());
         List<UserModel> users = adminModel.viewUsers();
         System.out.println(users.size());
         System.out.println(users.get(0).getEmail());
