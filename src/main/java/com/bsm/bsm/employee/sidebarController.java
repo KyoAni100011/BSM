@@ -3,12 +3,16 @@ package com.bsm.bsm.employee;
 import java.io.IOException;
 import java.util.Objects;
 
+import com.bsm.bsm.user.UserController;
+import com.bsm.bsm.user.UserService;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
+import com.bsm.bsm.utils.SceneSwitch;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import com.bsm.bsm.user.UserModel;
@@ -24,6 +28,9 @@ import java.util.Objects;
 public class sidebarController {
     public UserModel employeeInfo = UserSingleton.getInstance().getUser();
     public MenuItem buttonProfileSetting, buttonLogOut;
+
+    @FXML
+    private AnchorPane AnchorPaneEmployee;
 
     @FXML
     private Button book;
@@ -54,9 +61,16 @@ public class sidebarController {
     @FXML
     private Button order;
 
+    private UserController userController = null;
+
+    public sidebarController()
+    {
+        userController = new UserService();
+    }
 
     public void initialize()
     {
+        new sidebarController();
         nameText.setText(employeeInfo.getName().split(" ")[1]);
         if (employeeInfo instanceof EmployeeModel) {
             roleText.setText("Employee");
@@ -96,7 +110,8 @@ public class sidebarController {
 
     @FXML
     void handleLogOut(ActionEvent event) throws IOException {
-        FXMLLoaderHelper.loadFXML((Stage) bp.getScene().getWindow(), "login");
+        userController.logout();
+        new SceneSwitch(AnchorPaneEmployee, "/com/bsm/bsm/view/login.fxml");
     }
 
     @FXML
