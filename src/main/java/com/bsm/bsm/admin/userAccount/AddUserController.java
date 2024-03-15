@@ -14,6 +14,7 @@ import javafx.util.StringConverter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class AddUserController {
     @FXML
@@ -41,6 +42,20 @@ public class AddUserController {
         setupDatePicker();
         textNote.setVisible(true);
         customPassword.setOnMouseClicked(event -> textNote.setVisible(false)); // Add event handler to hide textNote when customPassword is clicked
+
+        dobPicker.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            // Update password field when the value of the editor changes
+            updatePasswordField();
+        });
+    }
+    @FXML
+    private void updatePasswordField() {
+        String dob = dobPicker.getEditor().getText();
+        if (dob.length() != 10) {
+            return;
+        }
+        String password = dob.replaceAll("/", "");
+        customPassword.setText(password);
     }
 
     private void setupDatePicker() {
@@ -54,12 +69,17 @@ public class AddUserController {
 
             @Override
             public LocalDate fromString(String string) {
-                return string != null && !string.isEmpty() ? LocalDate.parse(string, dateFormatter) : null;
+                try {
+                    return LocalDate.parse(string, dateFormatter);
+                } catch (DateTimeParseException e) {
+                    return null;
+                }
             }
         });
 
         dobPicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
     }
+
 
     @FXML
     private void handleAddButtonAction(ActionEvent event) {
