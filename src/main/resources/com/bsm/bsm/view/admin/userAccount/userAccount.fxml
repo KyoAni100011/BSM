@@ -84,22 +84,22 @@
                               <Insets left="30.0" />
                            </HBox.margin>
                         </Label>
-                        <Label alignment="CENTER" prefWidth="100.0" text="ID">
+                        <Label fx:id="idLabel" alignment="CENTER" prefWidth="100.0" text="ID">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                         </Label>
-                        <Label alignment="CENTER" prefWidth="150.0" text="Employee">
+                        <Label fx:id="nameLabel" alignment="CENTER" prefWidth="150.0" text="Name">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                         </Label>
-                        <Label alignment="CENTER" prefWidth="200.0" text="Email">
+                        <Label fx:id="emailLabel" alignment="CENTER" prefWidth="200.0" text="Email">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                         </Label>
-                        <Label alignment="CENTER" prefWidth="100.0" text="Last login">
+                        <Label fx:id="lastLoginLabel" alignment="CENTER" prefWidth="100.0" text="Last login">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>

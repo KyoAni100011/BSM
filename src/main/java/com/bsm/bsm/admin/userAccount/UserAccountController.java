@@ -12,7 +12,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -29,10 +31,14 @@ public class UserAccountController implements Initializable {
     public Button addUserButton, passwordResetButton, updateUserButton;
     @FXML
     public Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
+    public Label idLabel, nameLabel, emailLabel, lastLoginLabel;
     @FXML
     private VBox pnItems = null;
     @FXML
     private static String email; // Variable to store the selected user
+    private String sortOrder;
+    private String column;
+    private String emailSuffix;
     private final ToggleGroup toggleGroup = new ToggleGroup();
     private final UserAccountService userAccountService = new UserAccountService();
     private final UserModel adminInfo = UserSingleton.getInstance().getUser();
@@ -47,13 +53,14 @@ public class UserAccountController implements Initializable {
         employeeButton.getStyleClass().add("profile-setting-button");
         adminButton.getStyleClass().add("profile-setting-button");
 
+        idLabel.setOnMouseClicked(this::handleLabelClick);
+        nameLabel.setOnMouseClicked(this::handleLabelClick);
+        emailLabel.setOnMouseClicked(this::handleLabelClick);
+        lastLoginLabel.setOnMouseClicked(this::handleLabelClick);
+
         // Load all users initially
-        try {
-            updateUsersList(".employee@bms.com");
-            updateButtonStyle(employeeButton);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        emailSuffix = ".employee@bms.com";
+        updateButtonStyle(employeeButton);
 
         // Attach event handlers to pagination buttons
         firstPaginationButton.setOnAction(this::handlePaginationButton);
@@ -67,13 +74,13 @@ public class UserAccountController implements Initializable {
 
     @FXML
     private void handleEmployeeButton(ActionEvent event) throws IOException {
-        updateUsersList(".employee@bms.com");
+        emailSuffix = ".employee@bms.com";
         updateButtonStyle(employeeButton);
     }
 
     @FXML
     private void handleAdminButton(ActionEvent event) throws IOException {
-        updateUsersList(".admin@bms.com");
+        emailSuffix = ".admin@bms.com";
         updateButtonStyle(adminButton);
     }
 
@@ -117,16 +124,13 @@ public class UserAccountController implements Initializable {
         // Call updateUsersList with the appropriate email suffix
         if (employeeButton.getStyleClass().contains("profile-setting-button-admin")) {
             try {
-                updateUsersList(".employee@bms.com");
+                emailSuffix = ".employee@bms.com";
+                updateUsersList();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            try {
-                updateUsersList(".admin@bms.com");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            emailSuffix = ".admin@bms.com";
         }
     }
 
@@ -143,10 +147,10 @@ public class UserAccountController implements Initializable {
     }
 
 
-    private void updateUsersList(String emailSuffix) throws IOException {
+    private void updateUsersList() throws IOException {
         pnItems.getChildren().clear();
 
-        AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId());
+        AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId(), sortOrder, column);
         List<UserModel> users = adminModel.viewUsers();
         System.out.println(users.size());
         System.out.println(users.get(0).getEmail());
@@ -283,6 +287,42 @@ public class UserAccountController implements Initializable {
             firstPaginationButton.setManaged(true);
             firstPaginationButton.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
             nextPaginationButton.setDisable(true);
+        }
+    }
+
+    public enum SortOrder {
+        ASCENDING,
+        DESCENDING,
+        DEFAULT
+    }
+
+    private SortOrder idSortOrder = SortOrder.DEFAULT;
+    private SortOrder employeeSortOrder = SortOrder.DEFAULT;
+    private SortOrder emailSortOrder = SortOrder.DEFAULT;
+    private SortOrder lastLoginSortOrder = SortOrder.DEFAULT;
+
+
+    @FXML
+    private void handleLabelClick(MouseEvent event) {
+        // Retrieve column name from the clicked label
+        Label clickedLabel = (Label) event.getSource();
+        String columnName = clickedLabel.getText();
+
+        // Determine the new sort order based on the current sort order
+        if (columnName.equals(column)) {
+            sortOrder = sortOrder.equals("ASC") ? "DESC" : "ASC";
+        } else {
+            sortOrder = "ASC"; // Default to ascending order for new column
+        }
+
+        // Update column to reflect the clicked column
+        column = columnName;
+
+        // Call updateUsersList with updated parameters for sorting
+        try {
+            updateUsersList();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -18,4 +18,9 @@ public class UserAccountService {
         List<UserModel> users = userAccountDAO.getAllUsersInfo(excludedUserId);
         return new AdminModel(users);
     }
+
+    public AdminModel getAllUsersInfo(String excludedUserId, String sortOrder, String column) {
+        List<UserModel> users = userAccountDAO.getAllUsersInfo(excludedUserId, sortOrder, column);
+        return new AdminModel(users);
+    }
 }
