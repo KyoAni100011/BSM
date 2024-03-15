@@ -51,9 +51,12 @@ public class TableItemController {
 
     @FXML
     private void handleIsEnabledButtonClick() {
+        String action = isEnabledButton.getText().equals("Enable") ? "enable" : "disable";
+        String confirmationMessage = "Are you sure you want to " + action + " this user?";
+
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Confirmation");
-        confirmationAlert.setHeaderText("Are you sure you want to enable/disable this user?");
+        confirmationAlert.setHeaderText(confirmationMessage);
         confirmationAlert.setContentText("Click OK to confirm.");
 
         confirmationAlert.showAndWait().ifPresent(response -> {
@@ -83,6 +86,7 @@ public class TableItemController {
             }
         });
     }
+
 
     public void setUserModel(UserModel user) {
         email = user.getEmail();
