@@ -40,6 +40,9 @@ public class UserAccountController implements Initializable {
     private VBox pnItems = null;
     @FXML
     private static String email; // Variable to store the selected user
+    private String sortOrder;
+    private String column;
+    private String emailSuffix;
     private final ToggleGroup toggleGroup = new ToggleGroup();
     private final UserAccountService userAccountService = new UserAccountService();
     private final UserModel adminInfo = UserSingleton.getInstance().getUser();
@@ -60,12 +63,8 @@ public class UserAccountController implements Initializable {
         lastLoginLabel.setOnMouseClicked(this::handleLabelClick);
 
         // Load all users initially
-        try {
-            updateUsersList(".employee@bms.com");
-            updateButtonStyle(employeeButton);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        emailSuffix = ".employee@bms.com";
+        updateButtonStyle(employeeButton);
 
         // Attach event handlers to pagination buttons
         firstPaginationButton.setOnAction(this::handlePaginationButton);
@@ -79,13 +78,13 @@ public class UserAccountController implements Initializable {
 
     @FXML
     private void handleEmployeeButton(ActionEvent event) throws IOException {
-        updateUsersList(".employee@bms.com");
+        emailSuffix = ".employee@bms.com";
         updateButtonStyle(employeeButton);
     }
 
     @FXML
     private void handleAdminButton(ActionEvent event) throws IOException {
-        updateUsersList(".admin@bms.com");
+        emailSuffix = ".admin@bms.com";
         updateButtonStyle(adminButton);
     }
 
@@ -129,16 +128,13 @@ public class UserAccountController implements Initializable {
         // Call updateUsersList with the appropriate email suffix
         if (employeeButton.getStyleClass().contains("profile-setting-button-admin")) {
             try {
-                updateUsersList(".employee@bms.com");
+                emailSuffix = ".employee@bms.com";
+                updateUsersList();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            try {
-                updateUsersList(".admin@bms.com");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            emailSuffix = ".admin@bms.com";
         }
     }
 
@@ -155,10 +151,10 @@ public class UserAccountController implements Initializable {
     }
 
 
-    private void updateUsersList(String emailSuffix) throws IOException {
+    private void updateUsersList() throws IOException {
         pnItems.getChildren().clear();
 
-        AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId());
+        AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId(), sortOrder, column);
         List<UserModel> users = adminModel.viewUsers();
         System.out.println(users.size());
         System.out.println(users.get(0).getEmail());
@@ -309,96 +305,26 @@ public class UserAccountController implements Initializable {
     private SortOrder emailSortOrder = SortOrder.DEFAULT;
     private SortOrder lastLoginSortOrder = SortOrder.DEFAULT;
 
-    private void sortUsersList(String columnName, SortOrder order) {
-        switch (columnName) {
-            case "ID":
-                users.sort((u1, u2) -> {
-                    int id1 = Integer.parseInt(u1.getId());
-                    int id2 = Integer.parseInt(u2.getId());
-                    if (order == SortOrder.ASCENDING) {
-                        return Integer.compare(id1, id2);
-                    } else if (order == SortOrder.DESCENDING) {
-                        return Integer.compare(id2, id1);
-                    } else {
-                        // Sort by default order (maybe by another criteria)
-                        return Integer.compare(id1, id2);
-                    }
-                });
-                break;
-            case "Employee":
-                // Sort by employee column
-                break;
-            case "Email":
-                // Sort by email column
-                break;
-            case "Last login":
-                // Sort by last login column
-                break;
-            default:
-                break;
-        }
-    }
-
 
     @FXML
     private void handleLabelClick(MouseEvent event) {
+        // Retrieve column name from the clicked label
         Label clickedLabel = (Label) event.getSource();
         String columnName = clickedLabel.getText();
-        SortOrder currentOrder;
 
-        // Determine the current sort order for the clicked column
-        switch (columnName) {
-            case "ID":
-                currentOrder = idSortOrder;
-                break;
-            case "Employee":
-                currentOrder = employeeSortOrder;
-                break;
-            case "Email":
-                currentOrder = emailSortOrder;
-                break;
-            case "Last login":
-                currentOrder = lastLoginSortOrder;
-                break;
-            default:
-                currentOrder = SortOrder.DEFAULT;
-                break;
+        // Determine the new sort order based on the current sort order
+        if (columnName.equals(column)) {
+            sortOrder = sortOrder.equals("ASC") ? "DESC" : "ASC";
+        } else {
+            sortOrder = "ASC"; // Default to ascending order for new column
         }
 
-        // Update sort order for the clicked column
-        switch (currentOrder) {
-            case ASCENDING:
-                sortUsersList(columnName, SortOrder.DESCENDING);
-                break;
-            case DESCENDING:
-                sortUsersList(columnName, SortOrder.DEFAULT);
-                break;
-            default:
-                sortUsersList(columnName, SortOrder.ASCENDING);
-                break;
-        }
+        // Update column to reflect the clicked column
+        column = columnName;
 
-        // Update sort order for the clicked column
-        switch (columnName) {
-            case "ID":
-                idSortOrder = currentOrder == SortOrder.DEFAULT ? SortOrder.ASCENDING : currentOrder;
-                break;
-            case "Employee":
-                employeeSortOrder = currentOrder == SortOrder.DEFAULT ? SortOrder.ASCENDING : currentOrder;
-                break;
-            case "Email":
-                emailSortOrder = currentOrder == SortOrder.DEFAULT ? SortOrder.ASCENDING : currentOrder;
-                break;
-            case "Last login":
-                lastLoginSortOrder = currentOrder == SortOrder.DEFAULT ? SortOrder.ASCENDING : currentOrder;
-                break;
-            default:
-                break;
-        }
-
-        // Refresh the UI to reflect the sorted list
+        // Call updateUsersList with updated parameters for sorting
         try {
-            updateUsersList(".employee@bms.com"); // Or whichever email suffix is appropriate
+            updateUsersList();
         } catch (IOException e) {
             e.printStackTrace();
         }
