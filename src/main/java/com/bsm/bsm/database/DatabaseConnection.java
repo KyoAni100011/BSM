@@ -54,6 +54,18 @@ public class DatabaseConnection {
         return linesAffected;
     }
 
+    public static void executeProcedure(String procedure, Object... parameters) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareCall(procedure)) {
+
+            setParameters(preparedStatement, parameters);
+            preparedStatement.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static void setParameters(PreparedStatement preparedStatement, Object... parameters) throws SQLException {
         for (int i = 0; i < parameters.length; i++) {
             preparedStatement.setObject(i + 1, parameters[i]);
