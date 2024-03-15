@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.admin.userAccount.UserAccountController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.admin.userAccount.UserAccountController">
    <children>
       <VBox alignment="CENTER_LEFT" layoutY="-1.0" prefHeight="600.0" prefWidth="700.0">
          <children>
@@ -30,14 +36,21 @@
                         </Group>
                      </graphic>
                   </Button>
-                  <AnchorPane layoutX="25.0" layoutY="10.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #f5f5f5; -fx-background-radius: 20px;">
+                  <AnchorPane layoutX="13.0" layoutY="6.0" prefHeight="36.0" prefWidth="349.0" style="-fx-background-color: #f5f5f5; -fx-background-radius: 20px;">
                      <children>
-                        <TextField layoutX="29.0" prefHeight="30.0" prefWidth="221.0" promptText="Search" style="-fx-background-color: #f5f5f5; -fx-background-radius: 0px 20px 20px 0px;" />
-                        <Group layoutX="-242.0" layoutY="-239.0">
+                        <TextField fx:id="inputSearch" layoutX="105.0" layoutY="3.0" prefHeight="30.0" prefWidth="228.0" promptText="Search" style="-fx-background-color: #f5f5f5; -fx-background-radius: 0px 20px 20px 0px;" />
+                        <Group layoutX="69.0" layoutY="-238.0">
                            <children>
                               <SVGPath content="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" scaleX="0.03" scaleY="0.03" />
                            </children>
                         </Group>
+                        <MenuButton fx:id="typeSearch" layoutX="5.0" layoutY="5.0" mnemonicParsing="false" prefHeight="4.0" prefWidth="100.0" styleClass="selectSearch" text="MenuButton">
+                          <items>
+                            <MenuItem mnemonicParsing="false" text="id" />
+                              <MenuItem mnemonicParsing="false" text="email" />
+                            <MenuItem mnemonicParsing="false" text="name" />
+                          </items>
+                        </MenuButton>
                      </children>
                   </AnchorPane>
                   <Button fx:id="passwordResetButton" layoutX="562.0" layoutY="10.0" mnemonicParsing="false" onAction="#handlePasswordResetButton" prefHeight="30.0" prefWidth="120.0" style="-fx-background-radius: 20px;" text="Reset Password">
@@ -49,6 +62,7 @@
                         </Group>
                      </graphic>
                   </Button>
+                  <Button fx:id="addUserButton" layoutX="374.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleAddUserButton" prefHeight="30.0" prefWidth="88.0" style="-fx-background-radius: 20px;" text="Add User">
                   <Button fx:id="addUserButton" layoutX="374.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleAddUserButton" prefHeight="30.0" prefWidth="88.0" style="-fx-background-radius: 20px;" text="Add User">
                      <graphic>
                         <Group>

@@ -1,11 +1,15 @@
 package com.bsm.bsm.admin.userAccount;
 
+import com.bsm.bsm.account.AccountController;
+import com.bsm.bsm.account.AccountService;
 import com.bsm.bsm.admin.AdminModel;
 import com.bsm.bsm.employee.EmployeeModel;
 import com.bsm.bsm.user.UserModel;
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,15 +29,25 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class UserAccountController implements Initializable {
+    @FXML
+    private static String email; // Variable to store the selected user
+    private final ToggleGroup toggleGroup = new ToggleGroup();
+    private final UserAccountService userAccountService = new UserAccountService();
+    private final UserModel adminInfo = UserSingleton.getInstance().getUser();
+    private final AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId());
+    public List<UserModel> users = adminModel.viewUsers();
+    private final int itemsPerPage = 9;
     @FXML
     public Button employeeButton, adminButton;
     @FXML
     public Button addUserButton, passwordResetButton, updateUserButton;
     @FXML
     public Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
+    String typeSearchText;
     public Button idLabel, nameLabel, emailLabel, lastLoginLabel, actionLabel;
     public SVGPath idSortLabel, nameSortLabel, emailSortLabel, lastLoginSortLabel, actionSortLabel;
     @FXML
@@ -46,9 +60,21 @@ public class UserAccountController implements Initializable {
     private final ToggleGroup toggleGroup = new ToggleGroup();
     private final UserAccountService userAccountService = new UserAccountService();
     private final UserModel adminInfo = UserSingleton.getInstance().getUser();
+    private TextField inputSearch;
+    @FXML
+    private MenuButton typeSearch;
+    private AccountController accountController = null;
     private int currentPage = 1;
-    private final int itemsPerPage = 9;
+    private String currentTypeUser = "employee";
+    private String inputSearchText = "";
 
+    public UserAccountController() {
+        accountController = new AccountService();
+    }
+
+    static void handleTableItemSelection(String userEmail) {
+        email = userEmail; // Store the selected user
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -78,6 +104,40 @@ public class UserAccountController implements Initializable {
             System.out.println("Error: " + e.getMessage());
         }
 
+        for (MenuItem item : typeSearch.getItems()) {
+            item.setOnAction(event -> {
+                typeSearchText = ((MenuItem) event.getSource()).getText();
+                typeSearch.setText(typeSearchText);
+            });
+        }
+
+
+        inputSearch.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                inputSearchText = newValue;
+                users = accountController.search(inputSearchText, typeSearchText);
+                if (currentTypeUser.equals("employee")) {
+                    users = users.stream()
+                            .filter(user ->
+                                    user.getEmail().endsWith(".employee@bms.com"))
+                            .toList();
+                } else {
+                    users = users.stream()
+                            .filter(user ->
+                            {
+
+                                return user.getEmail().endsWith(".admin@bms.com");
+                            })
+                            .toList();
+                }
+                try {
+                    updateUsersList(Objects.equals(currentTypeUser, "employee") ? ".employee@bms.com" : ".admin@bms.com");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
         // Attach event handlers to pagination buttons
         firstPaginationButton.setOnAction(this::handlePaginationButton);
@@ -91,6 +151,14 @@ public class UserAccountController implements Initializable {
 
     @FXML
     private void handleEmployeeButton(ActionEvent event) throws IOException {
+        this.users = adminModel.viewUsers();
+        System.out.println(users);
+        typeSearchText = "";
+        inputSearchText = "";
+        inputSearch.setText("");
+        typeSearch.setText("");
+        updateUsersList(".employee@bms.com");
+        currentTypeUser = "employee";
         role = ".employee@bms.com";
         updateUsersList();
         updateButtonStyle(employeeButton);
@@ -98,6 +166,14 @@ public class UserAccountController implements Initializable {
 
     @FXML
     private void handleAdminButton(ActionEvent event) throws IOException {
+        this.users = adminModel.viewUsers();
+        System.out.println(users);
+        typeSearchText = "";
+        inputSearchText = "";
+        inputSearch.setText("");
+        typeSearch.setText("");
+        updateUsersList(".admin@bms.com");
+        currentTypeUser = "admin";
         role = ".admin@bms.com";
         updateUsersList();
         updateButtonStyle(adminButton);
@@ -112,6 +188,7 @@ public class UserAccountController implements Initializable {
             AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
         }
     }
+
     @FXML
     private void handleUpdateUserButton(ActionEvent event) throws IOException {
         if (email != null) {
@@ -122,13 +199,10 @@ public class UserAccountController implements Initializable {
         }
     }
 
-    @FXML void handleAddUserButton(ActionEvent event) throws IOException {
+    @FXML
+    void handleAddUserButton(ActionEvent event) throws IOException {
         FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/addUser");
     }
-    static  void handleTableItemSelection(String userEmail) {
-        email = userEmail; // Store the selected user
-    }
-
 
     @FXML
     private void handlePaginationButton(ActionEvent event) {
@@ -213,7 +287,7 @@ public class UserAccountController implements Initializable {
 
             for (int i = startPage; i <= endPage; i++) {
                 Button button;
-                if(totalPages > 5 && startPage <6){
+                if (totalPages > 5 && startPage < 6) {
                     switch (i - startPage) {
                         case 0:
                             button = firstPaginationButton;
@@ -240,7 +314,7 @@ public class UserAccountController implements Initializable {
                         default:
                             throw new IllegalStateException("Unexpected value: " + (i - startPage));
                     }
-                }else if(totalPages > 5 && startPage >= 6){
+                } else if (totalPages > 5 && startPage >= 6) {
                     switch (i - startPage) {
                         case 0:
                             button = firstPaginationButton;
@@ -267,8 +341,7 @@ public class UserAccountController implements Initializable {
                         default:
                             throw new IllegalStateException("Unexpected value: " + (i - startPage));
                     }
-                }
-                else{
+                } else {
                     switch (i - startPage) {
                         case 0:
                             button = firstPaginationButton;
