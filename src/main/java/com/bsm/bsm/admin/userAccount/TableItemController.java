@@ -83,7 +83,7 @@ public class TableItemController {
             }
         });
     }
-    
+
     public void setUserModel(UserModel user) {
         email = user.getEmail();
         idLabel.setText(user.getId());
