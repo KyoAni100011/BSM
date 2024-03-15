@@ -7,7 +7,6 @@ public class UserSingleton {
     private UserSingleton() {
 
     }
-
     public static UserSingleton getInstance() {
         return instance;
     }

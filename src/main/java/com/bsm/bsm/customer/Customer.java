@@ -5,14 +5,17 @@ public class Customer {
     private String name;
     private String phone;
 
+    private boolean isMember;
+
     public Customer() {
         // Default constructor
     }
 
-    public Customer(String id, String name, String phone) {
+    public Customer(String id, String name, String phone, boolean isMember) {
         this.id = id;
         this.name = name;
         this.phone = phone;
+        this.isMember =isMember;
     }
 
     public String getId() {
@@ -39,12 +42,21 @@ public class Customer {
         this.phone = phone;
     }
 
+    public boolean isMember() {
+        return isMember;
+    }
+
+    public void setMember(boolean member) {
+        isMember = member;
+    }
+
     @Override
     public String toString() {
         return "Customer{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
+                ", isMember=" + isMember +
                 '}';
     }
 }

@@ -7,6 +7,7 @@ public class UserModel {
     private String dob;
     private String address;
     private String phone;
+    private String password;
     private boolean isEnabled;
     private String lastLogin;
 
@@ -19,20 +20,8 @@ public class UserModel {
         this.address = address;
         this.isEnabled = isEnabled;
         this.lastLogin = lastLogin;
+        this.password = null;
     }
-
-    public UserModel(String id, String name, String email, String dob, String phone, String address, boolean isEnabled) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.dob = dob;
-        this.phone = phone;
-        this.address = address;
-        this.isEnabled = isEnabled;
-    }
-
-    // temp code
-
 
     public UserModel() {
 
@@ -100,6 +89,8 @@ public class UserModel {
     public void setDisabled() {
         isEnabled = false;
     }
+
+    public void setPassword(String password) {}
 
     @Override
     public String toString() {

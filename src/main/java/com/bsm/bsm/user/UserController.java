@@ -5,9 +5,7 @@ public interface UserController {
         throw new Exception();
     }
 
-    default void login(String id, String password) throws Exception {
-        throw new Exception();
-    }
+    default void login(String id, String password){}
 
     void logout();
 

@@ -17,6 +17,31 @@ public class EmployeeModel extends UserModel {
     private List<Publisher> publishers;
     private List<Category> categories;
     private List<Sheet> importSlips;
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
+    }
+
+    public void setPublishers(List<Publisher> publishers) {
+        this.publishers = publishers;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
+    public void setImportSlips(List<Sheet> importSlips) {
+        this.importSlips = importSlips;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
     private List<Order> orders;
 
 
@@ -31,4 +56,8 @@ public class EmployeeModel extends UserModel {
         this.orders = new ArrayList<>();
     }
 
+    @Override
+    public void setPassword(String password) {
+        super.setPassword(password);
+    }
 }

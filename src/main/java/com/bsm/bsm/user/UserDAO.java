@@ -96,7 +96,6 @@ public class UserDAO {
             if (resultSet.next()) {
                 String storedPass = resultSet.getString("password").trim();
 
-                //compare the current password with the password in the database
                 if (BCrypt.checkpw(currentPassword.trim(), storedPass)) {
                     isValid.set(true);
                 }

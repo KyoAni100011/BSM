@@ -1,13 +1,14 @@
 package com.bsm.bsm.admin;
 
+import com.bsm.bsm.commonInterface.Searchable;
+import com.bsm.bsm.employee.EmployeeModel;
 import com.bsm.bsm.user.UserModel;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminModel extends UserModel {
-
+public class AdminModel extends UserModel implements Searchable<UserModel> {
     private List<UserModel> users = new ArrayList<>();
 
     public AdminModel(String id, String name, String email, String dob, String phone, String address, boolean isEnabled, String lastLogin) {
@@ -27,9 +28,9 @@ public class AdminModel extends UserModel {
         return users;
     }
 
-    public boolean searchUser(String name) {
-        //TODO
-        return true;
+    @Override
+    public List<UserModel> search(String keyword) {
+        return null;
     }
 
     //sort user
@@ -38,8 +39,8 @@ public class AdminModel extends UserModel {
         return null;
     }
 
-    public void addNewUser(String id, String name, String email, String dob, String phone, String address, boolean isEnabled) {
-        UserModel newUser= new UserModel(id, name, email, dob, phone, address, isEnabled);
+    public void addNewUser(String id, String name, String email, String dob, String phone, String address, boolean isEnabled, String lastLogin) {
+        UserModel newUser= new UserModel(id, name, email, dob, phone, address, isEnabled, lastLogin);
         users.add(newUser);
     }
 
@@ -48,5 +49,9 @@ public class AdminModel extends UserModel {
         super.setEnabled(enabled);
     }
 
+    public void resetPassword(String email, String newPassword) {
+        List<UserModel> foundedUser = search(email);
+        foundedUser.getFirst().setPassword(newPassword);
+    }
 
 }
