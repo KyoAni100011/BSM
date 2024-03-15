@@ -25,6 +25,14 @@ public class UserModel {
         this.lastLogin = lastLogin;
     }
 
+    public UserModel(String id, String name, String email, boolean isEnabled, String lastLogin) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.isEnabled = isEnabled;
+        this.lastLogin = lastLogin;
+    }
+
     public String getLastLogin() {
         return lastLogin;
     }

@@ -99,15 +99,6 @@ public class UserAccountController implements Initializable {
             AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
         }
     }
-    public static void handleTableItemDoubleClick(String Id) throws IOException {
-        if (Id != null) {
-            UserDetailController.handleTableItemSelection(Id);
-            FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/userDetail");
-        } else {
-            AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
-
-        }
-    }
 
     @FXML void handleAddUserButton(ActionEvent event) throws IOException {
         FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/addUser");

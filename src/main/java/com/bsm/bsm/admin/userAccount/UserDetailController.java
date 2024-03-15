@@ -40,7 +40,8 @@ public class UserDetailController {
         setUserInfo();
     }
     static  void handleTableItemSelection(String userEmail) {
-        email = userEmail; // Store the selected user
+        email = userEmail;
+        System.out.println("userEmail = " + userEmail);// Store the selected user
     }
 
     private void setupDatePicker() {

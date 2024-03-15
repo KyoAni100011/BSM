@@ -17,14 +17,12 @@ public class UserAccountDAO {
         DatabaseConnection.executeQuery(GET_ALL_USERS_INFO_QUERY, resultSet -> {
             while (resultSet.next()) {
                 String id = resultSet.getString("id");
-                String email = resultSet.getString("email");
-                String dob = resultSet.getString("dob");
                 String name = resultSet.getString("name");
-                String phone = resultSet.getString("telephone");
-                String address = resultSet.getString("address");
-                boolean isEnabled = resultSet.getBoolean("isEnabled");
+                String email = resultSet.getString("email");
                 String lastLogin = resultSet.getString("lastLogin");
-                userModel.add(new UserModel(id, name, email, dob, phone, address, isEnabled, lastLogin));
+                boolean isEnabled = resultSet.getBoolean("isEnabled");
+
+                userModel.add(new UserModel(id, name, email, isEnabled, lastLogin));
             }
         });
 
