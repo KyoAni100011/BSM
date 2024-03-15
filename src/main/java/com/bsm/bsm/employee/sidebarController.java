@@ -71,12 +71,12 @@ public class sidebarController {
     public void initialize()
     {
         new sidebarController();
-        nameText.setText(employeeInfo.getName().split(" ")[1]);
+        String[] name = employeeInfo.getName().split(" ");
+        nameText.setText(name[name.length - 1]);
         if (employeeInfo instanceof EmployeeModel) {
             roleText.setText("Employee");
         }
     }
-
 
     @FXML
     void SwitchBook(ActionEvent event) throws IOException {

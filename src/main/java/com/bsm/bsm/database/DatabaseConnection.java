@@ -1,10 +1,6 @@
 package com.bsm.bsm.database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class DatabaseConnection {
 
@@ -52,18 +48,6 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
         return linesAffected;
-    }
-
-    public static void executeProcedure(String procedure, Object... parameters) {
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareCall(procedure)) {
-
-            setParameters(preparedStatement, parameters);
-            preparedStatement.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     private static void setParameters(PreparedStatement preparedStatement, Object... parameters) throws SQLException {

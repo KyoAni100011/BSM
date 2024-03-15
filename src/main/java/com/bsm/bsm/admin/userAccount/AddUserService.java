@@ -2,7 +2,6 @@ package com.bsm.bsm.admin.userAccount;
 
 
 public class AddUserService {
-
     private final AddUserDAO addUserDAO;
 
     public AddUserService() {
@@ -10,7 +9,7 @@ public class AddUserService {
     }
 
     public boolean isAdmin(String email) {
-        return email.equalsIgnoreCase("admin@bms.com");
+        return email.equals("admin@bms.com");
     }
 
     public boolean hasUserExist(String email) {
@@ -18,12 +17,8 @@ public class AddUserService {
     }
 
     public boolean addUser(String name, String dob, String email, String password) {
-        if (hasUserExist(email)) {
-            return false;
-        }
-
         String role = isAdmin(email) ? "admin" : "employee";
-        return addUserDAO.addUser(name, dob, email, password, role);
+        return addUserDAO.addUser(name, dob, email, hashPassword(password), role);
     }
 
     private String hashPassword(String password) {
