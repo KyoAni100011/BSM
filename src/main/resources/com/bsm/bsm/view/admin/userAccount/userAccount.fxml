@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.admin.userAccount.UserAccountController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.admin.userAccount.UserAccountController">
    <children>
       <VBox alignment="CENTER_LEFT" layoutY="-1.0" prefHeight="600.0" prefWidth="700.0">
          <children>
@@ -21,7 +25,7 @@
                         </Group>
                      </graphic>
                   </Button>
-                  <Button fx:id="updateUserButton" onAction="#handleUpdateUserButton" layoutX="472.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 20px;" text="Update">
+                  <Button fx:id="updateUserButton" layoutX="472.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleUpdateUserButton" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 20px;" text="Update">
                      <graphic>
                         <Group>
                            <children>
@@ -49,7 +53,7 @@
                         </Group>
                      </graphic>
                   </Button>
-                  <Button fx:id="addUserButton" onAction="#handleAddUserButton" layoutX="374.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="88.0" style="-fx-background-radius: 20px;" text="Add User">
+                  <Button fx:id="addUserButton" layoutX="374.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleAddUserButton" prefHeight="30.0" prefWidth="88.0" style="-fx-background-radius: 20px;" text="Add User">
                      <graphic>
                         <Group>
                            <children>
@@ -77,38 +81,78 @@
                      </children>
                   </HBox>
                   <VBox fx:id="pnItems" layoutY="101.0" prefHeight="449.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 0px 0px 10px 10px;" />
-                  <HBox alignment="CENTER_LEFT" layoutY="56.0" prefHeight="45.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-color: #F3F3F3; -fx-border-width: 0px 0px 2px 0px;">
+                  <HBox alignment="CENTER_LEFT" layoutY="55.0" prefHeight="46.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-color: #F3F3F3; -fx-border-width: 0px 0px 2px 0px;">
                      <children>
                         <Label alignment="CENTER" prefWidth="20.0">
                            <HBox.margin>
-                              <Insets left="30.0" />
+                              <Insets left="30.0" right="30.0" />
                            </HBox.margin>
                         </Label>
-                        <Label fx:id="idLabel" alignment="CENTER" prefWidth="100.0" text="ID">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Label>
-                        <Label fx:id="nameLabel" alignment="CENTER" prefWidth="150.0" text="Name">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Label>
-                        <Label fx:id="emailLabel" alignment="CENTER" prefWidth="200.0" text="Email">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Label>
-                        <Label fx:id="lastLoginLabel" alignment="CENTER" prefWidth="100.0" text="Last login">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Label>
-                        <Label alignment="CENTER" text="Action">
-                           <HBox.margin>
-                              <Insets left="30.0" />
-                           </HBox.margin>
-                        </Label>
+                        <AnchorPane prefHeight="44.0" prefWidth="12.0">
+                           <children>
+                              <Button fx:id="idLabel" layoutX="-3.0" layoutY="9.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" style="-fx-background-color: transparent;" text="ID">
+                                 <graphic>
+                                    <Group>
+                                       <children>
+                                          <SVGPath fx:id="idSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-47.0" layoutY="-2.0" scaleX="0.03" scaleY="0.03" />
+                                       </children>
+                                    </Group>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="43.0" prefWidth="122.0">
+                           <children>
+                              <Button fx:id="nameLabel" layoutX="-1.0" layoutY="9.0" mnemonicParsing="false" prefWidth="150.0" style="-fx-background-color: transparent;" text="Name">
+                                 <graphic>
+                                    <Group>
+                                       <children>
+                                          <SVGPath fx:id="nameSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-48.0" layoutY="-4.0" scaleX="0.03" scaleY="0.03" />
+                                       </children>
+                                    </Group>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="43.0" prefWidth="122.0">
+                           <children>
+                              <Button fx:id="emailLabel" layoutX="-3.0" layoutY="9.0" mnemonicParsing="false" prefWidth="200.0" style="-fx-background-color: transparent;" text="Email">
+                                 <graphic>
+                                    <Group>
+                                       <children>
+                                          <SVGPath fx:id="emailSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-48.0" layoutY="-4.0" scaleX="0.03" scaleY="0.03" />
+                                       </children>
+                                    </Group>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="43.0" prefWidth="82.0">
+                           <children>
+                              <Button fx:id="lastLoginLabel" layoutX="-1.0" layoutY="9.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Last login">
+                                 <graphic>
+                                    <Group>
+                                       <children>
+                                          <SVGPath fx:id="lastLoginSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-48.0" layoutY="-4.0" scaleX="0.03" scaleY="0.03" />
+                                       </children>
+                                    </Group>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="43.0" prefWidth="87.0">
+                           <children>
+                              <Button fx:id="actionLabel" layoutX="-1.0" layoutY="9.0" mnemonicParsing="false" prefWidth="100.0" style="-fx-background-color: transparent;" text="Action">
+                                 <graphic>
+                                    <Group>
+                                       <children>
+                                          <SVGPath fx:id="actionSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-48.0" layoutY="-4.0" scaleX="0.03" scaleY="0.03" />
+                                       </children>
+                                    </Group>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
                      </children>
                   </HBox>
                </children>

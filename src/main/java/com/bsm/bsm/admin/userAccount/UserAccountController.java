@@ -18,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.SVGPath;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -35,7 +36,8 @@ public class UserAccountController implements Initializable {
     public Button addUserButton, passwordResetButton, updateUserButton;
     @FXML
     public Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
-    public Label idLabel, nameLabel, emailLabel, lastLoginLabel;
+    public Button idLabel, nameLabel, emailLabel, lastLoginLabel;
+    public SVGPath idSortLabel, nameSortLabel, emailSortLabel, lastLoginSortLabel, actionSortLabel;
     @FXML
     private VBox pnItems = null;
     @FXML
@@ -61,6 +63,12 @@ public class UserAccountController implements Initializable {
         nameLabel.setOnMouseClicked(this::handleLabelClick);
         emailLabel.setOnMouseClicked(this::handleLabelClick);
         lastLoginLabel.setOnMouseClicked(this::handleLabelClick);
+
+        idSortLabel.setContent("");
+        nameSortLabel.setContent("");
+        emailSortLabel.setContent("");
+        lastLoginSortLabel.setContent("");
+        actionSortLabel.setContent("");
 
         // Load all users initially
         emailSuffix = ".employee@bms.com";
@@ -309,7 +317,7 @@ public class UserAccountController implements Initializable {
     @FXML
     private void handleLabelClick(MouseEvent event) {
         // Retrieve column name from the clicked label
-        Label clickedLabel = (Label) event.getSource();
+        Button clickedLabel = (Button) event.getSource();
         String columnName = clickedLabel.getText();
 
         // Determine the new sort order based on the current sort order
@@ -322,8 +330,15 @@ public class UserAccountController implements Initializable {
         // Update column to reflect the clicked column
         column = columnName;
 
+        // Update sort order for the clicked column
+        idSortLabel.setContent(column.equals("ID") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        nameSortLabel.setContent(column.equals("Name") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        emailSortLabel.setContent(column.equals("Email") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        lastLoginSortLabel.setContent(column.equals("Last Login") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        actionSortLabel.setContent(column.equals("Action") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
         // Call updateUsersList with updated parameters for sorting
         try {
+            System.out.println("Column: " + column + " Sort Order: " + sortOrder);
             updateUsersList();
         } catch (IOException e) {
             e.printStackTrace();
