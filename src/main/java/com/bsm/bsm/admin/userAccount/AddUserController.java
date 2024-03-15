@@ -2,6 +2,7 @@ package com.bsm.bsm.admin.userAccount;
 
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
+import com.bsm.bsm.utils.DateUtils;
 import com.bsm.bsm.utils.NumericValidationUtils;
 import com.bsm.bsm.utils.ValidationUtils;
 import javafx.fxml.FXML;
@@ -32,7 +33,7 @@ public class AddUserController {
     @FXML
     public Button resetButton;
 
-//    private final AddUserService addUserService = new AddUserService();
+    private final AddUserService addUserService = new AddUserService();
 
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -80,11 +81,10 @@ public class AddUserController {
         dobPicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
     }
 
-
     @FXML
     private void handleAddButtonAction(ActionEvent event) {
         clearErrorMessages();
-        String email = emailField.getText();
+        String email = emailField.getText().toLowerCase();
         String password = customPassword.getText();
         String name = nameField.getText();
         String dob = dobPicker.getEditor().getText();
@@ -92,27 +92,25 @@ public class AddUserController {
         if (validateInputs(email, name, dob)) {
             //check user not admin by email
             String adminEmail = UserSingleton.getInstance().getUser().getEmail();
-//            if (adminEmail.equals(email)) {
-//                emailErrorLabel.setText("Admin cannot add themselves.");
-//                return;
-//            }
-//
-//            if (addUserService.hasUserExist(email)) {
-//                emailErrorLabel.setText("User already exists.");
-//                return;
-//            }
+            if (adminEmail.equals(email)) {
+                emailErrorLabel.setText("Admin cannot add themselves.");
+                return;
+            }
 
-//            String adminID = UserSingleton.getInstance().getUser().getId();
-//            addUserService.addUser(adminID, email, password, firstName, dob);
-            System.out.println("User added successfully.");
-            System.out.println("Email: " + email);
-            System.out.println("Password: " + password);
-            System.out.println("Name: " + name);
-            System.out.println("DOB: " + dob);
+            if (addUserService.hasUserExist(email)) {
+                emailErrorLabel.setText("User already exists.");
+                return;
+            }
 
-            AlertUtils.showAlert("User Added", "User added successfully.", Alert.AlertType.INFORMATION);
-            clearInputs();
-            closeWindow(event);
+            dob = DateUtils.formatDOB(dob);
+            if (addUserService.addUser(name, dob, email, password)) {
+                AlertUtils.showAlert("User Added", "User added successfully.", Alert.AlertType.INFORMATION);
+                clearInputs();
+                closeWindow(event);
+
+            } else {
+                AlertUtils.showAlert("Error", "An error occurred while adding user.", Alert.AlertType.ERROR);
+            }
         }
         else {
             AlertUtils.showAlert("Invalid Input", "Please check your input.", Alert.AlertType.ERROR);
