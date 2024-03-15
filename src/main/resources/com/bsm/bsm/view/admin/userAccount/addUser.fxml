@@ -43,7 +43,7 @@
     </Label>
 
 
-    <Button fx:id="resetButton" layoutX="321.0" layoutY="345.0" mnemonicParsing="false" onAction="#handleAddButtonAction" prefHeight="40.0" prefWidth="153.0" styleClass="button-custom-admin" text="Add" textFill="WHITE">
+    <Button fx:id="resetButton" layoutX="321.0" layoutY="346.0" mnemonicParsing="false" onAction="#handleAddButtonAction" prefHeight="40.0" prefWidth="153.0" styleClass="button-custom-admin" text="Add" textFill="WHITE">
         <font>
             <Font size="18.0" />
         </font>
