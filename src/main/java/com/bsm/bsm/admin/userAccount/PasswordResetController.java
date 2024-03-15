@@ -1,15 +1,17 @@
 package com.bsm.bsm.admin.userAccount;
 
-import com.bsm.bsm.user.UserModel;
+
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.ValidationUtils;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
+import javafx.stage.Stage;
 
 public class PasswordResetController {
     @FXML
@@ -20,19 +22,19 @@ public class PasswordResetController {
     private Button resetButton;
     @FXML
     private Label emailErrorLabel, passwordErrorLabel;
-    private static UserModel selectedUser; // Variable to store the selected user
+    private static String userEmail; // Variable to store the selected user
 
     private final PasswordResetService passwordResetService = new PasswordResetService();
 
     @FXML
     public void initialize() {
-        emailField.setText(selectedUser.getEmail());
+        emailField.setText(userEmail);
         clearErrorMessages();
         textNote.setVisible(true);
         customPassword.setOnMouseClicked(event -> textNote.setVisible(false)); // Add event handler to hide textNote when customPassword is clicked
     }
-    static  void handleTableItemSelection(UserModel user) {
-        selectedUser = user; // Store the selected user
+    static  void handleTableItemSelection(String email) {
+        userEmail = email; // Store the selected user
     }
 
     @FXML
@@ -59,6 +61,9 @@ public class PasswordResetController {
             AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
             clearInputs();
             clearErrorMessages();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            // Close the stage
+            stage.close();
         }
     }
 
