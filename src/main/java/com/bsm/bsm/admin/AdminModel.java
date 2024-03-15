@@ -19,6 +19,11 @@ public class AdminModel extends UserModel implements Searchable<UserModel> {
         this.users = users;
     }
 
+    public AdminModel(AdminModel adminModel, List<UserModel> users) {
+        super(adminModel.getId(), adminModel.getName(), adminModel.getEmail(), adminModel.getDob(), adminModel.getPhone(), adminModel.getAddress(), adminModel.isEnabled(), adminModel.getLastLogin());
+        this.users = users;
+    }
+
     public AdminModel() {
         super();
     }

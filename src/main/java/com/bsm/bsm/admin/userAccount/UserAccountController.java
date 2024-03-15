@@ -1,6 +1,7 @@
 package com.bsm.bsm.admin.userAccount;
 
 import com.bsm.bsm.admin.AdminModel;
+import com.bsm.bsm.employee.EmployeeModel;
 import com.bsm.bsm.user.UserModel;
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
@@ -36,20 +37,19 @@ public class UserAccountController implements Initializable {
     private VBox pnItems = null;
     @FXML
     private static String email; // Variable to store the selected user
-    private String sortOrder;
-    private String column;
-    private String emailSuffix;
+    private String sortOrder = "ASC";
+    private String column = "id";
+    private String role;
     private final ToggleGroup toggleGroup = new ToggleGroup();
     private final UserAccountService userAccountService = new UserAccountService();
     private final UserModel adminInfo = UserSingleton.getInstance().getUser();
-    private final AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId());
-    private final List<UserModel> users = adminModel.viewUsers();
     private int currentPage = 1;
     private final int itemsPerPage = 9;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         employeeButton.getStyleClass().add("profile-setting-button");
         adminButton.getStyleClass().add("profile-setting-button");
 
@@ -59,8 +59,14 @@ public class UserAccountController implements Initializable {
         lastLoginLabel.setOnMouseClicked(this::handleLabelClick);
 
         // Load all users initially
-        emailSuffix = ".employee@bms.com";
+        role = ".employee@bms.com";
         updateButtonStyle(employeeButton);
+        try {
+            updateUsersList();
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
 
         // Attach event handlers to pagination buttons
         firstPaginationButton.setOnAction(this::handlePaginationButton);
@@ -74,13 +80,13 @@ public class UserAccountController implements Initializable {
 
     @FXML
     private void handleEmployeeButton(ActionEvent event) throws IOException {
-        emailSuffix = ".employee@bms.com";
+        role = ".employee@bms.com";
         updateButtonStyle(employeeButton);
     }
 
     @FXML
     private void handleAdminButton(ActionEvent event) throws IOException {
-        emailSuffix = ".admin@bms.com";
+        role = ".admin@bms.com";
         updateButtonStyle(adminButton);
     }
 
@@ -124,13 +130,13 @@ public class UserAccountController implements Initializable {
         // Call updateUsersList with the appropriate email suffix
         if (employeeButton.getStyleClass().contains("profile-setting-button-admin")) {
             try {
-                emailSuffix = ".employee@bms.com";
+                role = ".employee@bms.com";
                 updateUsersList();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            emailSuffix = ".admin@bms.com";
+            role = ".admin@bms.com";
         }
     }
 
@@ -150,8 +156,8 @@ public class UserAccountController implements Initializable {
     private void updateUsersList() throws IOException {
         pnItems.getChildren().clear();
 
-        AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId(), sortOrder, column);
-        List<UserModel> users = adminModel.viewUsers();
+        List<UserModel> users = userAccountService.getAllUsersInfo(UserSingleton.getInstance().getUser().getId(), sortOrder, column);
+        
         System.out.println(users.size());
         System.out.println(users.get(0).getEmail());
         int startIndex = (currentPage - 1) * itemsPerPage;
@@ -159,8 +165,11 @@ public class UserAccountController implements Initializable {
 
         for (int i = startIndex; i < endIndex; i++) {
             UserModel user = users.get(i);
-            if (user.getEmail().endsWith(emailSuffix)) {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/admin/userAccount/tableItem.fxml"));
+            FXMLLoader fxmlLoader = null;
+
+            if ((role.equals(".admin@bms.com") && user instanceof AdminModel) || (role.equals(".employee@bms.com") && user instanceof EmployeeModel)) {
+                fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/admin/userAccount/tableItem.fxml"));
+                System.out.println(role);
                 Node item = fxmlLoader.load();
                 TableItemController tableItemController = fxmlLoader.getController();
                 tableItemController.setToggleGroup(toggleGroup);
