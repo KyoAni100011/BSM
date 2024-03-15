@@ -18,7 +18,7 @@ import java.time.format.DateTimeParseException;
 
 public class AddUserController {
     @FXML
-    public Label emailErrorLabel, passwordErrorLabel, dobErrorLabel, nameErrorLabel;
+    public Label emailErrorLabel, dobErrorLabel, nameErrorLabel;
 
     @FXML
     public TextField emailField, customPassword, nameField;
@@ -89,7 +89,7 @@ public class AddUserController {
         String name = nameField.getText();
         String dob = dobPicker.getEditor().getText();
 
-        if (validateInputs(email, name, password, dob)) {
+        if (validateInputs(email, name, dob)) {
             //check user not admin by email
             String adminEmail = UserSingleton.getInstance().getUser().getEmail();
 //            if (adminEmail.equals(email)) {
@@ -125,20 +125,13 @@ public class AddUserController {
         stage.close();
     }
 
-    private boolean validateInputs(String email, String name, String password, String dob) {
+    private boolean validateInputs(String email, String name, String dob) {
         String emailError = ValidationUtils.validateEmail(email);
-        String passwordError = ValidationUtils.validatePassword(password);
         String dobError = ValidationUtils.validateDOB(dob);
         String nameError = ValidationUtils.validateFullName(name);
 
         if (emailError != null) {
             emailErrorLabel.setText(emailError);
-        }
-        if (password.isEmpty()) {
-            passwordError = null;
-        }
-        else if (passwordError != null) {
-            passwordErrorLabel.setText(passwordError);
         }
 
         if (dobError != null) {
@@ -148,12 +141,11 @@ public class AddUserController {
             nameErrorLabel.setText(nameError);
         }
 
-        return emailError == null && passwordError == null && dobError == null && nameError == null;
+        return emailError == null && dobError == null && nameError == null;
     }
 
     private void clearErrorMessages() {
         emailErrorLabel.setText("");
-        passwordErrorLabel.setText("");
         dobErrorLabel.setText("");
         nameErrorLabel.setText("");
     }
