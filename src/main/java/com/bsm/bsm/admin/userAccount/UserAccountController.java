@@ -165,11 +165,10 @@ public class UserAccountController implements Initializable {
 
         for (int i = startIndex; i < endIndex; i++) {
             UserModel user = users.get(i);
-            FXMLLoader fxmlLoader = null;
+            System.out.println(role);
 
             if ((role.equals(".admin@bms.com") && user instanceof AdminModel) || (role.equals(".employee@bms.com") && user instanceof EmployeeModel)) {
-                fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/admin/userAccount/tableItem.fxml"));
-                System.out.println(role);
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/admin/userAccount/tableItem.fxml"));
                 Node item = fxmlLoader.load();
                 TableItemController tableItemController = fxmlLoader.getController();
                 tableItemController.setToggleGroup(toggleGroup);

@@ -4,6 +4,7 @@ import com.bsm.bsm.admin.AdminModel;
 import com.bsm.bsm.user.UserModel;
 import com.bsm.bsm.user.UserSingleton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserAccountService {
@@ -19,14 +20,9 @@ public class UserAccountService {
     }
 
     public List<UserModel> getAllUsersInfo(String excludedUserId, String sortOrder, String column) {
-        List<UserModel> listUsers = getUsers();
-
-        if (listUsers.isEmpty()) {
-            listUsers = userAccountDAO.getAllUsersInfo(excludedUserId, sortOrder, column);
-            AdminModel tempAdmin = new AdminModel((AdminModel)UserSingleton.getInstance().getUser(), listUsers);
-            UserSingleton.getInstance().setUser(tempAdmin);
-            System.out.println("Successfully fetched users from database");
-        }
+        List<UserModel> listUsers = userAccountDAO.getAllUsersInfo(excludedUserId, sortOrder, column);
+        AdminModel tempAdmin = new AdminModel((AdminModel)UserSingleton.getInstance().getUser(), listUsers);
+        UserSingleton.getInstance().setUser(tempAdmin);
 
         return listUsers;
     }
