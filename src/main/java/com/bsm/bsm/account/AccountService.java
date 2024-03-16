@@ -33,9 +33,8 @@ public class AccountService implements AccountController{
     }
 
     @Override
-    public AdminModel view(String excludedUserId) {
-        List<UserModel> users = accountDAO.getAllUsersInfo(excludedUserId);
-        return new AdminModel(users);
+    public List<UserModel> view(String excludedUserId) {
+        return accountDAO.getAllUsersInfo(excludedUserId);
     }
 
     @Override

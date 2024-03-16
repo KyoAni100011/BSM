@@ -18,6 +18,15 @@
          <children>
             <AnchorPane fx:id="tableToolbar" prefHeight="56.0" prefWidth="693.0" style="-fx-background-color: white; -fx-background-radius: 10px;">
                <children>
+                  <Button layoutX="285.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 20px;" text="Filter">
+                     <graphic>
+                        <Group>
+                           <children>
+                              <SVGPath content="M3.9 54.9C10.5 40.9 24.5 32 40 32H472c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9V448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6V320.9L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9z" scaleX="0.03" scaleY="0.03" />
+                           </children>
+                        </Group>
+                     </graphic>
+                  </Button>
                   <Button fx:id="updateUserButton" layoutX="472.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleUpdateUserButton" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 20px;" text="Update">
                      <graphic>
                         <Group>
@@ -81,38 +90,78 @@
                      </children>
                   </HBox>
                   <VBox fx:id="pnItems" layoutY="101.0" prefHeight="449.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 0px 0px 10px 10px;" />
-                  <HBox fx:id="tableMain" alignment="CENTER_LEFT" layoutY="56.0" prefHeight="45.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-color: #F3F3F3; -fx-border-width: 0px 0px 2px 0px;">
+                  <HBox alignment="CENTER_LEFT" layoutY="55.0" prefHeight="46.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-color: #F3F3F3; -fx-border-width: 0px 0px 2px 0px;">
                      <children>
                         <Label alignment="CENTER" prefWidth="20.0">
                            <HBox.margin>
-                              <Insets left="30.0" />
+                              <Insets left="30.0" right="20.0" />
                            </HBox.margin>
                         </Label>
-                        <Label alignment="CENTER" prefWidth="100.0" text="ID">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Label>
-                        <Label alignment="CENTER" prefWidth="150.0" text="Employee">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Label>
-                        <Label alignment="CENTER" prefWidth="200.0" text="Email">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Label>
-                        <Label alignment="CENTER" prefWidth="100.0" text="Last login">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Label>
-                        <Label alignment="CENTER" text="Action">
-                           <HBox.margin>
-                              <Insets left="30.0" />
-                           </HBox.margin>
-                        </Label>
+                        <AnchorPane prefHeight="44.0" prefWidth="12.0">
+                           <children>
+                              <Button fx:id="idLabel" layoutX="-3.0" layoutY="9.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" style="-fx-background-color: transparent;" text="ID">
+                                 <graphic>
+                                    <Group>
+                                       <children>
+                                          <SVGPath fx:id="idSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-47.0" layoutY="-2.0" scaleX="0.03" scaleY="0.03" />
+                                       </children>
+                                    </Group>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="43.0" prefWidth="122.0">
+                           <children>
+                              <Button fx:id="nameLabel" layoutX="-1.0" layoutY="9.0" mnemonicParsing="false" prefWidth="150.0" style="-fx-background-color: transparent;" text="Name">
+                                 <graphic>
+                                    <Group>
+                                       <children>
+                                          <SVGPath fx:id="nameSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-48.0" layoutY="-4.0" scaleX="0.03" scaleY="0.03" />
+                                       </children>
+                                    </Group>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="43.0" prefWidth="122.0">
+                           <children>
+                              <Button fx:id="emailLabel" layoutX="-3.0" layoutY="9.0" mnemonicParsing="false" prefWidth="200.0" style="-fx-background-color: transparent;" text="Email">
+                                 <graphic>
+                                    <Group>
+                                       <children>
+                                          <SVGPath fx:id="emailSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-48.0" layoutY="-4.0" scaleX="0.03" scaleY="0.03" />
+                                       </children>
+                                    </Group>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="43.0" prefWidth="82.0">
+                           <children>
+                              <Button fx:id="lastLoginLabel" layoutX="-1.0" layoutY="9.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Last login">
+                                 <graphic>
+                                    <Group>
+                                       <children>
+                                          <SVGPath fx:id="lastLoginSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-48.0" layoutY="-4.0" scaleX="0.03" scaleY="0.03" />
+                                       </children>
+                                    </Group>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="43.0" prefWidth="87.0">
+                           <children>
+                              <Button fx:id="actionLabel" layoutX="-1.0" layoutY="9.0" mnemonicParsing="false" prefWidth="100.0" style="-fx-background-color: transparent;" text="Action">
+                                 <graphic>
+                                    <Group>
+                                       <children>
+                                          <SVGPath fx:id="actionSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-48.0" layoutY="-4.0" scaleX="0.03" scaleY="0.03" />
+                                       </children>
+                                    </Group>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
                      </children>
                   </HBox>
                </children>

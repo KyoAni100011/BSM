@@ -1,8 +1,8 @@
 package com.bsm.bsm.admin.userAccount;
 
-import com.bsm.bsm.account.AccountController;
 import com.bsm.bsm.account.AccountService;
 import com.bsm.bsm.admin.AdminModel;
+import com.bsm.bsm.employee.EmployeeModel;
 import com.bsm.bsm.user.UserModel;
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
@@ -15,65 +15,122 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class UserAccountController implements Initializable {
-    @FXML
-    private static String email; // Variable to store the selected user
+    private AdminModel adminInfo = (AdminModel) UserSingleton.getInstance().getUser();
+    private static String email;
     private final ToggleGroup toggleGroup = new ToggleGroup();
     private final UserAccountService userAccountService = new UserAccountService();
-    private final UserModel adminInfo = UserSingleton.getInstance().getUser();
-    private final AdminModel adminModel = userAccountService.getAllUsersInfo(adminInfo.getId());
-    public List<UserModel> users = adminModel.viewUsers();
+    private final AccountService accountService = new AccountService();
+    private List<UserModel> users = null;
     private final int itemsPerPage = 9;
+    private String sortOrder = "ASC";
+    private String column = "id";
+    private String role;
+    private int currentPage = 1;
+    private String inputSearchText = "";
+    private String typeSearchText = "name";
+
     @FXML
-    public Button employeeButton, adminButton;
+    private VBox pnItems;
+
     @FXML
-    public Button addUserButton, passwordResetButton, updateUserButton;
+    public Button employeeButton, adminButton, addUserButton, passwordResetButton, updateUserButton;
+
     @FXML
     public Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
-    String typeSearchText;
+
     @FXML
-    private VBox pnItems = null;
+    public Button idLabel, nameLabel, emailLabel, lastLoginLabel, actionLabel;
+
+    @FXML
+    public SVGPath idSortLabel, nameSortLabel, emailSortLabel, lastLoginSortLabel, actionSortLabel;
+
     @FXML
     private TextField inputSearch;
+
     @FXML
     private MenuButton typeSearch;
-    private AccountController accountController = null;
-    private int currentPage = 1;
-    private String currentTypeUser = "employee";
-    private String inputSearchText = "";
 
-    public UserAccountController() {
-        accountController = new AccountService();
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        initializeButtonsAndLabels();
+        loadAllUsers();
+        initializePaginationButtons();
+
+        typeSearch.setText(typeSearchText);
+
+        for (MenuItem item : typeSearch.getItems()) {
+            item.setOnAction(event -> {
+                typeSearchText = ((MenuItem) event.getSource()).getText();
+                typeSearch.setText(typeSearchText);
+            });
+        }
+
+        inputSearch.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                inputSearchText = newValue;
+                users = accountService.search(inputSearchText, typeSearchText);
+                try {
+                    updateUsersList();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    private void initializeButtonsAndLabels() {
+        employeeButton.getStyleClass().add("profile-setting-button");
+        updateButtonStyle(employeeButton);
+        adminButton.getStyleClass().add("profile-setting-button");
+
+        idLabel.setOnMouseClicked(this::handleLabelClick);
+        nameLabel.setOnMouseClicked(this::handleLabelClick);
+        emailLabel.setOnMouseClicked(this::handleLabelClick);
+        lastLoginLabel.setOnMouseClicked(this::handleLabelClick);
+        actionLabel.setOnMouseClicked(this::handleLabelClick);
+
+        idSortLabel.setContent("");
+        nameSortLabel.setContent("");
+        emailSortLabel.setContent("");
+        lastLoginSortLabel.setContent("");
+        actionSortLabel.setContent("");
+
+        addUserButton.setOnAction(this::handleAddUserButton);
+        passwordResetButton.setOnAction(this::handlePasswordResetButton);
+        updateUserButton.setOnAction(this::handleUpdateUserButton);
+        employeeButton.setOnAction(this::handleEmployeeButton);
+        adminButton.setOnAction(this::handleAdminButton);
+    }
+
+    private void loadAllUsers() {
+        adminInfo.setUsers(accountService.view(adminInfo.getId()));
+        users = adminInfo.viewUsers();
+        try {
+            role = ".employee@bms.com";
+            updateUsersList();
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
     static void handleTableItemSelection(String userEmail) {
         email = userEmail; // Store the selected user
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        employeeButton.getStyleClass().add("profile-setting-button");
-        adminButton.getStyleClass().add("profile-setting-button");
-
-        // Load all users initially
-        try {
-            updateUsersList(".employee@bms.com");
-            updateButtonStyle(employeeButton);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // Attach event handlers to pagination buttons
+    private void initializePaginationButtons() {
         firstPaginationButton.setOnAction(this::handlePaginationButton);
         secondPaginationButton.setOnAction(this::handlePaginationButton);
         thirdPaginationButton.setOnAction(this::handlePaginationButton);
@@ -84,54 +141,67 @@ public class UserAccountController implements Initializable {
     }
 
     @FXML
-    private void handleEmployeeButton(ActionEvent event) throws IOException {
-        this.users = adminModel.viewUsers();
-        System.out.println(users);
-        typeSearchText = "";
-        inputSearchText = "";
-        inputSearch.setText("");
-        typeSearch.setText("");
-        updateUsersList(".employee@bms.com");
-        currentTypeUser = "employee";
-        updateButtonStyle(employeeButton);
-    }
-
-    @FXML
-    private void handleAdminButton(ActionEvent event) throws IOException {
-        this.users = adminModel.viewUsers();
-        System.out.println(users);
-        typeSearchText = "";
-        inputSearchText = "";
-        inputSearch.setText("");
-        typeSearch.setText("");
-        updateUsersList(".admin@bms.com");
-        currentTypeUser = "admin";
-        updateButtonStyle(adminButton);
-    }
-
-    @FXML
-    private void handlePasswordResetButton(ActionEvent event) throws IOException {
-        if (email != null) {
-            PasswordResetController.handleTableItemSelection(email);
-            FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/passwordReset");
-        } else {
-            AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
+    private void handleEmployeeButton(ActionEvent event) {
+        try {
+            role = ".employee@bms.com";
+            updateUsersList();
+            updateButtonStyle(employeeButton);
+        } catch (IOException e) {
+            e.printStackTrace();
+            AlertUtils.showAlert("Error", "Error loading employee users", Alert.AlertType.ERROR);
         }
     }
 
     @FXML
-    private void handleUpdateUserButton(ActionEvent event) throws IOException {
-        if (email != null) {
-            UpdateUserController.handleTableItemSelection(email);
-            FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/updateUser");
-        } else {
-            AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
+    private void handleAdminButton(ActionEvent event) {
+        try {
+            role = ".admin@bms.com";
+            updateUsersList();
+            updateButtonStyle(adminButton);
+        } catch (IOException e) {
+            e.printStackTrace();
+            AlertUtils.showAlert("Error", "Error loading admin users", Alert.AlertType.ERROR);
         }
     }
 
     @FXML
-    void handleAddUserButton(ActionEvent event) throws IOException {
-        FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/addUser");
+    private void handlePasswordResetButton(ActionEvent event) {
+        try {
+            if (email != null) {
+                PasswordResetController.handleTableItemSelection(email);
+                FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/passwordReset");
+            } else {
+                AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            AlertUtils.showAlert("Error", "Error loading passwordReset FXML", Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    private void handleUpdateUserButton(ActionEvent event) {
+        try {
+            if (email != null) {
+                UpdateUserController.handleTableItemSelection(email);
+                FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/updateUser");
+            } else {
+                AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            AlertUtils.showAlert("Error", "Error loading updateUser FXML", Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    private void handleAddUserButton(ActionEvent event) {
+        try {
+            FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/addUser");
+        } catch (IOException e) {
+            e.printStackTrace();
+            AlertUtils.showAlert("Error", "Error loading addUser FXML", Alert.AlertType.ERROR);
+        }
     }
 
     @FXML
@@ -144,19 +214,15 @@ public class UserAccountController implements Initializable {
         } else {
             currentPage = Integer.parseInt(buttonClicked.getText());
         }
-        // Call updateUsersList with the appropriate email suffix
         if (employeeButton.getStyleClass().contains("profile-setting-button-admin")) {
             try {
-                updateUsersList(".employee@bms.com");
+                role = ".employee@bms.com";
+                updateUsersList();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            try {
-                updateUsersList(".admin@bms.com");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            role = ".admin@bms.com";
         }
     }
 
@@ -172,35 +238,40 @@ public class UserAccountController implements Initializable {
         }
     }
 
-
-    private void updateUsersList(String emailSuffix) throws IOException {
+    private void updateUsersList() throws IOException {
         pnItems.getChildren().clear();
         int startIndex = (currentPage - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, users.size());
 
         for (int i = startIndex; i < endIndex; i++) {
             UserModel user = users.get(i);
-            if (user.getEmail().endsWith(emailSuffix)) {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/admin/userAccount/tableItem.fxml"));
-                Node item = fxmlLoader.load();
-                TableItemController tableItemController = fxmlLoader.getController();
-                tableItemController.setToggleGroup(toggleGroup);
-                tableItemController.setUserModel(user);
-                pnItems.getChildren().add(item);
+            String email = user.getEmail();
+            if (role.equals(".employee@bms.com") && email.endsWith(".employee@bms.com") ||
+                    role.equals(".admin@bms.com") && email.endsWith(".admin@bms.com")) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/admin/userAccount/tableItem.fxml"));
+                    Node item = fxmlLoader.load();
+                    TableItemController tableItemController = fxmlLoader.getController();
+                    tableItemController.setToggleGroup(toggleGroup);
+                    tableItemController.setUserModel(user);
+                    pnItems.getChildren().add(item);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
-
         int totalPages = (int) Math.ceil((double) users.size() / itemsPerPage);
         updatePaginationButtons(totalPages);
     }
 
     private void updatePaginationButtons(int totalPages) {
         // Clear all pagination buttons visibility
-        for (Button button : Arrays.asList(firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton)) {
+        List<Button> paginationButtons = Arrays.asList(firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton);
+        paginationButtons.forEach(button -> {
             button.setVisible(false);
             button.setManaged(false);
             button.getStyleClass().add("pagination-button-admin");
-        }
+        });
 
         // Show pagination buttons based on the current page and total pages
         if (totalPages > 1) {
@@ -212,87 +283,17 @@ public class UserAccountController implements Initializable {
 
             for (int i = startPage; i <= endPage; i++) {
                 Button button;
+                int buttonIndex = i - startPage;
                 if (totalPages > 5 && startPage < 6) {
-                    switch (i - startPage) {
-                        case 0:
-                            button = firstPaginationButton;
-                            button.setText(String.valueOf(i));
-                            break;
-                        case 1:
-                            button = secondPaginationButton;
-                            button.setDisable(false);
-                            button.setText(String.valueOf(i));
-                            break;
-                        case 2:
-                            button = thirdPaginationButton;
-                            button.setText(String.valueOf(i));
-                            break;
-                        case 3:
-                            button = fourthPaginationButton;
-                            button.setText("...");
-                            button.setDisable(true);
-                            break;
-                        case 4:
-                            button = fifthPaginationButton;
-                            button.setText(String.valueOf(totalPages));
-                            break;
-                        default:
-                            throw new IllegalStateException("Unexpected value: " + (i - startPage));
-                    }
+                    button = paginationButtons.get(buttonIndex);
                 } else if (totalPages > 5 && startPage >= 6) {
-                    switch (i - startPage) {
-                        case 0:
-                            button = firstPaginationButton;
-                            button.setText(String.valueOf(1));
-                            break;
-                        case 1:
-                            button = secondPaginationButton;
-                            button.setText("...");
-                            button.setDisable(true);
-                            break;
-                        case 2:
-                            button = thirdPaginationButton;
-                            button.setText(String.valueOf(i));
-                            break;
-                        case 3:
-                            button = fourthPaginationButton;
-                            button.setDisable(false);
-                            button.setText(String.valueOf(i));
-                            break;
-                        case 4:
-                            button = fifthPaginationButton;
-                            button.setText(String.valueOf(i));
-                            break;
-                        default:
-                            throw new IllegalStateException("Unexpected value: " + (i - startPage));
-                    }
+                    button = paginationButtons.get(buttonIndex + 1);
                 } else {
-                    switch (i - startPage) {
-                        case 0:
-                            button = firstPaginationButton;
-                            break;
-                        case 1:
-                            button = secondPaginationButton;
-                            button.setDisable(false);
-                            break;
-                        case 2:
-                            button = thirdPaginationButton;
-                            break;
-                        case 3:
-                            button = fourthPaginationButton;
-                            break;
-                        case 4:
-                            button = fifthPaginationButton;
-                            break;
-                        default:
-                            throw new IllegalStateException("Unexpected value: " + (i - startPage));
-                    }
-                    button.setText(String.valueOf(i));
+                    button = paginationButtons.get(buttonIndex);
                 }
-
+                button.setText(String.valueOf(i));
                 button.setManaged(true);
                 button.setVisible(true);
-
 
                 if (i == currentPage) {
                     button.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
@@ -307,6 +308,35 @@ public class UserAccountController implements Initializable {
             firstPaginationButton.setManaged(true);
             firstPaginationButton.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
             nextPaginationButton.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void handleLabelClick(MouseEvent event){
+        Button clickedLabel = (Button) event.getSource();
+        String columnName = clickedLabel.getText();
+        if (columnName.equals(column)) {
+            sortOrder = sortOrder.equals("ASC") ? "DESC" : "ASC";
+        } else {
+            sortOrder = "ASC";
+        }
+        column = columnName;
+        idSortLabel.setContent(column.equals("ID") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        nameSortLabel.setContent(column.equals("Name") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        emailSortLabel.setContent(column.equals("Email") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        lastLoginSortLabel.setContent(column.equals("Last login") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        actionSortLabel.setContent(column.equals("Action") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        try {
+            System.out.println("Column: " + column + " Sort Order: " + sortOrder);
+            updateUsersList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        users = userAccountService.getAllUsersInfo(UserSingleton.getInstance().getUser().getId(), sortOrder, column);
+        try {
+            updateUsersList();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

@@ -8,13 +8,13 @@
 
     <Text layoutX="256.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title-form" text="Add user" wrappingWidth="185.0" />
 
-    <Label fx:id="emailErrorLabel" layoutX="126.0" layoutY="247.0" styleClass="error-label" text="aa" />
-    <Label fx:id="dobErrorLabel" layoutX="125.0" layoutY="174.0" styleClass="error-label" text="aa" />
+    <Label fx:id="emailErrorLabel" layoutX="126.0" layoutY="247.0" styleClass="error-label" />
+    <Label fx:id="dobErrorLabel" layoutX="125.0" layoutY="174.0" styleClass="error-label" />
 
     <TextField fx:id="emailField" layoutX="125.0" layoutY="209.0" prefHeight="40.0" prefWidth="350.0" promptText="Enter Email" styleClass="input-field-add" />
-    <TextField fx:id="customPassword" layoutX="126.0" layoutY="282.0" prefHeight="40.0" prefWidth="350.0" promptText="Customize or leave default" styleClass="input-field-add" />
+    <TextField fx:id="customPassword" disable="true" layoutX="126.0" layoutY="282.0" prefHeight="40.0" prefWidth="350.0" promptText="Default password" styleClass="input-field-add" />
     <TextField fx:id="nameField" layoutX="125.0" layoutY="63.0" prefHeight="40.0" prefWidth="350.0" promptText="Enter Name" styleClass="input-field-add" />
-    <DatePicker fx:id="dobPicker" layoutX="124.0" layoutY="136.0" minHeight="40.0" prefWidth="350.0" promptText="Enter birthday" />
+    <DatePicker fx:id="dobPicker" layoutX="124.0" layoutY="136.0" minHeight="40.0" onInputMethodTextChanged="#updatePasswordField" prefWidth="350.0" promptText="Enter birthday" />
 
     <Label layoutX="126.0" layoutY="192.0" styleClass="label-bold" text="Email">
         <font>
@@ -43,11 +43,10 @@
     </Label>
 
 
-    <Button fx:id="resetButton" styleClass="button-custom-admin" layoutX="321.0" layoutY="345.0" mnemonicParsing="false" onAction="#handleAddButtonAction" prefHeight="40.0" prefWidth="153.0" text="Add" textFill="WHITE">
+    <Button fx:id="resetButton" layoutX="321.0" layoutY="346.0" mnemonicParsing="false" onAction="#handleAddButtonAction" prefHeight="40.0" prefWidth="153.0" styleClass="button-custom-admin" text="Add" textFill="WHITE">
         <font>
             <Font size="18.0" />
         </font>
     </Button>
-    <Label fx:id="nameErrorLabel" layoutX="126.0" layoutY="101.0" styleClass="error-label" text="aa" />
-    <Label fx:id="passwordErrorLabel" layoutX="127.0" layoutY="322.0" styleClass="error-label" text="aa" />
+    <Label fx:id="nameErrorLabel" layoutX="126.0" layoutY="101.0" styleClass="error-label" />
 </AnchorPane>

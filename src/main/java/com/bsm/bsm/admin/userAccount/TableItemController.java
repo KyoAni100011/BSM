@@ -100,7 +100,6 @@ public class TableItemController {
         long days = duration.toDays();
         long hours = duration.toHours() % 24;
         long minutes = duration.toMinutes() % 60;
-//        // Construct the string representing the time elapsed since last login
         String timeElapsed = "";
         if (days > 0) {
             timeElapsed += lastLoginDate;

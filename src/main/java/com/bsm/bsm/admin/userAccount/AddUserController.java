@@ -2,6 +2,7 @@ package com.bsm.bsm.admin.userAccount;
 
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
+import com.bsm.bsm.utils.DateUtils;
 import com.bsm.bsm.utils.NumericValidationUtils;
 import com.bsm.bsm.utils.ValidationUtils;
 import javafx.fxml.FXML;
@@ -14,10 +15,11 @@ import javafx.util.StringConverter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class AddUserController {
     @FXML
-    public Label emailErrorLabel, passwordErrorLabel, dobErrorLabel, nameErrorLabel;
+    public Label emailErrorLabel, dobErrorLabel, nameErrorLabel;
 
     @FXML
     public TextField emailField, customPassword, nameField;
@@ -31,7 +33,7 @@ public class AddUserController {
     @FXML
     public Button resetButton;
 
-//    private final AddUserService addUserService = new AddUserService();
+    private final AddUserService addUserService = new AddUserService();
 
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -41,6 +43,20 @@ public class AddUserController {
         setupDatePicker();
         textNote.setVisible(true);
         customPassword.setOnMouseClicked(event -> textNote.setVisible(false)); // Add event handler to hide textNote when customPassword is clicked
+
+        dobPicker.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            // Update password field when the value of the editor changes
+            updatePasswordField();
+        });
+    }
+    @FXML
+    private void updatePasswordField() {
+        String dob = dobPicker.getEditor().getText();
+        if (dob.length() != 10) {
+            return;
+        }
+        String password = dob.replaceAll("/", "");
+        customPassword.setText(password);
     }
 
     private void setupDatePicker() {
@@ -54,7 +70,11 @@ public class AddUserController {
 
             @Override
             public LocalDate fromString(String string) {
-                return string != null && !string.isEmpty() ? LocalDate.parse(string, dateFormatter) : null;
+                try {
+                    return LocalDate.parse(string, dateFormatter);
+                } catch (DateTimeParseException e) {
+                    return null;
+                }
             }
         });
 
@@ -64,35 +84,33 @@ public class AddUserController {
     @FXML
     private void handleAddButtonAction(ActionEvent event) {
         clearErrorMessages();
-        String email = emailField.getText();
+        String email = emailField.getText().toLowerCase();
         String password = customPassword.getText();
         String name = nameField.getText();
         String dob = dobPicker.getEditor().getText();
 
-        if (validateInputs(email, name, password, dob)) {
+        if (validateInputs(email, name, dob)) {
             //check user not admin by email
             String adminEmail = UserSingleton.getInstance().getUser().getEmail();
-//            if (adminEmail.equals(email)) {
-//                emailErrorLabel.setText("Admin cannot add themselves.");
-//                return;
-//            }
-//
-//            if (addUserService.hasUserExist(email)) {
-//                emailErrorLabel.setText("User already exists.");
-//                return;
-//            }
+            if (adminEmail.equals(email)) {
+                emailErrorLabel.setText("Admin cannot add themselves.");
+                return;
+            }
 
-//            String adminID = UserSingleton.getInstance().getUser().getId();
-//            addUserService.addUser(adminID, email, password, firstName, dob);
-            System.out.println("User added successfully.");
-            System.out.println("Email: " + email);
-            System.out.println("Password: " + password);
-            System.out.println("Name: " + name);
-            System.out.println("DOB: " + dob);
+            if (addUserService.hasUserExist(email)) {
+                emailErrorLabel.setText("User already exists.");
+                return;
+            }
 
-            AlertUtils.showAlert("User Added", "User added successfully.", Alert.AlertType.INFORMATION);
-            clearInputs();
-            closeWindow(event);
+            dob = DateUtils.formatDOB(dob);
+            if (addUserService.addUser(name, dob, email, password)) {
+                AlertUtils.showAlert("User Added", "User added successfully.", Alert.AlertType.INFORMATION);
+                clearInputs();
+                closeWindow(event);
+
+            } else {
+                AlertUtils.showAlert("Error", "An error occurred while adding user.", Alert.AlertType.ERROR);
+            }
         }
         else {
             AlertUtils.showAlert("Invalid Input", "Please check your input.", Alert.AlertType.ERROR);
@@ -105,20 +123,13 @@ public class AddUserController {
         stage.close();
     }
 
-    private boolean validateInputs(String email, String name, String password, String dob) {
+    private boolean validateInputs(String email, String name, String dob) {
         String emailError = ValidationUtils.validateEmail(email);
-        String passwordError = ValidationUtils.validatePassword(password);
         String dobError = ValidationUtils.validateDOB(dob);
         String nameError = ValidationUtils.validateFullName(name);
 
         if (emailError != null) {
             emailErrorLabel.setText(emailError);
-        }
-        if (password.isEmpty()) {
-            passwordError = null;
-        }
-        else if (passwordError != null) {
-            passwordErrorLabel.setText(passwordError);
         }
 
         if (dobError != null) {
@@ -128,12 +139,11 @@ public class AddUserController {
             nameErrorLabel.setText(nameError);
         }
 
-        return emailError == null && passwordError == null && dobError == null && nameError == null;
+        return emailError == null && dobError == null && nameError == null;
     }
 
     private void clearErrorMessages() {
         emailErrorLabel.setText("");
-        passwordErrorLabel.setText("");
         dobErrorLabel.setText("");
         nameErrorLabel.setText("");
     }
