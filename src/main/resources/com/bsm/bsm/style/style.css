@@ -188,3 +188,9 @@
 .pagination-button-admin {
     -fx-background-color: transparent;
 }
+
+.selectSearch
+{
+    -fx-background-radius : 20px;
+    -fx-background-color : #D5D8DC !important;
+}

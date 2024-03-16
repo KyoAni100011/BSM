@@ -23,14 +23,18 @@ public class AccountService implements AccountController{
     }
 
     @Override
-    public UserModel search(String accountId) {
-        return null;
+    public List<UserModel> search(String keyword, String type) {
+        return switch (type.toLowerCase().trim()) {
+            case "id" -> accountDAO.getAllUsersInfoById(keyword);
+            case "name" -> accountDAO.getAllUsersInfoByName(keyword);
+            case "email" -> accountDAO.getAllUsersInfoByEmail(keyword);
+            default -> null;
+        };
     }
 
     @Override
-    public AdminModel view(String excludedUserId) {
-        List<UserModel> users = accountDAO.getAllUsersInfo(excludedUserId);
-        return new AdminModel(users);
+    public List<UserModel> view(String excludedUserId) {
+        return accountDAO.getAllUsersInfo(excludedUserId);
     }
 
     @Override

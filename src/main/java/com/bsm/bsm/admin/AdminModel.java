@@ -33,6 +33,11 @@ public class AdminModel extends UserModel implements Searchable<UserModel> {
         return users;
     }
 
+    public void setUsers(List<UserModel> users)
+    {
+        this.users = users;
+    }
+
     @Override
     public List<UserModel> search(String keyword) {
         return null;

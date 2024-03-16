@@ -15,6 +15,7 @@ public class AuthDAO {
     private static final String SELECT_PASSWORD_QUERY = "SELECT PASSWORD FROM user WHERE id = ?";
     private static final String UPDATE_USER_LAST_LOGIN = "UPDATE user SET lastLogin = ? WHERE id = ?";
     private static final String SELECT_USER_QUERY = "SELECT * FROM user WHERE id = ?";
+    private static final String SELECT_USER_BY_EMAIL_QUERY = "SELECT * FROM user WHERE email = ?";
     private static final String SELECT_ADMIN_QUERY = "SELECT * FROM admin WHERE userID = ?";
     private static final String SELECT_EMPLOYEE_QUERY = "SELECT * FROM employee WHERE userID = ?";
 
@@ -58,6 +59,27 @@ public class AuthDAO {
         return userModel.get();
     }
 
+
+    public UserModel getUserInfoByEmail(String email) {
+        AtomicReference<UserModel> userModel = new AtomicReference<>(new UserModel());
+
+        DatabaseConnection.executeQuery(SELECT_USER_BY_EMAIL_QUERY, resultSet -> {
+            if (resultSet != null && resultSet.next()) {
+                String id = resultSet.getString("id");
+                String dob = resultSet.getString("dob");
+                String name = resultSet.getString("name");
+                String phone = resultSet.getString("telephone");
+                String address = resultSet.getString("address");
+                boolean isEnabled = resultSet.getBoolean("isEnabled");
+                String lastLogin = String.valueOf(new java.sql.Timestamp(System.currentTimeMillis()));
+
+                userModel.set(new EmployeeModel(id, name, email, dob, phone, address, isEnabled, lastLogin));
+                DatabaseConnection.executeUpdate(UPDATE_USER_LAST_LOGIN, new java.sql.Timestamp(System.currentTimeMillis()), id);
+            }
+        }, email);
+
+        return userModel.get();
+    }
 
     private String getUserID(String query, String ID) {
         AtomicReference<String> userID = new AtomicReference<>("");

@@ -20,10 +20,17 @@ public class UserAccountService {
     }
 
     public List<UserModel> getAllUsersInfo(String excludedUserId, String sortOrder, String column) {
-        List<UserModel> listUsers = userAccountDAO.getAllUsersInfo(excludedUserId, sortOrder, column);
-        AdminModel tempAdmin = new AdminModel((AdminModel)UserSingleton.getInstance().getUser(), listUsers);
-        UserSingleton.getInstance().setUser(tempAdmin);
+        if (column.equals("Last login")) {
+            column = "lastLogin";
+        }
+        if (column.equals("Action")) {
+            column = "isEnabled";
+        }
 
+        List<UserModel> listUsers = userAccountDAO.getAllUsersInfo(excludedUserId, sortOrder, column);
+        UserSingleton userSingleton = UserSingleton.getInstance();
+        AdminModel user = (AdminModel) userSingleton.getUser();
+        user.setUsers(listUsers);
         return listUsers;
     }
 }
