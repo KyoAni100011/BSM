@@ -15,19 +15,6 @@ public class AdminModel extends UserModel implements Searchable<UserModel> {
         super(id, name, email, dob, phone, address, isEnabled, lastLogin);
     }
 
-    public AdminModel(List<UserModel> users) {
-        this.users = users;
-    }
-
-    public AdminModel(AdminModel adminModel, List<UserModel> users) {
-        super(adminModel.getId(), adminModel.getName(), adminModel.getEmail(), adminModel.getDob(), adminModel.getPhone(), adminModel.getAddress(), adminModel.isEnabled(), adminModel.getLastLogin());
-        this.users = users;
-    }
-
-    public AdminModel() {
-        super();
-    }
-
     //    View a list of user accounts. Search or sort on the list.
     public List<UserModel> viewUsers() {
         return users;

@@ -11,9 +11,9 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -30,8 +30,8 @@ public class UserAccountController implements Initializable {
     private AdminModel adminInfo = (AdminModel) UserSingleton.getInstance().getUser();
     private static String email;
     private final ToggleGroup toggleGroup = new ToggleGroup();
-    private final UserAccountService userAccountService = new UserAccountService();
-    private final AccountService accountService = new AccountService();
+    private UserAccountService userAccountService = new UserAccountService();
+    private AccountService accountService = new AccountService();
     private List<UserModel> users = null;
     private final int itemsPerPage = 9;
     private String sortOrder = "ASC";
@@ -116,8 +116,9 @@ public class UserAccountController implements Initializable {
     }
 
     private void loadAllUsers() {
-        adminInfo.setUsers(accountService.view(adminInfo.getId()));
-        users = adminInfo.viewUsers();
+        users = userAccountService.getAllUsersInfo(adminInfo.getId(), sortOrder, column);
+        adminInfo.setUsers(users);
+
         try {
             role = ".employee@bms.com";
             updateUsersList();
@@ -243,12 +244,15 @@ public class UserAccountController implements Initializable {
         int startIndex = (currentPage - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, users.size());
 
+        for (var user: users) {
+            System.out.println(user.getClass());
+        }
         for (int i = startIndex; i < endIndex; i++) {
             UserModel user = users.get(i);
-            String email = user.getEmail();
-            if (role.equals(".employee@bms.com") && email.endsWith(".employee@bms.com") ||
-                    role.equals(".admin@bms.com") && email.endsWith(".admin@bms.com")) {
+            if ((user instanceof EmployeeModel && role.equals(".employee@bms.com")) ||
+                    (user instanceof AdminModel && role.equals(".admin@bms.com"))) {
                 try {
+                    System.out.println("ok");
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/admin/userAccount/tableItem.fxml"));
                     Node item = fxmlLoader.load();
                     TableItemController tableItemController = fxmlLoader.getController();

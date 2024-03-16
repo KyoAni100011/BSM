@@ -1,13 +1,14 @@
 package com.bsm.bsm.admin.userAccount;
 
 import com.bsm.bsm.admin.AdminModel;
+import com.bsm.bsm.commonInterface.Sortable;
 import com.bsm.bsm.user.UserModel;
 import com.bsm.bsm.user.UserSingleton;
 
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
-public class UserAccountService {
+public class UserAccountService implements Sortable<UserModel> {
     private final UserAccountDAO userAccountDAO;
 
     public UserAccountService() {
@@ -19,18 +20,51 @@ public class UserAccountService {
         return admin.viewUsers();
     }
 
+
     public List<UserModel> getAllUsersInfo(String excludedUserId, String sortOrder, String column) {
-        if (column.equals("Last login")) {
-            column = "lastLogin";
-        }
-        if (column.equals("Action")) {
-            column = "isEnabled";
+        column = switch(column) {
+            case "Last login" -> "lastLogin";
+            case "Action" -> "isEnabled";
+            default -> column;
+        };
+
+        List<UserModel> listUsers = getUsers();
+        if (listUsers.isEmpty()) {
+           listUsers = userAccountDAO.getAllUsersInfo(excludedUserId);
         }
 
-        List<UserModel> listUsers = userAccountDAO.getAllUsersInfo(excludedUserId, sortOrder, column);
-        UserSingleton userSingleton = UserSingleton.getInstance();
-        AdminModel user = (AdminModel) userSingleton.getUser();
-        user.setUsers(listUsers);
+        listUsers = sort(listUsers, sortOrder.equalsIgnoreCase("asc"), column);
         return listUsers;
+    }
+
+    @Override
+    public List<UserModel> sort(List<UserModel> users, boolean isAscending, String column) {
+        Comparator<UserModel> comparator = null;
+
+        switch (column.toLowerCase()) {
+            case "id" -> {
+                comparator = Comparator.comparing(UserModel::getId);
+            }
+            case "name" -> {
+                comparator = Comparator.comparing(UserModel::getName);
+            }
+            case "email" -> {
+                comparator = Comparator.comparing(UserModel::getEmail);
+            }
+            case "lastlogin" -> {
+                comparator = Comparator.comparing(UserModel::getLastLogin);
+            }
+            case "isenabled" -> {
+                comparator = Comparator.comparing(UserModel::isEnabled);
+            }
+        }
+
+        if (!isAscending) {
+            assert comparator != null;
+            comparator = comparator.reversed();
+        }
+
+        users.sort(comparator);
+        return users;
     }
 }

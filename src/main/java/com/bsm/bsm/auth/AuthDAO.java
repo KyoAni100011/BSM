@@ -45,7 +45,7 @@ public class AuthDAO {
                 boolean isEnabled = resultSet.getBoolean("isEnabled");
                 String lastLogin = String.valueOf(new java.sql.Timestamp(System.currentTimeMillis()));
 
-                if (!getAdminID(id).isEmpty()) {
+                if (email.endsWith(".admin@bms.com")) {
                     userModel.set(new AdminModel(id, name, email, dob, phone, address, isEnabled, lastLogin));
                 } else {
                     userModel.set(new EmployeeModel(id, name, email, dob, phone, address, isEnabled, lastLogin));
@@ -72,6 +72,7 @@ public class AuthDAO {
                 String address = resultSet.getString("address");
                 boolean isEnabled = resultSet.getBoolean("isEnabled");
                 String lastLogin = String.valueOf(new java.sql.Timestamp(System.currentTimeMillis()));
+
 
                 userModel.set(new EmployeeModel(id, name, email, dob, phone, address, isEnabled, lastLogin));
                 DatabaseConnection.executeUpdate(UPDATE_USER_LAST_LOGIN, new java.sql.Timestamp(System.currentTimeMillis()), id);

@@ -16,7 +16,7 @@ public class CategoryService implements Activable, Searchable<Category>, Sortabl
     }
 
     @Override
-    public List<Category> sort(List<Category> items) {
+    public List<Category> sort(List<Category> categories, boolean isAscending, String column) {
         // Implement sorting logic
         return null;
     }

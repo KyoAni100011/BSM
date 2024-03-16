@@ -100,7 +100,7 @@ public class AuthController {
             }
             return;
         }
-
+        
         UserSingleton.getInstance().setUser(userInfo);
         new SceneSwitch(AnchorPaneLogin, fxmlPath);
     }
