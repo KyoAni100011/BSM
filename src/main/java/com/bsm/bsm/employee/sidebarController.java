@@ -71,7 +71,7 @@ public class sidebarController {
     public void initialize()
     {
         new sidebarController();
-        nameText.setText(employeeInfo.getName().split(" ")[1]);
+        nameText.setText(employeeInfo.getName().split(" ")[0]);
         if (employeeInfo instanceof EmployeeModel) {
             roleText.setText("Employee");
         }

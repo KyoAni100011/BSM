@@ -73,41 +73,6 @@ public class UserAccountController implements Initializable {
             e.printStackTrace();
         }
 
-        for (MenuItem item : typeSearch.getItems()) {
-            item.setOnAction(event -> {
-                typeSearchText = ((MenuItem) event.getSource()).getText();
-                typeSearch.setText(typeSearchText);
-            });
-        }
-
-
-        inputSearch.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                inputSearchText = newValue;
-                users = accountController.search(inputSearchText, typeSearchText);
-                if (currentTypeUser.equals("employee")) {
-                    users = users.stream()
-                            .filter(user ->
-                                    user.getEmail().endsWith(".employee@bms.com"))
-                            .toList();
-                } else {
-                    users = users.stream()
-                            .filter(user ->
-                            {
-
-                                return user.getEmail().endsWith(".admin@bms.com");
-                            })
-                            .toList();
-                }
-                try {
-                    updateUsersList(Objects.equals(currentTypeUser, "employee") ? ".employee@bms.com" : ".admin@bms.com");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-
         // Attach event handlers to pagination buttons
         firstPaginationButton.setOnAction(this::handlePaginationButton);
         secondPaginationButton.setOnAction(this::handlePaginationButton);
