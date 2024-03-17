@@ -19,6 +19,11 @@ public class AuthService {
         return null;
     }
 
+    public UserModel getUserByEmail(String email)
+    {
+        return authDAO.getUserInfoByEmail(email);
+    }
+
     public boolean isAdmin(String id) {
         return !Objects.equals(authDAO.getAdminID(id), "");
     }

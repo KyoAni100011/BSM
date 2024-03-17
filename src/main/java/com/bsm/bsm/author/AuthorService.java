@@ -17,7 +17,7 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
     }
 
     @Override
-    public List<Author> sort(List<Author> items) {
+    public List<Author> sort(List<Author> authors, boolean isAscending, String column) {
         // Implement sorting logic
         return null;
     }

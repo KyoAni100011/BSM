@@ -16,7 +16,7 @@ public class PublisherService implements Activable, Searchable<Publisher>, Sorta
     }
 
     @Override
-    public List<Publisher> sort(List<Publisher> items) {
+    public List<Publisher> sort(List<Publisher> publishers, boolean isAscending, String column) {
         // Implement sorting logic
         return null;
     }

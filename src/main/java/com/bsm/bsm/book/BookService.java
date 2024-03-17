@@ -17,7 +17,7 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
     }
 
     @Override
-    public List<Book> sort(List<Book> items) {
+    public List<Book> sort(List<Book> books, boolean isAscending, String column) {
         return null;
     }
 
