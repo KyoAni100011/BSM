@@ -116,8 +116,8 @@ public class TableItemController {
         // Set the last login label with the time elapsed
         lastLoginLabel.setText(timeElapsed );
 
-        isEnabledButton.setText(user.isEnabled() ? "Disable" : "Enable");
-        if(!user.isEnabled()){
+        isEnabledButton.setText(user.isEnabled() ? "Enable" : "Disable");
+        if(user.isEnabled()){
             isEnabledButton.getStyleClass().add("enable-button");
         }else {
             isEnabledButton.getStyleClass().add("disable-button");
