@@ -28,10 +28,21 @@ public class ValidationUtils {
     public static String validateFullName(String fullName) {
         if (fullName.isEmpty()) {
             return "Please enter your full name.";
+        } else if (fullName.matches(".*\\d.*")) {
+            return "Full name should not contain numbers.";
         } else {
             return null;
         }
     }
+
+    public static String validateIntroduction(String fullName) {
+        if (fullName.isEmpty()) {
+            return "Please enter your introduction.";
+        }  else {
+            return null;
+        }
+    }
+
 
     public static String validateDOB(String dob) {
         String dobRegex = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\\d{4}$";
