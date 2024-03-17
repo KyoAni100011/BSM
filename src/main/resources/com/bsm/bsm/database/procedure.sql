@@ -8,12 +8,13 @@ CREATE PROCEDURE ADDUSER(
     IN name_param VARCHAR(255),
     IN dob_param DATE,
     IN email_param VARCHAR(255),
+    IN address_param VARCHAR(255),
     IN password_param VARCHAR(255),
     IN role_param VARCHAR(255)
 )
 BEGIN
-INSERT INTO user (name, dob, email, password)
-VALUES (name_param, dob_param, email_param, password_param);
+INSERT INTO user (name, dob, email, address, password)
+VALUES (name_param, dob_param, email_param, address_param, password_param);
 set @user_id = last_insert_id();
     if role_param = 'admin' then
 		insert into admin(userID) values (@user_id);

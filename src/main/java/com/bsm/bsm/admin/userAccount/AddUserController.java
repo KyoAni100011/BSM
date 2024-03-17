@@ -19,10 +19,10 @@ import java.time.format.DateTimeParseException;
 
 public class AddUserController {
     @FXML
-    public Label emailErrorLabel, dobErrorLabel, nameErrorLabel;
+    public Label emailErrorLabel, dobErrorLabel, nameErrorLabel, addressErrorLabel;
 
     @FXML
-    public TextField emailField, customPassword, nameField;
+    public TextField emailField, customPassword, nameField, addressField;
 
     @FXML
     public DatePicker dobPicker;
@@ -88,8 +88,9 @@ public class AddUserController {
         String password = customPassword.getText();
         String name = nameField.getText();
         String dob = dobPicker.getEditor().getText();
+        String address = addressField.getText();
 
-        if (validateInputs(email, name, dob)) {
+        if (validateInputs(email, name, dob, address)) {
             //check user not admin by email
             String adminEmail = UserSingleton.getInstance().getUser().getEmail();
             if (adminEmail.equals(email)) {
@@ -103,7 +104,7 @@ public class AddUserController {
             }
 
             dob = DateUtils.formatDOB(dob);
-            if (addUserService.addUser(name, dob, email, password)) {
+            if (addUserService.addUser(name, dob, email, address, password)) {
                 AlertUtils.showAlert("User Added", "User added successfully.", Alert.AlertType.INFORMATION);
                 clearInputs();
                 closeWindow(event);
@@ -122,10 +123,11 @@ public class AddUserController {
         stage.close();
     }
 
-    private boolean validateInputs(String email, String name, String dob) {
+    private boolean validateInputs(String email, String name, String dob, String address) {
         String emailError = ValidationUtils.validateEmail(email);
         String dobError = ValidationUtils.validateDOB(dob);
         String nameError = ValidationUtils.validateFullName(name);
+        String addressError = ValidationUtils.validateAddress(address);
 
         if (emailError != null) {
             emailErrorLabel.setText(emailError);
@@ -137,14 +139,18 @@ public class AddUserController {
         if (nameError != null) {
             nameErrorLabel.setText(nameError);
         }
+        if (addressError != null) {
+            addressErrorLabel.setText(addressError);
+        }
 
-        return emailError == null && dobError == null && nameError == null;
+        return emailError == null && dobError == null && nameError == null && addressError == null;
     }
 
     private void clearErrorMessages() {
         emailErrorLabel.setText("");
         dobErrorLabel.setText("");
         nameErrorLabel.setText("");
+        addressErrorLabel.setText("");
     }
 
 
@@ -153,5 +159,6 @@ public class AddUserController {
         customPassword.clear();
         nameField.clear();
         dobPicker.getEditor().clear();
+        addressField.clear();
     }
 }
