@@ -24,10 +24,8 @@ public class UserAccountDAO {
                 boolean isEnabled = resultSet.getBoolean("isEnabled");
 
                 if (email.trim().endsWith("admin@bms.com")) {
-                    System.out.println("Admin " + email);
                     listUsers.add(new AdminModel(id, name, email, null, null, null, isEnabled, lastLogin));
                 } else {
-                    System.out.println("Employee " + email);
                     listUsers.add(new EmployeeModel(id, name, email, null, null, null, isEnabled, lastLogin));
                 }
             }

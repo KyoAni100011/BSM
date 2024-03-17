@@ -24,3 +24,5 @@ END //
 
 DELIMITER ;
 
+CALL ADDUSER('thu', '1999-01-01', 'thunguyen.admin@bms.com', '123456', 'admin');
+

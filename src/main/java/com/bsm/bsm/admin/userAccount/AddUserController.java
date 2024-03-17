@@ -107,7 +107,6 @@ public class AddUserController {
                 AlertUtils.showAlert("User Added", "User added successfully.", Alert.AlertType.INFORMATION);
                 clearInputs();
                 closeWindow(event);
-
             } else {
                 AlertUtils.showAlert("Error", "An error occurred while adding user.", Alert.AlertType.ERROR);
             }

@@ -199,6 +199,9 @@ public class UserAccountController implements Initializable {
     private void handleAddUserButton(ActionEvent event) {
         try {
             FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/addUser");
+            //refresh page the user list after adding new user
+            users = userAccountService.getAllUsersInfo(UserSingleton.getInstance().getUser().getId(), sortOrder, column);
+            updateUsersList();
         } catch (IOException e) {
             e.printStackTrace();
             AlertUtils.showAlert("Error", "Error loading addUser FXML", Alert.AlertType.ERROR);
@@ -244,15 +247,11 @@ public class UserAccountController implements Initializable {
         int startIndex = (currentPage - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, users.size());
 
-        for (var user: users) {
-            System.out.println(user.getClass());
-        }
         for (int i = startIndex; i < endIndex; i++) {
             UserModel user = users.get(i);
             if ((user instanceof EmployeeModel && role.equals(".employee@bms.com")) ||
                     (user instanceof AdminModel && role.equals(".admin@bms.com"))) {
                 try {
-                    System.out.println("ok");
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/admin/userAccount/tableItem.fxml"));
                     Node item = fxmlLoader.load();
                     TableItemController tableItemController = fxmlLoader.getController();
