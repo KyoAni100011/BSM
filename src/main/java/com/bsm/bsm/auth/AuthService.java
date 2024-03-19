@@ -16,6 +16,7 @@ public class AuthService {
         if (authDAO.validateUser(id, password)) {
             return authDAO.getUserInfo(id);
         }
+        System.out.println("Called");
         return null;
     }
 
