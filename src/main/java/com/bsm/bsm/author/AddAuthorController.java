@@ -15,6 +15,9 @@ public class AddAuthorController {
     private Label fullNameErrorLabel, introductionErrorLabel;
     @FXML
     private TextField fullNameField,introductionTextField;
+
+    private final AddAuthorService addAuthorService = new AddAuthorService();
+
     @FXML
     public void initialize() {
     }
@@ -23,9 +26,21 @@ public class AddAuthorController {
         clearErrorMessages();
         String fullName = fullNameField.getText();
         String introduction = introductionTextField.getText();
-        if (validateInputs(fullName,introduction)) {
-            AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
-        }
+        System.out.println("Full Name: " + fullName);
+        System.out.println("Introduction: " + introduction);
+//        if (validateInputs(fullName,introduction)) {
+            if (addAuthorService.checkAuthorExists(fullName)) {
+                fullNameErrorLabel.setText("Author already exists.");
+            } else {
+                if (addAuthorService.addAuthor(fullName, introduction)) {
+                    AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
+                    clearInputs();
+                } else {
+                    AlertUtils.showAlert("Error", "An error occurred while updating the profile.", Alert.AlertType.ERROR);
+                }
+            }
+//        }
+//         else System.out.println("Invalid input.");
     }
     private boolean validateInputs(String fullName, String introduction ) {
         String fullNameError = ValidationUtils.validateFullName(fullName);
@@ -34,21 +49,21 @@ public class AddAuthorController {
         if (fullNameErrorLabel != null) {
             fullNameErrorLabel.setText(fullNameError);
         }
+
         if (introductionErrorLabel != null) {
             introductionErrorLabel.setText(introductionError);
         }
-        return fullNameErrorLabel == null ;
+        return fullNameErrorLabel == null;
     }
+
 
     private void clearErrorMessages() {
         fullNameErrorLabel.setText("");
         introductionErrorLabel.setText("");
-
     }
 
     private void clearInputs() {
         fullNameField.clear();
         introductionTextField.clear();
-
     }
 }
