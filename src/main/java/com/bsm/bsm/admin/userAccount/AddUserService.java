@@ -31,9 +31,9 @@ public class AddUserService {
         return addUserDAO.checkEmailExists(email);
     }
 
-    public boolean addUser(String name, String dob, String email, String password) {
+    public boolean addUser(String name, String dob, String email, String address,String password) {
         String role = isAdmin(email) ? "admin" : "employee";
-        boolean result = addUserDAO.addUser(name, dob, email, hashPassword(password), role);
+        boolean result = addUserDAO.addUser(name, dob, email, address, (password), role);
         if (result) {
             AdminModel admin = (AdminModel) UserSingleton.getInstance().getUser();
             admin.add(getUserInfo(email));

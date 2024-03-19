@@ -29,8 +29,9 @@ public class AddUserDAO {
     }
 
 
-    public boolean addUser(String name, String dob, String email, String password, String role) {
-        int rowsAffected = DatabaseConnection.executeUpdate("CALL ADDUSER(?, ?, ?, ?, ?)", name, dob, email, password, role);
+    public boolean addUser(String name, String dob, String email, String address, String password, String role) {
+
+        int rowsAffected = DatabaseConnection.executeUpdate("CALL ADDUSER(?, ?, ?, ?, ?, ?)", name, dob, email, address, hashPassword(password), role);
         return rowsAffected > 0;
     }
 
