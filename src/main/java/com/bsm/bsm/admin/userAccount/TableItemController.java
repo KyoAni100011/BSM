@@ -51,37 +51,37 @@ public class TableItemController {
 
     @FXML
     private void handleIsEnabledButtonClick() {
-        String action = isEnabledButton.getText().equals("Enable") ? "enable" : "disable";
+        String action = isEnabledButton.getText().equals("Enable") ? "disable" : "enable";
         String confirmationMessage = "Are you sure you want to " + action + " this user?";
 
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Confirmation");
         confirmationAlert.setHeaderText(confirmationMessage);
-        confirmationAlert.setContentText("Click OK to confirm.");
+//        confirmationAlert.setContentText("Click OK to confirm.");
 
         confirmationAlert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 if (isEnabledButton.getText().equals("Enable")) {
                     if (!IsEnableService.enableUser(idLabel.getText())) {
-                        AlertUtils.showAlert("Error", "Failed to enable user", Alert.AlertType.ERROR);
+                        AlertUtils.showAlert("Error", "Failed to disable user", Alert.AlertType.ERROR);
                         return;
                     }
 
                     isEnabledButton.setText("Disable");
                     isEnabledButton.getStyleClass().remove("enable-button");
                     isEnabledButton.getStyleClass().add("disable-button");
-                    AlertUtils.showAlert("Success", "User enabled successfully", Alert.AlertType.INFORMATION);
+                    AlertUtils.showAlert("Success", "User disable successfully", Alert.AlertType.INFORMATION);
 
                 } else {
                     if (!IsEnableService.disableUser(idLabel.getText())) {
-                        AlertUtils.showAlert("Error", "Failed to disable user", Alert.AlertType.ERROR);
+                        AlertUtils.showAlert("Error", "Failed to enable user", Alert.AlertType.ERROR);
                         return;
                     }
 
                     isEnabledButton.setText("Enable");
                     isEnabledButton.getStyleClass().remove("disable-button");
                     isEnabledButton.getStyleClass().add("enable-button");
-                    AlertUtils.showAlert("Success", "User disabled successfully", Alert.AlertType.INFORMATION);
+                    AlertUtils.showAlert("Success", "User enable successfully", Alert.AlertType.INFORMATION);
                 }
             }
         });
@@ -116,8 +116,8 @@ public class TableItemController {
         // Set the last login label with the time elapsed
         lastLoginLabel.setText(timeElapsed );
 
-        isEnabledButton.setText(user.isEnabled() ? "Disable" : "Enable");
-        if(!user.isEnabled()){
+        isEnabledButton.setText(user.isEnabled() ? "Enable" : "Disable");
+        if(user.isEnabled()){
             isEnabledButton.getStyleClass().add("enable-button");
         }else {
             isEnabledButton.getStyleClass().add("disable-button");
