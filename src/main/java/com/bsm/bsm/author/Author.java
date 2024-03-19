@@ -3,15 +3,17 @@ package com.bsm.bsm.author;
 public class Author {
     private String id;
     private String name;
+    private String introduction;
     private boolean isEnabled;
 
     public Author() {
         // Default constructor
     }
 
-    public Author(String id, String name, boolean isEnabled) {
+    public Author(String id, String name, String introduction, boolean isEnabled) {
         this.id = id;
         this.name = name;
+        this.introduction = introduction;
         this.isEnabled = isEnabled;
     }
 
@@ -37,6 +39,14 @@ public class Author {
 
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
     }
 
     @Override

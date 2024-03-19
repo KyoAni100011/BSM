@@ -26,7 +26,7 @@ public class AddAuthorController {
         clearErrorMessages();
         String fullName = fullNameField.getText();
         String introduction = introductionTextField.getText();
-        
+
         if (validateInputs(fullName,introduction)) {
             if (addAuthorService.checkAuthorExists(fullName)) {
                 fullNameErrorLabel.setText("Author already exists.");
