@@ -26,9 +26,8 @@ public class AddAuthorController {
         clearErrorMessages();
         String fullName = fullNameField.getText();
         String introduction = introductionTextField.getText();
-        System.out.println("Full Name: " + fullName);
-        System.out.println("Introduction: " + introduction);
-//        if (validateInputs(fullName,introduction)) {
+        
+        if (validateInputs(fullName,introduction)) {
             if (addAuthorService.checkAuthorExists(fullName)) {
                 fullNameErrorLabel.setText("Author already exists.");
             } else {
@@ -39,23 +38,21 @@ public class AddAuthorController {
                     AlertUtils.showAlert("Error", "An error occurred while updating the profile.", Alert.AlertType.ERROR);
                 }
             }
-//        }
-//         else System.out.println("Invalid input.");
+        } else {
+            AlertUtils.showAlert("Invalid Input", "Please check your input.", Alert.AlertType.ERROR);
+        }
     }
     private boolean validateInputs(String fullName, String introduction ) {
         String fullNameError = ValidationUtils.validateFullName(fullName);
         String introductionError = ValidationUtils.validateIntroduction(introduction);
-
-        if (fullNameErrorLabel != null) {
+        if (fullNameError != null) {
             fullNameErrorLabel.setText(fullNameError);
         }
-
-        if (introductionErrorLabel != null) {
+        if (introductionError != null) {
             introductionErrorLabel.setText(introductionError);
         }
-        return fullNameErrorLabel == null;
+        return fullNameError == null && introductionError == null;
     }
-
 
     private void clearErrorMessages() {
         fullNameErrorLabel.setText("");
