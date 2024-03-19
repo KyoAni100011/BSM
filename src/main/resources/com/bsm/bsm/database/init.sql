@@ -28,47 +28,56 @@ create table employee (
 );
 
 create table author (
-    id binary(16) default (uuid_to_bin(uuid())) primary key,
+    id int auto_increment primary key,
     name varchar(255) not null,
+    introduction text,
     isEnabled boolean default true
 );
 
 create table publisher (
-    id binary(16) default (uuid_to_bin(uuid())) primary key,
+    id int auto_increment primary key,
     name varchar(255) not null,
+    address varchar(255) not null,
     isEnabled boolean default true
 );
 
 create table category (
-    id binary(16) default (uuid_to_bin(uuid())) primary key,
+    id int auto_increment primary key,
     name varchar(255) not null,
+    description text,
     isEnabled boolean default true
 );
 
 create table book (
-    isbn varchar(13) not null primary key,
+    isbn bigint auto_increment primary key,
     title varchar(255) not null,
-    publisherID binary(16) not null,
-    authorID binary(16) not null,
+    publisherID int not null,
     publishingDate date not null,
     languages varchar(255) not null,
     isEnabled boolean default true,
     quantity int not null default 0,
     salePrice decimal(50, 2) not null default 0.0,
-    foreign key(publisherID) references publisher(id),
-    foreign key(authorID) references author(id)
+    foreign key(publisherID) references publisher(id)
 );
 
 create table bookCategory (
-    bookID varchar(13) not null,
-    categoryID binary(16) not null,
+    bookID bigint not null,
+    categoryID int not null,
     primary key (bookID, categoryID),
     foreign key(bookID) references book(isbn),
     foreign key(categoryID) references category(id)
 );
 
+create table bookAuthor (
+    bookId bigint not null,
+    authorID int not null,
+    primary key (bookID, authorID),
+    foreign key(bookID) references book(isbn),
+    foreign key(authorID) references author(id)
+);
+
 create table importSheet (
-    id binary(16) default (uuid_to_bin(uuid())) primary key,
+    id bigint auto_increment primary key,
     employeeID int not null,
     importDate date not null default (CURRENT_DATE),
     quantity int not null default 0,
@@ -76,27 +85,26 @@ create table importSheet (
     foreign key(employeeID) references employee(id)
 );
 
-
 create table bookBatch (
-    id varchar(13) not null,
+    id bigint not null,
     quantity int not null,
     importPrice decimal(50, 2) not null,
-    importSheetID binary(16) not null,
+    importSheetID bigint not null,
     primary key (id, importSheetId),
     foreign key(id) references book(isbn),
-    foreign key (importSheetID) references importSheet(id)
+    foreign key (importSheetId) references importSheet(id)
 );
 
 create table customer (
-    id binary(16) default (uuid_to_bin(uuid())) primary key,
+    id int auto_increment primary key,
     name varchar(255) not null default 'Anonymous',
     phone varchar(12) not null default '0000000000'
 );
 
 create table orderSheet (
-    id binary(16) default (uuid_to_bin(uuid())) primary key,
+    id bigint auto_increment primary key,
     employeeID int not null,
-    customerID binary(16) not null,
+    customerID int not null,
     orderDate date not null default (CURRENT_DATE),
     totalPrice decimal(50, 2) not null default 0.0,
     foreign key(employeeID) references employee(id),
@@ -104,9 +112,9 @@ create table orderSheet (
 );
 
 create table orderBooksDetails (
-    orderID binary(16) not null,
-    bookID varchar(13) not null,
-    importSheetID binary(16),
+    orderID bigint not null,
+    bookID bigint not null,
+    importSheetID bigint,
     quantity int not null,
     salePrice decimal(50, 2) not null,
     primary key (orderID, bookID),
