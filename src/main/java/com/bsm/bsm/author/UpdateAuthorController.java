@@ -27,7 +27,7 @@ public class UpdateAuthorController {
         String fullName = fullNameField.getText();
         String introduction = introductionTextField.getText();
         if (validateInputs(fullName,introduction)) {
-            AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
+            AlertUtils.showAlert("Success", "Author updated successfully.", Alert.AlertType.INFORMATION);
         }
     }
     private boolean validateInputs(String fullName, String introduction ) {
