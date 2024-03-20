@@ -26,7 +26,7 @@
         <TextField fx:id="addressTextField" layoutX="75.0" layoutY="225.0" prefHeight="40.0" prefWidth="450.0" promptText="Enter publisher address" styleClass="input-field-add" />
 
 
-        <Button layoutX="371.0" layoutY="294.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="40.0" prefWidth="153.0" styleClass="button-custom-admin" text="Save" textFill="WHITE">
+        <Button layoutX="371.0" layoutY="294.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="40.0" prefWidth="153.0" styleClass="button-custom-employee" text="Save" textFill="WHITE">
             <font>
                 <Font size="18.0" />
             </font>

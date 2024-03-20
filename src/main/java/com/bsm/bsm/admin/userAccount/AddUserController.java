@@ -124,8 +124,8 @@ public class AddUserController {
 
     private boolean validateInputs(String email, String name, String dob) {
         String emailError = ValidationUtils.validateEmail(email);
-        String dobError = ValidationUtils.validateDOB(dob);
-        String nameError = ValidationUtils.validateFullName(name);
+        String dobError = ValidationUtils.validateDOB(dob,"user");
+        String nameError = ValidationUtils.validateFullName(name, "user");
 
         if (emailError != null) {
             emailErrorLabel.setText(emailError);

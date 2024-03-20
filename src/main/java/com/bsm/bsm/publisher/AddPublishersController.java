@@ -29,8 +29,8 @@ public class AddPublishersController {
         }
     }
     private boolean validateInputs(String fullName, String address ) {
-        String fullNameError = ValidationUtils.validateFullName(fullName);
-        String addressError = ValidationUtils.validateIntroduction(address);
+        String fullNameError = ValidationUtils.validateFullName(fullName,"publisher");
+        String addressError = ValidationUtils.validateIntroduction(address,"publisher");
 
         if (fullNameErrorLabel != null) {
             fullNameErrorLabel.setText(fullNameError);

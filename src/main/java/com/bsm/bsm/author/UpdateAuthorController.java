@@ -31,8 +31,8 @@ public class UpdateAuthorController {
         }
     }
     private boolean validateInputs(String fullName, String introduction ) {
-        String fullNameError = ValidationUtils.validateFullName(fullName);
-        String introductionError = ValidationUtils.validateIntroduction(introduction);
+        String fullNameError = ValidationUtils.validateFullName(fullName,"author");
+        String introductionError = ValidationUtils.validateIntroduction(introduction,"author");
 
         if (fullNameErrorLabel != null) {
             fullNameErrorLabel.setText(fullNameError);

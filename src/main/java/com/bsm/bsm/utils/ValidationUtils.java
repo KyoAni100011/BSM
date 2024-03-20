@@ -3,7 +3,7 @@ package com.bsm.bsm.utils;
 public class ValidationUtils {
     public static String validateEmail(String email) {
         if (email.isEmpty()) {
-            return "Please enter your email.";
+            return "Please enter user email.";
         } else if (!email.toLowerCase().endsWith("@bms.com")) {
             return "Email domain must be '@bms.com'.";
         } else {
@@ -25,9 +25,9 @@ public class ValidationUtils {
         }
     }
 
-    public static String validateFullName(String fullName) {
+    public static String validateFullName(String fullName, String field) {
         if (fullName.isEmpty()) {
-            return "Please enter your full name.";
+            return "Please enter " + field + " full name.";
         } else if (fullName.matches(".*\\d.*")) {
             return "Full name should not contain numbers.";
         } else {
@@ -35,19 +35,19 @@ public class ValidationUtils {
         }
     }
 
-    public static String validateIntroduction(String fullName) {
+    public static String validateIntroduction(String fullName,  String field) {
         if (fullName.isEmpty()) {
-            return "Please enter your introduction.";
+            return "Please enter "+ field + " introduction.";
         }  else {
             return null;
         }
     }
 
 
-    public static String validateDOB(String dob) {
+    public static String validateDOB(String dob, String field) {
         String dobRegex = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\\d{4}$";
         if (dob.isEmpty()) {
-            return "Please enter your date of birth.";
+            return "Please enter " + field + " date of birth.";
         }
         if (!dob.matches(dobRegex)) {
             return "Invalid date format. Please use dd/mm/yyyy.";
@@ -56,9 +56,9 @@ public class ValidationUtils {
         }
     }
 
-    public static String validatePassword(String password) {
+    public static String validatePassword(String password, String field) {
         if (password.isEmpty()) {
-            return "Please enter your password.";
+            return "Please enter " + field +" password.";
         }
         if (password.length() < 8 || password.length() > 255) {
             return "Your password should be between 8 and 255 characters.";
@@ -78,9 +78,9 @@ public class ValidationUtils {
         return null;
     }
 
-    public static String validatePhone(String phone) {
+    public static String validatePhone(String phone, String field) {
         if (phone.isEmpty()) {
-            return "Please enter your phone number.";
+            return "Please enter " + field + " phone number.";
         }
         if (!phone.matches("^[0-9]{10}$")) {
             return "Please enter a 10-digit phone number..";
@@ -88,9 +88,9 @@ public class ValidationUtils {
         return null;
     }
 
-    public static String validateAddress(String address) {
+    public static String validateAddress(String address, String field) {
         if (address == null || address.isEmpty()) {
-            return "Please enter your address.";
+            return "Please enter "+ field +" address.";
         }
         return null;
     }

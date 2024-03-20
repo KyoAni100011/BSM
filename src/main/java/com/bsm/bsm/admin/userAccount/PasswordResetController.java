@@ -69,7 +69,7 @@ public class PasswordResetController {
 
     private boolean validateInputs(String email, String password) {
         String emailValidationMessage = ValidationUtils.validateEmail(email);
-        String passwordValidationMessage = ValidationUtils.validatePassword(password);
+        String passwordValidationMessage = ValidationUtils.validatePassword(password,"user");
 
         if (emailValidationMessage != null) {
             emailErrorLabel.setText(emailValidationMessage);

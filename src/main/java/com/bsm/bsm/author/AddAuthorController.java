@@ -29,13 +29,13 @@ public class AddAuthorController {
         }
     }
     private boolean validateInputs(String fullName, String introduction ) {
-        String fullNameError = ValidationUtils.validateFullName(fullName);
-        String introductionError = ValidationUtils.validateIntroduction(introduction);
+        String fullNameError = ValidationUtils.validateFullName(fullName,"author");
+        String introductionError = ValidationUtils.validateIntroduction(introduction,"author");
 
-        if (fullNameErrorLabel != null) {
+        if (fullNameError != null) {
             fullNameErrorLabel.setText(fullNameError);
         }
-        if (introductionErrorLabel != null) {
+        if (introductionError != null) {
             introductionErrorLabel.setText(introductionError);
         }
         return fullNameErrorLabel == null ;
