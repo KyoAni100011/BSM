@@ -8,11 +8,11 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.admin.bookRevenue.BookBarChartController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.admin.bookRevenue.BookBarChartController">
 <children>
     <VBox prefHeight="600.0" prefWidth="700.0">
         <children>
-            <AnchorPane prefHeight="40.0" prefWidth="700.0">
+            <AnchorPane prefHeight="40.0" prefWidth="700.0" style="-fx-border-color: #F3F3F3; -fx-border-width: 0px 0px 2px 0px;">
                 <children>
                     <HBox prefHeight="40.0" prefWidth="700.0">
                         <children>

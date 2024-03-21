@@ -71,6 +71,7 @@ public class BookBarChartController {
         btnByWeek.getStyleClass().add("chartActionButton");
         btnByDate.getStyleClass().add("chartActionButton");
         btnFromDateToDate.getStyleClass().add("chartActionButton");
+        updateChart("Top 10 Best Selling Books By Month");
 
     }
 
