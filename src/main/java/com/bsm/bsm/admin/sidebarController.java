@@ -74,7 +74,7 @@ public class sidebarController {
 
     @FXML
     void SwitchBookRevenue(ActionEvent event) throws IOException {
-        loadPage("userAccount/bookRevenue");
+        loadPage("bookRevenue/bookRevenue");
     }
 
     @FXML
@@ -89,7 +89,8 @@ public class sidebarController {
 
     @FXML
     void SwitchRevenueByEmployee(ActionEvent event) throws IOException {
-        loadPage("revenueByEmployee/revenueByEmployee");
+//        loadPage("revenueByEmployee/revenueByEmployee");
+        loadPage("userAccount/passwordReset");
     }
 
     @FXML
