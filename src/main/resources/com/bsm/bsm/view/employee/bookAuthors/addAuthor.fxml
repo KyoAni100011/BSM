@@ -11,7 +11,7 @@
         <Label fx:id="fullNameErrorLabel" layoutX="76.0" layoutY="178.0" prefHeight="17.0" prefWidth="307.0" styleClass="error-label" />
         <Label fx:id="introductionErrorLabel" layoutX="76.0" layoutY="266.0" prefHeight="17.0" prefWidth="317.0" styleClass="error-label" />
 
-        <Label layoutX="76.0" layoutY="117.0" styleClass="label-bold" text="Full Name">
+                    <Label layoutX="76.0" layoutY="117.0" styleClass="label-bold" text="Full Name">
             <font>
                 <Font size="18.0" />
             </font>
@@ -22,11 +22,11 @@
             </font>
         </Label>
 
-        <TextField fx:id="fullNameField" layoutX="75.0" layoutY="138.0" prefHeight="40.0" prefWidth="450.0" promptText="Enter author full name" styleClass="input-field-add" />
+                    <TextField fx:id="fullNameField" layoutX="75.0" layoutY="138.0" prefHeight="40.0" prefWidth="450.0" promptText="Enter author full name" styleClass="input-field-add" />
         <TextField fx:id="introductionTextField" layoutX="75.0" layoutY="225.0" prefHeight="40.0" prefWidth="450.0" promptText="Enter author introduction" styleClass="input-field-add" />
 
-
-        <Button layoutX="371.0" layoutY="294.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="40.0" prefWidth="153.0" styleClass="button-custom-admin" text="Save" textFill="WHITE">
+            
+                    <Button layoutX="371.0" layoutY="294.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="40.0" prefWidth="153.0" styleClass="button-custom-admin" text="Save" textFill="WHITE">
             <font>
                 <Font size="18.0" />
             </font>

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class sidebarController {
+    private final SceneSwitch sceneSwitch = new SceneSwitch();
     public UserModel adminInfo = UserSingleton.getInstance().getUser();
     public MenuItem buttonProfileSetting, buttonLogOut;
     @FXML
@@ -100,7 +101,7 @@ public class sidebarController {
     @FXML
     void handleLogOut(ActionEvent event) throws IOException {
         userController.logout();
-        new SceneSwitch(AnchorPaneAdmin, "/com/bsm/bsm/view/login.fxml");
+        sceneSwitch.SceneSwitchDifferSize(AnchorPaneAdmin, "/com/bsm/bsm/view/login.fxml");
     }
 
     @FXML
@@ -110,6 +111,7 @@ public class sidebarController {
 
     private void loadPage(String page) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/bsm/bsm/view/admin/" + page + ".fxml")));
+        bp.setCenter(null);
         bp.setCenter(root);
     }
 }

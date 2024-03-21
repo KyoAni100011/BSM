@@ -17,6 +17,7 @@ import java.io.IOException;
 
 public class AuthController {
     private final AuthService authService = new AuthService();
+    private final SceneSwitch sceneSwitch = new SceneSwitch();
 
     @FXML
     private AnchorPane AnchorPaneLogin;
@@ -41,6 +42,9 @@ public class AuthController {
 
     private static final String EMPLOYEE_ROLE = "employee";
     private static final String ADMIN_ROLE = "admin";
+
+    public AuthController() throws IOException {
+    }
 
     @FXML
     public void initialize() {
@@ -102,6 +106,6 @@ public class AuthController {
         }
         
         UserSingleton.getInstance().setUser(userInfo);
-        new SceneSwitch(AnchorPaneLogin, fxmlPath);
+        sceneSwitch.SceneSwitchDifferSize(AnchorPaneLogin, fxmlPath);
     }
 }
