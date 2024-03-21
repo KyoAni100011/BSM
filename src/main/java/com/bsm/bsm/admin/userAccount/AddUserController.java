@@ -1,6 +1,5 @@
 package com.bsm.bsm.admin.userAccount;
 
-import com.bsm.bsm.account.AccountService;
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.DateUtils;
@@ -13,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import org.controlsfx.validation.ValidateEvent;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -33,7 +33,8 @@ public class AddUserController {
 
     @FXML
     public Button resetButton;
-    private final AccountService accountService = new AccountService();
+
+    private final AddUserService addUserService = new AddUserService();
 
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -90,7 +91,7 @@ public class AddUserController {
         String dob = dobPicker.getEditor().getText();
         String address = addressField.getText();
 
-        if (validateInputs(email, name, dob)) {
+        if (validateInputs(email, name, dob, address)) {
             //check user not admin by email
             String adminEmail = UserSingleton.getInstance().getUser().getEmail();
             if (adminEmail.equals(email)) {
@@ -98,22 +99,19 @@ public class AddUserController {
                 return;
             }
 
-            if (accountService.hasUserExist(email)) {
+            if (addUserService.hasUserExist(email)) {
                 emailErrorLabel.setText("User already exists.");
                 return;
             }
 
             dob = DateUtils.formatDOB(dob);
-            if (accountService.addUser(name, dob, email, address, password)) {
+            if (addUserService.addUser(name, dob, email, address, password)) {
                 AlertUtils.showAlert("User Added", "User added successfully.", Alert.AlertType.INFORMATION);
                 clearInputs();
                 closeWindow(event);
             } else {
                 AlertUtils.showAlert("Error", "An error occurred while adding user.", Alert.AlertType.ERROR);
             }
-        }
-        else {
-            AlertUtils.showAlert("Invalid Input", "Please check your input.", Alert.AlertType.ERROR);
         }
     }
 
@@ -123,10 +121,11 @@ public class AddUserController {
         stage.close();
     }
 
-    private boolean validateInputs(String email, String name, String dob) {
+    private boolean validateInputs(String email, String name, String dob, String address) {
         String emailError = ValidationUtils.validateEmail(email);
         String dobError = ValidationUtils.validateDOB(dob,"user");
         String nameError = ValidationUtils.validateFullName(name, "user");
+        String addressError = ValidationUtils.validateAddress(address, "user");
 
         if (emailError != null) {
             emailErrorLabel.setText(emailError);
@@ -139,13 +138,18 @@ public class AddUserController {
             nameErrorLabel.setText(nameError);
         }
 
-        return emailError == null && dobError == null && nameError == null;
+        if (addressError != null) {
+            addressErrorLabel.setText(addressError);
+        }
+
+        return emailError == null && dobError == null && nameError == null && addressError == null;
     }
 
     private void clearErrorMessages() {
         emailErrorLabel.setText("");
         dobErrorLabel.setText("");
         nameErrorLabel.setText("");
+        addressErrorLabel.setText("");
     }
 
 
@@ -154,5 +158,6 @@ public class AddUserController {
         customPassword.clear();
         nameField.clear();
         dobPicker.getEditor().clear();
+        addressField.clear();
     }
 }
