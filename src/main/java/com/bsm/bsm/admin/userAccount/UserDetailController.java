@@ -53,7 +53,6 @@ public class UserDetailController {
     }
     static  void handleTableItemSelection(String userEmail) {
         email = userEmail;
-        System.out.println("userEmail = " + userEmail);// Store the selected user
     }
 
     private void setupDatePicker() {

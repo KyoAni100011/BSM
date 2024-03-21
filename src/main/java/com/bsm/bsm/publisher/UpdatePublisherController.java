@@ -27,14 +27,12 @@ public class UpdatePublisherController {
         String address = addressTextField.getText();
         if (validateInputs(fullName, address)) {
             AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
-        } else {
-            AlertUtils.showAlert("Error", "Invalid input", Alert.AlertType.ERROR);
         }
     }
 
     private boolean validateInputs(String fullName, String address) {
-        String fullNameError = ValidationUtils.validateFullName(fullName);
-        String addresError = ValidationUtils.validateAddress(address);
+        String fullNameError = ValidationUtils.validateFullName(fullName, "publisher");
+        String addresError = ValidationUtils.validateAddress(address, "publisher");
 
         if (fullNameError != null) {
             fullNameErrorLabel.setText(fullNameError);

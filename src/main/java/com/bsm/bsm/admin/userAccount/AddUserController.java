@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import org.controlsfx.validation.ValidateEvent;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -112,9 +113,6 @@ public class AddUserController {
                 AlertUtils.showAlert("Error", "An error occurred while adding user.", Alert.AlertType.ERROR);
             }
         }
-        else {
-            AlertUtils.showAlert("Invalid Input", "Please check your input.", Alert.AlertType.ERROR);
-        }
     }
 
     private void closeWindow(ActionEvent event) {
@@ -127,6 +125,7 @@ public class AddUserController {
         String emailError = ValidationUtils.validateEmail(email);
         String dobError = ValidationUtils.validateDOB(dob,"user");
         String nameError = ValidationUtils.validateFullName(name, "user");
+        String addressError = ValidationUtils.validateAddress(address, "user");
 
         if (emailError != null) {
             emailErrorLabel.setText(emailError);
@@ -138,6 +137,7 @@ public class AddUserController {
         if (nameError != null) {
             nameErrorLabel.setText(nameError);
         }
+
         if (addressError != null) {
             addressErrorLabel.setText(addressError);
         }

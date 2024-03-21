@@ -38,8 +38,6 @@ public class AddAuthorController {
                     AlertUtils.showAlert("Error", "An error occurred while updating the profile.", Alert.AlertType.ERROR);
                 }
             }
-        } else {
-            AlertUtils.showAlert("Invalid Input", "Please check your input.", Alert.AlertType.ERROR);
         }
     }
 
