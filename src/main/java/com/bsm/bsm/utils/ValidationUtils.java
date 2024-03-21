@@ -90,7 +90,7 @@ public class ValidationUtils {
 
     public static String validateAddress(String address) {
         if (address == null || address.isEmpty()) {
-            return "Please enter your address.";
+           return "Please enter your address.";
         }
         return null;
     }
