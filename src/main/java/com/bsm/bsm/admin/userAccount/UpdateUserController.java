@@ -109,10 +109,10 @@ public class UpdateUserController {
     }
 
     private boolean validateInputs(String fullName, String dob, String phone, String address) {
-        String fullNameError = ValidationUtils.validateFullName(fullName);
-        String dobError = ValidationUtils.validateDOB(dob);
-        String phoneError = ValidationUtils.validatePhone(phone);
-        String addressError = ValidationUtils.validateAddress(address);
+        String fullNameError = ValidationUtils.validateFullName(fullName, "user");
+        String dobError = ValidationUtils.validateDOB(dob,"user");
+        String phoneError = ValidationUtils.validatePhone(phone,"user");
+        String addressError = ValidationUtils.validateAddress(address,"user");
 
         if (fullNameError != null) {
             fullNameErrorLabel.setText(fullNameError);

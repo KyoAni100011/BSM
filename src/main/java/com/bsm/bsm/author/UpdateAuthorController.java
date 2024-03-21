@@ -18,29 +18,46 @@ public class UpdateAuthorController {
     private Label fullNameErrorLabel, introductionErrorLabel;
     @FXML
     private TextField fullNameField,introductionTextField;
+
+    private final UpdateAuthorService updateAuthorService = new UpdateAuthorService();
     @FXML
     public void initialize() {
+        //set temp oldName, need to get oldName from table view
+        Author author = updateAuthorService.getAuthor("Nguyen Nhat Anh");
+        setAuthorInfo(author);
     }
+
+    private void setAuthorInfo(Author author) {
+        fullNameField.setText(author.getName());
+        introductionTextField.setText(author.getIntroduction());
+    }
+
     @FXML
     private void handleSaveChanges(ActionEvent event) throws ParseException {
         clearErrorMessages();
+        //set temp oldName, need to get oldName from table view
+        String oldName = "Nguyen Nhat Anh";
         String fullName = fullNameField.getText();
         String introduction = introductionTextField.getText();
         if (validateInputs(fullName,introduction)) {
+            updateAuthorService.updateAuthor(oldName, fullName, introduction);
             AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
+            clearInputs();
+            var author = updateAuthorService.getAuthor(fullName);
+            setAuthorInfo(author);
         }
     }
     private boolean validateInputs(String fullName, String introduction ) {
-        String fullNameError = ValidationUtils.validateFullName(fullName);
-        String introductionError = ValidationUtils.validateIntroduction(introduction);
+        String fullNameError = ValidationUtils.validateFullName(fullName,"author");
+        String introductionError = ValidationUtils.validateIntroduction(introduction,"author");
 
-        if (fullNameErrorLabel != null) {
+        if (fullNameError != null) {
             fullNameErrorLabel.setText(fullNameError);
         }
-        if (introductionErrorLabel != null) {
+        if (introductionError != null) {
             introductionErrorLabel.setText(introductionError);
         }
-        return fullNameErrorLabel == null ;
+        return fullNameError == null && introductionError == null;
     }
 
     private void clearErrorMessages() {

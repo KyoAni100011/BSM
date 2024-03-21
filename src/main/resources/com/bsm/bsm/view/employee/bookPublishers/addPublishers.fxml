@@ -6,24 +6,24 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="384.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.author.UpdateAuthorController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.publisher.AddPublishersController">
     <children>
         <Label fx:id="fullNameErrorLabel" layoutX="76.0" layoutY="178.0" prefHeight="17.0" prefWidth="307.0" styleClass="error-label" />
-        <Label fx:id="introductionErrorLabel" layoutX="76.0" layoutY="266.0" prefHeight="17.0" prefWidth="317.0" styleClass="error-label" />
+        <Label fx:id="addressErrorLabel" layoutX="76.0" layoutY="266.0" prefHeight="17.0" prefWidth="317.0" styleClass="error-label" />
 
-        <Label layoutX="76.0" layoutY="117.0" styleClass="label-bold" text="Full Name">
+        <Label layoutX="76.0" layoutY="117.0" styleClass="label-bold" text="Publisher Name">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
-        <Label layoutX="76.0" layoutY="205.0" styleClass="label-bold" text="Introduction">
+        <Label layoutX="76.0" layoutY="205.0" styleClass="label-bold" text="Address">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
 
-        <TextField fx:id="fullNameField" layoutX="75.0" layoutY="138.0" prefHeight="40.0" prefWidth="450.0" promptText="Enter author full name" styleClass="input-field-add" />
-        <TextField fx:id="introductionTextField" layoutX="75.0" layoutY="225.0" prefHeight="40.0" prefWidth="450.0" promptText="Enter author introduction" styleClass="input-field-add" />
+        <TextField fx:id="fullNameField" layoutX="75.0" layoutY="138.0" prefHeight="40.0" prefWidth="450.0" promptText="Enter publisher name" styleClass="input-field-add" />
+        <TextField fx:id="addressTextField" layoutX="75.0" layoutY="225.0" prefHeight="40.0" prefWidth="450.0" promptText="Enter publisher address" styleClass="input-field-add" />
 
 
         <Button layoutX="371.0" layoutY="294.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="40.0" prefWidth="153.0" styleClass="button-custom-employee" text="Save" textFill="WHITE">
@@ -31,7 +31,7 @@
                 <Font size="18.0" />
             </font>
         </Button>
-        <Label layoutX="202.0" layoutY="49.0" text="UPDATE AUTHOR">
+        <Label layoutX="215.0" layoutY="48.0" text="ADD PUBLISHER">
             <font>
                 <Font size="25.0" />
             </font>

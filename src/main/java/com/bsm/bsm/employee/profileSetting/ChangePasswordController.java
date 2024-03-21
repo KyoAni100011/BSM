@@ -108,8 +108,8 @@ public class ChangePasswordController {
             newPasswordErrorLabel.setText("New password cannot be the same as the current password");
             return false;
         }
-        else if (ValidationUtils.validatePassword(newPassword) != null) {
-            newPasswordErrorLabel.setText(ValidationUtils.validatePassword(newPassword));
+        else if (ValidationUtils.validatePassword(newPassword,"your") != null) {
+            newPasswordErrorLabel.setText(ValidationUtils.validatePassword(newPassword,"your"));
             return false;
         }
         return true;
