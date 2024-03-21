@@ -1,5 +1,6 @@
 package com.bsm.bsm.admin.userAccount;
 
+import com.bsm.bsm.account.AccountService;
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.DateUtils;
@@ -32,8 +33,7 @@ public class AddUserController {
 
     @FXML
     public Button resetButton;
-
-    private final AddUserService addUserService = new AddUserService();
+    private final AccountService accountService = new AccountService();
 
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -98,13 +98,13 @@ public class AddUserController {
                 return;
             }
 
-            if (addUserService.hasUserExist(email)) {
+            if (accountService.hasUserExistA(email)) {
                 emailErrorLabel.setText("User already exists.");
                 return;
             }
 
             dob = DateUtils.formatDOB(dob);
-            if (addUserService.addUser(name, dob, email, address, password)) {
+            if (accountService.addUser(name, dob, email, address, password)) {
                 AlertUtils.showAlert("User Added", "User added successfully.", Alert.AlertType.INFORMATION);
                 clearInputs();
                 closeWindow(event);
