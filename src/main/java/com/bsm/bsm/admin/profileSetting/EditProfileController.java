@@ -112,10 +112,10 @@ public class EditProfileController {
 
 
     private boolean validateInputs(String fullName, String dob, String phone, String address) {
-        String fullNameError = ValidationUtils.validateFullName(fullName);
-        String dobError = ValidationUtils.validateDOB(dob);
-        String phoneError = ValidationUtils.validatePhone(phone);
-        String addressError = ValidationUtils.validateAddress(address);
+        String fullNameError = ValidationUtils.validateFullName(fullName,"your");
+        String dobError = ValidationUtils.validateDOB(dob, "your");
+        String phoneError = ValidationUtils.validatePhone(phone,"your ");
+        String addressError = ValidationUtils.validateAddress(address, "your");
 
         if (fullNameError != null) {
             fullNameErrorLabel.setText(fullNameError);

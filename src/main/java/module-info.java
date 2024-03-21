@@ -15,6 +15,7 @@ module com.bsm.bsm {
     opens com.bsm.bsm.admin.profileSetting to javafx.fxml;
     opens com.bsm.bsm.employee to javafx.fxml;
     opens com.bsm.bsm.author to javafx.fxml;
+    opens com.bsm.bsm.publisher to javafx.fxml;
     opens com.bsm.bsm.admin.userAccount to javafx.fxml;
     opens com.bsm.bsm.employee.profileSetting to javafx.fxml;
     opens com.bsm.bsm.publisher to javafx.fxml;

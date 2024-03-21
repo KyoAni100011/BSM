@@ -42,9 +42,11 @@ public class AddAuthorController {
             AlertUtils.showAlert("Invalid Input", "Please check your input.", Alert.AlertType.ERROR);
         }
     }
+
     private boolean validateInputs(String fullName, String introduction ) {
-        String fullNameError = ValidationUtils.validateFullName(fullName);
-        String introductionError = ValidationUtils.validateIntroduction(introduction);
+        String fullNameError = ValidationUtils.validateFullName(fullName,"author");
+        String introductionError = ValidationUtils.validateIntroduction(introduction,"author");
+
         if (fullNameError != null) {
             fullNameErrorLabel.setText(fullNameError);
         }

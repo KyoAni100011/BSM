@@ -5,9 +5,9 @@ insert user (id, name, email, password, dob, telephone) values ('11115678', 'Min
 ', '2003-06-01', '0101012345'); -- password: 01062003
     insert user (id, name, email, password, dob, telephone) values ('11115679', 'Hoang Kha', 'kha.admin@bms.com', '$2a$12$vdz7/qrIG4Fb1Z5YHzYEX.5sImzChCKjr6Sb88dEpTZCqZcJhb1Gi
 ', '2003-11-11', '0101012346'); -- password: 11112003
-insert user (id, name, email, password, dob, telephone) values ('22225678', 'Bao Khanh', 'khanh.employee@bms.com', '$2a$12$bHxUp74tZNStRJCAi0PyE.5/NpP5Ay0z.UozP8Me2V/LgToy8B1DW', '2003-09-12', '0101012347'); -- password: 12092003
+insert user (id, name, email, password, dob, telephone) values ('22225678 ', 'Bao Khanh', 'khanh.employee@bms.com', '$2a$12$bHxUp74tZNStRJCAi0PyE.5/NpP5Ay0z.UozP8Me2V/LgToy8B1DW', '2003-09-12', '0101012347'); -- password: 12092003
 insert user (id, name, email, password, dob, telephone) values ('22225679', 'Minh Triet', 'triet.employee@bms.com', '$2a$12$ZiOQq1mZ5kRkPHjYXoBpNO.Xmw4jnykkEpKD/2qtP51DiYQM2fxpC', '2003-10-10', '0101012348'); -- password: 10102003
-select * from user;
+select * from  publisher;
 
 -- insert data for table admin
 set @adminID1 = (select id from user where email = 'thu.admin@bms.com');
@@ -20,6 +20,7 @@ set @employeeID1 = (select id from user where email = 'khanh.employee@bms.com');
 insert employee (userId) values(@employeeID1);
 set @employeeID2 = (select id from user where email = 'triet.employee@bms.com');
 insert employee (userId) values(@employeeID2);
+select * from author;
 
 -- insert data for table author
 insert into author (id, name, introduction) values ('33331111', 'Nguyen Nhat Anh', 'Nguyen Nhat Anh was born on May 7, 1955 in Hue. He is a Vietnamese writer, journalist, and playwright. He is the author of many famous works such as: Toi thay hoa vang tren co xanh, Cho toi xin mot ve di tuoi tho, ...');
