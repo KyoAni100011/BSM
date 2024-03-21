@@ -1,14 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.*?>
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
-
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.admin.bookRevenue.BookBarChartController">
+<children>
+    <VBox prefHeight="600.0" prefWidth="700.0">
+        <children>
+            <AnchorPane prefHeight="40.0" prefWidth="700.0">
+                <children>
+                    <HBox prefHeight="40.0" prefWidth="700.0">
+                        <children>
+                            <Button id="btnByMonth" fx:id="btnByMonth" mnemonicParsing="false" onAction="#handleByMonth" prefHeight="40.0" prefWidth="120.0" styleClass="chartActionButton" text="By month">
+                                <font>
+                                    <Font size="14.0" />
+                                </font>
+                            </Button>
+                            <Button id="btnByWeek" fx:id="btnByWeek" mnemonicParsing="false" onAction="#handleByWeek" prefHeight="40.0" prefWidth="120.0" styleClass="chartActionButton" text="By week">
+                                <font>
+                                    <Font size="14.0" />
+                                </font>
+                            </Button>
+                            <Button id="btnByDate" fx:id="btnByDate" mnemonicParsing="false" onAction="#handleByDate" prefHeight="40.0" prefWidth="120.0" styleClass="chartActionButton" text="By date">
+                                <font>
+                                    <Font size="14.0" />
+                                </font>
+                            </Button>
+                            <Button id="btnFromDateToDate" fx:id="btnFromDateToDate" mnemonicParsing="false" onAction="#handleFromDateToDate" prefHeight="40.0" prefWidth="200.0" styleClass="chartActionButton" text="From date to date">
+                                <font>
+                                    <Font size="14.0" />
+                                </font>
+                            </Button>
+                            <HBox prefHeight="40.0" prefWidth="206.0">
+                                <children>
+                                    <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="chartActionButton">
+                                        <graphic>
+                                            <Group>
+                                                <children>
+                                                    <SVGPath content="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 288 480 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-370.7 0 73.4-73.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-128 128z" scaleX="0.04" scaleY="0.04" styleClass="chartActionButton" />
+                                                </children>
+                                            </Group>
+                                        </graphic>
+                                    </Button>
+                                    <DatePicker>
+                                        <HBox.margin>
+                                            <Insets top="8.0" />
+                                        </HBox.margin>
+                                    </DatePicker>
+                                    <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="chartActionButton">
+                                        <graphic>
+                                            <Group styleClass="chartActionButton">
+                                                <children>
+                                                    <SVGPath content="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l370.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128z" scaleX="0.04" scaleY="0.04" />
+                                                </children>
+                                            </Group>
+                                        </graphic>
+                                    </Button>
+                                </children>
+                            </HBox>
+                        </children>
+                    </HBox>
+                </children>
+            </AnchorPane>
+            <AnchorPane fx:id="AncBookBarChart" prefHeight="560.0" prefWidth="700.0">
+                <children>
+                    <BarChart fx:id="bookBarChart" alternativeRowFillVisible="false" barGap="10.0" legendSide="TOP" prefHeight="560.0" prefWidth="700.0" titleSide="BOTTOM" verticalGridLinesVisible="false">
+                        <xAxis>
+                            <CategoryAxis label="Book Name" styleClass="axis-label" tickLabelGap="20.0">
+                           <tickLabelFont>
+                              <Font name="Roboto Bold" size="14.0" />
+                           </tickLabelFont></CategoryAxis>
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis label="Revenue (VNĐ)" side="LEFT" styleClass="axis-label">
+                           <tickLabelFont>
+                              <Font name="Roboto Bold" size="14.0" />
+                           </tickLabelFont></NumberAxis>
+                        </yAxis>
+                    </BarChart>
+                </children>
+            </AnchorPane>
+        </children>
+    </VBox>
+</children>
 </AnchorPane>
