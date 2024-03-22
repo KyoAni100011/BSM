@@ -12,7 +12,7 @@ public class UpdateAuthorService {
         return updateAuthorDAO.updateAuthor(oldName, newName, introduction);
     }
 
-    public Author getAuthor(String name) {
-        return updateAuthorDAO.getAuthor(name);
+    public Author getAuthor(String id) {
+        return updateAuthorDAO.getAuthor(id);
     }
 }

@@ -22,8 +22,8 @@ public class UpdateAuthorController {
     private final UpdateAuthorService updateAuthorService = new UpdateAuthorService();
     @FXML
     public void initialize() {
-        //set temp oldName, need to get oldName from table view
-        Author author = updateAuthorService.getAuthor("Nguyen Nhat Anh");
+        //set temp id, need to get id from table view
+        Author author = updateAuthorService.getAuthor("33331111");
         setAuthorInfo(author);
     }
 
@@ -35,13 +35,13 @@ public class UpdateAuthorController {
     @FXML
     private void handleSaveChanges(ActionEvent event) throws ParseException {
         clearErrorMessages();
-        //set temp oldName, need to get oldName from table view
-        String oldName = "Nguyen Nhat Anh";
+        //set temp id, need to get id from table view
+        String id = "33331111";
         String fullName = fullNameField.getText();
         String introduction = introductionTextField.getText();
         if (validateInputs(fullName,introduction)) {
-            updateAuthorService.updateAuthor(oldName, fullName, introduction);
-            AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
+            updateAuthorService.updateAuthor(id, fullName, introduction);
+            AlertUtils.showAlert("Success", "Author updated successfully.", Alert.AlertType.INFORMATION);
             clearInputs();
             var author = updateAuthorService.getAuthor(fullName);
             setAuthorInfo(author);
