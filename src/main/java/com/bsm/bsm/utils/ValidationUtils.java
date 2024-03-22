@@ -27,7 +27,7 @@ public class ValidationUtils {
 
     public static String validateFullName(String fullName, String field) {
         if (fullName.isEmpty()) {
-            return "Please enter " + field + " full name.";
+            return "Please enter " + field + " name.";
         } else if (fullName.matches(".*\\d.*")) {
             return "Full name should not contain numbers.";
         } else {
@@ -35,12 +35,12 @@ public class ValidationUtils {
         }
     }
 
-    public static String validateIntroduction(String fullName,  String field) {
-        if (fullName.isEmpty()) {
-            return "Please enter "+ field + " introduction.";
-        }  else {
-            return null;
-        }
+    public static String validateIntroduction(String introduction,  String field) {
+        return introduction.isEmpty() ? "Please enter "+ field + " introduction." : null;
+    }
+
+    public static String validateDescription(String description, String field) {
+       return description.isEmpty() ? "Please enter " + field + " description" : null;
     }
 
 
@@ -89,10 +89,7 @@ public class ValidationUtils {
     }
 
     public static String validateAddress(String address, String field) {
-        if (address == null || address.isEmpty()) {
-            return "Please enter "+ field +" address.";
-        }
-        return null;
+        return address.isEmpty() ? "Please enter "+ field +" address." : null;
     }
 
 

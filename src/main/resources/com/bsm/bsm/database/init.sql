@@ -29,21 +29,21 @@ create table employee (
 
 create table author (
     id int auto_increment primary key,
-    name varchar(255) not null,
+    name varchar(255) unique not null,
     introduction text,
     isEnabled boolean default true
 );
 
 create table publisher (
     id int auto_increment primary key,
-    name varchar(255) not null,
+    name varchar(255) unique not null,
     address varchar(255) not null,
     isEnabled boolean default true
 );
 
 create table category (
     id int auto_increment primary key,
-    name varchar(255) not null,
+    name varchar(255) unique not null,
     description text,
     isEnabled boolean default true
 );

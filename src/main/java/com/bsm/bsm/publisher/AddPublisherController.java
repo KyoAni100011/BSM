@@ -61,6 +61,5 @@ public class AddPublisherController {
     private void clearInputs() {
         fullNameField.clear();
         addressTextField.clear();
-
     }
 }
