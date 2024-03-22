@@ -25,7 +25,7 @@ public class UserDetailController {
     public Button isEnabledLabel;
     @FXML
 
-    private TextField fullNameField, phoneTextField, addressTextField, lastLoginField,emailField;
+    private TextField fullNameField, phoneTextField, addressTextField, lastLoginField,emailField,idField;
     @FXML
     private DatePicker dobPicker;
     @FXML
@@ -73,6 +73,7 @@ public class UserDetailController {
         dobPicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
     }
     private void setUserInfo() {
+        idField.setText(userInfoDetail.getId());
         fullNameField.setText(userInfoDetail.getName());
         phoneTextField.setText(userInfoDetail.getPhone());
         addressTextField.setText(userInfoDetail.getAddress());
