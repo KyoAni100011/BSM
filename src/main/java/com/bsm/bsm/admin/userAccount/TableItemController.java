@@ -59,7 +59,7 @@ public class TableItemController {
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Confirmation");
         confirmationAlert.setHeaderText(confirmationMessage);
-//        confirmationAlert.setContentText("Click OK to confirm.");
+//      confirmationAlert.setContentText("Click OK to confirm.");
 
         confirmationAlert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
@@ -117,9 +117,8 @@ public class TableItemController {
 
         // Set the last login label with the time elapsed
         lastLoginLabel.setText(timeElapsed );
-
-        isEnabledButton.setText(user.isEnabled() ? "Enable" : "Disable");
-        if(user.isEnabled()){
+        isEnabledButton.setText(!user.isEnabled() ? "Enable" : "Disable");
+        if(!user.isEnabled()){
             isEnabledButton.getStyleClass().add("enable-button");
         }else {
             isEnabledButton.getStyleClass().add("disable-button");

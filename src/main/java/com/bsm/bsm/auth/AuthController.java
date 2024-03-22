@@ -17,7 +17,6 @@ import java.io.IOException;
 
 public class AuthController {
     private final AuthService authService = new AuthService();
-    private final SceneSwitch sceneSwitch = new SceneSwitch();
 
     @FXML
     private AnchorPane AnchorPaneLogin;
@@ -43,8 +42,7 @@ public class AuthController {
     private static final String EMPLOYEE_ROLE = "employee";
     private static final String ADMIN_ROLE = "admin";
 
-    public AuthController() throws IOException {
-    }
+    private final SceneSwitch sceneSwitch = new SceneSwitch();
 
     @FXML
     public void initialize() {
@@ -70,28 +68,46 @@ public class AuthController {
         int passwordLength = password.length();
         boolean checkWrongField = passwordLength < 8 || passwordLength > 255 || id.isEmpty();
         passwordErrorText.setVisible(passwordLength < 8 || passwordLength > 255);
+        idErrorLabel.setVisible(id.isEmpty());
         String fxmlPath = "";
 
         if (ADMIN_ROLE.equals(role)) {
             if (!authService.isAdmin(id)) {
-                System.out.println("Invalid username or password.");
+                if(!checkWrongField){
+                    AlertUtils.showAlert("Error", "Invalid username or password.", Alert.AlertType.ERROR);
+                }
                 return;
             }
             fxmlPath = "/com/bsm/bsm/view/admin/adminMainScreen.fxml";
         } else if (EMPLOYEE_ROLE.equals(role)) {
             if (!authService.isEmployee(id)) {
+                if(!checkWrongField){
+                    AlertUtils.showAlert("Error", "Invalid username or password.", Alert.AlertType.ERROR);
+                }
                 System.out.println("Invalid username or password.");
                 return;
             }
             fxmlPath = "/com/bsm/bsm/view/employee/employeeMainScreen.fxml";
         } else {
-            System.out.println("Invalid role.");
+            if(!checkWrongField){
+                AlertUtils.showAlert("Error", "Invalid username or password.", Alert.AlertType.ERROR);
+            }
             return;
         }
 
         UserModel userInfo = authService.authenticateUser(id, password);
         if (userInfo == null) {
-            System.out.println("Invalid username or password.");
+            if(!checkWrongField){
+                AlertUtils.showAlert("Error", "Invalid username or password.", Alert.AlertType.ERROR);
+            }
+            return;
+        }
+
+        System.out.println(userInfo.isEnabled());
+
+        if(!userInfo.isEnabled())
+        {
+            AlertUtils.showAlert("Error", "Your account is disable.", Alert.AlertType.ERROR);
             return;
         }
 
