@@ -30,7 +30,6 @@ public class UserAccountController implements Initializable {
     private AdminModel adminInfo = (AdminModel) UserSingleton.getInstance().getUser();
     private static String email;
     private final ToggleGroup toggleGroup = new ToggleGroup();
-    private UserAccountService userAccountService = new UserAccountService();
     private AccountService accountService = new AccountService();
     private List<UserModel> users = null;
     private final int itemsPerPage = 9;
@@ -39,7 +38,6 @@ public class UserAccountController implements Initializable {
     private String role;
     private int currentPage = 1;
     private String inputSearchText = "";
-    private String typeSearchText = "name";
 
     @FXML
     private VBox pnItems;
@@ -59,29 +57,17 @@ public class UserAccountController implements Initializable {
     @FXML
     private TextField inputSearch;
 
-    @FXML
-    private MenuButton typeSearch;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeButtonsAndLabels();
         loadAllUsers();
         initializePaginationButtons();
 
-        typeSearch.setText(typeSearchText);
-
-        for (MenuItem item : typeSearch.getItems()) {
-            item.setOnAction(event -> {
-                typeSearchText = ((MenuItem) event.getSource()).getText();
-                typeSearch.setText(typeSearchText);
-            });
-        }
-
         inputSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 inputSearchText = newValue;
-                users = accountService.search(inputSearchText, typeSearchText);
+                users = accountService.search(inputSearchText, adminInfo.getId());
                 try {
                     updateUsersList();
                 } catch (IOException e) {
@@ -116,7 +102,7 @@ public class UserAccountController implements Initializable {
     }
 
     private void loadAllUsers() {
-        users = userAccountService.getAllUsersInfo(adminInfo.getId(), sortOrder, column);
+        users = accountService.getAllUsersBySortInfo(adminInfo.getId(), sortOrder, column);
         adminInfo.setUsers(users);
 
         try {
@@ -199,8 +185,7 @@ public class UserAccountController implements Initializable {
     private void handleAddUserButton(ActionEvent event) {
         try {
             FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/addUser");
-            //refresh page the user list after adding new user
-            users = userAccountService.getAllUsersInfo(UserSingleton.getInstance().getUser().getId(), sortOrder, column);
+            users = accountService.getAllUsersBySortInfo(UserSingleton.getInstance().getUser().getId(), sortOrder, column);
             updateUsersList();
         } catch (IOException e) {
             e.printStackTrace();
@@ -330,12 +315,11 @@ public class UserAccountController implements Initializable {
         lastLoginSortLabel.setContent(column.equals("Last login") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
         actionSortLabel.setContent(column.equals("Action") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
         try {
-            System.out.println("Column: " + column + " Sort Order: " + sortOrder);
             updateUsersList();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        users = userAccountService.getAllUsersInfo(UserSingleton.getInstance().getUser().getId(), sortOrder, column);
+        users = accountService.getAllUsersBySortInfo(adminInfo.getId(), sortOrder, column);
         try {
             updateUsersList();
         } catch (IOException e) {

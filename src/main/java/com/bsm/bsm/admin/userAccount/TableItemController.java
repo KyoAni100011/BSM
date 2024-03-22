@@ -1,5 +1,6 @@
 package com.bsm.bsm.admin.userAccount;
 
+import com.bsm.bsm.account.AccountService;
 import com.bsm.bsm.user.UserModel;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class TableItemController {
+    private AccountService accountService = new AccountService();
     @FXML
     public RadioButton radioButton;
     public Button isEnabledButton;
@@ -62,7 +64,7 @@ public class TableItemController {
         confirmationAlert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 if (isEnabledButton.getText().equals("Enable")) {
-                    if (!IsEnableService.enableUser(idLabel.getText())) {
+                    if (!accountService.enableUser(idLabel.getText())) {
                         AlertUtils.showAlert("Error", "Failed to disable user", Alert.AlertType.ERROR);
                         return;
                     }
@@ -73,7 +75,7 @@ public class TableItemController {
                     AlertUtils.showAlert("Success", "User disable successfully", Alert.AlertType.INFORMATION);
 
                 } else {
-                    if (!IsEnableService.disableUser(idLabel.getText())) {
+                    if (!accountService.disableUser(idLabel.getText())) {
                         AlertUtils.showAlert("Error", "Failed to enable user", Alert.AlertType.ERROR);
                         return;
                     }
