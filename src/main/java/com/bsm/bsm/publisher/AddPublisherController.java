@@ -10,11 +10,13 @@ import javafx.scene.control.TextField;
 
 import java.text.ParseException;
 
-public class AddPublishersController {
+public class AddPublisherController {
     @FXML
     private Label fullNameErrorLabel, addressErrorLabel;
     @FXML
     private TextField fullNameField,addressTextField;
+
+    private AddPublisherService addPublisherService = new AddPublisherService();
     @FXML
     public void initialize() {
     }
@@ -23,22 +25,31 @@ public class AddPublishersController {
         clearErrorMessages();
         String fullName = fullNameField.getText();
         String address = addressTextField.getText();
+
         if (validateInputs(fullName,address)) {
-            clearInputs();
-            AlertUtils.showAlert("Success", "Add publisher successfully.", Alert.AlertType.INFORMATION);
+            if (addPublisherService.checkPublisherExists(fullName)) {
+                fullNameErrorLabel.setText("Publisher already exists.");
+            } else {
+                if (addPublisherService.addPublisher(fullName, address)) {
+                    AlertUtils.showAlert("Success", "Add publisher successfully.", Alert.AlertType.INFORMATION);
+                    clearInputs();
+                } else {
+                    AlertUtils.showAlert("Error", "An error occurred while adding the publisher.", Alert.AlertType.ERROR);
+                }
+            }
         }
     }
-    private boolean validateInputs(String fullName, String address ) {
+    private boolean validateInputs(String fullName, String address) {
         String fullNameError = ValidationUtils.validateFullName(fullName,"publisher");
         String addressError = ValidationUtils.validateIntroduction(address,"publisher");
 
-        if (fullNameErrorLabel != null) {
+        if (fullNameError != null) {
             fullNameErrorLabel.setText(fullNameError);
         }
-        if (addressErrorLabel != null) {
+        if (addressError != null) {
             addressErrorLabel.setText(addressError);
         }
-        return fullNameErrorLabel == null ;
+        return fullNameError == null && addressError == null;
     }
 
     private void clearErrorMessages() {

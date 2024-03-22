@@ -10,6 +10,7 @@ import com.bsm.bsm.utils.SceneSwitch;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
@@ -26,6 +27,7 @@ import java.util.Objects;
 
 
 public class sidebarController {
+    private final SceneSwitch sceneSwitch = new SceneSwitch();
     public UserModel employeeInfo = UserSingleton.getInstance().getUser();
     public MenuItem buttonProfileSetting, buttonLogOut;
 
@@ -85,7 +87,7 @@ public class sidebarController {
 
     @FXML
     void SwitchBookAuthors(ActionEvent event) throws IOException {
-        loadPage("bookAuthors/addAuthor");
+        loadPage("bookAuthors/updateAuthor");
     }
 
     @FXML
@@ -95,7 +97,7 @@ public class sidebarController {
 
     @FXML
     void SwitchBookPublishers(ActionEvent event) throws IOException {
-        loadPage("bookPublishers/addPublishers");
+        loadPage("bookPublishers/addPublisher");
     }
 
     @FXML
@@ -111,7 +113,7 @@ public class sidebarController {
     @FXML
     void handleLogOut(ActionEvent event) throws IOException {
         userController.logout();
-        new SceneSwitch(AnchorPaneEmployee, "/com/bsm/bsm/view/login.fxml");
+        sceneSwitch.SceneSwitchDifferSize(AnchorPaneEmployee, "/com/bsm/bsm/view/login.fxml");
     }
 
     @FXML
@@ -121,6 +123,8 @@ public class sidebarController {
 
     private void loadPage(String page) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/bsm/bsm/view/employee/" + page + ".fxml")));
+        bp.setCenter(null);
+
         bp.setCenter(root);
     }
 }

@@ -1,5 +1,6 @@
 package com.bsm.bsm.admin.userAccount;
 
+import com.bsm.bsm.account.AccountService;
 import com.bsm.bsm.user.UserModel;
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.DateUtils;
@@ -39,7 +40,7 @@ public class UpdateUserController {
     @FXML
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    private final UpdateUserService updateUserService = new UpdateUserService();
+    private final AccountService accountService = new AccountService();
 
     @FXML
     public void initialize() {
@@ -69,7 +70,7 @@ public class UpdateUserController {
         dobPicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
     }
     private void setUserInfo() {
-        userModel = UpdateUserService.getUserProfile(email);
+        userModel = accountService.getUserProfile(email);
         fullNameField.setText(userModel.getName());
         phoneTextField.setText(userModel.getPhone());
         addressTextField.setText(userModel.getAddress());
@@ -94,7 +95,7 @@ public class UpdateUserController {
         if (validateInputs(fullName, dob, phone, address)) {
             // need to call ID
             String id = userModel.getId();
-            if (updateUserService.updateUserProfile(id, fullName, phone, dob, address)){
+            if (accountService.updateUserProfile(id, fullName, phone, dob, address)){
                 AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
                 updateUserInformation(fullName, phone, dob, address);
                 clearInputs();

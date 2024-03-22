@@ -1,6 +1,7 @@
 package com.bsm.bsm.admin.userAccount;
 
 
+import com.bsm.bsm.account.AccountService;
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.ValidationUtils;
@@ -24,7 +25,7 @@ public class PasswordResetController {
     private Label emailErrorLabel, passwordErrorLabel;
     private static String userEmail; // Variable to store the selected user
 
-    private final PasswordResetService passwordResetService = new PasswordResetService();
+    private final AccountService accountService = new AccountService();
 
     @FXML
     public void initialize() {
@@ -51,13 +52,13 @@ public class PasswordResetController {
                 return;
             }
 
-            if (!passwordResetService.hasUserExist(userEmail)) {
+            if (!accountService.hasUserExist(userEmail)) {
                 emailErrorLabel.setText("User does not exist.");
                 return;
             }
 
             String adminID = UserSingleton.getInstance().getUser().getId();
-            passwordResetService.updatePassword(adminID, userEmail, password);
+            accountService.updatePassword(adminID, userEmail, password);
             AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
             clearInputs();
             clearErrorMessages();

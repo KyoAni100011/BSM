@@ -13,17 +13,32 @@ CREATE PROCEDURE ADDUSER(
     IN role_param VARCHAR(255)
 )
 BEGIN
-INSERT INTO user (name, dob, email, address, password)
-VALUES (name_param, dob_param, email_param, address_param, password_param);
-set @user_id = last_insert_id();
-    if role_param = 'admin' then
-		insert into admin(userID) values (@user_id);
-else
-		insert into employee(userID) values (@user_id);
-end if;
-END //
+    DECLARE user_count INT;
+    DECLARE user_id INT;
+    DECLARE id_prefix VARCHAR(10);
+    
+    IF role_param = 'admin' THEN
+        SET id_prefix = '11110000';
+        SELECT COUNT(*) INTO user_count FROM admin;
+    ELSE
+        SET id_prefix = '22220000';
+        SELECT COUNT(*) INTO user_count FROM employee;
+    END IF;
+
+    SET user_id = user_count + 1;
+    SET @id = id_prefix + CAST(user_id AS CHAR); 
+
+    INSERT INTO user (id, name, dob, email, address, password)
+    VALUES (@id, name_param, dob_param, email_param, address_param, password_param);
+	
+    IF role_param = 'admin' THEN
+        INSERT INTO admin (userID) VALUES (@id);
+    ELSE
+        INSERT INTO employee (userID) VALUES (@id);
+    END IF;
+END; //
 
 DELIMITER ;
 
-CALL ADDUSER('thu', '1999-01-01', 'thunguyen.admin@bms.com', '123456', 'admin');
 
+CALL ADDUSER('ha', '1999-01-01', 'ha.admin@bms.com', '123 abc', '123456', 'admin');

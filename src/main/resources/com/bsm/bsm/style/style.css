@@ -210,3 +210,36 @@
     -fx-background-radius : 20px;
     -fx-background-color : #D5D8DC !important;
 }
+
+.chart-bar {
+    -fx-background-color: #D9D9D9;
+    -fx-background-radius: 0px;
+    -fx-background-position: left center;
+}
+
+.chart-plot-background {
+    -fx-background-color: white;
+}
+
+.chartActionButton {
+  -fx-background-color: transparent;
+  -fx-font-family: "Roboto Bold";
+  -fx-border-width: 0px 0px 2px 0px;
+  -fx-font-size: 16px;
+}
+
+.chartActionButton-admin-selected {
+  -fx-text-fill: #914d2a;
+  -fx-border-color: #914d2a;
+}
+
+.axis-label {
+    -fx-font-size: 16px;
+    -fx-font-family: "Roboto Bold";
+}
+
+.chart-title {
+    -fx-font-size: 24px;
+    -fx-margin: 10px;
+    -fx-font-family: "Roboto Bold";
+}

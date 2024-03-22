@@ -15,6 +15,9 @@ public class AddAuthorController {
     private Label fullNameErrorLabel, introductionErrorLabel;
     @FXML
     private TextField fullNameField,introductionTextField;
+
+    private final AddAuthorService addAuthorService = new AddAuthorService();
+
     @FXML
     public void initialize() {
     }
@@ -23,11 +26,21 @@ public class AddAuthorController {
         clearErrorMessages();
         String fullName = fullNameField.getText();
         String introduction = introductionTextField.getText();
+
         if (validateInputs(fullName,introduction)) {
-            clearInputs();
-            AlertUtils.showAlert("Success", "Add author successfully.", Alert.AlertType.INFORMATION);
+            if (addAuthorService.checkAuthorExists(fullName)) {
+                fullNameErrorLabel.setText("Author already exists.");
+            } else {
+                if (addAuthorService.addAuthor(fullName, introduction)) {
+                    AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
+                    clearInputs();
+                } else {
+                    AlertUtils.showAlert("Error", "An error occurred while updating the profile.", Alert.AlertType.ERROR);
+                }
+            }
         }
     }
+
     private boolean validateInputs(String fullName, String introduction ) {
         String fullNameError = ValidationUtils.validateFullName(fullName,"author");
         String introductionError = ValidationUtils.validateIntroduction(introduction,"author");
@@ -38,18 +51,16 @@ public class AddAuthorController {
         if (introductionError != null) {
             introductionErrorLabel.setText(introductionError);
         }
-        return fullNameErrorLabel == null ;
+        return fullNameError == null && introductionError == null;
     }
 
     private void clearErrorMessages() {
         fullNameErrorLabel.setText("");
         introductionErrorLabel.setText("");
-
     }
 
     private void clearInputs() {
         fullNameField.clear();
         introductionTextField.clear();
-
     }
 }
