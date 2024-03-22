@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.category.AddCategoryController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.bookCategories.AddCategoryController">
     <children>
         <Label fx:id="nameErrorLabel" layoutX="76.0" layoutY="178.0" prefHeight="17.0" prefWidth="307.0" styleClass="error-label" />
         <Label fx:id="descriptionErrorLabel" layoutX="76.0" layoutY="266.0" prefHeight="17.0" prefWidth="317.0" styleClass="error-label" />
