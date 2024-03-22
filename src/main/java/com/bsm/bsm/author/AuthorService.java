@@ -34,7 +34,24 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
     }
 
     @Override
-    public void setEnable(boolean state) {
+    public boolean setEnable(boolean state) {
 
+        return state;
+    }
+
+    public boolean checkAuthorExists (String name) {
+        return authorDAO.checkAuthorExists(name);
+    }
+
+    public boolean addAuthor (String name, String introduction) {
+        return authorDAO.addAuthor(name, introduction);
+    }
+
+    public boolean updateAuthor(String oldName, String newName, String introduction) {
+        return authorDAO.updateAuthor(oldName, newName, introduction);
+    }
+
+    public Author getAuthor(String name) {
+        return authorDAO.getAuthor(name);
     }
 }

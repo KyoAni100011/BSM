@@ -33,7 +33,8 @@ public class PublisherService implements Activable, Searchable<Publisher>, Sorta
     }
 
     @Override
-    public void setEnable(boolean state) {
+    public boolean setEnable(boolean state) {
 
+        return state;
     }
 }

@@ -33,7 +33,8 @@ public class CategoryService implements Activable, Searchable<Category>, Sortabl
     }
 
     @Override
-    public void setEnable(boolean state) {
+    public boolean setEnable(boolean state) {
 
+        return state;
     }
 }

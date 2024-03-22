@@ -106,8 +106,8 @@ public class AccountDAO {
     public boolean enableUser(String userId) {
         try {
             String ENABLE_USER_QUERY = "UPDATE user SET isEnabled = 1 WHERE id = ?";
-            DatabaseConnection.executeUpdate(ENABLE_USER_QUERY, userId);
-            return true;
+            int rowEffected = DatabaseConnection.executeUpdate(ENABLE_USER_QUERY, userId);
+            return rowEffected > 0;
         } catch (Exception e) {
             return false;
         }
@@ -116,8 +116,8 @@ public class AccountDAO {
     public boolean disableUser(String userId) {
         try {
             String DISABLE_USER_QUERY = "UPDATE user SET isEnabled = 0 WHERE id = ?";
-            DatabaseConnection.executeUpdate(DISABLE_USER_QUERY, userId);
-            return true;
+            int rowEffected = DatabaseConnection.executeUpdate(DISABLE_USER_QUERY, userId);
+            return rowEffected > 0;
         } catch (Exception e) {
             return false;
         }

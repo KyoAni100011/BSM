@@ -32,8 +32,9 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
     }
 
     @Override
-    public void setEnable(boolean state) {
+    public boolean setEnable(boolean state) {
 
+        return state;
     }
 }
 
