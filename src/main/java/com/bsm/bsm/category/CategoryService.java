@@ -36,4 +36,12 @@ public class CategoryService implements Activable, Searchable<Category>, Sortabl
     public void setEnable(boolean state) {
 
     }
+
+    public boolean checkCategoryExist(String name) {
+        return categoryDAO.checkCategoryExist(name);
+    }
+
+    public boolean addCategory(String name, String description) {
+        return categoryDAO.addCategory(name, description);
+    }
 }
