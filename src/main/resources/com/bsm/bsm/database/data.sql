@@ -35,7 +35,7 @@ insert into author (name) values ('Daniel Kahneman');
 insert into author (name) values ('Neil deGrasse Tyson');
 insert into author (name) values ('Noam Chomsky');
 insert into author (name) values ('Pablo Picasso');
-insert into author (name) values ('Tony Robbins'); 
+insert into author (name) values ('Tony Robbins');
 select * from author;
 
 -- insert data for table publisher
