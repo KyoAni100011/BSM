@@ -86,12 +86,12 @@ create table importSheet (
 );
 
 create table bookBatch (
-    id bigint not null,
+    id bigint auto_increment primary key,
     quantity int not null,
     importPrice decimal(50, 2) not null,
     importSheetID bigint not null,
-    primary key (id, importSheetId),
-    foreign key(id) references book(isbn),
+    bookID bigint not null,
+    foreign key(bookID) references book(isbn),
     foreign key (importSheetId) references importSheet(id)
 );
 
@@ -113,11 +113,10 @@ create table orderSheet (
 
 create table orderBooksDetails (
     orderID bigint not null,
-    bookID bigint not null,
-    importSheetID bigint,
+    bookBatchID bigint not null,
     quantity int not null,
     salePrice decimal(50, 2) not null,
-    primary key (orderID, bookID),
+    primary key (orderID, bookBatchID),
     foreign key(orderID) references orderSheet(id),
-    foreign key (bookID, importSheetID) references bookBatch(id, importSheetID)
+    foreign key (bookBatchID) references bookBatch(id)
 );
