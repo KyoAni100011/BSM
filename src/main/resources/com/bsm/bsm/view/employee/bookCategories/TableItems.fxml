@@ -6,33 +6,35 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleTableItemDoubleClick" prefHeight="45.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: #F3F3F3;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.profileSetting.bookCategories.TableItemsController">
-   <children>
-      <RadioButton fx:id="radioButton" mnemonicParsing="false" onAction="#handleRadioButtonClick" prefHeight="18.0" prefWidth="16.0">
-         <HBox.margin>
-            <Insets left="30.0" />
-         </HBox.margin>
-         <padding>
-            <Insets right="20.0" />
-         </padding>
-      </RadioButton>
-      <Label fx:id="idLabel" alignment="CENTER" prefHeight="17.0" prefWidth="68.0" text="1">
-         <HBox.margin>
-            <Insets />
-         </HBox.margin>
-      </Label>
-      <Label fx:id="nameLabel" alignment="CENTER" prefHeight="17.0" prefWidth="390.0" text="Short Stories">
-         <HBox.margin>
-            <Insets />
-         </HBox.margin>
-      </Label>
-      <Button fx:id="isEnabledButton" alignment="CENTER" mnemonicParsing="false" onAction="#handleIsEnabledButtonClick" prefHeight="24.0" prefWidth="73.0" styleClass="text-menu-item-5" text="Disable">
-         <HBox.margin>
-            <Insets left="20.0" />
-         </HBox.margin>
-         <padding>
-            <Insets bottom="3.0" left="15.0" right="15.0" top="3.0" />
-         </padding>
-      </Button>
-   </children>
-</HBox>
+<!--<HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleTableItemDoubleClick" prefHeight="45.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: #F3F3F3;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.profileSetting.bookCategories.TableItemsController">-->
+<!--   <children>-->
+<!--&lt;!&ndash;      <RadioButton fx:id="radioButton" mnemonicParsing="false" onAction="#handleRadioButtonClick" prefHeight="18.0" prefWidth="16.0">&ndash;&gt;-->
+<!--&lt;!&ndash;         <HBox.margin>&ndash;&gt;-->
+<!--&lt;!&ndash;            <Insets left="30.0" />&ndash;&gt;-->
+<!--&lt;!&ndash;         </HBox.margin>&ndash;&gt;-->
+<!--&lt;!&ndash;         <padding>&ndash;&gt;-->
+<!--&lt;!&ndash;            <Insets right="20.0" />&ndash;&gt;-->
+<!--&lt;!&ndash;         </padding>&ndash;&gt;-->
+<!--&lt;!&ndash;      </RadioButton>&ndash;&gt;-->
+<!--      <Label fx:id="idLabel" alignment="CENTER" prefHeight="17.0" prefWidth="68.0" text="1">-->
+<!--         <HBox.margin>-->
+<!--            <Insets />-->
+<!--         </HBox.margin>-->
+<!--      </Label>-->
+<!--      <Label fx:id="nameLabel" alignment="CENTER" prefHeight="17.0" prefWidth="390.0" text="Short Stories">-->
+<!--         <HBox.margin>-->
+<!--            <Insets />-->
+<!--         </HBox.margin>-->
+<!--      </Label>-->
+<!--&lt;!&ndash;      <Button fx:id="isEnabledButton" alignment="CENTER" mnemonicParsing="false" onAction="#handleIsEnabledButtonClick" prefHeight="24.0" prefWidth="73.0" styleClass="text-menu-item-5" text="Disable">&ndash;&gt;-->
+<!--&lt;!&ndash;         <HBox.margin>&ndash;&gt;-->
+<!--&lt;!&ndash;            <Insets left="20.0" />&ndash;&gt;-->
+<!--&lt;!&ndash;         </HBox.margin>&ndash;&gt;-->
+<!--&lt;!&ndash;         <padding>&ndash;&gt;-->
+<!--&lt;!&ndash;            <Insets bottom="3.0" left="15.0" right="15.0" top="3.0" />&ndash;&gt;-->
+<!--&lt;!&ndash;         </padding>&ndash;&gt;-->
+<!--&lt;!&ndash;      </Button>&ndash;&gt;-->
+<!--   </children>-->
+<!--</HBox>-->
+
+<HBox></HBox>

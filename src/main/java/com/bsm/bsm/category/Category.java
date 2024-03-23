@@ -3,15 +3,17 @@ package com.bsm.bsm.category;
 public class Category {
     private String id;
     private String name;
+    private String description;
     private boolean isEnabled;
 
     public Category() {
         // Default constructor
     }
 
-    public Category(String id, String name, boolean isEnabled) {
+    public Category(String id, String name, String description, boolean isEnabled) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.isEnabled = isEnabled;
     }
 
@@ -32,6 +34,14 @@ public class Category {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public boolean isEnabled() {
         return isEnabled;
     }
@@ -43,8 +53,9 @@ public class Category {
     @Override
     public String toString() {
         return "Category{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
                 ", isEnabled=" + isEnabled +
                 '}';
     }
