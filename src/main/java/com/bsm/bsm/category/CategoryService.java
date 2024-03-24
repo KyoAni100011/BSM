@@ -1,6 +1,7 @@
 package com.bsm.bsm.category;
 
 import com.bsm.bsm.commonInterface.*;
+
 import java.util.List;
 
 public class CategoryService implements Activable, Searchable<Category>, Sortable<Category>, Updatable<Category>, Addable<Category> {
@@ -10,9 +11,9 @@ public class CategoryService implements Activable, Searchable<Category>, Sortabl
         this.categoryDAO = new CategoryDAO();
     }
 
-    @Override
-    public void update(Category item) {
-        categoryDAO.update(item);
+//    @Override
+    public boolean update(Category item) {
+        return categoryDAO.update(item);
     }
 
     @Override
@@ -35,5 +36,9 @@ public class CategoryService implements Activable, Searchable<Category>, Sortabl
     @Override
     public void setEnable(boolean state) {
 
+    }
+
+    public Category getCategoryById(String id) {
+        return categoryDAO.getCategoryById(id);
     }
 }

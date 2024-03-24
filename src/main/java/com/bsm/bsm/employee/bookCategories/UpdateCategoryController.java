@@ -2,7 +2,7 @@ package com.bsm.bsm.employee.bookCategories;
 
 import com.bsm.bsm.category.Category;
 import com.bsm.bsm.category.CategorySingleton;
-import com.bsm.bsm.category.UpdateCategoryService;
+import com.bsm.bsm.category.CategoryService;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.ValidationUtils;
 import javafx.event.ActionEvent;
@@ -20,12 +20,12 @@ public class UpdateCategoryController {
     @FXML
     private TextField nameField, descriptionField;
 
-    private final UpdateCategoryService updateCategoryService = new UpdateCategoryService();
+    private final CategoryService categoryService = new CategoryService();
 
     @FXML
     public void initialize() {
         //set temp id, need to get id from table view
-        Category category = updateCategoryService.getCategory("55551111");
+        Category category = categoryService.getCategoryById("55551111");
         setCategoryInfo(category);
     }
 
@@ -47,8 +47,9 @@ public class UpdateCategoryController {
         String id = "33331111";
         String name = nameField.getText();
         String description = descriptionField.getText();
+        Category newCategory = new Category(id, name, description, true);
         if (validateInputs(name, description)) {
-            if (updateCategoryService.updateCategory(id, name, description)) {
+            if (categoryService.update(newCategory)) {
                 updateCategoryInformation(name, description);
                 AlertUtils.showAlert("Success", "Category updated successfully.", Alert.AlertType.INFORMATION);
                 clearInputs();
@@ -56,7 +57,7 @@ public class UpdateCategoryController {
             else {
                 AlertUtils.showAlert("Error", "Category update failed.", Alert.AlertType.ERROR);
             }
-            var category = updateCategoryService.getCategory(id);
+            var category = categoryService.getCategoryById(id);
             setCategoryInfo(category);
         }
     }
