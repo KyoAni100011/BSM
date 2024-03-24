@@ -12,8 +12,8 @@
 
     <Text layoutX="256.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title-form" text="Add user" wrappingWidth="185.0" />
 
-    <Label fx:id="emailErrorLabel" layoutX="126.0" layoutY="247.0" styleClass="error-label" text="aa" />
-    <Label fx:id="dobErrorLabel" layoutX="125.0" layoutY="174.0" styleClass="error-label" text="aa" />
+    <Label fx:id="emailErrorLabel" layoutX="126.0" layoutY="247.0" styleClass="error-label" />
+    <Label fx:id="dobErrorLabel" layoutX="125.0" layoutY="174.0" styleClass="error-label" />
 
     <TextField fx:id="emailField" layoutX="125.0" layoutY="209.0" prefHeight="40.0" prefWidth="350.0" promptText="Enter Email" styleClass="input-field-add" />
     <TextField fx:id="customPassword" disable="true" layoutX="125.0" layoutY="357.0" prefHeight="40.0" prefWidth="350.0" promptText="Default password" styleClass="input-field-add" />
@@ -53,7 +53,7 @@
         </font>
     </Button>
     <Label fx:id="nameErrorLabel" layoutX="126.0" layoutY="101.0" styleClass="error-label" />
-   <Label fx:id="addressErrorLabel" layoutX="126.0" layoutY="320.0" styleClass="error-label" text="aa" />
+   <Label fx:id="addressErrorLabel" layoutX="126.0" layoutY="320.0" styleClass="error-label" />
    <TextField fx:id="addressField" layoutX="125.0" layoutY="282.0" prefHeight="40.0" prefWidth="350.0" promptText="Enter address" styleClass="input-field-add" />
    <Label layoutX="125.0" layoutY="266.0" styleClass="label-bold" text="Address">
       <font>

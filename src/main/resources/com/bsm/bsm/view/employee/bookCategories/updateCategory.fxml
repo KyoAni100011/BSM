@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.bsm.bsm.employee.bookCategories.UpdateCategoryController">
+    <Label fx:id="nameErrorLabel" layoutX="76.0" layoutY="178.0" prefHeight="17.0" prefWidth="307.0"
+           styleClass="error-label"/>
+    <Label fx:id="descriptionErrorLabel" layoutX="76.0" layoutY="266.0" prefHeight="17.0" prefWidth="317.0"
+           styleClass="error-label"/>
+
+    <Label layoutX="76.0" layoutY="117.0" styleClass="label-bold" text="Name">
+        <font>
+            <Font size="18.0"/>
+        </font>
+    </Label>
+    <Label layoutX="76.0" layoutY="205.0" styleClass="label-bold" text="Description">
+        <font>
+            <Font size="18.0"/>
+        </font>
+    </Label>
+
+    <TextField fx:id="nameField" layoutX="75.0" layoutY="138.0" prefHeight="40.0" prefWidth="450.0"
+               promptText="Enter name book category" styleClass="input-field-add"/>
+    <TextField fx:id="descriptionField" layoutX="75.0" layoutY="225.0" prefHeight="40.0" prefWidth="450.0"
+               promptText="Enter category description" styleClass="input-field-add"/>
+
+
+    <Button layoutX="371.0" layoutY="294.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="40.0"
+            prefWidth="153.0" styleClass="button-custom-employee" text="Save" textFill="WHITE">
+        <font>
+            <Font size="18.0"/>
+        </font>
+    </Button>
+    <Label layoutX="202.0" layoutY="49.0" text="UPDATE CATEGORY">
+        <font>
+            <Font size="25.0"/>
+        </font>
+    </Label>
+</AnchorPane>

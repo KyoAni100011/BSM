@@ -3,16 +3,20 @@ package com.bsm.bsm.publisher;
 public class Publisher {
     private String id;
     private String name;
+
     private boolean isEnabled;
+
+    private String address;
 
     public Publisher() {
         // Default constructor
     }
 
-    public Publisher(String id, String name, boolean isEnabled) {
+    public Publisher(String id, String name, String address, boolean isEnabled ) {
         this.id = id;
         this.name = name;
         this.isEnabled = isEnabled;
+        this.address = address;
     }
 
     // Getters and setters
@@ -26,6 +30,14 @@ public class Publisher {
 
     public String getName() {
         return name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     public void setName(String name) {
@@ -46,6 +58,7 @@ public class Publisher {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", isEnabled=" + isEnabled +
+                ", address=" + address +
                 '}';
     }
 }

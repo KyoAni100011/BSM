@@ -4,6 +4,7 @@ import com.bsm.bsm.account.AccountService;
 import com.bsm.bsm.user.UserModel;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
+import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,7 +23,8 @@ public class TableItemController {
     private AccountService accountService = new AccountService();
     @FXML
     public RadioButton radioButton;
-    public Button isEnabledButton;
+    @FXML
+    public ToggleSwitch isOn;
     @FXML
     private Label idLabel, nameLabel, emailLabel, lastLoginLabel,dobLabel, phoneLabel, addressLabel;
     @FXML
@@ -31,9 +33,38 @@ public class TableItemController {
     private void handleRadioButtonClick() {
         UserAccountController.handleTableItemSelection(email);
     }
+
     @FXML
     private void initialize() {
 
+    }
+    @FXML
+    private void handleToggleSwitchClick() {
+        isOn.setUserId(idLabel.getText()); // Pass the idLabel data to ToggleSwitch
+        BooleanProperty oldState = isOn.switchedProperty();
+        String confirmationMessage = "Are you sure you want to " + ( !oldState.get() ? "enable" : "disable" ) + " this user?";
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirmation");
+        confirmationAlert.setHeaderText(confirmationMessage);
+        confirmationAlert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                if (oldState.get()) {
+                    if (!accountService.disableUser(idLabel.getText())) {
+                        AlertUtils.showAlert("Error", "Failed to disable user", Alert.AlertType.ERROR);
+                        return;
+                    }
+                    isOn.setSwitchedProperty(!oldState.get());
+                    AlertUtils.showAlert("Success", "User disable successfully", Alert.AlertType.INFORMATION);
+                } else {
+                    if (!accountService.enableUser(idLabel.getText())) {
+                        AlertUtils.showAlert("Error", "Failed to enable user", Alert.AlertType.ERROR);
+                        return;
+                    }
+                    isOn.setSwitchedProperty(!oldState.get());
+                    AlertUtils.showAlert("Success", "User enable successfully", Alert.AlertType.INFORMATION);
+                }
+            }
+        });
     }
     public void setToggleGroup(ToggleGroup toggleGroup) {
         radioButton.setToggleGroup(toggleGroup);
@@ -49,44 +80,6 @@ public class TableItemController {
 
             }
         }
-    }
-
-    @FXML
-    private void handleIsEnabledButtonClick() {
-        String action = isEnabledButton.getText().equals("Enable") ? "disable" : "enable";
-        String confirmationMessage = "Are you sure you want to " + action + " this user?";
-
-        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationAlert.setTitle("Confirmation");
-        confirmationAlert.setHeaderText(confirmationMessage);
-//      confirmationAlert.setContentText("Click OK to confirm.");
-
-        confirmationAlert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                if (isEnabledButton.getText().equals("Enable")) {
-                    if (!accountService.enableUser(idLabel.getText())) {
-                        AlertUtils.showAlert("Error", "Failed to disable user", Alert.AlertType.ERROR);
-                        return;
-                    }
-
-                    isEnabledButton.setText("Disable");
-                    isEnabledButton.getStyleClass().remove("enable-button");
-                    isEnabledButton.getStyleClass().add("disable-button");
-                    AlertUtils.showAlert("Success", "User disable successfully", Alert.AlertType.INFORMATION);
-
-                } else {
-                    if (!accountService.disableUser(idLabel.getText())) {
-                        AlertUtils.showAlert("Error", "Failed to enable user", Alert.AlertType.ERROR);
-                        return;
-                    }
-
-                    isEnabledButton.setText("Enable");
-                    isEnabledButton.getStyleClass().remove("disable-button");
-                    isEnabledButton.getStyleClass().add("enable-button");
-                    AlertUtils.showAlert("Success", "User enable successfully", Alert.AlertType.INFORMATION);
-                }
-            }
-        });
     }
 
 
@@ -117,11 +110,6 @@ public class TableItemController {
 
         // Set the last login label with the time elapsed
         lastLoginLabel.setText(timeElapsed );
-        isEnabledButton.setText(!user.isEnabled() ? "Enable" : "Disable");
-        if(!user.isEnabled()){
-            isEnabledButton.getStyleClass().add("enable-button");
-        }else {
-            isEnabledButton.getStyleClass().add("disable-button");
-        }
+        isOn.setSwitchedProperty(user.isEnabled());
     }
 }

@@ -7,6 +7,8 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
 import javafx.geometry.Side;
 
@@ -22,16 +24,16 @@ public class BookBarChartController {
     public void initialize() {
         // Tạo dữ liệu giả định
         ObservableList<XYChart.Data<String, Number>> data = FXCollections.observableArrayList();
-        data.add(new XYChart.Data<>("tập 1", 80000000));
-        data.add(new XYChart.Data<>("tập 2", 120000000));
-        data.add(new XYChart.Data<>("tập 3", 100000000));
-        data.add(new XYChart.Data<>("tập 4", 150000000));
-        data.add(new XYChart.Data<>("tập 5", 200000000));
-        data.add(new XYChart.Data<>("tập 6", 250000000));
-        data.add(new XYChart.Data<>("tập 7", 300000000));
-        data.add(new XYChart.Data<>("tập 8", 350000000));
-        data.add(new XYChart.Data<>("tập 9", 400000000));
-        data.add(new XYChart.Data<>("tập 10", 450000000));
+        data.add(new XYChart.Data<>("doraemon tập 1", 80000000));
+        data.add(new XYChart.Data<>("shin cau be but chi tập 2", 120000000));
+        data.add(new XYChart.Data<>("shin cau be but chi tập 3", 100000000));
+        data.add(new XYChart.Data<>("shin cau be but chi tập 4", 150000000));
+        data.add(new XYChart.Data<>("shin cau be but chi tập 5", 200000000));
+        data.add(new XYChart.Data<>("shin cau be but chi tập 6", 250000000));
+        data.add(new XYChart.Data<>("shin cau be but chi tập 7", 300000000));
+        data.add(new XYChart.Data<>("shin cau be but chi tập 8", 350000000));
+        data.add(new XYChart.Data<>("shin cau be but chi tập 9", 400000000));
+        data.add(new XYChart.Data<>("shin cau be but chi tập 10", 450000000));
 
 
         // Thêm dữ liệu vào biểu đồ
@@ -59,10 +61,20 @@ public class BookBarChartController {
         });
 
         series.setData(data);
+
         bookBarChart.getData().add(series);
 //        bookBarChart.setLegendVisible(false);
 //        bookBarChart.setTitle("Doanh thu sách theo tháng");
         series.setName("Doanh thu");
+        for (XYChart.Series<String, Number> currentSeries : bookBarChart.getData()) {
+            for (XYChart.Data<String, Number> currentData : currentSeries.getData()) {
+
+                Tooltip tooltip = new Tooltip("Category: " + currentData.getXValue() + "\nValue: " + currentData.getYValue());
+                tooltip.setShowDelay(Duration.ZERO);
+                Tooltip.install(currentData.getNode(), tooltip);
+                tooltip.setAutoHide(true);
+            }
+        }
 //        bookBarChart.setLegendSide(Side.TOP);
 //
 //         bookBarChart.setTitleSide(Side.RIGHT);
@@ -72,6 +84,7 @@ public class BookBarChartController {
         btnByDate.getStyleClass().add("chartActionButton");
         btnFromDateToDate.getStyleClass().add("chartActionButton");
         updateChart("Top 10 Best Selling Books By Month");
+
 
     }
 

@@ -87,17 +87,17 @@ public class sidebarController {
 
     @FXML
     void SwitchBookAuthors(ActionEvent event) throws IOException {
-        loadPage("bookAuthors/bookAuthors");
+        loadPage("bookAuthors/authorDetails");
     }
 
     @FXML
     void SwitchBookCategories(ActionEvent event) throws IOException {
-        loadPage("bookCategories/bookCategories");
+        loadPage("bookCategories/updateCategory");
     }
 
     @FXML
     void SwitchBookPublishers(ActionEvent event) throws IOException {
-        loadPage("bookPublishers/addPublisher");
+        loadPage("bookPublishers/updatePublisher");
     }
 
     @FXML
