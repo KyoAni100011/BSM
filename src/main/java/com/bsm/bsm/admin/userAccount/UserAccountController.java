@@ -256,6 +256,7 @@ public class UserAccountController implements Initializable {
                 }
             }
         }
+        System.out.println("\n\n");
 
         int totalPages = (int) Math.ceil((double) totalUserCountForRole / itemsPerPage);
         updatePaginationButtons(totalPages);

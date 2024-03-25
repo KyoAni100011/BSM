@@ -41,6 +41,7 @@ public class TableItemController {
     private void initialize() {
 
     }
+
     @FXML
     private void handleToggleSwitchClick() {
         isOn.setUserId(idLabel.getText()); // Pass the idLabel data to ToggleSwitch
@@ -57,7 +58,8 @@ public class TableItemController {
                         return;
                     }
                     isOn.setSwitchedProperty(!oldState.get());
-                    userModel.setEnabled(!oldState.get()); // Update userModel's property
+                    userModel.setEnabled(oldState.get()); // Update userModel's property
+                    System.out.println("User disabled successfully" + !oldState.get());
                     AlertUtils.showAlert("Success", "User disabled successfully", Alert.AlertType.INFORMATION);
                 } else {
                     if (!accountService.enableUser(idLabel.getText())) {
@@ -65,7 +67,8 @@ public class TableItemController {
                         return;
                     }
                     isOn.setSwitchedProperty(!oldState.get());
-                    userModel.setEnabled(!oldState.get()); // Update userModel's property
+                    userModel.setEnabled(oldState.get()); // Update userModel's property
+                    System.out.println("User enabled successfully" + !oldState.get());
                     AlertUtils.showAlert("Success", "User enabled successfully", Alert.AlertType.INFORMATION);
                 }
             }
