@@ -56,16 +56,16 @@ public class TableItemController {
                         AlertUtils.showAlert("Error", "Failed to disable user", Alert.AlertType.ERROR);
                         return;
                     }
-                    isOn.setSwitchedProperty(!oldState.get());
-                    userModel.setEnabled(!oldState.get()); // Update userModel's property
+                    isOn.setSwitchedProperty(false);
+                    userModel.setEnabled(false); // Update userModel's property
                     AlertUtils.showAlert("Success", "User disabled successfully", Alert.AlertType.INFORMATION);
                 } else {
                     if (!accountService.enableUser(idLabel.getText())) {
                         AlertUtils.showAlert("Error", "Failed to enable user", Alert.AlertType.ERROR);
                         return;
                     }
-                    isOn.setSwitchedProperty(!oldState.get());
-                    userModel.setEnabled(!oldState.get()); // Update userModel's property
+                    isOn.setSwitchedProperty(true);
+                    userModel.setEnabled(true); // Update userModel's property
                     AlertUtils.showAlert("Success", "User enabled successfully", Alert.AlertType.INFORMATION);
                 }
             }
