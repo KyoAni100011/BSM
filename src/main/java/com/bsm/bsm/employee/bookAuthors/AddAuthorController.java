@@ -1,5 +1,6 @@
-package com.bsm.bsm.author;
+package com.bsm.bsm.employee.bookAuthors;
 
+import com.bsm.bsm.author.AuthorService;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.ValidationUtils;
 import javafx.event.ActionEvent;
@@ -10,41 +11,37 @@ import javafx.scene.control.TextField;
 
 import java.text.ParseException;
 
-
-public class UpdateAuthorController {
+public class AddAuthorController {
     @FXML
     private Label fullNameErrorLabel, introductionErrorLabel;
     @FXML
     private TextField fullNameField,introductionTextField;
 
-    private final UpdateAuthorService updateAuthorService = new UpdateAuthorService();
+    private final AuthorService authorService = new AuthorService();
+
     @FXML
     public void initialize() {
-        //set temp id, need to get id from table view
-        Author author = updateAuthorService.getAuthor("33331111");
-        setAuthorInfo(author);
     }
-
-    private void setAuthorInfo(Author author) {
-        fullNameField.setText(author.getName());
-        introductionTextField.setText(author.getIntroduction());
-    }
-
     @FXML
     private void handleSaveChanges(ActionEvent event) throws ParseException {
         clearErrorMessages();
-        //set temp id, need to get id from table view
-        String id = "33331111";
         String fullName = fullNameField.getText();
         String introduction = introductionTextField.getText();
+
         if (validateInputs(fullName,introduction)) {
-            updateAuthorService.updateAuthor(id, fullName, introduction);
-            AlertUtils.showAlert("Success", "Author updated successfully.", Alert.AlertType.INFORMATION);
-            clearInputs();
-            var author = updateAuthorService.getAuthor(fullName);
-            setAuthorInfo(author);
+            if (authorService.checkAuthorExists(fullName)) {
+                fullNameErrorLabel.setText("Author already exists.");
+            } else {
+                if (authorService.addAuthor(fullName, introduction)) {
+                    AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
+                    clearInputs();
+                } else {
+                    AlertUtils.showAlert("Error", "An error occurred while updating the profile.", Alert.AlertType.ERROR);
+                }
+            }
         }
     }
+
     private boolean validateInputs(String fullName, String introduction ) {
         String fullNameError = ValidationUtils.validateFullName(fullName,"author");
         String introductionError = ValidationUtils.validateIntroduction(introduction,"author");
@@ -61,12 +58,10 @@ public class UpdateAuthorController {
     private void clearErrorMessages() {
         fullNameErrorLabel.setText("");
         introductionErrorLabel.setText("");
-
     }
 
     private void clearInputs() {
         fullNameField.clear();
         introductionTextField.clear();
-
     }
 }

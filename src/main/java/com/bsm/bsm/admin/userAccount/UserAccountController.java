@@ -220,6 +220,7 @@ public class UserAccountController implements Initializable {
     }
 
     private void updateButtonStyle(Button activeButton) {
+        
         if (activeButton == employeeButton) {
             employeeButton.getStyleClass().remove("profile-setting-button-admin");
             employeeButton.getStyleClass().add("profile-setting-button-admin");

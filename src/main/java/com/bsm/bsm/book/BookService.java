@@ -12,8 +12,8 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
     }
 
     @Override
-    public void update(Book item) {
-        bookDAO.update(item);
+    public boolean update(Book item) {
+        return bookDAO.update(item);
     }
 
     @Override
@@ -32,8 +32,9 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
     }
 
     @Override
-    public void setEnable(boolean state) {
+    public boolean setEnable(boolean state) {
 
+        return state;
     }
 }
 

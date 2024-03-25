@@ -1,7 +1,5 @@
 package com.bsm.bsm.publisher;
 
-import com.bsm.bsm.author.AddAuthorDAO;
-
 public class AddPublisherService {
     private final AddPublisherDAO addPublisherDAO;
 

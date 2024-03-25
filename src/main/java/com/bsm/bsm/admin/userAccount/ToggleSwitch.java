@@ -23,7 +23,6 @@ public class ToggleSwitch extends HBox {
     }
     public void setUserId(String userId) {
         this.userId = userId;
-        System.out.println("User ID: " + userId); // Print the user ID for testing
     }
 
     public void setSwitchedProperty(Boolean a){
@@ -60,12 +59,10 @@ public class ToggleSwitch extends HBox {
 
             fillAnimation.setFromValue(isOn ? Color.WHITE : Color.LIGHTGREEN);
             fillAnimation.setToValue(isOn ? Color.LIGHTGREEN: Color.WHITE);
-            animation.play(); // Restart the animation
-            System.out.println(oldState +" " + newState);
+            animation.play();
         });
 
         setOnMouseClicked(event -> {
-
             switchedOn.set(!switchedOn.get());
         });
     }
