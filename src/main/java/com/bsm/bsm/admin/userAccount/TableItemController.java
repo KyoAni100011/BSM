@@ -30,6 +30,9 @@ public class TableItemController {
     @FXML
     private String email;
     @FXML
+    private UserModel userModel;
+
+    @FXML
     private void handleRadioButtonClick() {
         UserAccountController.handleTableItemSelection(email);
     }
@@ -42,30 +45,33 @@ public class TableItemController {
     private void handleToggleSwitchClick() {
         isOn.setUserId(idLabel.getText()); // Pass the idLabel data to ToggleSwitch
         BooleanProperty oldState = isOn.switchedProperty();
-        String confirmationMessage = "Are you sure you want to " + ( !oldState.get() ? "enable" : "disable" ) + " this user?";
+        String confirmationMessage = "Are you sure you want to " + (!oldState.get() ? "enable" : "disable") + " this user?";
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Confirmation");
         confirmationAlert.setHeaderText(confirmationMessage);
         confirmationAlert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 if (oldState.get()) {
-                    if (!accountService.enableUser(idLabel.getText())) {
+                    if (!accountService.disableUser(idLabel.getText())) {
                         AlertUtils.showAlert("Error", "Failed to disable user", Alert.AlertType.ERROR);
                         return;
                     }
                     isOn.setSwitchedProperty(!oldState.get());
-                    AlertUtils.showAlert("Success", "User disable successfully", Alert.AlertType.INFORMATION);
+                    userModel.setEnabled(!oldState.get()); // Update userModel's property
+                    AlertUtils.showAlert("Success", "User disabled successfully", Alert.AlertType.INFORMATION);
                 } else {
-                    if (!accountService.disableUser(idLabel.getText())) {
+                    if (!accountService.enableUser(idLabel.getText())) {
                         AlertUtils.showAlert("Error", "Failed to enable user", Alert.AlertType.ERROR);
                         return;
                     }
                     isOn.setSwitchedProperty(!oldState.get());
-                    AlertUtils.showAlert("Success", "User enable successfully", Alert.AlertType.INFORMATION);
+                    userModel.setEnabled(!oldState.get()); // Update userModel's property
+                    AlertUtils.showAlert("Success", "User enabled successfully", Alert.AlertType.INFORMATION);
                 }
             }
         });
     }
+
     public void setToggleGroup(ToggleGroup toggleGroup) {
         radioButton.setToggleGroup(toggleGroup);
     }
@@ -84,6 +90,7 @@ public class TableItemController {
 
 
     public void setUserModel(UserModel user) {
+        userModel = user;
         email = user.getEmail();
         idLabel.setText(user.getId());
         nameLabel.setText(user.getName());
