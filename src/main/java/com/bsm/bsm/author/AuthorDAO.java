@@ -6,8 +6,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class AuthorDAO {
-    public void update(Author author) {
+    public boolean update(Author author) {
         // Implement update logic
+        return true;
     }
 
     public void add(Author author) {

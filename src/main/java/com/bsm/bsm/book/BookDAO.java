@@ -1,8 +1,9 @@
 package com.bsm.bsm.book;
 
 public class BookDAO {
-    public void update(Book book) {
+    public boolean update(Book book) {
         // Implement update logic
+        return true;
     }
 
     public void add(Book book) {

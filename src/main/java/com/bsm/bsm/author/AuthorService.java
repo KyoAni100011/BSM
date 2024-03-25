@@ -12,8 +12,8 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
     }
 
     @Override
-    public void update(Author item) {
-        authorDAO.update(item);
+    public boolean update(Author item) {
+        return authorDAO.update(item);
     }
 
     @Override

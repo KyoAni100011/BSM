@@ -11,8 +11,8 @@ public class PublisherService implements Activable, Searchable<Publisher>, Sorta
     }
 
     @Override
-    public void update(Publisher item) {
-        publisherDAO.update(item);
+    public boolean update(Publisher item) {
+        return publisherDAO.update(item);
     }
 
     @Override

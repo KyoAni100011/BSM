@@ -1,8 +1,9 @@
 package com.bsm.bsm.publisher;
 
 public class PublisherDAO {
-    public void update(Publisher publisher) {
+    public boolean update(Publisher publisher) {
         // Implement update logic
+        return true;
     }
 
     public void add(Publisher publisher) {
