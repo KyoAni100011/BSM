@@ -15,14 +15,12 @@ import java.text.ParseException;
 
 public class UpdateAuthorController {
     @FXML
+    private static String name;
+    private final AuthorService authorService = new AuthorService();
+    @FXML
     private Label fullNameErrorLabel, introductionErrorLabel;
     @FXML
-    private TextField fullNameField,introductionTextField;
-
-    @FXML
-    private static String name;
-
-    private final AuthorService authorService = new AuthorService();
+    private TextField fullNameField, introductionTextField;
 
     public static void handleTableItemSelection(String name) {
         name = name;
@@ -47,7 +45,7 @@ public class UpdateAuthorController {
         String oldName = "Nguyen Nhat Anh";
         String fullName = fullNameField.getText();
         String introduction = introductionTextField.getText();
-        if (validateInputs(fullName,introduction)) {
+        if (validateInputs(fullName, introduction)) {
             authorService.updateAuthor(oldName, fullName, introduction);
             AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
             clearInputs();
@@ -55,9 +53,10 @@ public class UpdateAuthorController {
             setAuthorInfo(author);
         }
     }
-    private boolean validateInputs(String fullName, String introduction ) {
-        String fullNameError = ValidationUtils.validateFullName(fullName,"author");
-        String introductionError = ValidationUtils.validateIntroduction(introduction,"author");
+
+    private boolean validateInputs(String fullName, String introduction) {
+        String fullNameError = ValidationUtils.validateFullName(fullName, "author");
+        String introductionError = ValidationUtils.validateIntroduction(introduction, "author");
 
         if (fullNameError != null) {
             fullNameErrorLabel.setText(fullNameError);
