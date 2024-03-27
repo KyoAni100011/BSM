@@ -20,29 +20,36 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class TableItemController {
+
     private AccountService accountService = new AccountService();
     @FXML
-    public RadioButton radioButton;
+    public ToggleButton toogleButton;
     @FXML
     public ToggleSwitch isOn;
     @FXML
     private Label idLabel, nameLabel, emailLabel, lastLoginLabel,dobLabel, phoneLabel, addressLabel;
-    @FXML
     private String email;
+    private ToggleGroup toggle;
     @FXML
-    private void handleRadioButtonClick() {
-        UserAccountController.handleTableItemSelection(email);
-    }
+    private UserModel userModel;
+
 
     @FXML
     private void initialize() {
-
+    }
+    @FXML
+    private void handleRadioButtonClick(){
+        if(!toogleButton.isSelected()){
+            UserAccountController.handleTableItemSelection(null);
+        } else {
+            UserAccountController.handleTableItemSelection(email);
+        }
     }
     @FXML
     private void handleToggleSwitchClick() {
         isOn.setUserId(idLabel.getText()); // Pass the idLabel data to ToggleSwitch
         BooleanProperty oldState = isOn.switchedProperty();
-        String confirmationMessage = "Are you sure you want to " + ( !oldState.get() ? "enable" : "disable" ) + " this user?";
+        String confirmationMessage = "Are you sure you want to " + (!oldState.get() ? "enable" : "disable") + " this user?";
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Confirmation");
         confirmationAlert.setHeaderText(confirmationMessage);
@@ -53,21 +60,24 @@ public class TableItemController {
                         AlertUtils.showAlert("Error", "Failed to disable user", Alert.AlertType.ERROR);
                         return;
                     }
-                    isOn.setSwitchedProperty(!oldState.get());
-                    AlertUtils.showAlert("Success", "User disable successfully", Alert.AlertType.INFORMATION);
+                    isOn.setSwitchedProperty(false);
+                    userModel.setEnabled(false); // Update userModel's property
+                    AlertUtils.showAlert("Success", "User disabled successfully", Alert.AlertType.INFORMATION);
                 } else {
                     if (!accountService.enableUser(idLabel.getText())) {
                         AlertUtils.showAlert("Error", "Failed to enable user", Alert.AlertType.ERROR);
                         return;
                     }
-                    isOn.setSwitchedProperty(!oldState.get());
-                    AlertUtils.showAlert("Success", "User enable successfully", Alert.AlertType.INFORMATION);
+                    isOn.setSwitchedProperty(true);
+                    userModel.setEnabled(true); // Update userModel's property
+                    AlertUtils.showAlert("Success", "User enabled successfully", Alert.AlertType.INFORMATION);
                 }
             }
         });
     }
+
     public void setToggleGroup(ToggleGroup toggleGroup) {
-        radioButton.setToggleGroup(toggleGroup);
+        toogleButton.setToggleGroup(toggleGroup);
     }
     @FXML
     private void handleTableItemDoubleClick(MouseEvent event) throws IOException {
@@ -84,6 +94,7 @@ public class TableItemController {
 
 
     public void setUserModel(UserModel user) {
+        userModel = user;
         email = user.getEmail();
         idLabel.setText(user.getId());
         nameLabel.setText(user.getName());
