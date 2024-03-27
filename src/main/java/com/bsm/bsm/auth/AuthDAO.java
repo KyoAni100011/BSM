@@ -5,6 +5,7 @@ import com.bsm.bsm.database.DatabaseConnection;
 import com.bsm.bsm.employee.EmployeeModel;
 import com.bsm.bsm.user.UserModel;
 import org.mindrot.jbcrypt.BCrypt;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -24,8 +25,6 @@ public class AuthDAO {
         DatabaseConnection.executeQuery(SELECT_PASSWORD_QUERY, resultSet -> {
             if (resultSet.next()) {
                 String storedPass = resultSet.getString("password").trim();
-                System.out.println(storedPass);
-                System.out.println(password);
                 isPasswordValid.set(BCrypt.checkpw(password, storedPass));
             }
         }, id);

@@ -97,4 +97,22 @@ public class ValidationUtils {
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         return email.matches(emailRegex) && !email.isEmpty() && email.length() <= 255;
     }
+
+    public static String validateCategoryName(String name) {
+        if (name.isEmpty()) {
+            return "Please enter category name.";
+        } else if (name.length() < 3 || name.length() > 255) {
+            return "Category name should be between 3 and 255 characters.";
+        } else {
+            return null;
+        }
+
+    }
+
+    public static String validateDescription(String description, String field) {
+        if (description == null || description.isEmpty()) {
+            return "Please enter " + field + " description.";
+        }
+        return null;
+    }
 }

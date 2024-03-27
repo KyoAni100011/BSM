@@ -11,10 +11,13 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
@@ -27,35 +30,33 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class UserAccountController implements Initializable {
-    private AdminModel adminInfo = (AdminModel) UserSingleton.getInstance().getUser();
     private static String email;
     private final ToggleGroup toggleGroup = new ToggleGroup();
-    private AccountService accountService = new AccountService();
-    private List<UserModel> users = null;
     private final int itemsPerPage = 9;
+    @FXML
+    public Button employeeButton, adminButton, addUserButton, passwordResetButton, updateUserButton;
+    @FXML
+    public Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
+    @FXML
+    public Button idLabel, nameLabel, emailLabel, lastLoginLabel, actionLabel;
+    @FXML
+    public SVGPath idSortLabel, nameSortLabel, emailSortLabel, lastLoginSortLabel, actionSortLabel;
+    private final AdminModel adminInfo = (AdminModel) UserSingleton.getInstance().getUser();
+    private final AccountService accountService = new AccountService();
+    private List<UserModel> users = null;
     private String sortOrder = "ASC";
     private String column = "id";
     private String role;
     private int currentPage = 1;
     private String inputSearchText = "";
-
     @FXML
     private VBox pnItems;
-
-    @FXML
-    public Button employeeButton, adminButton, addUserButton, passwordResetButton, updateUserButton;
-
-    @FXML
-    public Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
-
-    @FXML
-    public Button idLabel, nameLabel, emailLabel, lastLoginLabel, actionLabel;
-
-    @FXML
-    public SVGPath idSortLabel, nameSortLabel, emailSortLabel, lastLoginSortLabel, actionSortLabel;
-
     @FXML
     private TextField inputSearch;
+
+    static void handleTableItemSelection(String userEmail) {
+        email = userEmail; // Store the selected user
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -113,10 +114,6 @@ public class UserAccountController implements Initializable {
         }
     }
 
-    static void handleTableItemSelection(String userEmail) {
-        email = userEmail; // Store the selected user
-    }
-
     private void initializePaginationButtons() {
         firstPaginationButton.setOnAction(this::handlePaginationButton);
         secondPaginationButton.setOnAction(this::handlePaginationButton);
@@ -131,6 +128,7 @@ public class UserAccountController implements Initializable {
     private void handleEmployeeButton(ActionEvent event) {
         try {
             role = ".employee@bms.com";
+            currentPage = 1;
             updateUsersList();
             updateButtonStyle(employeeButton);
         } catch (IOException e) {
@@ -143,6 +141,7 @@ public class UserAccountController implements Initializable {
     private void handleAdminButton(ActionEvent event) {
         try {
             role = ".admin@bms.com";
+            currentPage = 1;
             updateUsersList();
             updateButtonStyle(adminButton);
         } catch (IOException e) {
@@ -211,11 +210,17 @@ public class UserAccountController implements Initializable {
                 e.printStackTrace();
             }
         } else {
-            role = ".admin@bms.com";
+            try {
+                role = ".admin@bms.com";
+                updateUsersList();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     private void updateButtonStyle(Button activeButton) {
+        
         if (activeButton == employeeButton) {
             employeeButton.getStyleClass().remove("profile-setting-button-admin");
             employeeButton.getStyleClass().add("profile-setting-button-admin");
@@ -230,12 +235,15 @@ public class UserAccountController implements Initializable {
     private void updateUsersList() throws IOException {
         pnItems.getChildren().clear();
         int startIndex = (currentPage - 1) * itemsPerPage;
-        int endIndex = Math.min(startIndex + itemsPerPage, users.size());
+        int totalUserCountForRole = getTotalUserCountForRole(role);
+        int endIndex = Math.min(startIndex + itemsPerPage, totalUserCountForRole);
+        int totalCount = 0;
 
-        for (int i = startIndex; i < endIndex; i++) {
+        for (int i = startIndex; i < users.size() && totalCount < endIndex; i++) {
             UserModel user = users.get(i);
             if ((user instanceof EmployeeModel && role.equals(".employee@bms.com")) ||
                     (user instanceof AdminModel && role.equals(".admin@bms.com"))) {
+                totalCount++;
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/admin/userAccount/tableItem.fxml"));
                     Node item = fxmlLoader.load();
@@ -243,14 +251,28 @@ public class UserAccountController implements Initializable {
                     tableItemController.setToggleGroup(toggleGroup);
                     tableItemController.setUserModel(user);
                     pnItems.getChildren().add(item);
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
-        int totalPages = (int) Math.ceil((double) users.size() / itemsPerPage);
+
+        int totalPages = (int) Math.ceil((double) totalUserCountForRole / itemsPerPage);
         updatePaginationButtons(totalPages);
     }
+
+    private int getTotalUserCountForRole(String role) {
+        int count = 0;
+        for (UserModel user : users) {
+            if ((user instanceof EmployeeModel && role.equals(".employee@bms.com")) ||
+                    (user instanceof AdminModel && role.equals(".admin@bms.com"))) {
+                count++;
+            }
+        }
+        return count;
+    }
+
 
     private void updatePaginationButtons(int totalPages) {
         // Clear all pagination buttons visibility
@@ -274,7 +296,7 @@ public class UserAccountController implements Initializable {
                 int buttonIndex = i - startPage;
                 if (totalPages > 5 && startPage < 6) {
                     button = paginationButtons.get(buttonIndex);
-                } else if (totalPages > 5 && startPage >= 6) {
+                } else if (totalPages > 5) {
                     button = paginationButtons.get(buttonIndex + 1);
                 } else {
                     button = paginationButtons.get(buttonIndex);
@@ -300,7 +322,7 @@ public class UserAccountController implements Initializable {
     }
 
     @FXML
-    private void handleLabelClick(MouseEvent event){
+    private void handleLabelClick(MouseEvent event) {
         Button clickedLabel = (Button) event.getSource();
         String columnName = clickedLabel.getText();
         if (columnName.equals(column)) {
