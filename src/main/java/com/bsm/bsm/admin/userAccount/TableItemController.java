@@ -20,26 +20,30 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class TableItemController {
+
     private AccountService accountService = new AccountService();
     @FXML
-    public RadioButton radioButton;
+    public ToggleButton toogleButton;
     @FXML
     public ToggleSwitch isOn;
     @FXML
     private Label idLabel, nameLabel, emailLabel, lastLoginLabel,dobLabel, phoneLabel, addressLabel;
-    @FXML
     private String email;
+    private ToggleGroup toggle;
     @FXML
     private UserModel userModel;
 
-    @FXML
-    private void handleRadioButtonClick() {
-        UserAccountController.handleTableItemSelection(email);
-    }
 
     @FXML
     private void initialize() {
-
+    }
+    @FXML
+    private void handleRadioButtonClick(){
+        if(!toogleButton.isSelected()){
+            UserAccountController.handleTableItemSelection(null);
+        } else {
+            UserAccountController.handleTableItemSelection(email);
+        }
     }
     @FXML
     private void handleToggleSwitchClick() {
@@ -73,7 +77,7 @@ public class TableItemController {
     }
 
     public void setToggleGroup(ToggleGroup toggleGroup) {
-        radioButton.setToggleGroup(toggleGroup);
+        toogleButton.setToggleGroup(toggleGroup);
     }
     @FXML
     private void handleTableItemDoubleClick(MouseEvent event) throws IOException {

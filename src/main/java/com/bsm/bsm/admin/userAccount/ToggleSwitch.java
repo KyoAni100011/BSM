@@ -16,6 +16,7 @@ public class ToggleSwitch extends HBox {
     private BooleanProperty switchedOn = new SimpleBooleanProperty(false);
     private FillTransition fillAnimation = new FillTransition(Duration.seconds(0.25));
     private TranslateTransition translateAnimation = new TranslateTransition(Duration.seconds(0.25));
+
     private ParallelTransition animation;
 
     public BooleanProperty switchedProperty(){
@@ -31,7 +32,7 @@ public class ToggleSwitch extends HBox {
     }
 
     public ToggleSwitch(){
-        Rectangle bg = new Rectangle(45, 20);
+        Rectangle bg = new Rectangle(35, 20);
         bg.setArcWidth(20);
         bg.setArcHeight(20);
         bg.setFill(Color.WHITE);
@@ -46,20 +47,21 @@ public class ToggleSwitch extends HBox {
         getChildren().addAll(bg, trigger);
 
         // Set initial position
-        translateAnimation.setToX(switchedOn.get() ? -20 : -46);
-        fillAnimation.setFromValue(switchedOn.get() ? Color.WHITE : Color.LIGHTGREEN);
-        fillAnimation.setToValue(switchedOn.get() ? Color.LIGHTGREEN: Color.WHITE);
+        trigger.setTranslateX(switchedOn.get() ? -20 : -36);
+
+        fillAnimation.setFromValue(switchedOn.get() ? Color.WHITE : Color.valueOf("#20B042"));
+        fillAnimation.setToValue(switchedOn.get() ? Color.valueOf("#20B042"): Color.WHITE);
         animation = new ParallelTransition(translateAnimation, fillAnimation);
         animation.play();
 
         switchedOn.addListener((obs, oldState, newState) -> {
 
             boolean isOn = newState;
-            translateAnimation.setToX(isOn ? -20 : -46);
+            translateAnimation.setToX(isOn ? -20 : -36);
 
 
-            fillAnimation.setFromValue(isOn ? Color.WHITE : Color.LIGHTGREEN);
-            fillAnimation.setToValue(isOn ? Color.LIGHTGREEN: Color.WHITE);
+            fillAnimation.setFromValue(isOn ? Color.WHITE : Color.valueOf("#20B042"));
+            fillAnimation.setToValue(isOn ? Color.valueOf("#20B042"): Color.WHITE);
             animation.play(); // Restart the animation
             System.out.println(oldState +" " + newState);
         });
