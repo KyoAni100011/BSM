@@ -28,7 +28,7 @@ public class AddCategoryController {
         String description = descriptionTextField.getText();
 
         if (validateInputs(name, description)) {
-            if (categoryService.checkCategoryExist(name)) {
+            if (categoryService.checkCategoryExists(name)) {
                 nameErrorLabel.setText("Category already exists.");
             } else {
                 if (categoryService.addCategory(name, description)) {

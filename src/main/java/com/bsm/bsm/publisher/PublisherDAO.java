@@ -6,10 +6,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class PublisherDAO {
-    public boolean update(Publisher publisher) {
-        // Implement update logic
-        return true;
-    }
 
     public boolean addPublisher(String name, String address) {
         String QUERY_PUBLISHER = "insert into publisher(name, address) values(?, ?)";

@@ -1,5 +1,6 @@
 package com.bsm.bsm.employee.bookAuthors;
 
+import com.bsm.bsm.author.Author;
 import com.bsm.bsm.author.AuthorService;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.ValidationUtils;
@@ -8,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-
 import java.text.ParseException;
 
 public class AddAuthorController {
@@ -32,11 +32,12 @@ public class AddAuthorController {
             if (authorService.checkAuthorExists(fullName)) {
                 fullNameErrorLabel.setText("Author already exists.");
             } else {
-                if (authorService.addAuthor(fullName, introduction)) {
-                    AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
+                Author newAuthor = new Author(fullName, introduction);
+                if (authorService.add(newAuthor)) {
+                    AlertUtils.showAlert("Success", "Add author successfully.", Alert.AlertType.INFORMATION);
                     clearInputs();
                 } else {
-                    AlertUtils.showAlert("Error", "An error occurred while updating the profile.", Alert.AlertType.ERROR);
+                    AlertUtils.showAlert("Error", "An error occurred while adding the author.", Alert.AlertType.ERROR);
                 }
             }
         }

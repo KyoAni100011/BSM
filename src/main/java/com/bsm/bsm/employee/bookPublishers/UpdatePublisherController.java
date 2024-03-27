@@ -1,5 +1,7 @@
-package com.bsm.bsm.publisher;
+package com.bsm.bsm.employee.bookPublishers;
 
+import com.bsm.bsm.publisher.Publisher;
+import com.bsm.bsm.publisher.PublisherService;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.ValidationUtils;
 import javafx.event.ActionEvent;
@@ -43,9 +45,18 @@ public class UpdatePublisherController {
                 return;
             }
 
+            //check if publisher already exists
+            if (publisherService.checkPublisherExists(fullName)) {
+                fullNameErrorLabel.setText("Publisher already exists.");
+                return;
+            }
+
             Publisher newPublisher = new Publisher(id, fullName, address, isEnabled);
-            publisherService.update(newPublisher);
-            AlertUtils.showAlert("Success", "Publisher updated successfully.", Alert.AlertType.INFORMATION);
+            if (publisherService.update(newPublisher)) {
+                AlertUtils.showAlert("Success", "Publisher updated successfully.", Alert.AlertType.INFORMATION);
+            } else {
+                AlertUtils.showAlert("Error", "Publisher update failed.", Alert.AlertType.ERROR);
+            }
         }
     }
 
@@ -68,6 +79,7 @@ public class UpdatePublisherController {
         fullNameErrorLabel.setText("");
         addressErrorLabel.setText("");
     }
+
     private void clearInputs() {
         fullNameField.clear();
         addressTextField.clear();

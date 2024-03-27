@@ -27,16 +27,12 @@ public class CategoryDAO {
         return rowsAffected > 0;
     }
 
-    public void add(Category category) {
-        // Implement add logic
-    }
-
     public Category search(String keyword) {
         // Implement search logic
         return null;
     }
 
-    public boolean checkCategoryExist(String name) {
+    public boolean checkCategoryExists(String name) {
         AtomicBoolean hasExisted = new AtomicBoolean(false);
         String QUERY_CHECK_CATEGORY = "select 1 from category where name = ?";
         DatabaseConnection.executeQuery(QUERY_CHECK_CATEGORY, resultSet -> {
