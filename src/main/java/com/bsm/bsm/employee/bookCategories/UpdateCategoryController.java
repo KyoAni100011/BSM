@@ -1,7 +1,6 @@
 package com.bsm.bsm.employee.bookCategories;
 
 import com.bsm.bsm.category.Category;
-import com.bsm.bsm.category.CategorySingleton;
 import com.bsm.bsm.category.CategoryService;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.ValidationUtils;
@@ -12,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.text.ParseException;
+import java.util.List;
 
 public class UpdateCategoryController {
     @FXML
@@ -22,10 +22,12 @@ public class UpdateCategoryController {
 
     private final CategoryService categoryService = new CategoryService();
 
+    String id = "55551111"; //set temp id, need to get id from table view
+    Category category = null;
+
     @FXML
     public void initialize() {
-        //set temp id, need to get id from table view
-        Category category = categoryService.getCategoryById("55551111");
+        category = categoryService.getCategoryById(id);
         setCategoryInfo(category);
     }
 
@@ -34,27 +36,16 @@ public class UpdateCategoryController {
         descriptionField.setText(category.getDescription());
     }
 
-    private void updateCategoryInformation(String name, String description) {
-        Category category = CategorySingleton.getInstance().getCategory();
-        category.setName(name);
-        category.setDescription(description);
-    }
-
     @FXML
     private void handleSaveChanges(ActionEvent event) throws ParseException {
         clearErrorMessages();
-        //set temp id, need to get id from table view
-        String id = "33331111";
         String name = nameField.getText();
         String description = descriptionField.getText();
-        Category newCategory = new Category(id, name, description, true);
         if (validateInputs(name, description)) {
-            if (categoryService.update(newCategory)) {
-                updateCategoryInformation(name, description);
+            if (categoryService.update(id, name, description)) {
                 AlertUtils.showAlert("Success", "Category updated successfully.", Alert.AlertType.INFORMATION);
                 clearInputs();
-            }
-            else {
+            } else {
                 AlertUtils.showAlert("Error", "Category update failed.", Alert.AlertType.ERROR);
             }
             var category = categoryService.getCategoryById(id);
@@ -85,4 +76,3 @@ public class UpdateCategoryController {
         descriptionField.setText("");
     }
 }
-

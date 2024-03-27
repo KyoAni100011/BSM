@@ -1,5 +1,8 @@
-package com.bsm.bsm.publisher;
+package com.bsm.bsm.employee.bookPublishers;
 
+import com.bsm.bsm.category.Category;
+import com.bsm.bsm.publisher.Publisher;
+import com.bsm.bsm.publisher.PublisherService;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.ValidationUtils;
 import javafx.event.ActionEvent;
@@ -16,7 +19,8 @@ public class AddPublisherController {
     @FXML
     private TextField fullNameField,addressTextField;
 
-    private AddPublisherService addPublisherService = new AddPublisherService();
+    private final PublisherService publisherService = new PublisherService();
+
     @FXML
     public void initialize() {
     }
@@ -27,10 +31,12 @@ public class AddPublisherController {
         String address = addressTextField.getText();
 
         if (validateInputs(fullName,address)) {
-            if (addPublisherService.checkPublisherExists(fullName)) {
+            if (publisherService.checkPublisherExists(fullName)) {
                 fullNameErrorLabel.setText("Publisher already exists.");
             } else {
-                if (addPublisherService.addPublisher(fullName, address)) {
+                Publisher newPublisher = new Publisher(fullName, address);
+
+                if (publisherService.add(newPublisher)) {
                     AlertUtils.showAlert("Success", "Add publisher successfully.", Alert.AlertType.INFORMATION);
                     clearInputs();
                 } else {

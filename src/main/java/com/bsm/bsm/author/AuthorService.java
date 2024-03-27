@@ -29,8 +29,9 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
     }
 
     @Override
-    public void add(Author item) {
+    public boolean add(Author item) {
         // Implement add logic
+        return true;
     }
 
     @Override

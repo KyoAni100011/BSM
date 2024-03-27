@@ -23,5 +23,6 @@ module com.bsm.bsm {
     opens com.bsm.bsm.employee.bookCategories to javafx.fxml;
     opens com.bsm.bsm.employee.bookAuthors to javafx.fxml;
     exports com.bsm.bsm;
+    opens com.bsm.bsm.employee.bookPublishers to javafx.fxml;
 
 }

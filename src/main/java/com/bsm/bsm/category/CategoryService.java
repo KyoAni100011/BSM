@@ -4,16 +4,15 @@ import com.bsm.bsm.commonInterface.*;
 
 import java.util.List;
 
-public class CategoryService implements Activable, Searchable<Category>, Sortable<Category>, Updatable<Category>, Addable<Category> {
+public class CategoryService implements Activable, Searchable<Category>, Sortable<Category>, Addable<Category> {
     private CategoryDAO categoryDAO = null;
 
     public CategoryService() {
         this.categoryDAO = new CategoryDAO();
     }
 
-//    @Override
-    public boolean update(Category item) {
-        return categoryDAO.update(item);
+    public boolean update(String id, String name, String description) {
+        return categoryDAO.updateCategory(id, name, description);
     }
 
     @Override
@@ -29,8 +28,9 @@ public class CategoryService implements Activable, Searchable<Category>, Sortabl
     }
 
     @Override
-    public void add(Category item) {
+    public boolean add(Category item) {
         // Implement add logic
+        return true;
     }
 
     @Override

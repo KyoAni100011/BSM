@@ -43,7 +43,6 @@ public class ValidationUtils {
        return description.isEmpty() ? "Please enter " + field + " description" : null;
     }
 
-
     public static String validateDOB(String dob, String field) {
         String dobRegex = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\\d{4}$";
         if (dob.isEmpty()) {
@@ -107,12 +106,5 @@ public class ValidationUtils {
             return null;
         }
 
-    }
-
-    public static String validateDescription(String description, String field) {
-        if (description == null || description.isEmpty()) {
-            return "Please enter " + field + " description.";
-        }
-        return null;
     }
 }
