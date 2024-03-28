@@ -1,7 +1,7 @@
-package com.bsm.bsm.publisher;
+package com.bsm.bsm.employee.bookPublishers;
 
 import com.bsm.bsm.publisher.Publisher;
-import com.bsm.bsm.publisher.UpdatePublisherService;
+import com.bsm.bsm.publisher.PublisherService;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.ValidationUtils;
 import javafx.event.ActionEvent;
@@ -17,29 +17,49 @@ public class UpdatePublisherController {
     Label fullNameErrorLabel, addressErrorLabel;
     @FXML
     TextField fullNameField, addressTextField;
-    private final UpdatePublisherService updatePublisherService = new UpdatePublisherService();
+    private final PublisherService publisherService = new PublisherService();
 
+    //set temp id
+    String id = "44441111";
+
+    public static void handleTableItemSelection(String name) {
+        name = name;
+    }
     @FXML
     void initialize() {
-        Publisher publisher = updatePublisherService.getPublisher("44441111");
+        Publisher publisher = publisherService.getPublisher(id);
         setPublisherInfo(publisher);
     }
     private void setPublisherInfo(Publisher publisher) {
         fullNameField.setText(publisher.getName());
         addressTextField.setText(publisher.getAddress());
     }
+
     @FXML
     private void handleSaveChanges(ActionEvent event) throws ParseException {
-        String id = "44441111";
         clearErrorMessages();
         String fullName = fullNameField.getText();
         String address = addressTextField.getText();
         if (validateInputs(fullName,address)) {
-            updatePublisherService.updatePublisher(id, fullName, address);
-            AlertUtils.showAlert("Success", "Publisher updated successfully.", Alert.AlertType.INFORMATION);
-            clearInputs();
-            var publisher = updatePublisherService.getPublisher(fullName);
-            setPublisherInfo(publisher);
+            // check if publisher is disabled
+            boolean isEnabled = publisherService.isEnabled(id);
+            if (!isEnabled) {
+                AlertUtils.showAlert("Error", "Publisher is disabled. Please enable it first.", Alert.AlertType.ERROR);
+                return;
+            }
+
+            //check if publisher already exists
+            if (publisherService.checkPublisherExists(fullName)) {
+                fullNameErrorLabel.setText("Publisher already exists.");
+                return;
+            }
+
+            Publisher newPublisher = new Publisher(id, fullName, address, isEnabled);
+            if (publisherService.update(newPublisher)) {
+                AlertUtils.showAlert("Success", "Publisher updated successfully.", Alert.AlertType.INFORMATION);
+            } else {
+                AlertUtils.showAlert("Error", "Publisher update failed.", Alert.AlertType.ERROR);
+            }
         }
     }
 
@@ -62,6 +82,7 @@ public class UpdatePublisherController {
         fullNameErrorLabel.setText("");
         addressErrorLabel.setText("");
     }
+
     private void clearInputs() {
         fullNameField.clear();
         addressTextField.clear();

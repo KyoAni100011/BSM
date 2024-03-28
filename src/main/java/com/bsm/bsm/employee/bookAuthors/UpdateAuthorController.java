@@ -45,8 +45,9 @@ public class UpdateAuthorController {
         String oldName = "Nguyen Nhat Anh";
         String fullName = fullNameField.getText();
         String introduction = introductionTextField.getText();
+        Author currAuthor = new Author(oldName, fullName, introduction, true);
         if (validateInputs(fullName, introduction)) {
-            authorService.updateAuthor(oldName, fullName, introduction);
+            authorService.updateAuthor(currAuthor);
             AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
             clearInputs();
             var author = authorService.getAuthor(fullName);

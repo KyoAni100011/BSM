@@ -1,8 +1,10 @@
-package com.bsm.bsm.employee.bookAuthors;
+package com.bsm.bsm.employee.bookPublishers;
 
 
 import com.bsm.bsm.author.Author;
-import com.bsm.bsm.author.AuthorService;
+import com.bsm.bsm.employee.bookAuthors.AuthorController;
+import com.bsm.bsm.publisher.Publisher;
+import com.bsm.bsm.publisher.PublisherService;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
 import javafx.event.ActionEvent;
@@ -16,7 +18,7 @@ import java.io.IOException;
 
 
 public class TableItemController {
-    private final AuthorService authorService = new AuthorService();
+    private final PublisherService publisherService = new PublisherService();
 
     @FXML
     private Label introductionlLabel;
@@ -54,7 +56,7 @@ public class TableItemController {
             if (response == ButtonType.OK) {
                 if (isEnabledButton.getText().equals("Enable")) {
                     // test active author
-                    if (!authorService.setEnable(true)) {
+                    if (!publisherService.setEnable(true)) {
                         AlertUtils.showAlert("Error", "Failed to disable user", Alert.AlertType.ERROR);
                         return;
                     }
@@ -66,7 +68,7 @@ public class TableItemController {
 
                 } else {
                     // test active author
-                    if (!authorService.setEnable(true)) {
+                    if (!publisherService.setEnable(true)) {
                         AlertUtils.showAlert("Error", "Failed to enable user", Alert.AlertType.ERROR);
                         return;
                     }
@@ -82,14 +84,14 @@ public class TableItemController {
 
     @FXML
     void handleRadioButtonClick(ActionEvent event) {
-        AuthorController.handleTableItemSelection(name);
+        BookPublisher.handleTableItemSelection(name);
     }
 
     @FXML
     void handleTableItemDoubleClick(MouseEvent event) throws IOException {
         if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
             if (name != null) {
-                AuthorController.handleTableItemSelection(name);
+                BookPublisher.handleTableItemSelection(name);
                 FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/userDetail");
             } else {
                 AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
@@ -98,13 +100,13 @@ public class TableItemController {
         }
     }
 
-    public void setAuthorModel(Author author) {
-        idLabel.setText(author.getId());
-        nameLabel.setText(author.getName());
-        introductionlLabel.setText(author.getIntroduction());
+    public void setPublisherModel(Publisher publisher) {
+        idLabel.setText(publisher.getId());
+        nameLabel.setText(publisher.getName());
+        introductionlLabel.setText(publisher.getAddress());
 
-        isEnabledButton.setText(author.isEnabled() ? "Enable" : "Disable");
-        if(author.isEnabled()){
+        isEnabledButton.setText(publisher.isEnabled() ? "Enable" : "Disable");
+        if(publisher.isEnabled()){
             isEnabledButton.getStyleClass().add("enable-button");
         }else {
             isEnabledButton.getStyleClass().add("disable-button");

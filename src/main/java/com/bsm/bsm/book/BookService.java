@@ -27,8 +27,8 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
     }
 
     @Override
-    public void add(Book item) {
-
+    public boolean add(Book item) {
+        return true;
     }
 
     @Override

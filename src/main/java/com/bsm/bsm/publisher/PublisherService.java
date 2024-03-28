@@ -4,15 +4,23 @@ import com.bsm.bsm.commonInterface.*;
 import java.util.List;
 
 public class PublisherService implements Activable, Searchable<Publisher>, Sortable<Publisher>, Updatable<Publisher>, Addable<Publisher> {
-    private PublisherDAO publisherDAO = null;
+    private final PublisherDAO publisherDAO;
 
     public PublisherService() {
         this.publisherDAO = new PublisherDAO();
     }
 
+    public Publisher getPublisher(String id) {
+        return publisherDAO.getPublisher(id);
+    }
+
+    public boolean isEnabled(String id) {
+        return getPublisher(id).isEnabled();
+    }
+
     @Override
     public boolean update(Publisher item) {
-        return publisherDAO.update(item);
+        return publisherDAO.updatePublisher(item.getId(), item.getName(), item.getAddress());
     }
 
     @Override
@@ -28,8 +36,12 @@ public class PublisherService implements Activable, Searchable<Publisher>, Sorta
     }
 
     @Override
-    public void add(Publisher item) {
-        // Implement add logic
+    public boolean add(Publisher item) {
+        return publisherDAO.addPublisher(item.getName(), item.getAddress());
+    }
+
+    public boolean checkPublisherExists(String name) {
+        return publisherDAO.checkPublisherExists(name);
     }
 
     @Override
@@ -37,4 +49,5 @@ public class PublisherService implements Activable, Searchable<Publisher>, Sorta
 
         return state;
     }
+
 }

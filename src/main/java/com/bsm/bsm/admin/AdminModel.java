@@ -27,8 +27,9 @@ public class AdminModel extends UserModel implements Searchable<UserModel>, Adda
     }
 
     @Override
-    public void add(UserModel item) {
+    public boolean add(UserModel item) {
         users.add(item);
+        return true;
     }
 
     @Override

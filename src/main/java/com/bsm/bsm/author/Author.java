@@ -17,6 +17,10 @@ public class Author {
         this.isEnabled = isEnabled;
     }
 
+    public Author(String name, String introduction) {
+        this("", name, introduction, true);
+    }
+
     public String getId() {
         return id;
     }

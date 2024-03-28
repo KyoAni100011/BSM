@@ -15,6 +15,14 @@ public class CategoryService implements Activable, Searchable<Category>, Sortabl
         return categoryDAO.updateCategory(id, name, description);
     }
 
+    public Category getCategory(String id) {
+        return categoryDAO.getCategoryById(id);
+    }
+
+    public boolean isEnabled(String id) {
+        return getCategory(id).isEnabled();
+    }
+
     @Override
     public List<Category> sort(List<Category> categories, boolean isAscending, String column) {
         // Implement sorting logic
@@ -28,8 +36,9 @@ public class CategoryService implements Activable, Searchable<Category>, Sortabl
     }
 
     @Override
-    public void add(Category item) {
+    public boolean add(Category item) {
         // Implement add logic
+        return true;
     }
 
     @Override
@@ -40,5 +49,13 @@ public class CategoryService implements Activable, Searchable<Category>, Sortabl
 
     public Category getCategoryById(String id) {
         return categoryDAO.getCategoryById(id);
+    }
+
+    public boolean checkCategoryExists(String name) {
+        return categoryDAO.checkCategoryExists(name);
+    }
+
+    public boolean addCategory(String name, String description) {
+        return categoryDAO.addCategory(name, description);
     }
 }

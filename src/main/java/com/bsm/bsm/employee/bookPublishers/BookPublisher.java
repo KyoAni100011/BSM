@@ -1,9 +1,11 @@
-package com.bsm.bsm.publisher;
+package com.bsm.bsm.employee.bookPublishers;
 
-import com.bsm.bsm.author.Author;
-import com.bsm.bsm.author.AuthorService;
-import com.bsm.bsm.employee.bookAuthors.TableItemController;
-import com.bsm.bsm.employee.bookAuthors.UpdateAuthorController;
+import com.bsm.bsm.employee.EmployeeModel;
+import com.bsm.bsm.employee.bookPublishers.TableItemController;
+import com.bsm.bsm.employee.bookPublishers.UpdatePublisherController;
+import com.bsm.bsm.publisher.Publisher;
+import com.bsm.bsm.publisher.PublisherService;
+import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
 import javafx.beans.value.ChangeListener;
@@ -29,7 +31,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class bookPublisher implements Initializable {
+public class BookPublisher implements Initializable {
+    private EmployeeModel employeeInfo = (EmployeeModel) UserSingleton.getInstance().getUser();
+
+    private static String name;
 
     @FXML
     private Button actionLabel;
@@ -88,7 +93,7 @@ public class bookPublisher implements Initializable {
     @FXML
     private Button updatePublisherButton;
 
-    private List<Author> authors = null;
+    private List<Publisher> publishers = null;
 
     private final int itemsPerPage = 9;
     private String sortOrder = "ASC";
@@ -99,7 +104,7 @@ public class bookPublisher implements Initializable {
 
     private final ToggleGroup toggleGroup = new ToggleGroup();
 
-    private AuthorService authorService = new AuthorService();
+    private PublisherService publisherService = new PublisherService();
 
 
     @Override
@@ -112,7 +117,7 @@ public class bookPublisher implements Initializable {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 inputSearchText = newValue;
-                authors = null; // Add backend
+                publishers = null; // Add backend
                 try {
                     updateUsersList();
                 } catch (IOException e) {
@@ -123,8 +128,8 @@ public class bookPublisher implements Initializable {
     }
 
     private void loadAllAuthors() {
-        authors = null;
-        employeeInfo.setAuthors(authors);
+        publishers = null;
+        employeeInfo.setPublishers(publishers);
     }
 
     private void initializeButtonsAndLabels() {
@@ -136,8 +141,8 @@ public class bookPublisher implements Initializable {
         nameSortLabel.setContent("");
         actionSortLabel.setContent("");
 
-        addAuthorButton.setOnAction(this::handleAddAuthorButton);
-        updateAuthorButton.setOnAction(this::handleUpdateAuthorButton);
+        addPublisherButton.setOnAction(this::handleAddPublisherButton);
+        updatePublisherButton.setOnAction(this::handleUpdatePublisherButton);
     }
 
     private void initializePaginationButtons() {
@@ -151,10 +156,10 @@ public class bookPublisher implements Initializable {
     }
 
     @FXML
-    void handleAddAuthorButton(ActionEvent event) {
+    void handleAddPublisherButton(ActionEvent event) {
         try {
-            FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/addAuthor");
-            authors = null; // Add backend
+            FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookPublishers/addPublisher");
+            publishers = null; // Add backend
             updateUsersList();
         } catch (IOException e) {
             e.printStackTrace();
@@ -163,10 +168,10 @@ public class bookPublisher implements Initializable {
     }
 
     @FXML
-    void handleUpdateAuthorButton(ActionEvent event) {
+    void handleUpdatePublisherButton(ActionEvent event) {
         try {
             if (name != null) {
-                UpdateAuthorController.handleTableItemSelection(name);
+                UpdatePublisherController.handleTableItemSelection(name);
                 FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/updateAuthor");
             } else {
                 AlertUtils.showAlert("Error", "Can't find author", Alert.AlertType.ERROR);
@@ -183,23 +188,23 @@ public class bookPublisher implements Initializable {
     private void updateUsersList() throws IOException {
         pnItems.getChildren().clear();
         int startIndex = (currentPage - 1) * itemsPerPage;
-        int endIndex = Math.min(startIndex + itemsPerPage, authors.size());
+        int endIndex = Math.min(startIndex + itemsPerPage, publishers.size());
 
         for (int i = startIndex; i < endIndex; i++) {
-            Author author = authors.get(i);
+            Publisher publisher = publishers.get(i);
 
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/bookAuthors/tableItem.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/bookPublishers/tableItem.fxml"));
                 Node item = fxmlLoader.load();
                 TableItemController tableItemController = fxmlLoader.getController();
                 tableItemController.setToggleGroup(toggleGroup);
-                tableItemController.setAuthorModel(author);
+                tableItemController.setPublisherModel(publisher);
                 pnItems.getChildren().add(item);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        int totalPages = (int) Math.ceil((double) authors.size() / itemsPerPage);
+        int totalPages = (int) Math.ceil((double) publishers.size() / itemsPerPage);
         updatePaginationButtons(totalPages);
     }
     private void updatePaginationButtons(int totalPages) {
@@ -277,12 +282,11 @@ public class bookPublisher implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        authors = null; // Add backend
+        publishers = null; // Add backend
         try {
             updateUsersList();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-}
 }
