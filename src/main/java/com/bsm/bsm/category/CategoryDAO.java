@@ -21,10 +21,9 @@ public class CategoryDAO {
         return category.get();
     }
 
-    public boolean update(Category category) {
+    public boolean updateCategory(String id, String newName, String description) {
         String QUERY_CATEGORY = "update category set name = ?, description = ? where id = ?";
-        int rowsAffected = DatabaseConnection.executeUpdate(QUERY_CATEGORY, category.getName(), category.getDescription(), category.getId());
-        System.out.println("Rows affected: " + rowsAffected);
+        int rowsAffected = DatabaseConnection.executeUpdate(QUERY_CATEGORY, newName, description, id);
         return rowsAffected > 0;
     }
 
