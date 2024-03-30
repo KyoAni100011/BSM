@@ -27,11 +27,6 @@ public class UpdateAuthorController {
     String id = "33331111"; //set temp id, need to get id from table view
 
     private final AuthorService authorService = new AuthorService();
-    @FXML
-    private Label fullNameErrorLabel, introductionErrorLabel;
-    @FXML
-    private TextField fullNameField, introductionTextField;
-
     public static void handleTableItemSelection(String name) {
         name = name;
     }

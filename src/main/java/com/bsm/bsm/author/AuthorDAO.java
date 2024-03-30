@@ -4,6 +4,8 @@ import com.bsm.bsm.database.DatabaseConnection;
 
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -58,5 +60,24 @@ public class AuthorDAO {
         }, id);
 
         return author.get();
+    }
+
+    public List<Author> getAllAuthors() {
+        String QUERY_ALL_AUTHORS = "select * from author";
+        List<Author> authors = new ArrayList<>();
+
+        DatabaseConnection.executeQuery(QUERY_ALL_AUTHORS, resultSet -> {
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    String id = resultSet.getString("id");
+                    String name = resultSet.getString("name");
+                    String introduction = resultSet.getString("introduction");
+                    boolean isEnabled = resultSet.getBoolean("isEnabled");
+                    authors.add(new Author(id, name, introduction, isEnabled));
+                }
+            }
+        });
+
+        return authors;
     }
 }
