@@ -1,6 +1,5 @@
 package com.bsm.bsm.employee.bookAuthors;
 
-import com.bsm.bsm.admin.userAccount.UpdateUserController;
 import com.bsm.bsm.author.Author;
 import com.bsm.bsm.author.AuthorService;
 import com.bsm.bsm.employee.EmployeeModel;
@@ -31,78 +30,35 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class AuthorController implements Initializable {
-    private EmployeeModel employeeInfo = (EmployeeModel) UserSingleton.getInstance().getUser();
-    private static String name;
-
-    @FXML
-    private Button actionLabel;
-
-    @FXML
-    private SVGPath actionSortLabel;
-
-    @FXML
-    private Button addAuthorButton;
-
-    @FXML
-    private Button fifthPaginationButton;
-
-    @FXML
-    private Button firstPaginationButton;
-
-    @FXML
-    private Button fourthPaginationButton;
-
-    @FXML
-    private Button idLabel;
-
-    @FXML
-    private SVGPath idSortLabel;
-
+    private static String id;
+    private final ToggleGroup toggleGroup = new ToggleGroup();
+//    private final EmployeeModel employeeInfo = (EmployeeModel) UserSingleton.getInstance().getUser();
+    private final AuthorService authorService = new AuthorService();
     @FXML
     private TextField inputSearch;
-
-    @FXML
-    private Button introductionLabel;
-
-    @FXML
-    private Button nameLabel;
-
-    @FXML
-    private SVGPath nameSortLabel;
-
-    @FXML
-    private Button nextPaginationButton;
-
     @FXML
     private VBox pnItems;
-
-    @FXML
-    private Button previousPaginationButton;
-
-    @FXML
-    private Button secondPaginationButton;
-
     @FXML
     private AnchorPane tableToolbar;
-
     @FXML
-    private Button thirdPaginationButton;
-
+    private Button addAuthorButton, updateAuthorButton;
     @FXML
-    private Button updateAuthorButton;
+    public Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
+    @FXML
+    public Button idLabel, nameLabel, introductionLabel, actionLabel;
+    @FXML
+    private SVGPath  idSortLabel, nameSortLabel, introductionSortLabel ,actionSortLabel;
 
     private List<Author> authors = null;
-
-    private final int itemsPerPage = 9;
     private String sortOrder = "ASC";
     private String column = "id";
     private String role;
     private int currentPage = 1;
     private String inputSearchText = "";
 
-    private final ToggleGroup toggleGroup = new ToggleGroup();
-
-    private AuthorService authorService = new AuthorService();
+    static void handleTableItemSelection(String userId) {
+        id = userId; // Store the selected user
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -114,9 +70,9 @@ public class AuthorController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 inputSearchText = newValue;
-                authors = null; // Add backend
+                authors = null; // add backend
                 try {
-                    updateUsersList();
+                    updateAuthorsList();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -126,16 +82,19 @@ public class AuthorController implements Initializable {
 
     private void loadAllAuthors() {
         authors = null;
-        employeeInfo.setAuthors(authors);
+        // add backend
+//        employeeInfo.setAuthors(authors);
     }
 
     private void initializeButtonsAndLabels() {
         idLabel.setOnMouseClicked(this::handleLabelClick);
         nameLabel.setOnMouseClicked(this::handleLabelClick);
+        introductionLabel.setOnMouseClicked(this::handleLabelClick);
         actionLabel.setOnMouseClicked(this::handleLabelClick);
 
         idSortLabel.setContent("");
         nameSortLabel.setContent("");
+        introductionSortLabel.setContent("");
         actionSortLabel.setContent("");
 
         addAuthorButton.setOnAction(this::handleAddAuthorButton);
@@ -155,11 +114,17 @@ public class AuthorController implements Initializable {
     @FXML
     void handleAddAuthorButton(ActionEvent event) {
         try {
-            FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/addAuthor");
-            authors = null; // Add backend
-            updateUsersList();
+            if (id != null) {
+//              AddAuthorController.handleTableItemSelection(userId); // add backend
+                FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/addAuthor");
+            }
+            else {
+                AlertUtils.showAlert("Error", "Can't find author", Alert.AlertType.ERROR);
+            }
+
+            authors = null; // add backend
+            updateAuthorsList();
         } catch (IOException e) {
-            e.printStackTrace();
             AlertUtils.showAlert("Error", "Error loading addUser FXML", Alert.AlertType.ERROR);
         }
     }
@@ -167,43 +132,31 @@ public class AuthorController implements Initializable {
     @FXML
     void handleUpdateAuthorButton(ActionEvent event) {
         try {
-            if (name != null) {
-                UpdateAuthorController.handleTableItemSelection(name);
+            if (id != null) {
+                UpdateAuthorController.handleTableItemSelection(id);
                 FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/updateAuthor");
             } else {
                 AlertUtils.showAlert("Error", "Can't find author", Alert.AlertType.ERROR);
             }
         } catch (IOException e) {
-            e.printStackTrace();
             AlertUtils.showAlert("Error", "Error loading updateAuthor FXML", Alert.AlertType.ERROR);
         }
     }
 
-    static void handleTableItemSelection(String authorName) {
-        name = authorName; // Store the selected user
-    }
-    private void updateUsersList() throws IOException {
-        pnItems.getChildren().clear();
-        int startIndex = (currentPage - 1) * itemsPerPage;
-        int endIndex = Math.min(startIndex + itemsPerPage, authors.size());
-
-        for (int i = startIndex; i < endIndex; i++) {
-            Author author = authors.get(i);
-
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/bookAuthors/tableItem.fxml"));
-                    Node item = fxmlLoader.load();
-                    TableItemController tableItemController = fxmlLoader.getController();
-                    tableItemController.setToggleGroup(toggleGroup);
-                    tableItemController.setAuthorModel(author);
-                    pnItems.getChildren().add(item);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+    @FXML
+    private void handlePaginationButton(ActionEvent event) {
+        Button buttonClicked = (Button) event.getSource();
+        if (buttonClicked == previousPaginationButton) {
+            currentPage--;
+        } else if (buttonClicked == nextPaginationButton) {
+            currentPage++;
+        } else {
+            currentPage = Integer.parseInt(buttonClicked.getText());
         }
-        int totalPages = (int) Math.ceil((double) authors.size() / itemsPerPage);
-        updatePaginationButtons(totalPages);
+
+//      updateAuthorsList(); // add backend
     }
+
     private void updatePaginationButtons(int totalPages) {
         // Clear all pagination buttons visibility
         List<Button> paginationButtons = Arrays.asList(firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton);
@@ -226,7 +179,7 @@ public class AuthorController implements Initializable {
                 int buttonIndex = i - startPage;
                 if (totalPages > 5 && startPage < 6) {
                     button = paginationButtons.get(buttonIndex);
-                } else if (totalPages > 5 && startPage >= 6) {
+                } else if (totalPages > 5) {
                     button = paginationButtons.get(buttonIndex + 1);
                 } else {
                     button = paginationButtons.get(buttonIndex);
@@ -250,17 +203,33 @@ public class AuthorController implements Initializable {
             nextPaginationButton.setDisable(true);
         }
     }
-    @FXML
-    private void handlePaginationButton(ActionEvent event) {
-        Button buttonClicked = (Button) event.getSource();
-        if (buttonClicked == previousPaginationButton) {
-            currentPage--;
-        } else if (buttonClicked == nextPaginationButton) {
-            currentPage++;
-        } else {
-            currentPage = Integer.parseInt(buttonClicked.getText());
+
+    // fix this
+    private void updateAuthorsList() throws IOException {
+        pnItems.getChildren().clear();
+        int itemsPerPage = 9;
+        int startIndex = (currentPage - 1) * itemsPerPage;
+        int endIndex = Math.min(startIndex + itemsPerPage, authors.size());
+        System.out.println("authors.size() = " + authors.size());
+
+        for (int i = startIndex; i < endIndex; i++) {
+            Author author = authors.get(i);
+
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/bookAuthors/tableItem.fxml"));
+                    Node item = fxmlLoader.load();
+                    TableItemController tableItemController = fxmlLoader.getController();
+                    tableItemController.setToggleGroup(toggleGroup);
+                    tableItemController.setAuthorModel(author);
+                    pnItems.getChildren().add(item);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
         }
+        int totalPages = (int) Math.ceil((double) authors.size() / itemsPerPage);
+        updatePaginationButtons(totalPages);
     }
+
     @FXML
     private void handleLabelClick(MouseEvent event){
         Button clickedLabel = (Button) event.getSource();
@@ -275,13 +244,13 @@ public class AuthorController implements Initializable {
         nameSortLabel.setContent(column.equals("Name") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
         actionSortLabel.setContent(column.equals("Action") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
         try {
-            updateUsersList();
+            updateAuthorsList();
         } catch (IOException e) {
             e.printStackTrace();
         }
         authors = null; // Add backend
         try {
-            updateUsersList();
+            updateAuthorsList();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

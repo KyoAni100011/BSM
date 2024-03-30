@@ -45,6 +45,7 @@ public class TableItemController {
             UserAccountController.handleTableItemSelection(email);
         }
     }
+
     @FXML
     private void handleToggleSwitchClick() {
         isOn.setUserId(idLabel.getText()); // Pass the idLabel data to ToggleSwitch

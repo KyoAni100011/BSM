@@ -220,14 +220,16 @@
 }
 
 .chart-plot-background {
-    -fx-background-color: white;
+    -fx-background-color: red;
+    -fx-pref-width: 700px;
+    -fx-pref-height: 460px;
 }
 
 .chartActionButton {
   -fx-background-color: transparent;
   -fx-font-family: "Roboto Bold";
   -fx-border-width: 0px 0px 2px 0px;
-  -fx-font-size: 16px;
+  -fx-font-size: 14px;
 }
 
 .chartActionButton-admin-selected {
@@ -236,7 +238,7 @@
 }
 
 .axis-label {
-    -fx-font-size: 16px;
+    -fx-font-size: 14px;
     -fx-font-family: "Roboto Bold";
 }
 

@@ -27,6 +27,10 @@ public class UpdateAuthorController {
     String id = "33331111"; //set temp id, need to get id from table view
 
     private final AuthorService authorService = new AuthorService();
+    @FXML
+    private Label fullNameErrorLabel, introductionErrorLabel;
+    @FXML
+    private TextField fullNameField, introductionTextField;
 
     public static void handleTableItemSelection(String name) {
         name = name;
@@ -73,9 +77,10 @@ public class UpdateAuthorController {
             }
         }
     }
-    private boolean validateInputs(String fullName, String introduction ) {
-        String fullNameError = ValidationUtils.validateFullName(fullName,"author");
-        String introductionError = ValidationUtils.validateIntroduction(introduction,"author");
+
+    private boolean validateInputs(String fullName, String introduction) {
+        String fullNameError = ValidationUtils.validateFullName(fullName, "author");
+        String introductionError = ValidationUtils.validateIntroduction(introduction, "author");
 
         if (fullNameError != null) {
             fullNameErrorLabel.setText(fullNameError);

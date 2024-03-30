@@ -17,9 +17,8 @@ import java.io.IOException;
 
 public class TableItemController {
     private final AuthorService authorService = new AuthorService();
+    public Label introductionLabel;
 
-    @FXML
-    private Label introductionlLabel;
 
     @FXML
     private Label idLabel;
@@ -101,7 +100,7 @@ public class TableItemController {
     public void setAuthorModel(Author author) {
         idLabel.setText(author.getId());
         nameLabel.setText(author.getName());
-        introductionlLabel.setText(author.getIntroduction());
+        introductionLabel.setText(author.getIntroduction());
 
         isEnabledButton.setText(author.isEnabled() ? "Enable" : "Disable");
         if(author.isEnabled()){
