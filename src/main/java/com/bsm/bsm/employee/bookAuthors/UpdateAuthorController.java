@@ -50,11 +50,8 @@ public class UpdateAuthorController {
 
         String fullName = fullNameField.getText();
         String introduction = introductionTextField.getText();
-        System.out.println("out");
 
         if (validateInputs(fullName,introduction)) {
-            System.out.println("get it");
-
             //check if author is enabled
             boolean isEnabled = authorService.isEnabled(id);
             if (!isEnabled) {
@@ -62,11 +59,11 @@ public class UpdateAuthorController {
                 return;
             }
 
-            //check if author already exists
-//            if (authorService.checkAuthorExists(fullName)) {
-//                fullNameErrorLabel.setText("Author already exists.");
-//                return;
-//            }
+//            check if author already exists
+            if (authorService.checkAuthorExists(fullName, id)) {
+                fullNameErrorLabel.setText("Author already exists.");
+                return;
+            }
 
             Author newAuthor = new Author(id, fullName, introduction, isEnabled);
             if (authorService.updateAuthor(newAuthor)) {

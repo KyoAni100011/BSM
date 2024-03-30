@@ -32,14 +32,14 @@ public class CategoryDAO {
         return null;
     }
 
-    public boolean checkCategoryExists(String name) {
+    public boolean checkCategoryExists(String name, String id) {
         AtomicBoolean hasExisted = new AtomicBoolean(false);
-        String QUERY_CHECK_CATEGORY = "select 1 from category where name = ?";
+        String QUERY_CHECK_CATEGORY = "select 1 from category where name = ? and id != ?";
         DatabaseConnection.executeQuery(QUERY_CHECK_CATEGORY, resultSet -> {
             if (resultSet != null && resultSet.next()) {
                 hasExisted.set(true);
             }
-        }, name);
+        }, name, id);
         return hasExisted.get();
     }
 

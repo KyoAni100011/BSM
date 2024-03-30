@@ -2,6 +2,8 @@ package com.bsm.bsm.author;
 
 import com.bsm.bsm.database.DatabaseConnection;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -17,15 +19,15 @@ public class AuthorDAO {
         return null;
     }
 
-    public boolean checkAuthorExists(String name) {
-        String QUERY_AUTHOR = "select 1 from author where name = ?";
+    public boolean checkAuthorExists(String name, String id) {
+        String QUERY_AUTHOR = "select 1 from author where name = ? and id != ?";
         AtomicBoolean hasExisted = new AtomicBoolean(false);
 
         DatabaseConnection.executeQuery(QUERY_AUTHOR, resultSet -> {
             if (resultSet != null && resultSet.next()) {
                 hasExisted.set(true);
             }
-        }, name);
+        }, name, id);
 
         return hasExisted.get();
     }
@@ -40,6 +42,7 @@ public class AuthorDAO {
         String QUERY_AUTHOR = "update author set name = ?, introduction = ? where id = ?";
         int rowsAffected = DatabaseConnection.executeUpdate(QUERY_AUTHOR, newName, introduction, id);
         return rowsAffected > 0;
+
     }
 
     public Author getAuthorById(String id) {

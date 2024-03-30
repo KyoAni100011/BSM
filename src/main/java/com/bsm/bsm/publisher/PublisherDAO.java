@@ -38,15 +38,15 @@ public class PublisherDAO {
         return null;
     }
 
-    public boolean checkPublisherExists(String name) {
+    public boolean checkPublisherExists(String name, String id) {
         AtomicBoolean hasExisted = new AtomicBoolean(false);
-        String QUERY_PUBLISHER = "select 1 from publisher where name = ?";
+        String QUERY_PUBLISHER = "select 1 from publisher where name = ? and id != ?";
 
         DatabaseConnection.executeQuery(QUERY_PUBLISHER, resultSet -> {
             if (resultSet != null && resultSet.next()) {
                 hasExisted.set(true);
             }
-        }, name);
+        }, name, id);
         return hasExisted.get();
     }
 }

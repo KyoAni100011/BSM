@@ -38,8 +38,14 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
         return state;
     }
 
+    // use this to check case update author
+    public boolean checkAuthorExists (String name, String id) {
+        return authorDAO.checkAuthorExists(name, id);
+    }
+
+    //use this to check case add new author
     public boolean checkAuthorExists (String name) {
-        return authorDAO.checkAuthorExists(name);
+        return checkAuthorExists(name, "");
     }
 
     public boolean updateAuthor(Author author) {
