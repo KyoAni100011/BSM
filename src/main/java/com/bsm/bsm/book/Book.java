@@ -7,7 +7,6 @@ public class Book {
     private String isbn;
     private String title;
     private String publisherId;
-    private String authorId;
     private Date publishingDate;
     private String languages;
     private boolean isEnabled;
@@ -18,7 +17,6 @@ public class Book {
         this.isbn = isbn;
         this.title = title;
         this.publisherId = publisherId;
-        this.authorId = authorId;
         this.publishingDate = publishingDate;
         this.languages = languages;
         this.isEnabled = isEnabled;
@@ -48,14 +46,6 @@ public class Book {
 
     public void setPublisherId(String publisherId) {
         this.publisherId = publisherId;
-    }
-
-    public String getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(String authorId) {
-        this.authorId = authorId;
     }
 
     public Date getPublishingDate() {
@@ -104,7 +94,6 @@ public class Book {
                 "isbn='" + isbn + '\'' +
                 ", title='" + title + '\'' +
                 ", publisherId='" + publisherId + '\'' +
-                ", authorId='" + authorId + '\'' +
                 ", publishingDate=" + publishingDate +
                 ", languages='" + languages + '\'' +
                 ", isEnabled=" + isEnabled +
