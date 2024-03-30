@@ -251,6 +251,7 @@ public class UserAccountController implements Initializable {
                     tableItemController.setToggleGroup(toggleGroup);
                     tableItemController.setUserModel(user);
                     pnItems.getChildren().add(item);
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

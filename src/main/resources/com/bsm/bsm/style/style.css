@@ -243,3 +243,20 @@
     -fx-margin: 10px;
     -fx-font-family: "Roboto Bold";
 }
+.toggle-button {
+    -fx-min-width: 20px;
+    -fx-min-height: 20px;
+    -fx-max-width: 20px;
+    -fx-max-height: 20px;
+}
+
+.toggle-button:selected {
+    -fx-background-color: #914D2A !important;
+    -fx-border-color: #914D2A !important;
+    -fx-background-image: url("../images/tick.png"); /* Replace "white_tick_icon.png" with the path to your tick icon */
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 70% 70%; /* Adjust the size of the icon */
+}
+
+

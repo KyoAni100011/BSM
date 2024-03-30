@@ -1,4 +1,4 @@
--- drop database if exists book_store_db;
+ drop database if exists book_store_db;
 create database book_store_db;
 use book_store_db;
 
