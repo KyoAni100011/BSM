@@ -7,7 +7,10 @@ insert user (id, name, email, password, dob, telephone) values ('11110001', 'Min
 ', '2003-11-11', '0101012346'); -- password: 11112003
 insert user (id, name, email, password, dob, telephone) values ('22220001', 'Bao Khanh', 'khanh.employee@bms.com', '$2a$12$bHxUp74tZNStRJCAi0PyE.5/NpP5Ay0z.UozP8Me2V/LgToy8B1DW', '2003-09-12', '0101012347'); -- password: 12092003
 insert user (id, name, email, password, dob, telephone) values ('22220002', 'Minh Triet', 'triet.employee@bms.com', '$2a$12$ZiOQq1mZ5kRkPHjYXoBpNO.Xmw4jnykkEpKD/2qtP51DiYQM2fxpC', '2003-10-10', '0101012348'); -- password: 10102003
-select * from user;
+select * from book;
+
+update author set name ='Nguyen Nhat Anh' where name ='Nguyen Ngoc Tu';
+
 
 -- insert data for table admin
 set @adminID1 = (select id from user where email = 'thu.admin@bms.com');

@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.text.ParseException;
@@ -16,8 +17,12 @@ import java.text.ParseException;
 public class AddPublisherController {
     @FXML
     private Label fullNameErrorLabel, addressErrorLabel;
+
     @FXML
-    private TextField fullNameField,addressTextField;
+    private TextField fullNameField;
+
+    @FXML
+    private TextArea addressTextField;
 
     private final PublisherService publisherService = new PublisherService();
 

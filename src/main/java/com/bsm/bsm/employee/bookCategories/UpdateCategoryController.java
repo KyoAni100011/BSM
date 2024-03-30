@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import java.text.ParseException;
 
@@ -16,8 +17,10 @@ public class UpdateCategoryController {
     private Label nameErrorLabel, descriptionErrorLabel;
 
     @FXML
-    private TextField nameField, descriptionField;
+    private TextField nameField;
 
+    @FXML
+    private TextArea descriptionField;
     private final CategoryService categoryService = new CategoryService();
 
     String id = "55551111"; //set temp id, need to get id from table view

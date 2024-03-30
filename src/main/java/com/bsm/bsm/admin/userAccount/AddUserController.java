@@ -2,10 +2,7 @@ package com.bsm.bsm.admin.userAccount;
 
 import com.bsm.bsm.account.AccountService;
 import com.bsm.bsm.user.UserSingleton;
-import com.bsm.bsm.utils.AlertUtils;
-import com.bsm.bsm.utils.DateUtils;
-import com.bsm.bsm.utils.NumericValidationUtils;
-import com.bsm.bsm.utils.ValidationUtils;
+import com.bsm.bsm.utils.*;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -15,6 +12,7 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.controlsfx.validation.ValidateEvent;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -84,7 +82,7 @@ public class AddUserController {
     }
 
     @FXML
-    private void handleAddButtonAction(ActionEvent event) {
+    private void handleAddButtonAction(ActionEvent event) throws IOException {
         clearErrorMessages();
         String email = emailField.getText().toLowerCase();
         String password = customPassword.getText();
@@ -109,6 +107,8 @@ public class AddUserController {
             if (accountService.addUser(name, dob, email, address, password)) {
                 AlertUtils.showAlert("User Added", "User added successfully.", Alert.AlertType.INFORMATION);
                 clearInputs();
+                UserDetailController.handleTableItemSelection(email);
+                FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/userDetail");
                 closeWindow(event);
             } else {
                 AlertUtils.showAlert("Error", "An error occurred while adding user.", Alert.AlertType.ERROR);

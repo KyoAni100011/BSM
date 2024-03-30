@@ -36,11 +36,17 @@ public class ValidationUtils {
     }
 
     public static String validateIntroduction(String introduction,  String field) {
+        int introductionLength = introduction.length();
+        boolean checkWrongField = introductionLength > 255 ;
+        if (checkWrongField) {
+            return "Introduction should be less than 255 characters.";
+        }
         return introduction.isEmpty() ? "Please enter "+ field + " introduction." : null;
     }
 
     public static String validateDescription(String description, String field) {
-       return description.isEmpty() ? "Please enter " + field + " description" : null;
+        if (description.length() > 255) return "Description should be less than 255 characters.";
+        return description.isEmpty() ? "Please enter " + field + " description" : null;
     }
 
     public static String validateDOB(String dob, String field) {
@@ -88,6 +94,7 @@ public class ValidationUtils {
     }
 
     public static String validateAddress(String address, String field) {
+        if (address.length() > 255) return "Introduction should be less than 255 characters.";
         return address.isEmpty() ? "Please enter "+ field +" address." : null;
     }
 

@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.text.ParseException;
@@ -17,7 +18,9 @@ public class UpdateAuthorController {
     @FXML
     private Label fullNameErrorLabel, introductionErrorLabel;
     @FXML
-    private TextField fullNameField,introductionTextField;
+    private TextField fullNameField;
+    @FXML
+    private TextArea introductionTextField;
 
     @FXML
     private static String name;
@@ -47,7 +50,11 @@ public class UpdateAuthorController {
 
         String fullName = fullNameField.getText();
         String introduction = introductionTextField.getText();
+        System.out.println("out");
+
         if (validateInputs(fullName,introduction)) {
+            System.out.println("get it");
+
             //check if author is enabled
             boolean isEnabled = authorService.isEnabled(id);
             if (!isEnabled) {
@@ -56,10 +63,10 @@ public class UpdateAuthorController {
             }
 
             //check if author already exists
-            if (authorService.checkAuthorExists(fullName)) {
-                fullNameErrorLabel.setText("Author already exists.");
-                return;
-            }
+//            if (authorService.checkAuthorExists(fullName)) {
+//                fullNameErrorLabel.setText("Author already exists.");
+//                return;
+//            }
 
             Author newAuthor = new Author(id, fullName, introduction, isEnabled);
             if (authorService.updateAuthor(newAuthor)) {
