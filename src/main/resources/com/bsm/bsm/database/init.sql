@@ -49,7 +49,7 @@ create table category (
 );
 
 create table book (
-    isbn bigint auto_increment primary key,
+    isbn int auto_increment primary key,
     title varchar(255) not null,
     publisherID int not null,
     publishingDate date not null,
@@ -61,7 +61,7 @@ create table book (
 );
 
 create table bookCategory (
-    bookID bigint not null,
+    bookID int not null,
     categoryID int not null,
     primary key (bookID, categoryID),
     foreign key(bookID) references book(isbn),
@@ -69,7 +69,7 @@ create table bookCategory (
 );
 
 create table bookAuthor (
-    bookId bigint not null,
+    bookId int not null,
     authorID int not null,
     primary key (bookID, authorID),
     foreign key(bookID) references book(isbn),
@@ -77,7 +77,7 @@ create table bookAuthor (
 );
 
 create table importSheet (
-    id bigint auto_increment primary key,
+    id int auto_increment primary key,
     employeeID int not null,
     importDate date not null default (CURRENT_DATE),
     quantity int not null default 0,
@@ -86,11 +86,11 @@ create table importSheet (
 );
 
 create table bookBatch (
-    id bigint auto_increment primary key,
+    id int auto_increment primary key,
     quantity int not null,
     importPrice decimal(50, 2) not null,
-    importSheetID bigint not null,
-    bookID bigint not null,
+    importSheetID int not null,
+    bookID int not null,
     foreign key(bookID) references book(isbn),
     foreign key (importSheetId) references importSheet(id)
 );
@@ -102,7 +102,7 @@ create table customer (
 );
 
 create table orderSheet (
-    id bigint auto_increment primary key,
+    id int auto_increment primary key,
     employeeID int not null,
     customerID int not null,
     orderDate date not null default (CURRENT_DATE),
@@ -112,8 +112,8 @@ create table orderSheet (
 );
 
 create table orderBooksDetails (
-    orderID bigint not null,
-    bookBatchID bigint not null,
+    orderID int not null,
+    bookBatchID int not null,
     quantity int not null,
     salePrice decimal(50, 2) not null,
     primary key (orderID, bookBatchID),
