@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.text.ParseException;
@@ -22,12 +23,11 @@ public class UpdateAuthorController {
     private TextArea introductionTextField;
 
     @FXML
-    private static String name;
-    String id = "33331111"; //set temp id, need to get id from table view
+    private static String id;
 
     private final AuthorService authorService = new AuthorService();
-    public static void handleTableItemSelection(String name) {
-        name = name;
+    public static void handleTableItemSelection(String userId) {
+        id = userId;
     }
 
     @FXML

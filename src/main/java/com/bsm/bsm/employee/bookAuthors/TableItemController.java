@@ -1,10 +1,13 @@
 package com.bsm.bsm.employee.bookAuthors;
 
 
+import com.bsm.bsm.admin.userAccount.ToggleSwitch;
+import com.bsm.bsm.admin.userAccount.UserAccountController;
 import com.bsm.bsm.author.Author;
 import com.bsm.bsm.author.AuthorService;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
+import javafx.beans.property.BooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -17,77 +20,64 @@ import java.io.IOException;
 
 public class TableItemController {
     private final AuthorService authorService = new AuthorService();
-    public Label introductionLabel;
+    @FXML
+    public ToggleSwitch isOn;
+    public Label introductionLabel, idLabel, nameLabel;
+    public ToggleButton toggleButton;
+
+    private String id;
 
     @FXML
-    private Label idLabel;
-
-    @FXML
-    private Button isEnabledButton;
-
-    @FXML
-    private Label nameLabel;
-
-    @FXML
-    private RadioButton radioButton;
-
-    @FXML
-    private String name;
-
-    public void setToggleGroup(ToggleGroup toggleGroup) {
-        radioButton.setToggleGroup(toggleGroup);
+    private void initialize() {
     }
 
     @FXML
-    void handleIsEnabledButtonClick(ActionEvent event) {
-        String action = isEnabledButton.getText().equals("Enable") ? "disable" : "enable";
-        String confirmationMessage = "Are you sure you want to " + action + " this user?";
+    private void handleRadioButtonClick(){
+        if(!toggleButton.isSelected()){
+            AuthorController.handleTableItemSelection(null);
+        } else {
+            AuthorController.handleTableItemSelection(id);
+    }
+}
 
+
+    @FXML
+    private void handleToggleSwitchClick() {
+        isOn.setUserId(id); // Pass the idLabel data to ToggleSwitch
+        BooleanProperty oldState = isOn.switchedProperty();
+        String confirmationMessage = "Are you sure you want to " + (!oldState.get() ? "enable" : "disable") + " this author?";
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Confirmation");
         confirmationAlert.setHeaderText(confirmationMessage);
-//        confirmationAlert.setContentText("Click OK to confirm.");
-
         confirmationAlert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                if (isEnabledButton.getText().equals("Enable")) {
-                    // test active author
-                    if (!authorService.setEnable(true)) {
-                        AlertUtils.showAlert("Error", "Failed to disable user", Alert.AlertType.ERROR);
-                        return;
-                    }
-
-                    isEnabledButton.setText("Disable");
-                    isEnabledButton.getStyleClass().remove("enable-button");
-                    isEnabledButton.getStyleClass().add("disable-button");
-                    AlertUtils.showAlert("Success", "User disable successfully", Alert.AlertType.INFORMATION);
-
-                } else {
-                    // test active author
-                    if (!authorService.setEnable(true)) {
-                        AlertUtils.showAlert("Error", "Failed to enable user", Alert.AlertType.ERROR);
-                        return;
-                    }
-
-                    isEnabledButton.setText("Enable");
-                    isEnabledButton.getStyleClass().remove("disable-button");
-                    isEnabledButton.getStyleClass().add("enable-button");
-                    AlertUtils.showAlert("Success", "User enable successfully", Alert.AlertType.INFORMATION);
-                }
+//                if (oldState.get()) {
+//                    if (!authorService.disableAuthor(id)) {
+//                        AlertUtils.showAlert("Error", "Failed to disable author", Alert.AlertType.ERROR);
+//                        return;
+//                    }
+//                } else {
+//                    if (!authorService.enableAuthor(id)) {
+//                        AlertUtils.showAlert("Error", "Failed to enable author", Alert.AlertType.ERROR);
+//                        return;
+//                    }
+//                }
+                AlertUtils.showAlert("Success", "Author has been " + (!oldState.get() ? "enabled" : "disabled"), Alert.AlertType.INFORMATION);
+            } else {
+                oldState.setValue(!oldState.get());
             }
         });
     }
 
-    @FXML
-    void handleRadioButtonClick(ActionEvent event) {
-        AuthorController.handleTableItemSelection(name);
+    public void setToggleGroup(ToggleGroup toggleGroup) {
+        toggleButton.setToggleGroup(toggleGroup);
     }
 
     @FXML
     void handleTableItemDoubleClick(MouseEvent event) throws IOException {
         if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
-            if (name != null) {
-                AuthorController.handleTableItemSelection(name);
+            if (id != null) {
+                AuthorController.handleTableItemSelection(id);
                 FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/userDetail");
             } else {
                 AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
@@ -101,12 +91,7 @@ public class TableItemController {
         nameLabel.setText(author.getName());
         introductionLabel.setText(author.getIntroduction());
 
-        isEnabledButton.setText(author.isEnabled() ? "Enable" : "Disable");
-        if(author.isEnabled()){
-            isEnabledButton.getStyleClass().add("enable-button");
-        }else {
-            isEnabledButton.getStyleClass().add("disable-button");
-        }
+        isOn.setSwitchedProperty(author.isEnabled());
     }
 
 }

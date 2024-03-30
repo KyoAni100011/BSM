@@ -22,29 +22,30 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
 
     @Override
     public List<Author> sort(List<Author> authors, boolean isAscending, String column) {
+        System.out.println(", isAscending = " + isAscending + ", column = " + column);
         List<Author> sortedAuthors = new ArrayList<>(authors);
         Comparator<Author> comparator = (author1, author2) -> {
-             switch(column) {
-                 case "id" -> {
-                     return Comparator.comparing(Author::getId).compare(author1, author2);
-                 }
-                 case "name" -> {
-                     return Comparator.comparing(Author::getName).compare(author1, author2);
-                 }
+            switch(column) {
+                case "id" -> {
+                    return Comparator.comparing(Author::getId).compare(author1, author2);
+                }
+                case "name" -> {
+                    return Comparator.comparing(Author::getName).compare(author1, author2);
+                }
                 case "introduction" -> {
-                     return Comparator.comparing(Author::getIntroduction).compare(author1, author2);
+                    return Comparator.comparing(Author::getIntroduction).compare(author1, author2);
                 }
                 case "action" -> {
-                     return Comparator.comparing(Author::isEnabled).compare(author1, author2);
+                    return Comparator.comparing(Author::isEnabled).compare(author1, author2);
                 }
                 default -> {
-                     return 0;
+                    return 0;
                 }
             }
         };
 
         if (!isAscending) {
-               comparator = comparator.reversed();
+            comparator = comparator.reversed();
         }
 
         return sortedAuthors.stream().sorted(comparator).collect(Collectors.toList());
@@ -55,11 +56,11 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
         List<Author> authors = getAllAuthors();
         String finalKeyword = keyword.toLowerCase();
         return authors.stream()
-               .filter(author ->
-                            author.getName().toLowerCase().contains(finalKeyword) ||
-                            author.getIntroduction().toLowerCase().contains(finalKeyword) ||
-                            author.getId().toLowerCase().contains(finalKeyword))
-               .collect(Collectors.toList());
+                .filter(author ->
+                        author.getName().toLowerCase().contains(finalKeyword) ||
+                                author.getIntroduction().toLowerCase().contains(finalKeyword) ||
+                                author.getId().toLowerCase().contains(finalKeyword))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -88,10 +89,6 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
 
     public Author getAuthor(String id) {
         return authorDAO.getAuthorById(id);
-    }
-
-    public Author getAuthorByName(String name) {
-        return authorDAO.getAuthorByName(name);
     }
 
     public boolean isEnabled(String id) {
