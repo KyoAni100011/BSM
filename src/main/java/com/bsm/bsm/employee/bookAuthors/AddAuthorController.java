@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import java.text.ParseException;
 
@@ -15,7 +16,10 @@ public class AddAuthorController {
     @FXML
     private Label fullNameErrorLabel, introductionErrorLabel;
     @FXML
-    private TextField fullNameField,introductionTextField;
+    private TextField fullNameField;
+    @FXML
+    private TextArea introductionTextField;
+
 
     private final AuthorService authorService = new AuthorService();
 
