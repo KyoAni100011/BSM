@@ -56,4 +56,17 @@ public class AuthorDAO {
 
         return author.get();
     }
+    public Author getAuthorByName(String name) {
+        AtomicReference<Author> author = new AtomicReference<>();
+        String QUERY_AUTHOR = "select * from author where name = ?";
+        DatabaseConnection.executeQuery(QUERY_AUTHOR, resultSet -> {
+            if (resultSet != null && resultSet.next()) {
+                String id = resultSet.getString("id");
+                String introduction = resultSet.getString("introduction");
+                boolean isEnabled = resultSet.getBoolean("isEnabled");
+                author.set(new Author(id, name, introduction, isEnabled));
+            }
+        }, name);
+        return author.get();
+    }
 }

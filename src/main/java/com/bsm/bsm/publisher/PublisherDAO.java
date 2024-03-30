@@ -32,6 +32,19 @@ public class PublisherDAO {
         }, id);
         return publisher.get();
     }
+    public Publisher getPublisherByName(String name) {
+        AtomicReference<Publisher> publisher = new AtomicReference<>();
+        String QUERY_PUBLISHER = "select * from publisher where name = ?";
+        DatabaseConnection.executeQuery(QUERY_PUBLISHER, resultSet -> {
+            if (resultSet != null && resultSet.next()) {
+                String id = resultSet.getString("id");
+                String address = resultSet.getString("address");
+                boolean isEnabled = resultSet.getBoolean("isEnabled");
+                publisher.set(new Publisher(id, name, address, isEnabled));
+            }
+        }, name);
+        return publisher.get();
+    }
 
     public Publisher search(String keyword) {
         // Implement search logic

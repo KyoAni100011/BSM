@@ -104,7 +104,9 @@
   -fx-border-color: black;
   -fx-border-radius: 5px;
 }
-
+.input-field-add:disabled {
+  -fx-opacity: 1;
+}
 .button-custom-admin {
   -fx-font-family: "Roboto Bold";
   -fx-padding: 1px;
