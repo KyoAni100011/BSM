@@ -12,11 +12,15 @@ public class Publisher {
         // Default constructor
     }
 
-    public Publisher(String id, String name, String address, boolean isEnabled ) {
+    public Publisher(String id, String name, String address, boolean isEnabled) {
         this.id = id;
         this.name = name;
         this.isEnabled = isEnabled;
         this.address = address;
+    }
+
+    public Publisher(String name, String address) {
+        this("", name, address, true);
     }
 
     // Getters and setters

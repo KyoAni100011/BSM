@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="384.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21"
-            fx:controller="com.bsm.bsm.author.UpdateAuthorController">
+            fx:controller="com.bsm.bsm.employee.bookAuthors.UpdateAuthorController">
     <children>
         <Label fx:id="fullNameErrorLabel" layoutX="76.0" layoutY="178.0" prefHeight="17.0" prefWidth="307.0"
                styleClass="error-label"/>

@@ -5,7 +5,7 @@ import com.bsm.bsm.commonInterface.*;
 import java.util.List;
 
 public class AuthorService implements Activable, Searchable<Author>, Sortable<Author>, Updatable<Author>, Addable<Author> {
-    private AuthorDAO authorDAO = null;
+    private final AuthorDAO authorDAO;
 
     public AuthorService() {
         this.authorDAO = new AuthorDAO();
@@ -29,13 +29,12 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
     }
 
     @Override
-    public void add(Author item) {
-        // Implement add logic
+    public boolean add(Author item) {
+        return authorDAO.addAuthor(item.getName(), item.getIntroduction());
     }
 
     @Override
     public boolean setEnable(boolean state) {
-
         return state;
     }
 
@@ -43,15 +42,15 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
         return authorDAO.checkAuthorExists(name);
     }
 
-    public boolean addAuthor (String name, String introduction) {
-        return authorDAO.addAuthor(name, introduction);
+    public boolean updateAuthor(Author author) {
+        return authorDAO.updateAuthor(author.getId(), author.getName(), author.getIntroduction());
     }
 
-    public boolean updateAuthor(String oldName, String newName, String introduction) {
-        return authorDAO.updateAuthor(oldName, newName, introduction);
+    public Author getAuthor(String id) {
+        return authorDAO.getAuthorById(id);
     }
 
-    public Author getAuthor(String name) {
-        return authorDAO.getAuthor(name);
+    public boolean isEnabled(String id) {
+        return getAuthor(id).isEnabled();
     }
 }

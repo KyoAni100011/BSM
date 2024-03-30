@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-
 import java.text.ParseException;
 import java.util.List;
 
@@ -23,11 +22,10 @@ public class UpdateCategoryController {
     private final CategoryService categoryService = new CategoryService();
 
     String id = "55551111"; //set temp id, need to get id from table view
-    Category category = null;
 
     @FXML
     public void initialize() {
-        category = categoryService.getCategoryById(id);
+        Category category = categoryService.getCategoryById(id);
         setCategoryInfo(category);
     }
 
@@ -42,14 +40,24 @@ public class UpdateCategoryController {
         String name = nameField.getText();
         String description = descriptionField.getText();
         if (validateInputs(name, description)) {
+            //check if category is disabled
+            boolean isEnabled = categoryService.isEnabled(id);
+            if (!isEnabled) {
+                AlertUtils.showAlert("Error", "Category is disabled. Please enable it first.", Alert.AlertType.ERROR);
+                return;
+            }
+
+            //check if category already exists
+            if (categoryService.checkCategoryExists(name)) {
+                nameErrorLabel.setText("Category already exists.");
+                return;
+            }
+
             if (categoryService.update(id, name, description)) {
                 AlertUtils.showAlert("Success", "Category updated successfully.", Alert.AlertType.INFORMATION);
-                clearInputs();
             } else {
                 AlertUtils.showAlert("Error", "Category update failed.", Alert.AlertType.ERROR);
             }
-            var category = categoryService.getCategoryById(id);
-            setCategoryInfo(category);
         }
     }
 
@@ -76,4 +84,3 @@ public class UpdateCategoryController {
         descriptionField.setText("");
     }
 }
-

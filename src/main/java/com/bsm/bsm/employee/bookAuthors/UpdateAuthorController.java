@@ -16,6 +16,8 @@ import java.text.ParseException;
 public class UpdateAuthorController {
     @FXML
     private static String name;
+    String id = "33331111"; //set temp id, need to get id from table view
+
     private final AuthorService authorService = new AuthorService();
     @FXML
     private Label fullNameErrorLabel, introductionErrorLabel;
@@ -29,7 +31,7 @@ public class UpdateAuthorController {
     @FXML
     public void initialize() {
         //set temp oldName, need to get oldName from table view
-        Author author = authorService.getAuthor("Nguyen Nhat Anh");
+        Author author = authorService.getAuthor(id);
         setAuthorInfo(author);
     }
 
@@ -41,16 +43,29 @@ public class UpdateAuthorController {
     @FXML
     private void handleSaveChanges(ActionEvent event) throws ParseException {
         clearErrorMessages();
-        //set temp oldName, need to get oldName from table view
-        String oldName = "Nguyen Nhat Anh";
+
         String fullName = fullNameField.getText();
         String introduction = introductionTextField.getText();
-        if (validateInputs(fullName, introduction)) {
-            authorService.updateAuthor(oldName, fullName, introduction);
-            AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
-            clearInputs();
-            var author = authorService.getAuthor(fullName);
-            setAuthorInfo(author);
+        if (validateInputs(fullName,introduction)) {
+            //check if author is enabled
+            boolean isEnabled = authorService.isEnabled(id);
+            if (!isEnabled) {
+                AlertUtils.showAlert("Error", "Author is disabled. Please enable it first.", Alert.AlertType.ERROR);
+                return;
+            }
+
+            //check if author already exists
+            if (authorService.checkAuthorExists(fullName)) {
+                fullNameErrorLabel.setText("Author already exists.");
+                return;
+            }
+
+            Author newAuthor = new Author(id, fullName, introduction, isEnabled);
+            if (authorService.updateAuthor(newAuthor)) {
+                AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
+            } else {
+                AlertUtils.showAlert("Error", "Profile update failed.", Alert.AlertType.ERROR);
+            }
         }
     }
 
