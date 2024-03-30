@@ -19,7 +19,6 @@ public class TableItemController {
     private final AuthorService authorService = new AuthorService();
     public Label introductionLabel;
 
-
     @FXML
     private Label idLabel;
 

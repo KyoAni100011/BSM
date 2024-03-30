@@ -2,7 +2,11 @@ package com.bsm.bsm.author; // Đảm bảo package phù hợp với lớp Autho
 
 import com.bsm.bsm.commonInterface.*;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class AuthorService implements Activable, Searchable<Author>, Sortable<Author>, Updatable<Author>, Addable<Author> {
     private final AuthorDAO authorDAO;
@@ -18,14 +22,44 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
 
     @Override
     public List<Author> sort(List<Author> authors, boolean isAscending, String column) {
-        // Implement sorting logic
-        return null;
+        List<Author> sortedAuthors = new ArrayList<>(authors);
+        Comparator<Author> comparator = (author1, author2) -> {
+             switch(column) {
+                 case "id" -> {
+                     return Comparator.comparing(Author::getId).compare(author1, author2);
+                 }
+                 case "name" -> {
+                     return Comparator.comparing(Author::getName).compare(author1, author2);
+                 }
+                case "introduction" -> {
+                     return Comparator.comparing(Author::getIntroduction).compare(author1, author2);
+                }
+                case "action" -> {
+                     return Comparator.comparing(Author::isEnabled).compare(author1, author2);
+                }
+                default -> {
+                     return 0;
+                }
+            }
+        };
+
+        if (!isAscending) {
+               comparator = comparator.reversed();
+        }
+
+        return sortedAuthors.stream().sorted(comparator).collect(Collectors.toList());
     }
 
     @Override
     public List<Author> search(String keyword) {
-        // Implement search logic
-        return null;
+        List<Author> authors = getAllAuthors();
+        String finalKeyword = keyword.toLowerCase();
+        return authors.stream()
+               .filter(author ->
+                            author.getName().toLowerCase().contains(finalKeyword) ||
+                            author.getIntroduction().toLowerCase().contains(finalKeyword) ||
+                            author.getId().toLowerCase().contains(finalKeyword))
+               .collect(Collectors.toList());
     }
 
     @Override
@@ -38,8 +72,14 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
         return state;
     }
 
+    // use this to check case update author
+    public boolean checkAuthorExists (String name, String id) {
+        return authorDAO.checkAuthorExists(name, id);
+    }
+
+    //use this to check case add new author
     public boolean checkAuthorExists (String name) {
-        return authorDAO.checkAuthorExists(name);
+        return checkAuthorExists(name, "");
     }
 
     public boolean updateAuthor(Author author) {
@@ -56,5 +96,9 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
 
     public boolean isEnabled(String id) {
         return getAuthor(id).isEnabled();
+    }
+
+    public List<Author> getAllAuthors() {
+        return authorDAO.getAllAuthors();
     }
 }

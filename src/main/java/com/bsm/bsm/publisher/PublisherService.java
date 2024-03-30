@@ -44,8 +44,12 @@ public class PublisherService implements Activable, Searchable<Publisher>, Sorta
         return publisherDAO.addPublisher(item.getName(), item.getAddress());
     }
 
+    public boolean checkPublisherExists(String name, String id) {
+        return publisherDAO.checkPublisherExists(name, id);
+    }
+
     public boolean checkPublisherExists(String name) {
-        return publisherDAO.checkPublisherExists(name);
+        return checkPublisherExists(name, "");
     }
 
     @Override
