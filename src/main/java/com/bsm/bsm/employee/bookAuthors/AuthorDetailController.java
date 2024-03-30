@@ -3,6 +3,7 @@ package com.bsm.bsm.employee.bookAuthors;
 import com.bsm.bsm.admin.userAccount.UserDetailController;
 import com.bsm.bsm.author.Author;
 import com.bsm.bsm.author.AuthorService;
+import com.bsm.bsm.publisher.Publisher;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -20,23 +21,22 @@ public class AuthorDetailController {
     @FXML
     private TextField nameField;
     private static String id ="33331111";
-    private Author authorDetail = null;
-    private AuthorService authorService = null;
-    public AuthorDetailController()
-    {
-        authorService = new AuthorService();
+    private static Author authorDetail = null;
+    private static final AuthorService authorService = new AuthorService();
+    @FXML
+    public void initialize() {
+        new UserDetailController();
+        setAuthorInfo();
     }
 
     static void handleTableItemSelection(String myId) {
         id = myId;
+        authorDetail = authorService.getAuthor(id);
+    }
+    static void handleAfterAdd(Author author) {
+        authorDetail = author;
     }
 
-    @FXML
-    public void initialize() {
-        new UserDetailController();
-        authorDetail = authorService.getAuthor(id);
-        setAuthorInfo();
-    }
 
     private void setAuthorInfo() {
         IDField.setText(authorDetail.getId());

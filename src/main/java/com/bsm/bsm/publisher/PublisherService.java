@@ -14,6 +14,10 @@ public class PublisherService implements Activable, Searchable<Publisher>, Sorta
         return publisherDAO.getPublisher(id);
     }
 
+    public Publisher getPublisherByName(String name) {
+        return publisherDAO.getPublisherByName(name);
+    }
+
     public boolean isEnabled(String id) {
         return getPublisher(id).isEnabled();
     }

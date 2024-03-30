@@ -1,9 +1,11 @@
 package com.bsm.bsm.employee.bookPublishers;
 
-import com.bsm.bsm.category.Category;
+import com.bsm.bsm.publisher.Publisher;
+import com.bsm.bsm.employee.bookPublishers.PublisherDetailController;
 import com.bsm.bsm.publisher.Publisher;
 import com.bsm.bsm.publisher.PublisherService;
 import com.bsm.bsm.utils.AlertUtils;
+import com.bsm.bsm.utils.FXMLLoaderHelper;
 import com.bsm.bsm.utils.ValidationUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,7 +13,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.text.ParseException;
 
 public class AddPublisherController {
@@ -30,7 +34,7 @@ public class AddPublisherController {
     public void initialize() {
     }
     @FXML
-    private void handleSaveChanges(ActionEvent event) throws ParseException {
+    private void handleSaveChanges(ActionEvent event) throws ParseException, IOException {
         clearErrorMessages();
         String fullName = fullNameField.getText();
         String address = addressTextField.getText();
@@ -44,6 +48,10 @@ public class AddPublisherController {
                 if (publisherService.add(newPublisher)) {
                     AlertUtils.showAlert("Success", "Add publisher successfully.", Alert.AlertType.INFORMATION);
                     clearInputs();
+                    Publisher a = publisherService.getPublisherByName(fullName);
+                    PublisherDetailController.handleAfterAdd(a);
+                    FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookPublishers/publisherDetail");
+//                    closeWindow(event);
                 } else {
                     AlertUtils.showAlert("Error", "An error occurred while adding the publisher.", Alert.AlertType.ERROR);
                 }

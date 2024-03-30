@@ -16,20 +16,22 @@ public class PublisherDetailController {
     public Button isEnabledLabel;
     @FXML
     public TextField iDField;
-    private Publisher publisherDetail = null;
+    private static Publisher publisherDetail = null;
 
-    private PublisherService publisherService = null;
+    private static final PublisherService publisherService = new PublisherService();;
     private static String id ="44441111";
 
     @FXML
     public void initialize() {
         new PublisherDetailController();
-        publisherDetail = publisherService.getPublisher(id);
         setPublisherInfo();
     }
-    public PublisherDetailController()
-    {
-        publisherService = new PublisherService();
+    static void handleTableItemSelection(String myId) {
+        id = myId;
+        publisherDetail = publisherService.getPublisher(id);
+    }
+    static void handleAfterAdd(Publisher p) {
+        publisherDetail = p;
     }
     private void setPublisherInfo() {
         iDField.setText(publisherDetail.getId());

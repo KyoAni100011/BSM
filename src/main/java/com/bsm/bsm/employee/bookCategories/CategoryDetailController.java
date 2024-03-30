@@ -1,6 +1,7 @@
 package com.bsm.bsm.employee.bookCategories;
 
 import com.bsm.bsm.admin.userAccount.UserDetailController;
+import com.bsm.bsm.author.Author;
 import com.bsm.bsm.author.AuthorService;
 import com.bsm.bsm.category.Category;
 import com.bsm.bsm.category.Category;
@@ -20,21 +21,25 @@ public class CategoryDetailController {
     @FXML
     public Button isEnabledLabel;
 
-    private Category categoryDetail = null;
+    private static Category categoryDetail = null;
 
-    private CategoryService categoryService = null;
+    private static final CategoryService categoryService =  new CategoryService();;
     private static String id ="55551111";
 
     @FXML
     public void initialize() {
         new CategoryDetailController();
-        categoryDetail = categoryService.getCategory(id);
         setCategoryInfo();
     }
-    public CategoryDetailController()
-    {
-        categoryService = new CategoryService();
+    static void handleTableItemSelection(String myId) {
+        id = myId;
+        categoryDetail = categoryService.getCategory(id);
+
     }
+    static void handleAfterAdd(Category category) {
+        categoryDetail = category;
+    }
+
     private void setCategoryInfo() {
         idField.setText(categoryDetail.getId());
         nameField.setText(categoryDetail.getName());
