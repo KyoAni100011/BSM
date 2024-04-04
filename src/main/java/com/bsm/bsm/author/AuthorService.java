@@ -91,6 +91,10 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
         return authorDAO.getAuthorById(id);
     }
 
+    public Author getAuthorByName(String name) {
+        return authorDAO.getAuthorByName(name);
+    }
+
     public boolean isEnabled(String id) {
         return getAuthor(id).isEnabled();
     }
