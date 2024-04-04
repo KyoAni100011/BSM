@@ -21,11 +21,13 @@ import java.io.IOException;
 public class TableItemController {
     private final AuthorService authorService = new AuthorService();
     @FXML
+    public ToggleButton toggleButton;
+    @FXML
     public ToggleSwitch isOn;
     public Label introductionLabel, idLabel, nameLabel;
-    public ToggleButton toggleButton;
 
     private String id;
+    private Author authorModel;
 
     @FXML
     private void initialize() {
@@ -37,9 +39,9 @@ public class TableItemController {
             AuthorController.handleTableItemSelection(null);
         } else {
             AuthorController.handleTableItemSelection(id);
+            System.out.println("id: " + id);
     }
 }
-
 
     @FXML
     private void handleToggleSwitchClick() {
@@ -77,8 +79,8 @@ public class TableItemController {
     void handleTableItemDoubleClick(MouseEvent event) throws IOException {
         if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
             if (id != null) {
-                AuthorController.handleTableItemSelection(id);
-                FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/userDetail");
+                AuthorDetailController.handleTableItemSelection(id);
+                FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/authorDetail");
             } else {
                 AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
 
@@ -87,11 +89,11 @@ public class TableItemController {
     }
 
     public void setAuthorModel(Author author) {
+        authorModel = author;
+        id = author.getId();
         idLabel.setText(author.getId());
         nameLabel.setText(author.getName());
         introductionLabel.setText(author.getIntroduction());
-
         isOn.setSwitchedProperty(author.isEnabled());
     }
-
 }

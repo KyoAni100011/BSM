@@ -28,7 +28,7 @@ public class TableItemController {
     private Label idLabel, nameLabel, emailLabel, lastLoginLabel,dobLabel, phoneLabel, addressLabel;
     private String email;
     private ToggleGroup toggle;
-    @FXML
+
     private UserModel userModel;
 
 
@@ -41,6 +41,7 @@ public class TableItemController {
             UserAccountController.handleTableItemSelection(null);
         } else {
             UserAccountController.handleTableItemSelection(email);
+            System.out.println("email: " + email);
         }
     }
 

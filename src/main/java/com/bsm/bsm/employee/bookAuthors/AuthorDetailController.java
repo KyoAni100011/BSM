@@ -20,7 +20,7 @@ public class AuthorDetailController {
     private Button isEnabledLabel;
     @FXML
     private TextField nameField;
-    private static String id ="33331111";
+    private static String id;
     private static Author authorDetail = null;
     private static final AuthorService authorService = new AuthorService();
     @FXML
@@ -29,14 +29,13 @@ public class AuthorDetailController {
         setAuthorInfo();
     }
 
-    static void handleTableItemSelection(String myId) {
+    public static void handleTableItemSelection(String myId) {
         id = myId;
         authorDetail = authorService.getAuthor(id);
     }
     static void handleAfterAdd(Author author) {
         authorDetail = author;
     }
-
 
     private void setAuthorInfo() {
         IDField.setText(authorDetail.getId());
