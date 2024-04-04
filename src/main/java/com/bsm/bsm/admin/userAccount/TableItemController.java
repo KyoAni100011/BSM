@@ -48,7 +48,6 @@ public class TableItemController {
 
     @FXML
     private void handleToggleSwitchClick() {
-        isOn.setUserId(idLabel.getText()); // Pass the idLabel data to ToggleSwitch
         BooleanProperty oldState = isOn.switchedProperty();
         String confirmationMessage = "Are you sure you want to " + (!oldState.get() ? "enable" : "disable") + " this user?";
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);

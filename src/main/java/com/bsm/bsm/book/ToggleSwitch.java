@@ -1,4 +1,4 @@
-package com.bsm.bsm.admin.userAccount;
+package com.bsm.bsm.book;
 import javafx.animation.FillTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
@@ -11,6 +11,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class ToggleSwitch extends HBox {
+
     private BooleanProperty switchedOn = new SimpleBooleanProperty(false);
     private FillTransition fillAnimation = new FillTransition(Duration.seconds(0.25));
     private TranslateTransition translateAnimation = new TranslateTransition(Duration.seconds(0.25));
@@ -20,7 +21,6 @@ public class ToggleSwitch extends HBox {
     public BooleanProperty switchedProperty(){
         return switchedOn;
     }
-
 
     public void setSwitchedProperty(Boolean a){
         switchedOn.set(a);
