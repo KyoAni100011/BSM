@@ -1,11 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.CheckComboBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.book.UpdateBookController">
+<AnchorPane prefHeight="533.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.book.UpdateBookController">
    <children>
-      <Button fx:id="btnSave" layoutX="244.0" layoutY="266.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="59.0" prefWidth="112.0" text="Save" />
-      <Label fx:id="output" layoutX="244.0" layoutY="132.0" text="Label" />
+      <Label fx:id="fullNameErrorLabel" layoutX="77.0" layoutY="242.0" prefHeight="17.0" prefWidth="307.0" styleClass="error-label" />
+      <Label fx:id="phoneErrorLabel" layoutX="74.0" layoutY="168.0" prefHeight="17.0" prefWidth="216.0" styleClass="error-label" />
+      <Label fx:id="addressErrorLabel" layoutX="77.0" layoutY="311.0" styleClass="error-label" />
+      <Label fx:id="dobErrorLabel" layoutX="308.0" layoutY="175.0" prefHeight="17.0" prefWidth="199.0" styleClass="error-label" />
+
+      <Label layoutX="76.0" layoutY="108.0" styleClass="label-bold" text="Book Name">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="77.0" layoutY="184.0" styleClass="label-bold" text="Author">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="318.0" layoutY="184.0" styleClass="label-bold" text="Publisher">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="319.0" layoutY="338.0" styleClass="label-bold" text="Release date">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+
+      <TextField fx:id="fullNameField" layoutX="75.0" layoutY="129.0" prefHeight="40.0" prefWidth="450.0" promptText="Enter your full name" styleClass="input-field-add" />
+      <TextField fx:id="authorNameField" layoutX="76.0" layoutY="204.0" prefHeight="40.0" prefWidth="217.0" promptText="Enter author name" styleClass="input-field-add" />
+      <TextField fx:id="publisherNameField" layoutX="317.0" layoutY="204.0" prefHeight="40.0" prefWidth="207.0" promptText="Enter publisher name" styleClass="input-field-add" />
+      <DatePicker fx:id="releaseDatePicker" layoutX="318.0" layoutY="358.0" prefHeight="40.0" prefWidth="207.0" promptText="Select release date" styleClass="input-field-add" />
+
+
+      <Button fx:id="saveChangesButton" layoutX="371.0" layoutY="436.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="40.0" prefWidth="153.0" styleClass="button-custom-admin" text="Save" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Label layoutX="223.0" layoutY="47.0" text="UPDATE BOOK">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="77.0" layoutY="262.0" styleClass="label-bold" text="Quantity">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="318.0" layoutY="261.0" styleClass="label-bold" text="Price">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="bookQuantityField" layoutX="76.0" layoutY="282.0" prefHeight="40.0" prefWidth="217.0" promptText="Enter book quantity" styleClass="input-field-add" />
+      <TextField fx:id="bookPriceField" layoutX="317.0" layoutY="281.0" prefHeight="40.0" prefWidth="207.0" promptText="Enter book price" styleClass="input-field-add" />
+      <Label layoutX="82.0" layoutY="336.0" styleClass="label-bold" text="Category">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <CheckComboBox fx:id="checkComboBox" layoutX="77.0" layoutY="358.0" prefHeight="40.0" prefWidth="216.0" VBox.vgrow="ALWAYS">
+
+      </CheckComboBox>
    </children>
 </AnchorPane>
