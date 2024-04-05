@@ -51,7 +51,7 @@ public class UpdateCategoryController {
             }
 
             //check if category already exists
-            if (categoryService.checkCategoryExists(name)) {
+            if (categoryService.checkCategoryExists(name, id)) {
                 nameErrorLabel.setText("Category already exists.");
                 return;
             }

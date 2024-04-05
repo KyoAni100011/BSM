@@ -32,8 +32,9 @@ import java.util.ResourceBundle;
 public class AuthorController implements Initializable {
     private static String id;
     private final ToggleGroup toggleGroup = new ToggleGroup();
-//    private final EmployeeModel employeeInfo = (EmployeeModel) UserSingleton.getInstance().getUser();
+    private final EmployeeModel employeeInfo = (EmployeeModel) UserSingleton.getInstance().getUser();
     private final AuthorService authorService = new AuthorService();
+
     @FXML
     private TextField inputSearch;
     @FXML
@@ -52,7 +53,6 @@ public class AuthorController implements Initializable {
     private List<Author> authors = null;
     private String sortOrder = "ASC";
     private String column = "id";
-    private String role;
     private int currentPage = 1;
     private String inputSearchText = "";
 
@@ -70,7 +70,7 @@ public class AuthorController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 inputSearchText = newValue;
-                authors = null; // add backend
+                authors = authorService.search(inputSearchText);
                 try {
                     updateAuthorsList();
                 } catch (IOException e) {
@@ -81,9 +81,13 @@ public class AuthorController implements Initializable {
     }
 
     private void loadAllAuthors() {
-        authors = null;
-        // add backend
-//        employeeInfo.setAuthors(authors);
+        authors = authorService.getAllAuthors();
+        employeeInfo.setAuthors(authors);
+        try {
+            updateAuthorsList();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void initializeButtonsAndLabels() {
@@ -114,18 +118,12 @@ public class AuthorController implements Initializable {
     @FXML
     void handleAddAuthorButton(ActionEvent event) {
         try {
-            if (id != null) {
-//              AddAuthorController.handleTableItemSelection(userId); // add backend
-                FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/addAuthor");
-            }
-            else {
-                AlertUtils.showAlert("Error", "Can't find author", Alert.AlertType.ERROR);
-            }
-
-            authors = null; // add backend
+            FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/addAuthor");
+            //update authors list after adding new author
+            authors = authorService.getAllAuthors();
             updateAuthorsList();
         } catch (IOException e) {
-            AlertUtils.showAlert("Error", "Error loading addUser FXML", Alert.AlertType.ERROR);
+            System.out.println(e.getMessage());
         }
     }
 
@@ -154,7 +152,11 @@ public class AuthorController implements Initializable {
             currentPage = Integer.parseInt(buttonClicked.getText());
         }
 
-//      updateAuthorsList(); // add backend
+        try {
+            updateAuthorsList();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void updatePaginationButtons(int totalPages) {
@@ -207,52 +209,59 @@ public class AuthorController implements Initializable {
     // fix this
     private void updateAuthorsList() throws IOException {
         pnItems.getChildren().clear();
-        int itemsPerPage = 9;
+        int itemsPerPage = 10;
         int startIndex = (currentPage - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, authors.size());
-        System.out.println("authors.size() = " + authors.size());
 
         for (int i = startIndex; i < endIndex; i++) {
             Author author = authors.get(i);
 
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/bookAuthors/tableItem.fxml"));
-                    Node item = fxmlLoader.load();
-                    TableItemController tableItemController = fxmlLoader.getController();
-                    tableItemController.setToggleGroup(toggleGroup);
-                    tableItemController.setAuthorModel(author);
-                    pnItems.getChildren().add(item);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/bookAuthors/tableItem.fxml"));
+                Node item = fxmlLoader.load();
+                TableItemController tableItemController = fxmlLoader.getController();
+                tableItemController.setToggleGroup(toggleGroup);
+                tableItemController.setAuthorModel(author);
+                pnItems.getChildren().add(item);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         int totalPages = (int) Math.ceil((double) authors.size() / itemsPerPage);
         updatePaginationButtons(totalPages);
     }
 
     @FXML
-    private void handleLabelClick(MouseEvent event){
+    private void handleLabelClick(MouseEvent event) {
         Button clickedLabel = (Button) event.getSource();
-        String columnName = clickedLabel.getText();
+        String columnName = clickedLabel.getText().toLowerCase();
+
+        column = column.equals("author") ? "name" : column;
+        columnName = columnName.equals("author") ? "name" : columnName;
+
+        System.out.println(sortOrder);
+
         if (columnName.equals(column)) {
             sortOrder = sortOrder.equals("ASC") ? "DESC" : "ASC";
         } else {
             sortOrder = "ASC";
         }
+        var isAscending = sortOrder.equals("ASC");
+
         column = columnName;
-        idSortLabel.setContent(column.equals("ID") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
-        nameSortLabel.setContent(column.equals("Name") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
-        actionSortLabel.setContent(column.equals("Action") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        idSortLabel.setContent(column.equals("id") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        nameSortLabel.setContent(column.equals("name") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        introductionSortLabel.setContent(column.equals("introduction") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        actionSortLabel.setContent(column.equals("action") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+
+
         try {
+            authors = authorService.sort(authors, isAscending, column);
             updateAuthorsList();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        authors = null; // Add backend
-        try {
-            updateAuthorsList();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            authors.forEach(System.out::println);
+            System.out.println("-".repeat(30));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 }

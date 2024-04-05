@@ -49,10 +49,10 @@ public class UpdatePublisherController {
             }
 
             //check if publisher already exists
-//            if (publisherService.checkPublisherExists(fullName)) {
-//                fullNameErrorLabel.setText("Publisher already exists.");
-//                return;
-//            }
+            if (publisherService.checkPublisherExists(fullName, id)) {
+                fullNameErrorLabel.setText("Publisher already exists.");
+                return;
+            }
 
             Publisher newPublisher = new Publisher(id, fullName, address, isEnabled);
             if (publisherService.update(newPublisher)) {

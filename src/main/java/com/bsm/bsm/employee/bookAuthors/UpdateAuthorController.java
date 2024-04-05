@@ -16,19 +16,18 @@ import java.text.ParseException;
 
 public class UpdateAuthorController {
     @FXML
-    private static String name;
-    String id = "33331111"; //set temp id, need to get id from table view
-
-    private final AuthorService authorService = new AuthorService();
-    @FXML
     private Label fullNameErrorLabel, introductionErrorLabel;
     @FXML
     private TextField fullNameField;
     @FXML
     private TextArea introductionTextField;
 
-    public static void handleTableItemSelection(String name) {
-        name = name;
+    @FXML
+    private static String id;
+
+    private final AuthorService authorService = new AuthorService();
+    public static void handleTableItemSelection(String userId) {
+        id = userId;
     }
 
     @FXML
@@ -49,6 +48,7 @@ public class UpdateAuthorController {
 
         String fullName = fullNameField.getText();
         String introduction = introductionTextField.getText();
+
         if (validateInputs(fullName,introduction)) {
             //check if author is enabled
             boolean isEnabled = authorService.isEnabled(id);
@@ -57,8 +57,8 @@ public class UpdateAuthorController {
                 return;
             }
 
-            //check if author already exists
-            if (authorService.checkAuthorExists(fullName)) {
+//            check if author already exists
+            if (authorService.checkAuthorExists(fullName, id)) {
                 fullNameErrorLabel.setText("Author already exists.");
                 return;
             }
