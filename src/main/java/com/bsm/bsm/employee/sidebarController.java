@@ -82,7 +82,7 @@ public class sidebarController {
 
     @FXML
     void SwitchBook(ActionEvent event) throws IOException {
-        loadPage("book/book");
+        loadPage("book/updateBook");
     }
 
     @FXML

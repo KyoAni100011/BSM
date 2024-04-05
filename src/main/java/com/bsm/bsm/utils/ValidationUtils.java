@@ -1,5 +1,7 @@
 package com.bsm.bsm.utils;
 
+import javafx.collections.ObservableList;
+
 public class ValidationUtils {
     public static String validateEmail(String email) {
         if (email.isEmpty()) {
@@ -61,6 +63,18 @@ public class ValidationUtils {
         }
     }
 
+    public static String validateReleaseDay(String dob, String field) {
+        String dobRegex = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\\d{4}$";
+        if (dob.isEmpty()) {
+            return "Please enter " + field + " release day.";
+        }
+        if (!dob.matches(dobRegex)) {
+            return "Invalid date format. Please use dd/mm/yyyy.";
+        } else {
+            return null;
+        }
+    }
+
     public static String validatePassword(String password, String field) {
         if (password.isEmpty()) {
             return "Please enter " + field +" password.";
@@ -98,6 +112,35 @@ public class ValidationUtils {
         return address.isEmpty() ? "Please enter "+ field +" address." : null;
     }
 
+    public static String validateCategory(ObservableList<String> category, String field) {
+        return category.isEmpty() ? "Please enter "+ field +" category." : null;
+    }
+
+    public static String validateAuthor(ObservableList<String> author, String field) {
+        return author.isEmpty() ? "Please enter "+ field +" name." : null;
+    }
+
+    public static String validateLanguage(String languages, String field) {
+        return languages == null ? "Please enter "+ field +" language." : null;
+    }
+    public static String validateQuantity(String quantity, String field) {
+        if (quantity.isEmpty()) {
+            return "Please enter "+ field +" quantity.";
+        }
+        if (!quantity.matches("^[0-9]+$")) {
+            return "Quantity should contain only number.";
+        }
+        return null;
+    }
+    public static String validatePrice(String price, String field) {
+        if (price.isEmpty()) {
+            return "Please enter "+ field +" price.";
+        }
+        if (!price.matches("^[0-9]+$")) {
+            return "Price should contain only number.";
+        }
+        return null;
+    }
 
     public static boolean validateEmailRegex(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
