@@ -48,12 +48,12 @@ public class TableItemController {
 
     @FXML
     private void handleToggleSwitchClick() {
-        BooleanProperty oldState = isOn.switchedProperty();
-        String confirmationMessage = "Are you sure you want to " + (!oldState.get() ? "enable" : "disable") + " this book?";
-        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationAlert.setTitle("Confirmation");
-        confirmationAlert.setHeaderText(confirmationMessage);
-        confirmationAlert.showAndWait().ifPresent(response -> {
+//        BooleanProperty oldState = isOn.switchedProperty();
+//        String confirmationMessage = "Are you sure you want to " + (!oldState.get() ? "enable" : "disable") + " this book?";
+//        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+//        confirmationAlert.setTitle("Confirmation");
+//        confirmationAlert.setHeaderText(confirmationMessage);
+//        confirmationAlert.showAndWait().ifPresent(response -> {
 //            if (response == ButtonType.OK) {
 //                if (oldState.get()) {
 //                    if (!bookService.disableBook(idLabel.getText())) {
@@ -73,7 +73,7 @@ public class TableItemController {
 //                    AlertUtils.showAlert("Success", "Book enabled successfully", Alert.AlertType.INFORMATION);
 //                }
 //            }
-        });
+//        });
     }
 
     public void setToggleGroup(ToggleGroup toggleGroup) {
@@ -101,6 +101,6 @@ public class TableItemController {
         priceLabel.setText(String.valueOf(thisBook.getSalePrice()));
         quantityLabel.setText(String.valueOf(thisBook.getQuantity()));
         // Set the last login label with the time elapsed
-        isOn.setSwitchedProperty(book.isEnabled());
+//        isOn.setSwitchedProperty(book.isEnabled());
     }
 }
