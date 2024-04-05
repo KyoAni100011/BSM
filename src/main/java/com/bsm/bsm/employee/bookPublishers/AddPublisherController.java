@@ -46,7 +46,6 @@ public class AddPublisherController {
                 Publisher newPublisher = new Publisher(fullName, address);
 
                 if (publisherService.add(newPublisher)) {
-                    AlertUtils.showAlert("Success", "Add publisher successfully.", Alert.AlertType.INFORMATION);
                     clearInputs();
                     Publisher a = publisherService.getPublisherByName(fullName);
                     PublisherDetailController.handleAfterAdd(a);

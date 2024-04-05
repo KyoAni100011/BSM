@@ -34,6 +34,7 @@ public class TableItemController {
 
     @FXML
     private void initialize() {
+        UserAccountController.handleTableItemSelection(null);
     }
     @FXML
     private void handleRadioButtonClick(){

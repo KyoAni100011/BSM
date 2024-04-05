@@ -42,7 +42,6 @@ public class AddCategoryController {
                 nameErrorLabel.setText("Category already exists.");
             } else {
                 if (categoryService.addCategory(name, description)) {
-                    AlertUtils.showAlert("Success", "Add category successfully.", Alert.AlertType.INFORMATION);
                     clearInputs();
                     Category a = categoryService.getCategoryByName(name);
                     CategoryDetailController.handleTableItemSelection(a.getId());

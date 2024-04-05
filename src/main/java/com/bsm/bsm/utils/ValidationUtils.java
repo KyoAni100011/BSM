@@ -108,8 +108,9 @@ public class ValidationUtils {
     }
 
     public static String validateAddress(String address, String field) {
-        if (address.length() > 255) return "Introduction should be less than 255 characters.";
-        return address.isEmpty() ? "Please enter "+ field +" address." : null;
+        if(address.isEmpty()) return "Please enter "+ field +" address.";
+        if (address.length() > 255) return "Address should be less than 255 characters.";
+        return null;
     }
 
     public static String validateCategory(ObservableList<String> category, String field) {

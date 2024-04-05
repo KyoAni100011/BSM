@@ -105,7 +105,6 @@ public class AddUserController {
 
             dob = DateUtils.formatDOB(dob);
             if (accountService.addUser(name, dob, email, address, password)) {
-                AlertUtils.showAlert("User Added", "User added successfully.", Alert.AlertType.INFORMATION);
                 clearInputs();
                 UserDetailController.handleTableItemSelection(email);
                 FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/userDetail");

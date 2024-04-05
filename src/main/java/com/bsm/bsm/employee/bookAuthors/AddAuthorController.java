@@ -43,7 +43,6 @@ public class AddAuthorController {
             } else {
                 Author newAuthor = new Author(fullName, introduction);
                 if (authorService.add(newAuthor)) {
-                    AlertUtils.showAlert("Success", "Add author successfully.", Alert.AlertType.INFORMATION);
                     clearInputs();
                     Author a = authorService.getAuthorByName(fullName);
                     AuthorDetailController.handleAfterAdd(a);

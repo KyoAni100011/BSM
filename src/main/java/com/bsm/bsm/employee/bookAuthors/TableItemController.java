@@ -31,6 +31,7 @@ public class TableItemController {
 
     @FXML
     private void initialize() {
+        AuthorController.handleTableItemSelection(null);
     }
 
     @FXML
@@ -45,7 +46,7 @@ public class TableItemController {
 
     @FXML
     private void handleToggleSwitchClick() {
-        isOn.setUserId(id); // Pass the idLabel data to ToggleSwitch
+//        isOn.setUserId(id); // Pass the idLabel data to ToggleSwitch
         BooleanProperty oldState = isOn.switchedProperty();
         String confirmationMessage = "Are you sure you want to " + (!oldState.get() ? "enable" : "disable") + " this author?";
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
