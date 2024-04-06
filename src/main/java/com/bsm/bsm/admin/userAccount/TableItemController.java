@@ -45,7 +45,6 @@ public class TableItemController {
             System.out.println("email: " + email);
         }
     }
-
     @FXML
     private void handleToggleSwitchClick() {
         BooleanProperty oldState = isOn.switchedProperty();

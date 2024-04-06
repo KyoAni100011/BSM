@@ -25,6 +25,9 @@ public class UpdatePublisherController {
     //set temp id
     String id = "44441111";
 
+    public static void handleTableItemSelection(String name) {
+        name = name;
+    }
     @FXML
     void initialize() {
         Publisher publisher = publisherService.getPublisher(id);

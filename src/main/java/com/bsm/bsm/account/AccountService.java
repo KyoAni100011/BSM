@@ -66,11 +66,7 @@ public class AccountService implements AccountController{
             default -> column;
         };
 
-        List<UserModel> listUsers = getUsers();
-        if (listUsers.isEmpty()) {
-            listUsers = accountDAO.getAllUsersInfo(excludedUserId);
-        }
-
+        List<UserModel> listUsers = accountDAO.getAllUsersInfo(excludedUserId);
         listUsers = sort(listUsers, sortOrder.equalsIgnoreCase("asc"), column);
         return listUsers;
     }
