@@ -1,14 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import com.bsm.bsm.admin.userAccount.ToggleSwitch?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+            fx:controller="com.bsm.bsm.employee.bookPublishers.TableItemController"
+            prefHeight="400.0" prefWidth="600.0">
+    <children>
+        <ToggleButton fx:id="toggleButton" onAction="#handleRadioButtonClick" prefHeight="28.0" prefWidth="26.0" style="-fx-border-color: #F3F3F3; -fx-background-color: transparent; -fx-background-radius: 5; -fx-border-radius: 5;" styleClass="toggle-button">
+            <HBox.margin>
+                <Insets left="30.0" />
+            </HBox.margin>
+        </ToggleButton>
+        <Label fx:id="idLabel" alignment="CENTER" prefWidth="100.0" text="11115678">
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
+        </Label>
+        <Label fx:id="nameLabel" alignment="CENTER" prefWidth="150.0" text="Nguyen Phan Minh Triet">
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
+        </Label>
+        <Label fx:id="introductionLabel" alignment="CENTER" prefHeight="18.0" prefWidth="300.0" text="npmtriet.admin@bms.com">
+            <HBox.margin>
+                <Insets right="20.0" />
+            </HBox.margin>
+        </Label>
+        <ToggleSwitch fx:id="isOn" alignment="CENTER" onMouseClicked="#handleToggleSwitchClick" />
+    </children>
 
 </AnchorPane>
