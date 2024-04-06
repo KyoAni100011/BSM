@@ -32,7 +32,14 @@ import java.util.ResourceBundle;
 public class UserAccountController implements Initializable {
     private static String email;
     private final ToggleGroup toggleGroup = new ToggleGroup();
-    private final int itemsPerPage = 9;
+    private final AdminModel adminInfo = (AdminModel) UserSingleton.getInstance().getUser();
+    private final AccountService accountService = new AccountService();
+    @FXML
+    private VBox pnItems;
+    @FXML
+    private Button refreshButton;
+    @FXML
+    private TextField inputSearch;
     @FXML
     public Button employeeButton, adminButton, addUserButton, passwordResetButton, updateUserButton;
     @FXML
@@ -41,18 +48,14 @@ public class UserAccountController implements Initializable {
     public Button idLabel, nameLabel, emailLabel, lastLoginLabel, actionLabel;
     @FXML
     public SVGPath idSortLabel, nameSortLabel, emailSortLabel, lastLoginSortLabel, actionSortLabel;
-    private final AdminModel adminInfo = (AdminModel) UserSingleton.getInstance().getUser();
-    private final AccountService accountService = new AccountService();
-    private List<UserModel> users = null;
+
+    public List<UserModel> users = null;
     private String sortOrder = "ASC";
     private String column = "id";
     private String role;
     private int currentPage = 1;
     private String inputSearchText = "";
-    @FXML
-    private VBox pnItems;
-    @FXML
-    private TextField inputSearch;
+
 
     static void handleTableItemSelection(String userEmail) {
         email = userEmail; // Store the selected user
@@ -78,6 +81,17 @@ public class UserAccountController implements Initializable {
         });
     }
 
+    private void loadAllUsers() {
+        users = accountService.getAllUsersBySortInfo(adminInfo.getId(), sortOrder, column);
+        adminInfo.setUsers(users);
+
+        try {
+            role = ".employee@bms.com";
+            updateUsersList();
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
     private void initializeButtonsAndLabels() {
         employeeButton.getStyleClass().add("profile-setting-button");
         updateButtonStyle(employeeButton);
@@ -102,18 +116,6 @@ public class UserAccountController implements Initializable {
         adminButton.setOnAction(this::handleAdminButton);
     }
 
-    private void loadAllUsers() {
-        users = accountService.getAllUsersBySortInfo(adminInfo.getId(), sortOrder, column);
-        adminInfo.setUsers(users);
-
-        try {
-            role = ".employee@bms.com";
-            updateUsersList();
-        } catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
-
     private void initializePaginationButtons() {
         firstPaginationButton.setOnAction(this::handlePaginationButton);
         secondPaginationButton.setOnAction(this::handlePaginationButton);
@@ -132,7 +134,6 @@ public class UserAccountController implements Initializable {
             updateUsersList();
             updateButtonStyle(employeeButton);
         } catch (IOException e) {
-            e.printStackTrace();
             AlertUtils.showAlert("Error", "Error loading employee users", Alert.AlertType.ERROR);
         }
     }
@@ -166,6 +167,11 @@ public class UserAccountController implements Initializable {
     }
 
     @FXML
+    void handleRefreshButton(ActionEvent event) {
+        loadAllUsers();
+    }
+
+    @FXML
     private void handleUpdateUserButton(ActionEvent event) {
         try {
             if (email != null) {
@@ -175,7 +181,6 @@ public class UserAccountController implements Initializable {
                 AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
             }
         } catch (IOException e) {
-            e.printStackTrace();
             AlertUtils.showAlert("Error", "Error loading updateUser FXML", Alert.AlertType.ERROR);
         }
     }
@@ -183,9 +188,8 @@ public class UserAccountController implements Initializable {
     @FXML
     private void handleAddUserButton(ActionEvent event) {
         try {
-            FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/addUser");
-            users = accountService.getAllUsersBySortInfo(UserSingleton.getInstance().getUser().getId(), sortOrder, column);
-            updateUsersList();
+            Stage stage = new Stage();
+            FXMLLoaderHelper.loadFXML(stage, "admin/userAccount/addUser");
         } catch (IOException e) {
             e.printStackTrace();
             AlertUtils.showAlert("Error", "Error loading addUser FXML", Alert.AlertType.ERROR);
@@ -218,62 +222,6 @@ public class UserAccountController implements Initializable {
             }
         }
     }
-
-    private void updateButtonStyle(Button activeButton) {
-        
-        if (activeButton == employeeButton) {
-            employeeButton.getStyleClass().remove("profile-setting-button-admin");
-            employeeButton.getStyleClass().add("profile-setting-button-admin");
-            adminButton.getStyleClass().remove("profile-setting-button-admin");
-        } else {
-            adminButton.getStyleClass().remove("profile-setting-button-admin");
-            adminButton.getStyleClass().add("profile-setting-button-admin");
-            employeeButton.getStyleClass().remove("profile-setting-button-admin");
-        }
-    }
-
-    private void updateUsersList() throws IOException {
-        pnItems.getChildren().clear();
-        int startIndex = (currentPage - 1) * itemsPerPage;
-        int totalUserCountForRole = getTotalUserCountForRole(role);
-        int endIndex = Math.min(startIndex + itemsPerPage, totalUserCountForRole);
-        int totalCount = 0;
-
-        for (int i = startIndex; i < users.size() && totalCount < endIndex; i++) {
-            UserModel user = users.get(i);
-            if ((user instanceof EmployeeModel && role.equals(".employee@bms.com")) ||
-                    (user instanceof AdminModel && role.equals(".admin@bms.com"))) {
-                totalCount++;
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/admin/userAccount/tableItem.fxml"));
-                    Node item = fxmlLoader.load();
-                    TableItemController tableItemController = fxmlLoader.getController();
-                    tableItemController.setToggleGroup(toggleGroup);
-                    tableItemController.setUserModel(user);
-                    pnItems.getChildren().add(item);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        System.out.println("\n\n");
-
-        int totalPages = (int) Math.ceil((double) totalUserCountForRole / itemsPerPage);
-        updatePaginationButtons(totalPages);
-    }
-
-    private int getTotalUserCountForRole(String role) {
-        int count = 0;
-        for (UserModel user : users) {
-            if ((user instanceof EmployeeModel && role.equals(".employee@bms.com")) ||
-                    (user instanceof AdminModel && role.equals(".admin@bms.com"))) {
-                count++;
-            }
-        }
-        return count;
-    }
-
 
     private void updatePaginationButtons(int totalPages) {
         // Clear all pagination buttons visibility
@@ -321,6 +269,68 @@ public class UserAccountController implements Initializable {
             nextPaginationButton.setDisable(true);
         }
     }
+
+    private void updateButtonStyle(Button activeButton) {
+
+        if (activeButton == employeeButton) {
+            employeeButton.getStyleClass().remove("profile-setting-button-admin");
+            employeeButton.getStyleClass().add("profile-setting-button-admin");
+            adminButton.getStyleClass().remove("profile-setting-button-admin");
+        } else {
+            adminButton.getStyleClass().remove("profile-setting-button-admin");
+            adminButton.getStyleClass().add("profile-setting-button-admin");
+            employeeButton.getStyleClass().remove("profile-setting-button-admin");
+        }
+    }
+
+    void updateListAfterChanging() throws IOException {
+        users = accountService.view(adminInfo.getId());
+        updateUsersList();
+    }
+
+    private void updateUsersList() throws IOException {
+        pnItems.getChildren().clear();
+        int itemsPerPage = 9;
+        int startIndex = (currentPage - 1) * itemsPerPage;
+        int totalUserCountForRole = getTotalUserCountForRole(role);
+        int endIndex = Math.min(startIndex + itemsPerPage, totalUserCountForRole);
+        int totalCount = 0;
+
+        for (int i = startIndex; i < users.size() && totalCount < endIndex; i++) {
+            UserModel user = users.get(i);
+            if ((user instanceof EmployeeModel && role.equals(".employee@bms.com")) ||
+                    (user instanceof AdminModel && role.equals(".admin@bms.com"))) {
+                totalCount++;
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/admin/userAccount/tableItem.fxml"));
+                    Node item = fxmlLoader.load();
+                    TableItemController tableItemController = fxmlLoader.getController();
+                    tableItemController.setToggleGroup(toggleGroup);
+                    tableItemController.setUserModel(user);
+                    pnItems.getChildren().add(item);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        System.out.println("\n\n");
+
+        int totalPages = (int) Math.ceil((double) totalUserCountForRole / itemsPerPage);
+        updatePaginationButtons(totalPages);
+    }
+
+    private int getTotalUserCountForRole(String role) {
+        int count = 0;
+        for (UserModel user : users) {
+            if ((user instanceof EmployeeModel && role.equals(".employee@bms.com")) ||
+                    (user instanceof AdminModel && role.equals(".admin@bms.com"))) {
+                count++;
+            }
+        }
+        return count;
+    }
+
 
     @FXML
     private void handleLabelClick(MouseEvent event) {

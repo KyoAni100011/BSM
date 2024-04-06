@@ -165,11 +165,15 @@ public class BookCategoriesController implements Initializable {
         }
     }
 
+    static void handleTableItemSelection(String authorName) {
+        name = authorName; // Store the selected user
+    }
+
     @FXML
     void handleUpdatePublisherButton(ActionEvent event) {
         try {
             if (name != null) {
-                UpdateCategoryController.handleTableItemSelection(name);
+                //UpdateCategoryController.handleTableItemSelection(name);
                 FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/updateAuthor");
             } else {
                 AlertUtils.showAlert("Error", "Can't find author", Alert.AlertType.ERROR);
@@ -180,9 +184,6 @@ public class BookCategoriesController implements Initializable {
         }
     }
 
-    static void handleTableItemSelection(String authorName) {
-        name = authorName; // Store the selected user
-    }
     private void updateUsersList() throws IOException {
         pnItems.getChildren().clear();
         int startIndex = (currentPage - 1) * itemsPerPage;

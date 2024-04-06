@@ -32,21 +32,34 @@ public class PublisherDAO {
         }, id);
         return publisher.get();
     }
+    public Publisher getPublisherByName(String name) {
+        AtomicReference<Publisher> publisher = new AtomicReference<>();
+        String QUERY_PUBLISHER = "select * from publisher where name = ?";
+        DatabaseConnection.executeQuery(QUERY_PUBLISHER, resultSet -> {
+            if (resultSet != null && resultSet.next()) {
+                String id = resultSet.getString("id");
+                String address = resultSet.getString("address");
+                boolean isEnabled = resultSet.getBoolean("isEnabled");
+                publisher.set(new Publisher(id, name, address, isEnabled));
+            }
+        }, name);
+        return publisher.get();
+    }
 
     public Publisher search(String keyword) {
         // Implement search logic
         return null;
     }
 
-    public boolean checkPublisherExists(String name) {
+    public boolean checkPublisherExists(String name, String id) {
         AtomicBoolean hasExisted = new AtomicBoolean(false);
-        String QUERY_PUBLISHER = "select 1 from publisher where name = ?";
+        String QUERY_PUBLISHER = "select 1 from publisher where name = ? and id != ?";
 
         DatabaseConnection.executeQuery(QUERY_PUBLISHER, resultSet -> {
             if (resultSet != null && resultSet.next()) {
                 hasExisted.set(true);
             }
-        }, name);
+        }, name, id);
         return hasExisted.get();
     }
 }

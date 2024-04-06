@@ -1,47 +1,48 @@
 package com.bsm.bsm.employee.bookCategories;
 
+import com.bsm.bsm.admin.userAccount.UserDetailController;
+import com.bsm.bsm.author.Author;
+import com.bsm.bsm.author.AuthorService;
 import com.bsm.bsm.category.Category;
 import com.bsm.bsm.category.CategoryService;
-import com.bsm.bsm.publisher.Publisher;
-import com.bsm.bsm.publisher.PublisherService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class CategoryDetailController {
+    @FXML
+    public TextField nameField;
+    @FXML
+    public TextArea descriptionField;
+    @FXML
+    public TextField idField;
+    @FXML
+    public Button isEnabledLabel;
 
-    @FXML
-    private static String id;
-    private final CategoryService categoryService;
-    @FXML
-    private TextField IDField;
-    @FXML
-    private TextField introductionField;
-    @FXML
-    private Button isEnabledLabel;
-    @FXML
-    private TextField nameField;
-    private Category categoryDetail;
+    private static Category categoryDetail = null;
 
-    public CategoryDetailController() {
-        categoryService = new CategoryService();
-    }
-
-    static void handleTableItemSelection(String authorID) {
-        id = authorID;
-    }
+    private static final CategoryService categoryService =  new CategoryService();;
+    private static String id ="55551111";
 
     @FXML
     public void initialize() {
         new CategoryDetailController();
+        setCategoryInfo();
+    }
+    static void handleTableItemSelection(String myId) {
+        id = myId;
         categoryDetail = categoryService.getCategory(id);
-        setPublisherInfo();
+
+    }
+    static void handleAfterAdd(Category category) {
+        categoryDetail = category;
     }
 
-    private void setPublisherInfo() {
-        IDField.setText(categoryDetail.getId());
+    private void setCategoryInfo() {
+        idField.setText(categoryDetail.getId());
         nameField.setText(categoryDetail.getName());
-        introductionField.setText(categoryDetail.getDescription());
+        descriptionField.setText(categoryDetail.getDescription());
         isEnabledLabel.setText(categoryDetail.isEnabled() ? "Enable" : "Disable");
         if (categoryDetail.isEnabled()) {
             isEnabledLabel.getStyleClass().add("enable-button");

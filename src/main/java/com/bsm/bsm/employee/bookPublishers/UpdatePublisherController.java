@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.text.ParseException;
@@ -16,7 +17,9 @@ public class UpdatePublisherController {
     @FXML
     Label fullNameErrorLabel, addressErrorLabel;
     @FXML
-    TextField fullNameField, addressTextField;
+    TextField fullNameField;
+    @FXML
+    TextArea addressTextField;
     private final PublisherService publisherService = new PublisherService();
 
     //set temp id
@@ -49,7 +52,7 @@ public class UpdatePublisherController {
             }
 
             //check if publisher already exists
-            if (publisherService.checkPublisherExists(fullName)) {
+            if (publisherService.checkPublisherExists(fullName, id)) {
                 fullNameErrorLabel.setText("Publisher already exists.");
                 return;
             }

@@ -43,6 +43,7 @@ public class UserDetailController {
         userDetailController = new AuthService();
     }
 
+
     @FXML
     public void initialize() {
         new UserDetailController();

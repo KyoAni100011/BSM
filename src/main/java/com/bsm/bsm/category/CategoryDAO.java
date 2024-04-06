@@ -21,6 +21,21 @@ public class CategoryDAO {
         return category.get();
     }
 
+    public Category getCategoryByName(String name) {
+        AtomicReference<Category> category = new AtomicReference<>();
+        String QUERY_CATEGORY = "select * from category where name = ?";
+        DatabaseConnection.executeQuery(QUERY_CATEGORY, resultSet -> {
+            if (resultSet != null && resultSet.next()) {
+                String id = resultSet.getString("id");
+                String description = resultSet.getString("description");
+                boolean isEnabled = resultSet.getBoolean("isEnabled");
+                category.set(new Category(id, name, description, isEnabled));
+            }
+        }, name);
+        return category.get();
+    }
+
+
     public boolean updateCategory(String id, String newName, String description) {
         String QUERY_CATEGORY = "update category set name = ?, description = ? where id = ?";
         int rowsAffected = DatabaseConnection.executeUpdate(QUERY_CATEGORY, newName, description, id);
@@ -32,14 +47,14 @@ public class CategoryDAO {
         return null;
     }
 
-    public boolean checkCategoryExists(String name) {
+    public boolean checkCategoryExists(String name, String id) {
         AtomicBoolean hasExisted = new AtomicBoolean(false);
-        String QUERY_CHECK_CATEGORY = "select 1 from category where name = ?";
+        String QUERY_CHECK_CATEGORY = "select 1 from category where name = ? and id != ?";
         DatabaseConnection.executeQuery(QUERY_CHECK_CATEGORY, resultSet -> {
             if (resultSet != null && resultSet.next()) {
                 hasExisted.set(true);
             }
-        }, name);
+        }, name, id);
         return hasExisted.get();
     }
 

@@ -6,8 +6,6 @@ import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
 import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -30,7 +28,7 @@ public class TableItemController {
     private Label idLabel, nameLabel, emailLabel, lastLoginLabel,dobLabel, phoneLabel, addressLabel;
     private String email;
     private ToggleGroup toggle;
-    @FXML
+
     private UserModel userModel;
 
 
@@ -43,6 +41,7 @@ public class TableItemController {
             UserAccountController.handleTableItemSelection(null);
         } else {
             UserAccountController.handleTableItemSelection(email);
+            System.out.println("email: " + email);
         }
     }
     @FXML

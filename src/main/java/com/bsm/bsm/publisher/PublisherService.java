@@ -14,6 +14,10 @@ public class PublisherService implements Activable, Searchable<Publisher>, Sorta
         return publisherDAO.getPublisher(id);
     }
 
+    public Publisher getPublisherByName(String name) {
+        return publisherDAO.getPublisherByName(name);
+    }
+
     public boolean isEnabled(String id) {
         return getPublisher(id).isEnabled();
     }
@@ -40,8 +44,12 @@ public class PublisherService implements Activable, Searchable<Publisher>, Sorta
         return publisherDAO.addPublisher(item.getName(), item.getAddress());
     }
 
+    public boolean checkPublisherExists(String name, String id) {
+        return publisherDAO.checkPublisherExists(name, id);
+    }
+
     public boolean checkPublisherExists(String name) {
-        return publisherDAO.checkPublisherExists(name);
+        return checkPublisherExists(name, "");
     }
 
     @Override

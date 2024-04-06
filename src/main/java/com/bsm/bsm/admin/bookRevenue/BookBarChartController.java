@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
@@ -42,6 +43,11 @@ public class BookBarChartController {
 
         // Tạo một chuỗi chuyển đổi để định dạng giá trị trục y
         NumberAxis yAxis = (NumberAxis) bookBarChart.getYAxis();
+        CategoryAxis xAxis = (CategoryAxis) bookBarChart.getXAxis();
+        xAxis.setTickLabelRotation(-90);
+        xAxis.setTickLength(10);
+
+
         yAxis.setTickLabelFormatter(new StringConverter<Number>() {
             @Override
             public String toString(Number object) {
@@ -59,6 +65,7 @@ public class BookBarChartController {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
         });
+
 
         series.setData(data);
 

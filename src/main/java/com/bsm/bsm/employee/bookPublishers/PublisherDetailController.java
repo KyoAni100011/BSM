@@ -1,48 +1,42 @@
 package com.bsm.bsm.employee.bookPublishers;
 
-import com.bsm.bsm.admin.userAccount.UserDetailController;
-import com.bsm.bsm.author.Author;
-import com.bsm.bsm.author.AuthorService;
 import com.bsm.bsm.publisher.Publisher;
 import com.bsm.bsm.publisher.PublisherService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class PublisherDetailController {
+    @FXML
+    public TextField fullNameField;
+    @FXML
+    public TextArea addressField;
+    @FXML
+    public Button isEnabledLabel;
+    @FXML
+    public TextField iDField;
+    private static Publisher publisherDetail = null;
 
-    @FXML
-    private static String id;
-    private final PublisherService publisherService;
-    @FXML
-    private TextField IDField;
-    @FXML
-    private TextField introductionField;
-    @FXML
-    private Button isEnabledLabel;
-    @FXML
-    private TextField nameField;
-    private Publisher publisherDetail;
-
-    public PublisherDetailController() {
-        publisherService = new PublisherService();
-    }
-
-    static void handleTableItemSelection(String authorID) {
-        id = authorID;
-    }
+    private static final PublisherService publisherService = new PublisherService();;
+    private static String id ="44441111";
 
     @FXML
     public void initialize() {
-        new UserDetailController();
-        publisherDetail = publisherService.getPublisher(id);
+        new PublisherDetailController();
         setPublisherInfo();
     }
-
+    static void handleTableItemSelection(String myId) {
+        id = myId;
+        publisherDetail = publisherService.getPublisher(id);
+    }
+    static void handleAfterAdd(Publisher p) {
+        publisherDetail = p;
+    }
     private void setPublisherInfo() {
-        IDField.setText(publisherDetail.getId());
-        nameField.setText(publisherDetail.getName());
-        introductionField.setText(publisherDetail.getAddress());
+        iDField.setText(publisherDetail.getId());
+        fullNameField.setText(publisherDetail.getName());
+        addressField.setText(publisherDetail.getAddress());
         isEnabledLabel.setText(publisherDetail.isEnabled() ? "Enable" : "Disable");
         if (publisherDetail.isEnabled()) {
             isEnabledLabel.getStyleClass().add("enable-button");
