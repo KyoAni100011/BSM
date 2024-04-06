@@ -57,9 +57,11 @@ public class bookController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("hi");
         book = new ArrayList<>();
-//        book.add(new Book("1034067320125","Giao thua","44441111","",new Date(),"",true,100, BigDecimal.valueOf(61600.00)));
+        book.add(new Book("1034067320125","Giao thua","44441111","",new Date(),"",true,100, BigDecimal.valueOf(61600.00)));
+        book.add(new Book("1034067320126","Trung thu","44441111","",new Date(2020-01-01),"",true,100, BigDecimal.valueOf(61600.00)));
+        book.add(new Book("1034067320127","Giao ","44441111","",new Date(2020-01-01),"",true,100, BigDecimal.valueOf(61600.00)));
+
         initializeButtonsAndLabels();
         loadAllBooks();
         initializePaginationButtons();
@@ -129,10 +131,15 @@ public class bookController implements Initializable {
 
     @FXML
     private void handleBookButton(ActionEvent event) {
-        type = "book";
-        currentPage = 1;
-//            updateBooksList();
-        updateButtonStyle(bookButton);
+        try {
+            type = "book";
+            currentPage = 1;
+            updateBooksList();
+            updateButtonStyle(bookButton);
+        } catch (IOException e) {
+            e.printStackTrace();
+            AlertUtils.showAlert("Error", "Error loading book", Alert.AlertType.ERROR);
+        }
     }
 
     @FXML
@@ -144,7 +151,7 @@ public class bookController implements Initializable {
             updateButtonStyle(newBookButton);
         } catch (IOException e) {
             e.printStackTrace();
-            AlertUtils.showAlert("Error", "Error loading admin book", Alert.AlertType.ERROR);
+            AlertUtils.showAlert("Error", "Error loading new book", Alert.AlertType.ERROR);
         }
     }
 
@@ -157,7 +164,7 @@ public class bookController implements Initializable {
             updateButtonStyle(outOfStockBookButton);
         } catch (IOException e) {
             e.printStackTrace();
-            AlertUtils.showAlert("Error", "Error loading admin book", Alert.AlertType.ERROR);
+            AlertUtils.showAlert("Error", "Error loading out of stock book", Alert.AlertType.ERROR);
         }
     }
 
@@ -286,17 +293,21 @@ public class bookController implements Initializable {
     private void updateButtonStyle(Button activeButton) {
 
         if (activeButton == bookButton) {
+            bookButton.getStyleClass().remove("profile-setting-button-admin");
             outOfStockBookButton.getStyleClass().remove("profile-setting-button-admin");
-            bookButton.getStyleClass().add("profile-setting-button-admin");
             newBookButton.getStyleClass().remove("profile-setting-button-admin");
+            bookButton.getStyleClass().add("profile-setting-button-admin");
         }else if (activeButton == newBookButton) {
             outOfStockBookButton.getStyleClass().remove("profile-setting-button-admin");
-            newBookButton.getStyleClass().add("profile-setting-button-admin");
             bookButton.getStyleClass().remove("profile-setting-button-admin");
-        } else {
             newBookButton.getStyleClass().remove("profile-setting-button-admin");
-            outOfStockBookButton.getStyleClass().add("profile-setting-button-admin");
+            newBookButton.getStyleClass().add("profile-setting-button-admin");
+        } else {
+            outOfStockBookButton.getStyleClass().remove("profile-setting-button-admin");
+            newBookButton.getStyleClass().remove("profile-setting-button-admin");
             bookButton.getStyleClass().remove("profile-setting-button-admin");
+            outOfStockBookButton.getStyleClass().add("profile-setting-button-admin");
+
         }
     }
 
@@ -310,7 +321,7 @@ public class bookController implements Initializable {
 
         for (int i = startIndex; i < book.size() && totalCount < endIndex; i++) {
             Book b = book.get(i);
-            if (Objects.equals(type, "book") || Objects.equals(type, "newBook") || Objects.equals(type, "outOfStockBook") ){
+            if ((isNormalBook(b) && Objects.equals(type, "book")) || ( isNewBook(b) && Objects.equals(type, "newBook") )|| ( isOutOfStockBook(b) &&   Objects.equals(type, "outOfStockBook"))){
                 totalCount++;
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/book/tableItem.fxml"));
@@ -334,12 +345,25 @@ public class bookController implements Initializable {
     private int getTotalBookCountForRole(String type) {
         int count = 0;
         for (Book books : book) {
-            if (Objects.equals(type, "book") || Objects.equals(type, "newBook") || Objects.equals(type, "outOfStockBook"))
+            if ((isNormalBook(books) && Objects.equals(type, "book")) || ( isNewBook(books) && Objects.equals(type, "newBook") )|| ( isOutOfStockBook(books) &&   Objects.equals(type, "outOfStockBook")))
             {
                 count++;
             }
         }
         return count;
+    }
+    private boolean isNewBook(Book thisBook){
+        Date futureDate = thisBook.getPublishingDate();
+        futureDate.setMonth(futureDate.getMonth() + 2);
+        Calendar calendar = Calendar.getInstance();
+        Date today = new Date(calendar.getTimeInMillis());
+        return futureDate.compareTo(today) > 0;
+    }
+    private boolean isOutOfStockBook(Book thisBook){
+        return !(thisBook.getQuantity() > 0);
+    }
+    private boolean isNormalBook(Book thisBook){
+        return !(isOutOfStockBook(thisBook) || isNewBook(thisBook));
     }
 
 

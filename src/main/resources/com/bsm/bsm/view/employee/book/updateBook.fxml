@@ -14,7 +14,7 @@
    <children>
       <Label fx:id="bookNameErrorLabel" layoutX="76.0" layoutY="169.0" prefHeight="17.0" prefWidth="307.0" styleClass="error-label" />
       <Label fx:id="authorErrorLabel" layoutX="77.0" layoutY="244.0" prefHeight="17.0" prefWidth="216.0" styleClass="error-label" />
-      <Label fx:id="quantityErrorLabel" layoutX="78.0" layoutY="415.0" prefHeight="17.0" prefWidth="235.0" styleClass="error-label" />
+      <Label fx:id="quantityErrorLabel" layoutX="78.0" layoutY="415.0" prefHeight="17.0" prefWidth="217.0" styleClass="error-label" />
       <Label fx:id="publisherErrorLabel" layoutX="76.0" layoutY="330.0" prefHeight="17.0" prefWidth="199.0" styleClass="error-label" />
 
       <Label layoutX="76.0" layoutY="108.0" styleClass="label-bold" text="Book Name">
@@ -32,7 +32,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="320.0" layoutY="438.0" styleClass="label-bold" text="Release date">
+      <Label layoutX="316.0" layoutY="269.0" styleClass="label-bold" text="Release date">
          <font>
             <Font size="18.0" />
          </font>
@@ -40,7 +40,7 @@
 
       <TextField fx:id="fullNameField" layoutX="75.0" layoutY="129.0" prefHeight="40.0" prefWidth="450.0" promptText="Enter your full name" styleClass="input-field-add" />
       <TextField fx:id="publisherNameField" layoutX="75.0" layoutY="290.0" prefHeight="40.0" prefWidth="217.0" promptText="Enter publisher name" styleClass="input-field-add" />
-      <DatePicker fx:id="releaseDatePicker" layoutX="319.0" layoutY="458.0" prefHeight="40.0" prefWidth="207.0" promptText="Select release date" styleClass="input-field-add" />
+      <DatePicker fx:id="releaseDatePicker" layoutX="317.0" layoutY="289.0" prefHeight="40.0" prefWidth="207.0" promptText="Select release date" styleClass="input-field-add" />
 
 
       <Button fx:id="saveChangesButton" layoutX="370.0" layoutY="546.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="40.0" prefWidth="153.0" styleClass="button-custom-admin" text="Save" textFill="WHITE">
@@ -64,25 +64,26 @@
          </font>
       </Label>
       <TextField fx:id="bookQuantityField" layoutX="77.0" layoutY="374.0" prefHeight="40.0" prefWidth="217.0" promptText="Enter book quantity" styleClass="input-field-add" />
-      <TextField fx:id="bookPriceField" layoutX="321.0" layoutY="374.0" prefHeight="40.0" prefWidth="207.0" promptText="Enter book price" styleClass="input-field-add" />
+      <TextField fx:id="bookPriceField" layoutX="319.0" layoutY="374.0" prefHeight="40.0" prefWidth="207.0" promptText="Enter book price" styleClass="input-field-add" />
       <Label layoutX="83.0" layoutY="436.0" styleClass="label-bold" text="Category">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <CheckComboBox fx:id="categoryCheckCombo" layoutX="78.0" layoutY="458.0" prefHeight="40.0" prefWidth="216.0" VBox.vgrow="ALWAYS">
+      <CheckComboBox fx:id="categoryCheckCombo" layoutX="78.0" layoutY="458.0" prefHeight="40.0" prefWidth="216.0" VBox.vgrow="ALWAYS" styleClass="check-combo-box">
 
       </CheckComboBox>
-      <Label fx:id="priceErrorLabel" layoutX="319.0" layoutY="415.0" prefHeight="17.0" prefWidth="235.0" styleClass="error-label" />
-      <Label fx:id="releaseErrorLabel" layoutX="319.0" layoutY="498.0" prefHeight="17.0" prefWidth="216.0" styleClass="error-label" />
-      <CheckComboBox fx:id="authorNameCheckCombo" layoutX="77.0" layoutY="203.0" prefHeight="40.0" prefWidth="450.0" />
-      <Label layoutX="319.0" layoutY="268.0" styleClass="label-bold" text="Language">
+      <Label fx:id="priceErrorLabel" layoutX="319.0" layoutY="415.0" prefHeight="17.0" prefWidth="207.0" styleClass="error-label" />
+      <Label fx:id="releaseErrorLabel" layoutX="319.0" layoutY="499.0" prefHeight="17.0" prefWidth="216.0" styleClass="error-label" />
+      <CheckComboBox fx:id="authorNameCheckCombo" layoutX="77.0" layoutY="203.0" prefHeight="40.0" prefWidth="450.0"  styleClass="check-combo-box"/>
+      <Label layoutX="321.0" layoutY="438.0" styleClass="label-bold" text="Language">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
       <Label fx:id="languageErrorLabel" layoutX="319.0" layoutY="326.0" prefHeight="17.0" prefWidth="199.0" styleClass="error-label" />
       <Label fx:id="categoryErrorLabel" layoutX="81.0" layoutY="498.0" prefHeight="17.0" prefWidth="216.0" styleClass="error-label" />
-      <ComboBox fx:id="languageComboBox" layoutX="319.0" layoutY="289.0" prefHeight="40.0" prefWidth="207.0" />
+
+      <ComboBox fx:id="languageComboBox" layoutX="321.0" layoutY="459.0" prefHeight="40.0" prefWidth="207.0" />
    </children>
 </AnchorPane>

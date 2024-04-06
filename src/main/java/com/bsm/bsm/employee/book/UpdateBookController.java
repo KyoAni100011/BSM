@@ -1,4 +1,6 @@
 package com.bsm.bsm.employee.book;
+import com.bsm.bsm.author.Author;
+import com.bsm.bsm.book.Book;
 import org.controlsfx.control.CheckComboBox;
 import javafx.collections.ObservableList;
 import com.bsm.bsm.utils.NumericValidationUtils;
@@ -33,7 +35,7 @@ public class UpdateBookController {
     @FXML
     public void initialize() {
         ObservableList<String> items = FXCollections.observableArrayList(
-                "Item 1", "Item 2", "Item 3", "Item 4", "Item 5"
+                "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7", "Item 8", "Item 9","Item 10", "Item 11", "Item 12", "Item 13", "Item 14"
         );
         categoryCheckCombo.getItems().addAll(items);
         authorNameCheckCombo.getItems().addAll(items);
@@ -138,5 +140,15 @@ public class UpdateBookController {
 
     private void clearInputs() {
 
+    }
+    private void setBookInfo(Book thisBook) {
+
+        fullNameField.setText(thisBook.getTitle());
+        publisherNameField.setText(thisBook.getPublisherId());
+        bookPriceField.setText(String.valueOf(thisBook.getSalePrice()));
+        bookQuantityField.setText(String.valueOf(thisBook.getQuantity()));
+        authorNameCheckCombo.getCheckModel().checkIndices(0, 2, 4);
+        categoryCheckCombo.getCheckModel().checkIndices(0, 2, 4);
+        languageComboBox.setValue("Tieng Viet");
     }
 }
