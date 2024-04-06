@@ -2,6 +2,7 @@ package com.bsm.bsm.book;
 
 import com.bsm.bsm.commonInterface.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class BookService implements Activable, Searchable<Book>, Sortable<Book>, Updatable<Book>, Addable<Book> {
@@ -36,5 +37,15 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
 
         return state;
     }
+
+    public Book getBookByISBN(String isbn) {
+        return bookDAO.getBookByISBN(isbn);
+    }
+
+    public boolean isSalePriceValid(Book book, BigDecimal salePrice) {
+        return bookDAO.isSalePriceValid(book, salePrice);
+    }
+
+
 }
 

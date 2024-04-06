@@ -23,8 +23,8 @@ public class Publisher {
         this("", name, address, true);
     }
 
-    public Publisher(String name) {
-        this("", name, "", true);
+    public Publisher(String id, String name, boolean isEnabled) {
+        this(id, name, "", isEnabled);
     }
 
     // Getters and setters

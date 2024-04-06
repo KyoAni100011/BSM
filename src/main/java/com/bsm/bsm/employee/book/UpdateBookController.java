@@ -1,49 +1,94 @@
 package com.bsm.bsm.employee.book;
+
 import com.bsm.bsm.author.Author;
+import com.bsm.bsm.author.AuthorService;
 import com.bsm.bsm.book.Book;
-import org.controlsfx.control.CheckComboBox;
-import javafx.collections.ObservableList;
+import com.bsm.bsm.book.BookService;
+import com.bsm.bsm.category.Category;
+import com.bsm.bsm.category.CategoryService;
+import com.bsm.bsm.publisher.Publisher;
+import com.bsm.bsm.publisher.PublisherService;
+import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.NumericValidationUtils;
 import com.bsm.bsm.utils.ValidationUtils;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import org.controlsfx.control.CheckComboBox;
 
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UpdateBookController {
     @FXML
-    public Label bookNameErrorLabel,languageErrorLabel,categoryErrorLabel,authorErrorLabel,quantityErrorLabel,publisherErrorLabel,priceErrorLabel,releaseErrorLabel;
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     @FXML
-    public TextField fullNameField, publisherNameField,bookQuantityField, bookPriceField;
+    public Label bookNameErrorLabel, languageErrorLabel, categoryErrorLabel, authorErrorLabel, quantityErrorLabel, publisherErrorLabel, priceErrorLabel, releaseErrorLabel;
     @FXML
-    public CheckComboBox<String> authorNameCheckCombo , categoryCheckCombo;
+    public TextField fullNameField, publisherNameField, bookQuantityField, bookPriceField;
+    @FXML
+    public CheckComboBox<String> authorNameCheckCombo, categoryCheckCombo;
     @FXML
     public ComboBox languageComboBox;
     @FXML
     public Button saveChangesButton;
     @FXML
     private DatePicker releaseDatePicker;
+    Book book;
+    private BookService bookService = new BookService();
+    private CategoryService categoryService = new CategoryService();
+    private AuthorService authorService = new AuthorService();
+    private PublisherService publisherService = new PublisherService();
 
-    @FXML
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    // assume id book
+    String bookID = "66661111";
 
     @FXML
     public void initialize() {
-        ObservableList<String> items = FXCollections.observableArrayList(
-                "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7", "Item 8", "Item 9","Item 10", "Item 11", "Item 12", "Item 13", "Item 14"
+        book = bookService.getBookByISBN(bookID);
+        ObservableList<String> categorieItems = FXCollections.observableArrayList();
+        for (var item: categoryService.getAllCategories()) {
+            categorieItems.add(item.getName());
+        }
+
+        ObservableList<String> authorItems = FXCollections.observableArrayList();
+        for (var item: authorService.getAllAuthors()) {
+            authorItems.add(item.getName());
+        }
+
+        ObservableList<String> languageItems = FXCollections.observableArrayList(
+                "English", "French", "Vietnamese", "Japanese", "Korean", "Spanish", "German"
         );
-        categoryCheckCombo.getItems().addAll(items);
-        authorNameCheckCombo.getItems().addAll(items);
-        languageComboBox.setItems(items);
+
+        categoryCheckCombo.getItems().addAll(categorieItems);
+        authorNameCheckCombo.getItems().addAll(authorItems);
+        languageComboBox.setItems(languageItems);
+
+        setBookInfo(book);
         setupDatePicker();
     }
 
-        private void setupDatePicker() {
+    private void setBookInfo(Book thisBook) {
+        fullNameField.setText(thisBook.getTitle());
+        publisherNameField.setText(thisBook.getPublisher().getName());
+        bookPriceField.setText(String.valueOf(thisBook.getSalePrice()));
+        releaseDatePicker.setValue(LocalDate.now());
+        bookQuantityField.setText(String.valueOf(thisBook.getQuantity()));
+        authorNameCheckCombo.getCheckModel().checkIndices(0, 2, 4);
+        categoryCheckCombo.getCheckModel().checkIndices(0, 2, 4);
+        languageComboBox.setValue("Tieng Viet");
+    }
+
+    private void setupDatePicker() {
         releaseDatePicker.setPromptText("dd/mm/yyyy");
 
         releaseDatePicker.setConverter(new StringConverter<LocalDate>() {
@@ -61,15 +106,15 @@ public class UpdateBookController {
         releaseDatePicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
     }
 
-    private boolean validateInputs(String fullName,String release , String price, String publisher, String language, ObservableList<String> category,ObservableList<String> author, String quantity) {
+    private boolean validateInputs(String fullName, String release, String price, String publisher, String language, ObservableList<String> category, ObservableList<String> author, String quantity) {
         String bookNameError = ValidationUtils.validateFullName(fullName, "book");
-        String publisherError = ValidationUtils.validateFullName(publisher,"publisher");
-        String languageError = ValidationUtils.validateLanguage(language,"book");
-        String categoryError = ValidationUtils.validateCategory(category,"book");
-        String authorError = ValidationUtils.validateAuthor(author,"author");
-        String quantityError = ValidationUtils.validateQuantity(quantity,"book");
-        String priceError = ValidationUtils.validatePrice(price,"book");
-        String releaseError = ValidationUtils.validateReleaseDay(release,"book");
+        String publisherError = ValidationUtils.validateFullName(publisher, "publisher");
+        String languageError = ValidationUtils.validateLanguage(language, "book");
+        String categoryError = ValidationUtils.validateCategory(category, "book");
+        String authorError = ValidationUtils.validateAuthor(author, "author");
+        String quantityError = ValidationUtils.validateQuantity(quantity, "book");
+        String priceError = ValidationUtils.validatePrice(price, "book");
+        String releaseError = ValidationUtils.validateReleaseDay(release, "book");
 
         if (bookNameError != null) {
             bookNameErrorLabel.setText(bookNameError);
@@ -98,6 +143,7 @@ public class UpdateBookController {
 
         return bookNameError == null && quantityError == null && authorError == null && releaseError == null && languageError == null && publisherError == null && categoryError == null;
     }
+
     @FXML
     private void handleSaveChanges(ActionEvent event) {
         clearErrorMessages();
@@ -106,24 +152,35 @@ public class UpdateBookController {
         String publisherName = publisherNameField.getText();
         String quantity = bookQuantityField.getText();
         String price = bookPriceField.getText();
-        ObservableList<String> selectedAuthor = authorNameCheckCombo.getCheckModel().getCheckedItems();
-        ObservableList<String> selectedCategory = categoryCheckCombo.getCheckModel().getCheckedItems();
-        String selectedLanguage =  (String) languageComboBox.getValue();
+        var selectedAuthor = authorNameCheckCombo.getCheckModel().getCheckedItems();
+        var selectedCategory = categoryCheckCombo.getCheckModel().getCheckedItems();
+        String selectedLanguage = (String) languageComboBox.getValue();
 
-        if (validateInputs(fullName, releaseDate, price, publisherName,selectedLanguage,selectedCategory,selectedAuthor,quantity)) {
-            System.out.println("hi");
-            // need to call ID
-//            String id = userModel.getId();
-//            if (accountService.updateUserProfile(id, fullName, phone, dob, address)){
-//                AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
-//                updateUserInformation(fullName, phone, dob, address);
-//                clearInputs();
-//                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//                // Close the stage
-//                stage.close();
-//            } else {
-//                AlertUtils.showAlert("Error", "Profile update failed.", Alert.AlertType.ERROR);
-//            }
+        if (validateInputs(fullName, releaseDate, price, publisherName, selectedLanguage, selectedCategory, selectedAuthor, quantity)) {
+            // check sale price > import price * 1.1
+            BigDecimal salePrice = new BigDecimal(price);
+            if (!bookService.isSalePriceValid(book, salePrice)) {
+                priceErrorLabel.setText("Sale price must be greater than import price 10%");
+                return;
+            }
+
+            Publisher publiser = publisherService.getPublisherByName(publisherName);
+            List<Category> categories = new ArrayList<>();
+            for (var item: selectedCategory) {
+                categories.add(categoryService.getCategoryByName(item));
+            }
+
+            List<Author> authors = new ArrayList<>();
+            for (var item: selectedAuthor) {
+                authors.add(authorService.getAuthorByName(item));
+            }
+
+            categories.forEach(System.out::println);
+            authors.forEach(System.out::println);
+
+//            int quantityInt = Integer.parseInt(quantity);
+//            bookService.update(new Book(book.getIsbn(), fullName, publiser, releaseDate, selectedLanguage, true,
+//                    quantityInt, salePrice, authors, categories));
         }
     }
 
@@ -140,15 +197,5 @@ public class UpdateBookController {
 
     private void clearInputs() {
 
-    }
-    private void setBookInfo(Book thisBook) {
-
-        fullNameField.setText(thisBook.getTitle());
-        publisherNameField.setText(thisBook.getPublisherId());
-        bookPriceField.setText(String.valueOf(thisBook.getSalePrice()));
-        bookQuantityField.setText(String.valueOf(thisBook.getQuantity()));
-        authorNameCheckCombo.getCheckModel().checkIndices(0, 2, 4);
-        categoryCheckCombo.getCheckModel().checkIndices(0, 2, 4);
-        languageComboBox.setValue("Tieng Viet");
     }
 }

@@ -14,11 +14,16 @@ import java.util.concurrent.atomic.AtomicReference;
 public class BookDAO {
 
     private Publisher getBookPublisher(String isbn) {
-        String QUERY_PUBLISHER = "select publisher_name from book where isbn = ?";
+        String QUERY_PUBLISHER = "select p.id as publisher_id, p.name as publisher_name, p.isEnabled  from book b join publisher p on b.publisherId = p.id where isbn = ?";
         AtomicReference<Publisher> publisher = new AtomicReference<>();
 
         DatabaseConnection.executeQuery(QUERY_PUBLISHER, resultSet -> {
-            publisher.set(new Publisher(resultSet.getString("publisher_name")));
+            if (resultSet != null && resultSet.next()) {
+                String id = resultSet.getString("publisher_id");
+                String name = resultSet.getString("publisher_name");
+                boolean isEnabled = resultSet.getBoolean("isEnabled");
+                publisher.set(new Publisher(id, name, isEnabled));
+            }
         }, isbn);
 
         return publisher.get();
@@ -26,12 +31,15 @@ public class BookDAO {
 
     private List<Author> getBookAuthors(String isbn) {
         List<Author> authors = new ArrayList<>();
-        String QUERY_AUTHORS = "select a.name from book b join bookAuthor ba on b.isbn = ba.bookId join author a on ba.authorID = a.id where b.isbn = ?";
+        String QUERY_AUTHORS = "select a.id as author_id, a.name as author_name, a.isEnabled from book b join bookAuthor ba on b.isbn = ba.bookId join author a on ba.authorID = a.id where b.isbn = ?";
 
         DatabaseConnection.executeQuery(QUERY_AUTHORS, resultSet -> {
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    authors.add(new Author(resultSet.getString("author_name")));
+                    String id = resultSet.getString("author_id");
+                    String name = resultSet.getString("author_name");
+                    boolean isEnabled = resultSet.getBoolean("isEnabled");
+                    authors.add(new Author(id, name, isEnabled));
                 }
             }
         }, isbn);
@@ -41,12 +49,15 @@ public class BookDAO {
 
     private List<Category> getBookCategories(String isbn) {
         List<Category> categories = new ArrayList<>();
-        String QUERY_CATEGORIES = "select c.name from book b join bookCategory bc on b.isbn = bc.bookID join category c on bc.categoryID = c.id where b.isbn = ?";
+        String QUERY_CATEGORIES = "select c.id as category_id, c.name as category_name, c.isEnabled from book b join bookCategory bc on b.isbn = bc.bookID join category c on bc.categoryID = c.id where b.isbn = ?";
 
         DatabaseConnection.executeQuery(QUERY_CATEGORIES, resultSet -> {
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    categories.add(new Category(resultSet.getString("category_name")));
+                    String id = resultSet.getString("category_id");
+                    String name = resultSet.getString("category_name");
+                    boolean isEnabled = resultSet.getBoolean("isEnabled");
+                    categories.add(new Category(id, name, isEnabled));
                 }
             }
         }, isbn);
@@ -57,13 +68,13 @@ public class BookDAO {
     public Book getBookByISBN(String isbn) {
         List<Author> authors = getBookAuthors(isbn);
         List<Category> categories = getBookCategories(isbn);
+        Publisher publisher = getBookPublisher(isbn);
 
         AtomicReference<Book> book = new AtomicReference<>();
         String QUERY_GET_BOOK_BY_ISBN = "select * from book where isbn = ?";
         DatabaseConnection.executeQuery(QUERY_GET_BOOK_BY_ISBN, resultSet -> {
             if (resultSet != null && resultSet.next()) {
                 String title = resultSet.getString("title");
-                Publisher publisher = new Publisher(resultSet.getString("publisher_name"));
                 String publishingDate = resultSet.getString("publishingDate");
                 String languages = resultSet.getString("languages");
                 boolean isEnabled = resultSet.getBoolean("isEnabled");
@@ -77,6 +88,8 @@ public class BookDAO {
     }
 
     public boolean update(Book book) {
+        Publisher publisher = getBookPublisher(book.getIsbn());
+
         try {
             // Implement update logic
             DatabaseConnection.autoCommit(false);
@@ -88,7 +101,7 @@ public class BookDAO {
                     where isbn = ?
                     """;
             DatabaseConnection.executeUpdate(QUERY_UPDATE_BOOK,
-                    book.getTitle(), book.getPublisher().getId(), book.getPublishingDate(),
+                    book.getTitle(), publisher.getId(), book.getPublishingDate(),
                     book.getLanguages(), book.getQuantity(), book.getSalePrice(), book.getIsbn());
 
 
@@ -129,5 +142,22 @@ public class BookDAO {
     public Book search(String keyword) {
         // Implement search logic
         return null;
+    }
+
+    // check sale price > import price * 1.1
+    public boolean isSalePriceValid(Book book, BigDecimal salePrice) {
+        AtomicReference<Boolean> isValid = new AtomicReference<>(true);
+
+        String QUERY_IMPORT_PRICE = "select max(importPrice) as import_price from bookBatch where bookID = ?";
+        DatabaseConnection.executeQuery(QUERY_IMPORT_PRICE, resultSet -> {
+            if (resultSet != null && resultSet.next()) {
+                BigDecimal importPrice = resultSet.getBigDecimal("import_price");
+                if (salePrice.compareTo(importPrice.multiply(new BigDecimal("1.1"))) < 0) {
+                    isValid.set(false);
+                }
+            }
+        }, book.getIsbn());
+        
+        return isValid.get();
     }
 }

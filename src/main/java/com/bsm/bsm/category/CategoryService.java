@@ -23,7 +23,6 @@ public class CategoryService implements Activable, Searchable<Category>, Sortabl
         return categoryDAO.getCategoryByName(name);
     }
 
-
     public boolean isEnabled(String id) {
         return getCategory(id).isEnabled();
     }
@@ -67,4 +66,9 @@ public class CategoryService implements Activable, Searchable<Category>, Sortabl
     public boolean addCategory(String name, String description) {
         return categoryDAO.addCategory(name, description);
     }
+
+    public List<Category> getAllCategories() {
+        return categoryDAO.getAllCatogories();
+    }
+
 }
