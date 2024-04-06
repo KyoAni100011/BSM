@@ -121,8 +121,8 @@ public class CategoriesController implements Initializable {
     @FXML
     void handleAddCategoryButton(ActionEvent event) {
         try {
-            FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/addAuthor");
-            //update authors list after adding new author
+            FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookCategories/addCategory");
+            //update categories list after adding new category
 //            categories = categoryService.getAllCategory();
             updateCategoryList();
         } catch (IOException e) {
@@ -142,6 +142,11 @@ public class CategoriesController implements Initializable {
         } catch (IOException e) {
             AlertUtils.showAlert("Error", "Error loading update Category FXML", Alert.AlertType.ERROR);
         }
+    }
+
+    @FXML
+    void handleRefreshButton(ActionEvent event) {
+        loadAllCategory();
     }
 
     //-------------------
@@ -240,8 +245,8 @@ public class CategoriesController implements Initializable {
         Button clickedLabel = (Button) event.getSource();
         String columnName = clickedLabel.getText().toLowerCase();
 
-        column = column.equals("author") ? "name" : column;
-        columnName = columnName.equals("author") ? "name" : columnName;
+        column = column.equals("category") ? "name" : column;
+        columnName = columnName.equals("category") ? "name" : columnName;
 
         System.out.println(sortOrder);
 

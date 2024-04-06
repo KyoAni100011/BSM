@@ -116,6 +116,11 @@ public class AuthorController implements Initializable {
     }
 
     @FXML
+    void handleRefreshButton(ActionEvent event) {
+        loadAllAuthors();
+    }
+
+    @FXML
     void handleAddAuthorButton(ActionEvent event) {
         try {
             FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/addAuthor");
