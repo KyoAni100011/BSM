@@ -18,9 +18,16 @@ public class UpdateCategoryController {
     @FXML
     private TextField nameField, descriptionField;
 
+    @FXML
+    private static String name;
+
     private final CategoryService categoryService = new CategoryService();
 
     String id = "55551111"; //set temp id, need to get id from table view
+
+    public static void handleTableItemSelection(String name) {
+        name = name;
+    }
 
     @FXML
     public void initialize() {
