@@ -2,13 +2,11 @@ package com.bsm.bsm.employee.bookAuthors;
 
 
 import com.bsm.bsm.admin.userAccount.ToggleSwitch;
-import com.bsm.bsm.admin.userAccount.UserAccountController;
 import com.bsm.bsm.author.Author;
 import com.bsm.bsm.author.AuthorService;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
 import javafx.beans.property.BooleanProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
@@ -40,7 +38,6 @@ public class TableItemController {
             AuthorController.handleTableItemSelection(null);
         } else {
             AuthorController.handleTableItemSelection(id);
-            System.out.println("id: " + id);
     }
 }
 
@@ -97,4 +94,5 @@ public class TableItemController {
         introductionLabel.setText(author.getIntroduction());
         isOn.setSwitchedProperty(author.isEnabled());
     }
+
 }

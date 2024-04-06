@@ -21,6 +21,10 @@ public class Author {
         this("", name, introduction, true);
     }
 
+    public Author(String name) {
+        this("", name, "", true);
+    }
+
     public String getId() {
         return id;
     }

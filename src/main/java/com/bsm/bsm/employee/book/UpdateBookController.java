@@ -1,25 +1,17 @@
 package com.bsm.bsm.employee.book;
 import org.controlsfx.control.CheckComboBox;
 import javafx.collections.ObservableList;
-import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.NumericValidationUtils;
 import com.bsm.bsm.utils.ValidationUtils;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
 import javafx.util.StringConverter;
-import org.controlsfx.control.CheckComboBox;
-import org.controlsfx.control.textfield.AutoCompletionBinding;
-import org.controlsfx.control.textfield.TextFields;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import org.controlsfx.control.textfield.TextFields;
 
 public class UpdateBookController {
     @FXML

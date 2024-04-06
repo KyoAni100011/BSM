@@ -59,7 +59,7 @@ public class bookController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("hi");
         book = new ArrayList<>();
-        book.add(new Book("1034067320125","Giao thua","44441111","",new Date(),"",true,100, BigDecimal.valueOf(61600.00)));
+//        book.add(new Book("1034067320125","Giao thua","44441111","",new Date(),"",true,100, BigDecimal.valueOf(61600.00)));
         initializeButtonsAndLabels();
         loadAllBooks();
         initializePaginationButtons();

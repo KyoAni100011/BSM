@@ -23,6 +23,10 @@ public class Publisher {
         this("", name, address, true);
     }
 
+    public Publisher(String name) {
+        this("", name, "", true);
+    }
+
     // Getters and setters
     public String getId() {
         return id;

@@ -55,4 +55,20 @@ public class DatabaseConnection {
             preparedStatement.setObject(i + 1, parameters[i]);
         }
     }
+
+    public static void autoCommit(boolean autoCommit) throws SQLException {
+        getConnection().setAutoCommit(autoCommit);
+    }
+
+    public static void commit() throws SQLException {
+        getConnection().commit();
+    }
+
+    public static void rollback() {
+        try {
+            getConnection().rollback();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

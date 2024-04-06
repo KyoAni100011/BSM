@@ -1,4 +1,4 @@
- drop database if exists book_store_db;
+ -- drop database if exists book_store_db;
 create database book_store_db;
 use book_store_db;
 
@@ -50,7 +50,7 @@ create table category (
 
 create table book (
     isbn int auto_increment primary key,
-    title varchar(255) not null,
+    title unique varchar(255) not null,
     publisherID int not null,
     publishingDate date not null,
     languages varchar(255) not null,
