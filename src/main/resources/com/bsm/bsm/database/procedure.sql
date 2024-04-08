@@ -38,7 +38,14 @@ BEGIN
     END IF;
 END; //
 
-DELIMITER ;
-
-
-CALL ADDUSER('ha', '1999-01-01', 'ha.admin@bms.com', '123 abc', '123456', 'admin');
+-- DELIMITER ;
+-- -- CALL ADDUSER('ha', '1999-01-01', 'ha.admin@bms.com', '123 abc', '123456', 'admin');
+-- DROP PROCEDURE IF EXISTS UPDATEBOOK;
+-- DELIMITER //
+-- CREATE PROCEDURE UPDATEBOOK (
+--     IN book_isbn_param INT)
+-- BEGIN
+--
+-- END;
+-- DELIMITER ;
+-- call getbook(66661120);

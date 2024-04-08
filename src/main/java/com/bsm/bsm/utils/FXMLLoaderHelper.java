@@ -25,4 +25,6 @@ public class FXMLLoaderHelper {
         currentStage.setScene(scene);
         currentStage.show();
     }
+
+
 }

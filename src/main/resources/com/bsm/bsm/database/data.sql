@@ -44,6 +44,9 @@ insert into author (name, introduction) values ('Neil deGrasse Tyson', 'Neil deG
 insert into author (name, introduction) values ('Noam Chomsky', 'Noam Chomsky was born on December 7, 1928 in Philadelphia, Pennsylvania, U.S. He is an American linguist, philosopher, cognitive scientist, historian, social critic, and political activist. He is the author of many famous works such as: Manufacturing Consent, Hegemony or Survival, ...');
 insert into author (name, introduction) values ('Pablo Picasso', 'Pablo Picasso was born on October 25, 1881 in Malaga, Spain. He was a Spanish painter, sculptor, printmaker, ceramicist, and stage designer. He is the author of many famous works such as: Guern');
 insert into author (name, introduction) values ('Tony Robbins', 'Tony Robbins was born on February 29, 1960 in North Hollywood, California, U.S. He is an American author, coach, motivational speaker, and philanthropist. He is the author of many famous works such as: Awaken the Giant Within, Unlimited Power, ...'); 
+insert into author (name, introduction) values ('Elena Ferrante', 'Elena Ferrante was born on October 25, 1943 in Naples, Italy. She is an Italian novelist. She is the author of many famous works such as: My Brilliant Friend, The Story of a New Name, ...');
+insert into author (name, introduction) values ('Haruki Murakami', 'Haruki Murakami was born on January 12, 1949 in Kyoto, Japan. He is a Japanese writer. He is the author of many famous works such as: Norwegian Wood, Kafka on the Shore, ...');
+insert into author (name, introduction) values ('Francesca Cavallo', 'Francesca Cavallo was born on October 25, 1983 in Naples, Italy. She is an Italian writer. She is the author of many famous works such as: Good Night Stories for Rebel Girls...');
 select * from author;
 
 -- insert data for table publisher
@@ -57,6 +60,7 @@ insert into publisher (name, address) values ('NXB Ho Chi Minh', '62 Nguyen Thi 
 insert into publisher (name, address) values ('NXB Kim Dong', '12 Hoa Ma, Phuc Xa Ward, Ba Dinh District, Hanoi');
 insert into publisher (name, address) values ('NXB Hanoi', '46 Trang Tien, Trang Tien Ward, Hoan Kiem District, Hanoi');
 insert into publisher (name, address) values ('NXB Can Tho', '53 Vo Van Tan, Ward 6, District 3, Ho Chi Minh City');
+
 select * from publisher;
 
 -- insert data for table category
@@ -73,70 +77,95 @@ insert into category (name, description) values ('Art', 'Art is a diverse range 
 insert into category (name, description) values ('Personal Development', 'Personal development covers activities that improve awareness and identity, develop talents and potential, build human capital and facilitate employability, enhance the quality of life and contribute to the realization of dreams and aspirations.');
 select * from category;
 
+-- insert data for table language
+insert into language (name) values
+('English'),
+('Spanish'),
+('French'),
+('German'),
+('Chinese'),
+('Japanese'),
+('Korean'),
+('Arabic'),
+('Russian'),
+('Italian'),
+('Vietnamese');
+
 -- insert data for table book
 select id from publisher where name = 'Nha Xuat Ban Tre';
 set @publisherID = (select id from publisher where name = 'Nha Xuat Ban Tre');
-insert into book (isbn, title, publisherID, publishingDate, languages)
-values ('66661111', 'Toi thay hoa vang tren co xanh', @publisherID, '2015-01-01', 'Tieng Viet');
+insert into book (isbn, title, publisherID, publishingDate, language)
+values ('66661111', 'Toi thay hoa vang tren co xanh', @publisherID, '2015-01-01', 'Vietnamese');
 set @authorID = (select id from author where name = 'Nguyen Nhat Anh');
 insert into bookAuthor (bookID, authorID) values ('66661111', @authorID);
 
 set @authorID = (select id from author where name = 'J.K. Rowling');
 set @publisherID = (select id from publisher where name = 'Nha Xuat Ban Tre');
-insert into book (title, publisherID, publishingDate, languages)
-values ('Harry Potter Va Chiec Coc Lua', @publisherID, '2018-01-01', 'Tieng Anh');
+insert into book (title, publisherID, publishingDate, language)
+values ('Harry Potter Va Chiec Coc Lua', @publisherID, '2018-01-01', 'English');
 set @bookId = (select isbn from book where title = 'Harry Potter Va Chiec Coc Lua');
 insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
 
 set @authorID = (select id from author where name = 'Nguyen Ngoc Tu');
 set @publisherID = (select id from publisher where name = 'Nha Nam');
-insert into book (title, publisherID, publishingDate, languages)
-values ('Giao thua', @publisherID, '2020-01-01', 'Tieng Viet');
+insert into book (title, publisherID, publishingDate, language)
+values ('Giao thua', @publisherID, '2020-01-01', 'Vietnamese');
 set @bookId = (select isbn from book where title = 'Giao thua');
 insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
 
 set @authorID = (select id from author where name = 'Gosho Aoyama');
 set @publisherID = (select id from publisher where name = 'Kim Dong');
-insert into book (title, publisherID, publishingDate, languages)
-values ('Conan Tap 12', @publisherID, '2019-01-01', 'Tieng Viet');
+insert into book (title, publisherID, publishingDate, language)
+values ('Conan Tap 12', @publisherID, '2019-01-01', 'Vietnamese');
 set @bookId = (select isbn from book where title = 'Conan Tap 12');
 insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
 
 set @authorID = (select id from author where name = 'Edgar Allan Poe');
 set @publisherID = (select id from publisher where name = 'Nha Nam');
-insert into book (title, publisherID, publishingDate, languages)
-values ('The Tell-Tale Heart', @publisherID, '2020-04-12', 'Tieng Anh');
+insert into book (title, publisherID, publishingDate, language)
+values ('The Tell-Tale Heart', @publisherID, '2020-04-12', 'English');
 set @bookId = (select isbn from book where title = 'The Tell-Tale Heart');
 insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
 
 set @authorID = (select id from author where name = 'Jane Austen');
 set @publisherID = (select id from publisher where name = 'Nha Nam');
-insert into book (title, publisherID, publishingDate, languages)
-values ('Pride and Prejudice', @publisherID, '2019-10-21', 'Tieng Anh');
+insert into book (title, publisherID, publishingDate, language)
+values ('Pride and Prejudice', @publisherID, '2019-10-21', 'English');
 set @bookId = (select isbn from book where title = 'Pride and Prejudice');
 insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
 
 set @authorID = (select id from author where name = 'Hilary Mantel');
 set @publisherID = (select id from publisher where name = 'Nha Nam');
-insert into book (title, publisherID, publishingDate, languages)
-values ('Wolf Hall', @publisherID, '2020-11-11', 'Tieng Anh');
+insert into book (title, publisherID, publishingDate, language)
+values ('Wolf Hall', @publisherID, '2020-11-11', 'English');
 set @bookId = (select isbn from book where title = 'Wolf Hall');
 insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
 
 set @authorID = (select id from author where name = 'John Dewey');
 set @publisherID = (select id from publisher where name = 'Nha Nam');
-insert into book (title, publisherID, publishingDate, languages)
-values ('Experience and Education', @publisherID, '2017-04-13', 'Tieng Anh');
+insert into book (title, publisherID, publishingDate, language)
+values ('Experience and Education', @publisherID, '2017-04-13', 'English');
 set @bookId = (select isbn from book where title = 'Experience and Education');
 insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
 
 set @authorID = (select id from author where name = 'Daniel Kahneman');
 set @publisherID = (select id from publisher where name = 'Nha Nam');
-insert into book (title, publisherID, publishingDate, languages)
-values ('Thinking, Fast and Slow', @publisherID, '2020-06-07', 'Tieng Anh');
+insert into book (title, publisherID, publishingDate, language)
+values ('Thinking, Fast and Slow', @publisherID, '2020-06-07', 'English');
 set @bookId = (select isbn from book where title = 'Thinking, Fast and Slow');
 insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
 
+set @authorID = (select id from author where name = 'Neil deGrasse Tyson');
+set @publisherID = (select id from publisher where name = 'Nha Nam');
+insert into book (title, publisherID, publishingDate, language)
+values ('Astrophysics for People in a Hurry', @publisherID, '2018-09-09', 'English');
+set @bookId = (select isbn from book where title = 'Astrophysics for People in a Hurry');
+insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
+
+set @authorID = (select id from author where name = 'Noam Chomsky');
+set @publisherID = (select id from publisher where name = 'Nha Nam');
+set @bookId = (select isbn from book where title = 'Astrophysics for People in a Hurry');
+insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
 select * from book;
 
 
@@ -229,6 +258,15 @@ update importSheet set quantity = quantity + 150 where id = @importSheetID;
 update importSheet set totalPrice = totalPrice + 150000 * 150 where id = @importSheetID;
 update book set quantity = quantity + 150 where isbn = @bookID;
 update book set salePrice = 150000 * 1.4 where isbn = @bookID;
+
+set @bookID = (select isbn from book where title = 'Astrophysics for People in a Hurry');
+set @categoryID = (select id from category where name = 'Science');
+insert into bookCategory (bookID, categoryID) values (@bookID, @categoryID);
+insert into bookBatch(quantity, importPrice, importSheetID, bookID)  values (100, 200000, @importSheetID, @bookID);
+update importSheet set quantity = quantity + 100 where id = @importSheetID;
+update importSheet set totalPrice = totalPrice + 200000 * 100 where id = @importSheetID;
+update book set quantity = quantity + 100 where isbn = @bookID;
+update book set salePrice = 200000 * 1.4 where isbn = @bookID;
 
 select * from bookCategory;
 select * from bookBatch;

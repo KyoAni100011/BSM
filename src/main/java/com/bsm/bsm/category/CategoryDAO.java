@@ -1,6 +1,9 @@
 package com.bsm.bsm.category;
 
 import com.bsm.bsm.database.DatabaseConnection;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -62,5 +65,22 @@ public class CategoryDAO {
         String QUERY_ADD_CATEGORY = "insert into category (name, description) values (?, ?)";
         int rowsAffected = DatabaseConnection.executeUpdate(QUERY_ADD_CATEGORY, name, description);
         return rowsAffected > 0;
+    }
+
+    public List<Category> getAllCatogories() {
+        String QUERY_GET_CATEGORIES = "select * from category";
+        List<Category> categories = new ArrayList<>();
+
+        DatabaseConnection.executeQuery(QUERY_GET_CATEGORIES, resultSet -> {
+            while (resultSet != null && resultSet.next())  {
+                String id = resultSet.getString("id");
+                String name = resultSet.getString("name");
+                String description = resultSet.getString("description");
+                boolean isEnabled = resultSet.getBoolean("isEnabled");
+                categories.add(new Category(id, name, description, isEnabled));
+            }
+        });
+
+        return categories;
     }
 }

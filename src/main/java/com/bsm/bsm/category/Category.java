@@ -17,6 +17,10 @@ public class Category {
         this.isEnabled = isEnabled;
     }
 
+    public Category(String id, String name, boolean isEnabled) {
+        this(id, name, "", isEnabled);
+    }
+
     // Getters and setters
     public String getId() {
         return id;

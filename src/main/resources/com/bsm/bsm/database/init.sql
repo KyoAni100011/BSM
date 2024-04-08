@@ -1,4 +1,4 @@
- drop database if exists book_store_db;
+ -- drop database if exists book_store_db;
 create database book_store_db;
 use book_store_db;
 
@@ -48,16 +48,21 @@ create table category (
     isEnabled boolean default true
 );
 
+create table language (
+    name varchar(255) primary key
+);
+
 create table book (
     isbn int auto_increment primary key,
-    title varchar(255) not null,
+    title  varchar(255) unique,
     publisherID int not null,
     publishingDate date not null,
-    languages varchar(255) not null,
+    language varchar(255) not null,
     isEnabled boolean default true,
     quantity int not null default 0,
-    salePrice decimal(50, 2) not null default 0.0,
-    foreign key(publisherID) references publisher(id)
+    salePrice decimal(50, 0) not null default 0.0,
+    foreign key(publisherID) references publisher(id),
+    foreign key(language) references language(name)
 );
 
 create table bookCategory (
