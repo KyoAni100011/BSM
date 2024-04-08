@@ -77,74 +77,88 @@ insert into category (name, description) values ('Art', 'Art is a diverse range 
 insert into category (name, description) values ('Personal Development', 'Personal development covers activities that improve awareness and identity, develop talents and potential, build human capital and facilitate employability, enhance the quality of life and contribute to the realization of dreams and aspirations.');
 select * from category;
 
+-- insert data for table language
+insert into language (name) values
+('English'),
+('Spanish'),
+('French'),
+('German'),
+('Chinese'),
+('Japanese'),
+('Korean'),
+('Arabic'),
+('Russian'),
+('Italian'),
+('Vietnamese');
+
 -- insert data for table book
 select id from publisher where name = 'Nha Xuat Ban Tre';
 set @publisherID = (select id from publisher where name = 'Nha Xuat Ban Tre');
-insert into book (isbn, title, publisherID, publishingDate, languages)
-values ('66661111', 'Toi thay hoa vang tren co xanh', @publisherID, '2015-01-01', 'Tieng Viet');
+insert into book (isbn, title, publisherID, publishingDate, language)
+values ('66661111', 'Toi thay hoa vang tren co xanh', @publisherID, '2015-01-01', 'Vietnamese');
 set @authorID = (select id from author where name = 'Nguyen Nhat Anh');
 insert into bookAuthor (bookID, authorID) values ('66661111', @authorID);
 
 set @authorID = (select id from author where name = 'J.K. Rowling');
 set @publisherID = (select id from publisher where name = 'Nha Xuat Ban Tre');
-insert into book (title, publisherID, publishingDate, languages)
-values ('Harry Potter Va Chiec Coc Lua', @publisherID, '2018-01-01', 'Tieng Anh');
+insert into book (title, publisherID, publishingDate, language)
+values ('Harry Potter Va Chiec Coc Lua', @publisherID, '2018-01-01', 'English');
 set @bookId = (select isbn from book where title = 'Harry Potter Va Chiec Coc Lua');
 insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
 
 set @authorID = (select id from author where name = 'Nguyen Ngoc Tu');
 set @publisherID = (select id from publisher where name = 'Nha Nam');
-insert into book (title, publisherID, publishingDate, languages)
-values ('Giao thua', @publisherID, '2020-01-01', 'Tieng Viet');
+insert into book (title, publisherID, publishingDate, language)
+values ('Giao thua', @publisherID, '2020-01-01', 'Vietnamese');
 set @bookId = (select isbn from book where title = 'Giao thua');
 insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
 
 set @authorID = (select id from author where name = 'Gosho Aoyama');
 set @publisherID = (select id from publisher where name = 'Kim Dong');
-insert into book (title, publisherID, publishingDate, languages)
-values ('Conan Tap 12', @publisherID, '2019-01-01', 'Tieng Viet');
+insert into book (title, publisherID, publishingDate, language)
+values ('Conan Tap 12', @publisherID, '2019-01-01', 'Vietnamese');
 set @bookId = (select isbn from book where title = 'Conan Tap 12');
 insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
 
 set @authorID = (select id from author where name = 'Edgar Allan Poe');
 set @publisherID = (select id from publisher where name = 'Nha Nam');
-insert into book (title, publisherID, publishingDate, languages)
-values ('The Tell-Tale Heart', @publisherID, '2020-04-12', 'Tieng Anh');
+insert into book (title, publisherID, publishingDate, language)
+values ('The Tell-Tale Heart', @publisherID, '2020-04-12', 'English');
 set @bookId = (select isbn from book where title = 'The Tell-Tale Heart');
 insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
 
 set @authorID = (select id from author where name = 'Jane Austen');
 set @publisherID = (select id from publisher where name = 'Nha Nam');
-insert into book (title, publisherID, publishingDate, languages)
-values ('Pride and Prejudice', @publisherID, '2019-10-21', 'Tieng Anh');
+insert into book (title, publisherID, publishingDate, language)
+values ('Pride and Prejudice', @publisherID, '2019-10-21', 'English');
 set @bookId = (select isbn from book where title = 'Pride and Prejudice');
 insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
 
 set @authorID = (select id from author where name = 'Hilary Mantel');
 set @publisherID = (select id from publisher where name = 'Nha Nam');
-insert into book (title, publisherID, publishingDate, languages)
-values ('Wolf Hall', @publisherID, '2020-11-11', 'Tieng Anh');
+insert into book (title, publisherID, publishingDate, language)
+values ('Wolf Hall', @publisherID, '2020-11-11', 'English');
 set @bookId = (select isbn from book where title = 'Wolf Hall');
 insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
 
 set @authorID = (select id from author where name = 'John Dewey');
 set @publisherID = (select id from publisher where name = 'Nha Nam');
-insert into book (title, publisherID, publishingDate, languages)
-values ('Experience and Education', @publisherID, '2017-04-13', 'Tieng Anh');
+insert into book (title, publisherID, publishingDate, language)
+values ('Experience and Education', @publisherID, '2017-04-13', 'English');
 set @bookId = (select isbn from book where title = 'Experience and Education');
 insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
 
 set @authorID = (select id from author where name = 'Daniel Kahneman');
 set @publisherID = (select id from publisher where name = 'Nha Nam');
-insert into book (title, publisherID, publishingDate, languages)
-values ('Thinking, Fast and Slow', @publisherID, '2020-06-07', 'Tieng Anh');
+insert into book (title, publisherID, publishingDate, language)
+values ('Thinking, Fast and Slow', @publisherID, '2020-06-07', 'English');
 set @bookId = (select isbn from book where title = 'Thinking, Fast and Slow');
 insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
 
 set @authorID = (select id from author where name = 'Neil deGrasse Tyson');
 set @publisherID = (select id from publisher where name = 'Nha Nam');
-insert into book (title, publisherID, publishingDate, languages)
-values ('Astrophysics for People in a Hurry', @publisherID, '2018-09-09', 'Tieng Anh');
+insert into book (title, publisherID, publishingDate, language)
+values ('Astrophysics for People in a Hurry', @publisherID, '2018-09-09', 'English');
 set @bookId = (select isbn from book where title = 'Astrophysics for People in a Hurry');
 insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
 
