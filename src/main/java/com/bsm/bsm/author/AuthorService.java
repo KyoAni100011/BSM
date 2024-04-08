@@ -72,6 +72,21 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
     public boolean setEnable(boolean state) {
         return state;
     }
+    public boolean enableAuthor(String authorId) {
+        try {
+            return authorDAO.enableBookAuthor(authorId);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean disableAuthor(String authorId) {
+        try {
+            return authorDAO.disableBookAuthor(authorId);
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     // use this to check case update author
     public boolean checkAuthorExists (String name, String id) {

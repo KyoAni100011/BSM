@@ -11,7 +11,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
-import javafx.geometry.Side;
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,7 +45,8 @@ public class BookBarChartController {
         CategoryAxis xAxis = (CategoryAxis) bookBarChart.getXAxis();
         xAxis.setTickLabelRotation(-90);
         xAxis.setTickLength(10);
-
+        // Áp dụng CSS cho CategoryAxis để label tự động xuống dòng
+        xAxis.getStyleClass().add("chart-axis-label");
 
         yAxis.setTickLabelFormatter(new StringConverter<Number>() {
             @Override
@@ -70,8 +70,6 @@ public class BookBarChartController {
         series.setData(data);
 
         bookBarChart.getData().add(series);
-//        bookBarChart.setLegendVisible(false);
-//        bookBarChart.setTitle("Doanh thu sách theo tháng");
         series.setName("Doanh thu");
         for (XYChart.Series<String, Number> currentSeries : bookBarChart.getData()) {
             for (XYChart.Data<String, Number> currentData : currentSeries.getData()) {
@@ -82,17 +80,12 @@ public class BookBarChartController {
                 tooltip.setAutoHide(true);
             }
         }
-//        bookBarChart.setLegendSide(Side.TOP);
-//
-//         bookBarChart.setTitleSide(Side.RIGHT);
 
         btnByMonth.getStyleClass().addAll("chartActionButton-admin-selected", "chartActionButton");
         btnByWeek.getStyleClass().add("chartActionButton");
         btnByDate.getStyleClass().add("chartActionButton");
         btnFromDateToDate.getStyleClass().add("chartActionButton");
         updateChart("Top 10 Best Selling Books By Month");
-
-
     }
 
     @FXML

@@ -254,6 +254,10 @@
     -fx-max-height: 20px;
 }
 
+.chart-axis-label {
+    -fx-wrap-text: true;
+}
+
 .toggle-button:selected {
     -fx-background-color: #914D2A !important;
     -fx-border-color: #914D2A !important;
