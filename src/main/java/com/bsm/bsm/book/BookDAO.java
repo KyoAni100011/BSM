@@ -4,15 +4,30 @@ import com.bsm.bsm.author.Author;
 import com.bsm.bsm.category.Category;
 import com.bsm.bsm.database.DatabaseConnection;
 import com.bsm.bsm.publisher.Publisher;
+import com.bsm.bsm.utils.DateUtils;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class BookDAO {
-
+    // get list of languages
+    public List<String> getLanguages() {
+        List<String> languages = new ArrayList<>();
+        String QUERY_LANGUAGES = "select name from language";
+        DatabaseConnection.executeQuery(QUERY_LANGUAGES, resultSet -> {
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    languages.add(resultSet.getString("name"));
+                }
+            }
+        });
+        return languages;
+    }
+    // get publisher of a book
     private Publisher getBookPublisher(String isbn) {
         String QUERY_PUBLISHER = "select p.id as publisher_id, p.name as publisher_name, p.isEnabled  from book b join publisher p on b.publisherId = p.id where isbn = ?";
         AtomicReference<Publisher> publisher = new AtomicReference<>();
@@ -29,6 +44,7 @@ public class BookDAO {
         return publisher.get();
     }
 
+    // get list of authors of a book
     private List<Author> getBookAuthors(String isbn) {
         List<Author> authors = new ArrayList<>();
         String QUERY_AUTHORS = "select a.id as author_id, a.name as author_name, a.isEnabled from book b join bookAuthor ba on b.isbn = ba.bookId join author a on ba.authorID = a.id where b.isbn = ?";
@@ -47,6 +63,7 @@ public class BookDAO {
         return authors;
     }
 
+    // get list of categories of a book
     private List<Category> getBookCategories(String isbn) {
         List<Category> categories = new ArrayList<>();
         String QUERY_CATEGORIES = "select c.id as category_id, c.name as category_name, c.isEnabled from book b join bookCategory bc on b.isbn = bc.bookID join category c on bc.categoryID = c.id where b.isbn = ?";
@@ -76,64 +93,62 @@ public class BookDAO {
             if (resultSet != null && resultSet.next()) {
                 String title = resultSet.getString("title");
                 String publishingDate = resultSet.getString("publishingDate");
-                String languages = resultSet.getString("languages");
+                publishingDate = DateUtils.convertDOBFormat(publishingDate); // convert to dd/MM/yyyy
+                String language = resultSet.getString("language");
                 boolean isEnabled = resultSet.getBoolean("isEnabled");
                 int quantity = resultSet.getInt("quantity");
                 BigDecimal salePrice = resultSet.getBigDecimal("salePrice");
 
-                book.set(new Book(isbn, title, publisher, publishingDate, languages, isEnabled, quantity, salePrice, authors, categories));
+                book.set(new Book(isbn, title, publisher, publishingDate, language, isEnabled, quantity, salePrice, authors, categories));
             }
         }, isbn);
         return book.get();
     }
 
-    public boolean update(Book book) {
-        Publisher publisher = getBookPublisher(book.getIsbn());
-
-        try {
-            // Implement update logic
-            DatabaseConnection.autoCommit(false);
-
-            // update information of book
-            String QUERY_UPDATE_BOOK = """
-                    update book
-                    set title = ?, publisherID = ?, publishingDate = ?, languages = ?, quantity = ?, salePrice = ?
-                    where isbn = ?
-                    """;
-            DatabaseConnection.executeUpdate(QUERY_UPDATE_BOOK,
-                    book.getTitle(), publisher.getId(), book.getPublishingDate(),
-                    book.getLanguages(), book.getQuantity(), book.getSalePrice(), book.getIsbn());
-
-
-            // update information of book author
-            String QUERY_DELETE_BOOK_AUTHOR = "delete from bookAuthor where bookID = ?";
-            DatabaseConnection.executeUpdate(QUERY_DELETE_BOOK_AUTHOR, book.getIsbn());
-            String QUERY_INSERT_BOOK_AUTHOR = "insert into bookAuthor (bookID, authorID) values (?, ?)";
-            for (var author : book.getAuthors()) {
-                DatabaseConnection.executeUpdate(QUERY_INSERT_BOOK_AUTHOR, book.getIsbn(), author.getId());
-            }
-
-            // update information of book category
-            String QUERY_DELETE_BOOK_CATEGORY = "delete from bookCategory where bookID = ?";
-            DatabaseConnection.executeUpdate(QUERY_DELETE_BOOK_CATEGORY, book.getIsbn());
-            String QUERY_INSERT_BOOK_CATEGORY = "insert into bookCategory (bookID, categoryID) values (?, ?)";
-            for (var category : book.getCategories()) {
-                DatabaseConnection.executeUpdate(QUERY_INSERT_BOOK_CATEGORY, book.getIsbn(), category.getId());
-            }
-
-            DatabaseConnection.commit();
-            return true;
-        } catch (SQLException e) {
-            DatabaseConnection.rollback();
+    private boolean checkRowAffected(Connection connection, int rowAffected) throws SQLException {
+        if (rowAffected == 0) {
+            connection.rollback();
+            connection.setAutoCommit(true);
             return false;
-        } finally {
-            try {
-                DatabaseConnection.autoCommit(true);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
+        return true;
     }
+
+    public boolean update(Book book) throws SQLException {
+        Connection connection = DatabaseConnection.getConnection();
+        connection.setAutoCommit(false);
+
+        String formattedDate = DateUtils.formatDOB(book.getPublishingDate()); // convert date to yyyy-MM-dd
+        String QUERY_UPDATE_BOOK = "update book set title = ?, publisherID = ?, publishingDate = ?, language = ?, salePrice = ?  where isbn = ?";
+        int rowAffected = DatabaseConnection.executeUpdate(connection, QUERY_UPDATE_BOOK,
+                book.getTitle(), book.getPublisher().getId(), formattedDate,
+                book.getLanguages(), book.getSalePrice(), book.getIsbn());
+        if (!checkRowAffected(connection, rowAffected)) return false;
+
+        String QUERY_DELETE_BOOK_AUTHOR = "delete from bookAuthor where bookID = ?";
+        int rowAffectedAuthor = DatabaseConnection.executeUpdate(connection, QUERY_DELETE_BOOK_AUTHOR, book.getIsbn());
+        if (!checkRowAffected(connection, rowAffectedAuthor)) return false;
+        String QUERY_INSERT_BOOK_AUTHOR = "insert into bookAuthor (bookID, authorID) values (?, ?)";
+        for (var author : book.getAuthors()) {
+            int rowAffectedAuthorInsert = DatabaseConnection.executeUpdate(connection, QUERY_INSERT_BOOK_AUTHOR, book.getIsbn(), author.getId());
+            if (!checkRowAffected(connection, rowAffectedAuthorInsert)) return false;
+        }
+
+        String QUERY_DELETE_BOOK_CATEGORY = "delete from bookCategory where bookID = ?";
+        int rowAffectedCategory = DatabaseConnection.executeUpdate(connection, QUERY_DELETE_BOOK_CATEGORY, book.getIsbn());
+        if (!checkRowAffected(connection, rowAffectedCategory)) return false;
+        String QUERY_INSERT_BOOK_CATEGORY = "insert into bookCategory (bookID, categoryID) values (?, ?)";
+        for (var category : book.getCategories()) {
+            int rowAffectedCategoryInsert = DatabaseConnection.executeUpdate(connection, QUERY_INSERT_BOOK_CATEGORY, book.getIsbn(), category.getId());
+            if (!checkRowAffected(connection, rowAffectedCategoryInsert)) return false;
+        }
+
+        connection.commit();
+        connection.setAutoCommit(true);
+
+        return true;
+    }
+
 
     public void add(Book book) {
         // Implement add logic
@@ -144,7 +159,20 @@ public class BookDAO {
         return null;
     }
 
-    // check sale price > import price * 1.1
+    public boolean isNameExist(String id, String name) {
+        String QUERY_CHECK_NAME = "select 1 from book where title = ? and isbn != ?";
+        AtomicReference<Boolean> isExist = new AtomicReference<>(false);
+
+        DatabaseConnection.executeQuery(QUERY_CHECK_NAME, resultSet -> {
+            if (resultSet != null && resultSet.next()) {
+                isExist.set(true);
+            }
+        }, name, id);
+
+        return isExist.get();
+    }
+
+    // check sale price > import price * 1.1, with max import price of book
     public boolean isSalePriceValid(Book book, BigDecimal salePrice) {
         AtomicReference<Boolean> isValid = new AtomicReference<>(true);
 

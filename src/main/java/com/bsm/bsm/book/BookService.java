@@ -3,6 +3,7 @@ package com.bsm.bsm.book;
 import com.bsm.bsm.commonInterface.*;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.List;
 
 public class BookService implements Activable, Searchable<Book>, Sortable<Book>, Updatable<Book>, Addable<Book> {
@@ -14,7 +15,12 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
 
     @Override
     public boolean update(Book item) {
-        return bookDAO.update(item);
+        try {
+            return bookDAO.update(item);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
@@ -42,10 +48,16 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
         return bookDAO.getBookByISBN(isbn);
     }
 
+    public boolean isNameExist(String name, String id) {
+        return bookDAO.isNameExist(name, id);
+    }
+
     public boolean isSalePriceValid(Book book, BigDecimal salePrice) {
         return bookDAO.isSalePriceValid(book, salePrice);
     }
 
-
+    public List<String> getLanguages() {
+        return bookDAO.getLanguages();
+    }
 }
 

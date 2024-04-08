@@ -9,6 +9,7 @@ import com.bsm.bsm.category.CategoryService;
 import com.bsm.bsm.publisher.Publisher;
 import com.bsm.bsm.publisher.PublisherService;
 import com.bsm.bsm.utils.AlertUtils;
+import com.bsm.bsm.utils.DateUtils;
 import com.bsm.bsm.utils.NumericValidationUtils;
 import com.bsm.bsm.utils.ValidationUtils;
 import javafx.collections.FXCollections;
@@ -17,7 +18,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.controlsfx.control.CheckComboBox;
 
@@ -57,17 +57,20 @@ public class UpdateBookController {
         book = bookService.getBookByISBN(bookID);
         ObservableList<String> categorieItems = FXCollections.observableArrayList();
         for (var item: categoryService.getAllCategories()) {
-            categorieItems.add(item.getName());
+            // check category is enabled
+            if (item.isEnabled())
+                categorieItems.add(item.getName());
         }
 
         ObservableList<String> authorItems = FXCollections.observableArrayList();
         for (var item: authorService.getAllAuthors()) {
-            authorItems.add(item.getName());
+            if (item.isEnabled())
+                // check category is enabled
+                authorItems.add(item.getName());
         }
 
-        ObservableList<String> languageItems = FXCollections.observableArrayList(
-                "English", "French", "Vietnamese", "Japanese", "Korean", "Spanish", "German"
-        );
+        List<String> languages = bookService.getLanguages();
+        ObservableList<String> languageItems = FXCollections.observableArrayList(languages);
 
         categoryCheckCombo.getItems().addAll(categorieItems);
         authorNameCheckCombo.getItems().addAll(authorItems);
@@ -81,12 +84,14 @@ public class UpdateBookController {
         fullNameField.setText(thisBook.getTitle());
         publisherNameField.setText(thisBook.getPublisher().getName());
         bookPriceField.setText(String.valueOf(thisBook.getSalePrice()));
-        releaseDatePicker.setValue(LocalDate.now());
+        String releaseDate = book.getPublishingDate(); // has format dd/MM/yyyy
+        releaseDatePicker.setValue(LocalDate.parse(releaseDate, dateFormatter));
         bookQuantityField.setText(String.valueOf(thisBook.getQuantity()));
         authorNameCheckCombo.getCheckModel().checkIndices(0, 2, 4);
         categoryCheckCombo.getCheckModel().checkIndices(0, 2, 4);
-        languageComboBox.setValue("Tieng Viet");
+        languageComboBox.setValue(thisBook.getLanguages());
     }
+
 
     private void setupDatePicker() {
         releaseDatePicker.setPromptText("dd/mm/yyyy");
@@ -147,6 +152,7 @@ public class UpdateBookController {
     @FXML
     private void handleSaveChanges(ActionEvent event) {
         clearErrorMessages();
+
         String fullName = fullNameField.getText();
         String releaseDate = releaseDatePicker.getEditor().getText();
         String publisherName = publisherNameField.getText();
@@ -157,6 +163,13 @@ public class UpdateBookController {
         String selectedLanguage = (String) languageComboBox.getValue();
 
         if (validateInputs(fullName, releaseDate, price, publisherName, selectedLanguage, selectedCategory, selectedAuthor, quantity)) {
+
+            //check name exist
+            if (bookService.isNameExist(fullName, bookID)) {
+                bookNameErrorLabel.setText("Book name already exists.");
+                return;
+            }
+
             // check sale price > import price * 1.1
             BigDecimal salePrice = new BigDecimal(price);
             if (!bookService.isSalePriceValid(book, salePrice)) {
@@ -175,12 +188,16 @@ public class UpdateBookController {
                 authors.add(authorService.getAuthorByName(item));
             }
 
-            categories.forEach(System.out::println);
-            authors.forEach(System.out::println);
+//            categories.forEach(System.out::println);
+//            authors.forEach(System.out::println);
 
-//            int quantityInt = Integer.parseInt(quantity);
-//            bookService.update(new Book(book.getIsbn(), fullName, publiser, releaseDate, selectedLanguage, true,
-//                    quantityInt, salePrice, authors, categories));
+            int quantityInt = Integer.parseInt(quantity);
+            if (bookService.update(new Book(book.getIsbn(), fullName, publiser, releaseDate, selectedLanguage, true,
+                    quantityInt, salePrice, authors, categories))) {
+                AlertUtils.showAlert("Success", "Book updated successfully.", Alert.AlertType.INFORMATION);
+            } else {
+                AlertUtils.showAlert("Error", "Book update failed.", Alert.AlertType.ERROR);
+            }
         }
     }
 
