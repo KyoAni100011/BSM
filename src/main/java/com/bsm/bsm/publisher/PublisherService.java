@@ -1,7 +1,11 @@
 package com.bsm.bsm.publisher;
 
 import com.bsm.bsm.commonInterface.*;
+
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PublisherService implements Activable, Searchable<Publisher>, Sortable<Publisher>, Updatable<Publisher>, Addable<Publisher> {
     private final PublisherDAO publisherDAO;
@@ -29,14 +33,45 @@ public class PublisherService implements Activable, Searchable<Publisher>, Sorta
 
     @Override
     public List<Publisher> sort(List<Publisher> publishers, boolean isAscending, String column) {
-        // Implement sorting logic
-        return null;
+        List<Publisher> sortedPublishers = new ArrayList<>(publishers);
+        String toLowerColumn = column.toLowerCase();
+        Comparator<Publisher> comparator = (publisher1, publisher2) -> {
+            switch(toLowerColumn) {
+                case "id" -> {
+                    return Comparator.comparing(Publisher::getId).compare(publisher1, publisher2);
+                }
+                case "name" -> {
+                    return Comparator.comparing(Publisher::getName).compare(publisher1, publisher2);
+                }
+                case "address" -> {
+                    return Comparator.comparing(Publisher::getAddress).compare(publisher1, publisher2);
+                }
+                case "action" -> {
+                    return Comparator.comparing(Publisher::isEnabled).compare(publisher1, publisher2);
+                }
+                default -> {
+                    return 0;
+                }
+            }
+        };
+
+        if (!isAscending) {
+            comparator = comparator.reversed();
+        }
+
+        return sortedPublishers.stream().sorted(comparator).collect(Collectors.toList());
     }
 
     @Override
     public List<Publisher> search(String keyword) {
-        // Implement search logic
-        return null;
+        List<Publisher> publishers = getAllPublishers();
+        String finalKeyword = keyword.toLowerCase();
+        return publishers.stream()
+                .filter(publisher ->
+                        publisher.getId().contains(finalKeyword) ||
+                        publisher.getName().toLowerCase().contains(finalKeyword) ||
+                        publisher.getAddress().toLowerCase().contains(finalKeyword))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -56,6 +91,10 @@ public class PublisherService implements Activable, Searchable<Publisher>, Sorta
     public boolean setEnable(boolean state) {
 
         return state;
+    }
+
+    public List<Publisher> getAllPublishers() {
+        return publisherDAO.getAllPublisher();
     }
 
 }

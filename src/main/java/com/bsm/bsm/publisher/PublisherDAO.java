@@ -2,6 +2,8 @@ package com.bsm.bsm.publisher;
 
 import com.bsm.bsm.database.DatabaseConnection;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -46,11 +48,6 @@ public class PublisherDAO {
         return publisher.get();
     }
 
-    public Publisher search(String keyword) {
-        // Implement search logic
-        return null;
-    }
-
     public boolean checkPublisherExists(String name, String id) {
         AtomicBoolean hasExisted = new AtomicBoolean(false);
         String QUERY_PUBLISHER = "select 1 from publisher where name = ? and id != ?";
@@ -61,5 +58,25 @@ public class PublisherDAO {
             }
         }, name, id);
         return hasExisted.get();
+    }
+
+    public List<Publisher> getAllPublisher() {
+        List<Publisher> publishers = new ArrayList<>();
+        String QUERY_ALL_PUBLISHERS = "select * from publisher";
+
+        DatabaseConnection.executeQuery(QUERY_ALL_PUBLISHERS, resultSet -> {
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    String id = resultSet.getString("id");
+                    String name = resultSet.getString("name");
+                    String address = resultSet.getString("address");
+                    boolean isEnabled = resultSet.getBoolean("isEnabled");
+
+                    publishers.add(new Publisher(id, name, address, isEnabled));
+                }
+            }
+        });
+
+        return publishers;
     }
 }
