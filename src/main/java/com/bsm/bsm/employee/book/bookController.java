@@ -58,9 +58,9 @@ public class bookController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         book = new ArrayList<>();
-        book.add(new Book("1034067320125","Giao thua","44441111","",new Date(),"",true,100, BigDecimal.valueOf(61600.00)));
-        book.add(new Book("1034067320126","Trung thu","44441111","",new Date(2020-01-01),"",true,100, BigDecimal.valueOf(61600.00)));
-        book.add(new Book("1034067320127","Giao ","44441111","",new Date(2020-01-01),"",true,100, BigDecimal.valueOf(61600.00)));
+//        book.add(new Book("1034067320125","Giao thua","44441111","",new Date(),"",true,100, BigDecimal.valueOf(61600.00)));
+//        book.add(new Book("1034067320126","Trung thu","44441111","",new Date(2020-01-01),"",true,100, BigDecimal.valueOf(61600.00)));
+//        book.add(new Book("1034067320127","Giao ","44441111","",new Date(2020-01-01),"",true,100, BigDecimal.valueOf(61600.00)));
 
         initializeButtonsAndLabels();
         loadAllBooks();
@@ -353,7 +353,7 @@ public class bookController implements Initializable {
         return count;
     }
     private boolean isNewBook(Book thisBook){
-        Date futureDate = thisBook.getPublishingDate();
+        Date futureDate = new Date("2022-01-01");
         futureDate.setMonth(futureDate.getMonth() + 2);
         Calendar calendar = Calendar.getInstance();
         Date today = new Date(calendar.getTimeInMillis());

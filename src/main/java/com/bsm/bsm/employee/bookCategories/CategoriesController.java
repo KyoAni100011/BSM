@@ -1,8 +1,7 @@
-package com.bsm.bsm.employee.bookAuthors;
+package com.bsm.bsm.employee.bookCategories;
 
-import com.bsm.bsm.author.Author;
-import com.bsm.bsm.author.AuthorService;
 import com.bsm.bsm.employee.EmployeeModel;
+import com.bsm.bsm.category.Category;
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
@@ -13,10 +12,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import com.bsm.bsm.category.CategoryService;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -29,11 +30,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AuthorController implements Initializable {
+public class CategoriesController implements Initializable {
     private static String id;
     private final ToggleGroup toggleGroup = new ToggleGroup();
+
     private final EmployeeModel employeeInfo = (EmployeeModel) UserSingleton.getInstance().getUser();
-    private final AuthorService authorService = new AuthorService();
+    private final CategoryService categoryService = new CategoryService();
 
     @FXML
     private TextField inputSearch;
@@ -42,37 +44,37 @@ public class AuthorController implements Initializable {
     @FXML
     private AnchorPane tableToolbar;
     @FXML
-    private Button addAuthorButton, updateAuthorButton;
+    private Button addCategoryButton, updateCategoryButton;
     @FXML
     public Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
     @FXML
     public Button idLabel, nameLabel, introductionLabel, actionLabel;
     @FXML
-    private SVGPath  idSortLabel, nameSortLabel, introductionSortLabel ,actionSortLabel;
+    private SVGPath idSortLabel, nameSortLabel, introductionSortLabel ,actionSortLabel;
 
-    private List<Author> authors = null;
+    private List<Category> categories = null;
     private String sortOrder = "ASC";
     private String column = "id";
     private int currentPage = 1;
     private String inputSearchText = "";
 
     static void handleTableItemSelection(String userId) {
-        id = userId; // Store the selected user
+        id = userId;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeButtonsAndLabels();
-        loadAllAuthors();
+        loadAllCategory();
         initializePaginationButtons();
 
         inputSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 inputSearchText = newValue;
-                authors = authorService.search(inputSearchText);
+                categories = categoryService.search(inputSearchText);
                 try {
-                    updateAuthorsList();
+                    updateCategoryList();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -80,11 +82,11 @@ public class AuthorController implements Initializable {
         });
     }
 
-    private void loadAllAuthors() {
-        authors = authorService.getAllAuthors();
-        employeeInfo.setAuthors(authors);
+    private void loadAllCategory() {
+        categories = categoryService.getAllCategories();
+        employeeInfo.setCategories(categories);
         try {
-            updateAuthorsList();
+            updateCategoryList();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -101,8 +103,8 @@ public class AuthorController implements Initializable {
         introductionSortLabel.setContent("");
         actionSortLabel.setContent("");
 
-        addAuthorButton.setOnAction(this::handleAddAuthorButton);
-        updateAuthorButton.setOnAction(this::handleUpdateAuthorButton);
+        addCategoryButton.setOnAction(this::handleAddCategoryButton);
+        updateCategoryButton.setOnAction(this::handleUpdateCategoryButton);
     }
 
     private void initializePaginationButtons() {
@@ -116,35 +118,36 @@ public class AuthorController implements Initializable {
     }
 
     @FXML
-    void handleRefreshButton(ActionEvent event) {
-        loadAllAuthors();
-    }
-
-    @FXML
-    void handleAddAuthorButton(ActionEvent event) {
+    void handleAddCategoryButton(ActionEvent event) {
         try {
-            FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/addAuthor");
-            //update authors list after adding new author
-            authors = authorService.getAllAuthors();
-            updateAuthorsList();
+            FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookCategories/addCategory");
+            //update categories list after adding new category
+            categories = categoryService.getAllCategories();
+            updateCategoryList();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
     @FXML
-    void handleUpdateAuthorButton(ActionEvent event) {
+    void handleUpdateCategoryButton(ActionEvent event) {
         try {
             if (id != null) {
-                UpdateAuthorController.handleTableItemSelection(id);
-                FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/updateAuthor");
+                UpdateCategoryController.handleTableItemSelection(id);
+                FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookCategory/updateCategory");
             } else {
-                AlertUtils.showAlert("Error", "Can't find author", Alert.AlertType.ERROR);
+                AlertUtils.showAlert("Error", "Can't find category", Alert.AlertType.ERROR);
             }
         } catch (IOException e) {
-            AlertUtils.showAlert("Error", "Error loading updateAuthor FXML", Alert.AlertType.ERROR);
+            AlertUtils.showAlert("Error", "Error loading update Category FXML", Alert.AlertType.ERROR);
         }
     }
+
+    @FXML
+    void handleRefreshButton(ActionEvent event) {
+        loadAllCategory();
+    }
+
 
     @FXML
     private void handlePaginationButton(ActionEvent event) {
@@ -158,7 +161,7 @@ public class AuthorController implements Initializable {
         }
 
         try {
-            updateAuthorsList();
+            updateCategoryList();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -211,28 +214,27 @@ public class AuthorController implements Initializable {
         }
     }
 
-    // fix this
-    private void updateAuthorsList() throws IOException {
+    private void updateCategoryList() throws IOException {
         pnItems.getChildren().clear();
         int itemsPerPage = 10;
         int startIndex = (currentPage - 1) * itemsPerPage;
-        int endIndex = Math.min(startIndex + itemsPerPage, authors.size());
+        int endIndex = Math.min(startIndex + itemsPerPage, categories.size());
 
         for (int i = startIndex; i < endIndex; i++) {
-            Author author = authors.get(i);
+            Category category = categories.get(i);
 
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/bookAuthors/tableItem.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/bookCategories/tableItem.fxml"));
                 Node item = fxmlLoader.load();
                 TableItemController tableItemController = fxmlLoader.getController();
                 tableItemController.setToggleGroup(toggleGroup);
-                tableItemController.setAuthorModel(author);
+                tableItemController.setCategoryModel(category);
                 pnItems.getChildren().add(item);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        int totalPages = (int) Math.ceil((double) authors.size() / itemsPerPage);
+        int totalPages = (int) Math.ceil((double) categories.size() / itemsPerPage);
         updatePaginationButtons(totalPages);
     }
 
@@ -241,8 +243,8 @@ public class AuthorController implements Initializable {
         Button clickedLabel = (Button) event.getSource();
         String columnName = clickedLabel.getText().toLowerCase();
 
-        column = column.equals("author") ? "name" : column;
-        columnName = columnName.equals("author") ? "name" : columnName;
+        column = column.equals("category") ? "name" : column;
+        columnName = columnName.equals("category") ? "name" : columnName;
 
         System.out.println(sortOrder);
 
@@ -261,9 +263,9 @@ public class AuthorController implements Initializable {
 
 
         try {
-            authors = authorService.sort(authors, isAscending, column);
-            updateAuthorsList();
-            authors.forEach(System.out::println);
+            categories = categoryService.sort(categories, isAscending, column);
+            updateCategoryList();
+            categories.forEach(System.out::println);
             System.out.println("-".repeat(30));
         } catch (Exception e) {
             System.out.println(e.getMessage());

@@ -24,7 +24,12 @@ public class UpdateCategoryController {
     private TextArea descriptionField;
     private final CategoryService categoryService = new CategoryService();
 
-    String id = "55551111"; //set temp id, need to get id from table view
+    @FXML
+    private static String id;
+
+    public static void handleTableItemSelection(String userId) {
+        id = userId;
+    }
 
     @FXML
     public void initialize() {

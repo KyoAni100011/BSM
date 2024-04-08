@@ -59,7 +59,7 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
                 .filter(author ->
                         author.getName().toLowerCase().contains(finalKeyword) ||
                                 author.getIntroduction().toLowerCase().contains(finalKeyword) ||
-                                author.getId().toLowerCase().contains(finalKeyword))
+                                author.getId().contains(finalKeyword))
                 .collect(Collectors.toList());
     }
 

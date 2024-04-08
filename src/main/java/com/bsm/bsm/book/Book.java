@@ -1,27 +1,36 @@
 package com.bsm.bsm.book;
 
+import com.bsm.bsm.author.Author;
+import com.bsm.bsm.category.Category;
+import com.bsm.bsm.publisher.Publisher;
+
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class Book {
     private String isbn;
     private String title;
-    private String publisherId;
-    private Date publishingDate;
+    private Publisher publisher;
+    private String publishingDate;
     private String languages;
     private boolean isEnabled;
     private int quantity;
     private BigDecimal salePrice;
+    private List<Author> authors;
+    private List<Category> categories;
 
-    public Book(String isbn, String title, String publisherId, String authorId, Date publishingDate, String languages, boolean isEnabled, int quantity, BigDecimal salePrice) {
+    public Book(String isbn, String title, Publisher publisher, String publishingDate, String languages, boolean isEnabled, int quantity, BigDecimal salePrice, List<Author> authors, List<Category> categories) {
         this.isbn = isbn;
         this.title = title;
-        this.publisherId = publisherId;
+        this.publisher = publisher;
         this.publishingDate = publishingDate;
         this.languages = languages;
         this.isEnabled = isEnabled;
         this.quantity = quantity;
         this.salePrice = salePrice;
+        this.authors = authors;
+        this.categories = categories;
     }
 
     public String getIsbn() {
@@ -40,19 +49,19 @@ public class Book {
         this.title = title;
     }
 
-    public String getPublisherId() {
-        return publisherId;
+    public Publisher getPublisher() {
+        return publisher;
     }
 
-    public void setPublisherId(String publisherId) {
-        this.publisherId = publisherId;
+    public void setPublisherId(Publisher publisher) {
+        this.publisher = publisher;
     }
 
-    public Date getPublishingDate() {
+    public String getPublishingDate() {
         return publishingDate;
     }
 
-    public void setPublishingDate(Date publishingDate) {
+    public void setPublishingDate(String publishingDate) {
         this.publishingDate = publishingDate;
     }
 
@@ -88,17 +97,38 @@ public class Book {
         this.salePrice = salePrice;
     }
 
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
+    }
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
                 "isbn='" + isbn + '\'' +
                 ", title='" + title + '\'' +
-                ", publisherId='" + publisherId + '\'' +
-                ", publishingDate=" + publishingDate +
+                ", publisher=" + publisher +
+                ", publishingDate='" + publishingDate + '\'' +
                 ", languages='" + languages + '\'' +
                 ", isEnabled=" + isEnabled +
                 ", quantity=" + quantity +
                 ", salePrice=" + salePrice +
+                ", authors=" + authors +
                 '}';
     }
 }

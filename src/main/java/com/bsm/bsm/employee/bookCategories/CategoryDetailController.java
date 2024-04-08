@@ -4,7 +4,6 @@ import com.bsm.bsm.admin.userAccount.UserDetailController;
 import com.bsm.bsm.author.Author;
 import com.bsm.bsm.author.AuthorService;
 import com.bsm.bsm.category.Category;
-import com.bsm.bsm.category.Category;
 import com.bsm.bsm.category.CategoryService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

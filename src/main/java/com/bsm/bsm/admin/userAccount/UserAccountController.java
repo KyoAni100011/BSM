@@ -37,6 +37,8 @@ public class UserAccountController implements Initializable {
     @FXML
     private VBox pnItems;
     @FXML
+    private Button refreshButton;
+    @FXML
     private TextField inputSearch;
     @FXML
     public Button employeeButton, adminButton, addUserButton, passwordResetButton, updateUserButton;
@@ -47,7 +49,7 @@ public class UserAccountController implements Initializable {
     @FXML
     public SVGPath idSortLabel, nameSortLabel, emailSortLabel, lastLoginSortLabel, actionSortLabel;
 
-    private List<UserModel> users = null;
+    public List<UserModel> users = null;
     private String sortOrder = "ASC";
     private String column = "id";
     private String role;
@@ -165,6 +167,11 @@ public class UserAccountController implements Initializable {
     }
 
     @FXML
+    void handleRefreshButton(ActionEvent event) {
+        loadAllUsers();
+    }
+
+    @FXML
     private void handleUpdateUserButton(ActionEvent event) {
         try {
             if (email != null) {
@@ -181,9 +188,8 @@ public class UserAccountController implements Initializable {
     @FXML
     private void handleAddUserButton(ActionEvent event) {
         try {
-            FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/addUser");
-            users = accountService.getAllUsersBySortInfo(UserSingleton.getInstance().getUser().getId(), sortOrder, column);
-            updateUsersList();
+            Stage stage = new Stage();
+            FXMLLoaderHelper.loadFXML(stage, "admin/userAccount/addUser");
         } catch (IOException e) {
             e.printStackTrace();
             AlertUtils.showAlert("Error", "Error loading addUser FXML", Alert.AlertType.ERROR);
@@ -275,6 +281,11 @@ public class UserAccountController implements Initializable {
             adminButton.getStyleClass().add("profile-setting-button-admin");
             employeeButton.getStyleClass().remove("profile-setting-button-admin");
         }
+    }
+
+    void updateListAfterChanging() throws IOException {
+        users = accountService.view(adminInfo.getId());
+        updateUsersList();
     }
 
     private void updateUsersList() throws IOException {

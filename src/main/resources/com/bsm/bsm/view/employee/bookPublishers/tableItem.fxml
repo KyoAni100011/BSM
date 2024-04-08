@@ -4,11 +4,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
 <?import com.bsm.bsm.admin.userAccount.ToggleSwitch?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.bsm.bsm.employee.bookCategories.TableItemController"
+            fx:controller="com.bsm.bsm.employee.bookPublishers.TableItemController"
             prefHeight="400.0" prefWidth="600.0">
     <children>
         <ToggleButton fx:id="toggleButton" onAction="#handleRadioButtonClick" prefHeight="28.0" prefWidth="26.0" style="-fx-border-color: #F3F3F3; -fx-background-color: transparent; -fx-background-radius: 5; -fx-border-radius: 5;" styleClass="toggle-button">
