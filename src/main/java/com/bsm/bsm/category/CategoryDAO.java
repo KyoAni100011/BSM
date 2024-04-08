@@ -45,11 +45,6 @@ public class CategoryDAO {
         return rowsAffected > 0;
     }
 
-    public Category search(String keyword) {
-        // Implement search logic
-        return null;
-    }
-
     public boolean checkCategoryExists(String name, String id) {
         AtomicBoolean hasExisted = new AtomicBoolean(false);
         String QUERY_CHECK_CATEGORY = "select 1 from category where name = ? and id != ?";

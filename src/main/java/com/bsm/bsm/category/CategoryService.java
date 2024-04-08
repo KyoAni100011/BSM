@@ -2,7 +2,10 @@ package com.bsm.bsm.category;
 
 import com.bsm.bsm.commonInterface.*;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CategoryService implements Activable, Searchable<Category>, Sortable<Category>, Addable<Category> {
     private CategoryDAO categoryDAO = null;
@@ -29,14 +32,47 @@ public class CategoryService implements Activable, Searchable<Category>, Sortabl
 
     @Override
     public List<Category> sort(List<Category> categories, boolean isAscending, String column) {
-        // Implement sorting logic
-        return null;
+        String finalColumn = column.toLowerCase();
+
+        List<Category> sortedCategories = new ArrayList<>(categories);
+        Comparator<Category> comparator = (category1, category2) -> {
+            switch (finalColumn) {
+                case "id" -> {
+                    return Comparator.comparing(Category::getId).compare(category1, category2);
+                }
+                case "name" -> {
+                    return Comparator.comparing(Category::getName).compare(category1, category2);
+                }
+                case "description" -> {
+                    return Comparator.comparing(Category::getDescription).compare(category1, category2);
+                }
+                case "action" -> {
+                    return Comparator.comparing(Category::isEnabled).compare(category1, category2);
+                }
+                default -> {
+                    return 0;
+                }
+            }
+        };
+
+        if (!isAscending) {
+            comparator = comparator.reversed();
+        }
+
+        return sortedCategories.stream().sorted(comparator).collect(Collectors.toList());
     }
 
     @Override
     public List<Category> search(String keyword) {
-        // Implement search logic
-        return null;
+        String finalKeyword = keyword.toLowerCase();
+        List<Category> categories = getAllCategories();
+
+        return categories.stream()
+                .filter(category ->
+                        category.getId().contains(finalKeyword) ||
+                        category.getName().toLowerCase().contains(finalKeyword) ||
+                        category.getDescription().toLowerCase().contains(finalKeyword))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -70,5 +106,4 @@ public class CategoryService implements Activable, Searchable<Category>, Sortabl
     public List<Category> getAllCategories() {
         return categoryDAO.getAllCatogories();
     }
-
 }
