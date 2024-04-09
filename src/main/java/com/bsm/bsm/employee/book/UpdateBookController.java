@@ -50,8 +50,13 @@ public class UpdateBookController {
     private PublisherService publisherService = new PublisherService();
 
     // assume id book
-    String bookID = "66661111";
+    private static String bookID;
 
+
+    public static void handleTableItemSelection(String id) {
+        bookID = id;
+        bookID  = "66661111";
+    }
     @FXML
     public void initialize() {
         book = bookService.getBookByISBN(bookID);

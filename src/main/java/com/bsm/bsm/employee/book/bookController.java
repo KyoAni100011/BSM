@@ -83,8 +83,8 @@ public class bookController implements Initializable {
         isbn = bookIsbn; // Store the selected book
     }
     private void loadAllBooks() {
-//        book = bookService.getAllBooksBySortInfo(bookInfo.getId(), sortOrder, column);
-//        bookInfo.setBooks(book);
+        book = bookService.getAllBooksBySortInfo(sortOrder, column);
+        bookInfo.setBooks(book);
 
         try {
             type = "book";
@@ -185,16 +185,17 @@ public class bookController implements Initializable {
 
     @FXML
     private void handleUpdateUserButton(ActionEvent event) {
-//        try {
-//            if (isbn != null) {
-//                UpdateUserController.handleTableItemSelection(isbn);
-//                FXMLLoaderHelper.loadFXML(new Stage(), "admin/bookBook/updateUser");
-//            } else {
-//                AlertUtils.showAlert("Error", "Can't find book", Alert.AlertType.ERROR);
-//            }
-//        } catch (IOException e) {
-//            AlertUtils.showAlert("Error", "Error loading updateUser FXML", Alert.AlertType.ERROR);
-//        }
+        try {
+            if (isbn == null) {
+                isbn  = "66661111";
+                UpdateBookController.handleTableItemSelection(isbn);
+                FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/updateBook");
+            } else {
+                AlertUtils.showAlert("Error", "Can't find book", Alert.AlertType.ERROR);
+            }
+        } catch (IOException e) {
+            AlertUtils.showAlert("Error", "Error loading updateUser FXML", Alert.AlertType.ERROR);
+        }
     }
 
     @FXML
