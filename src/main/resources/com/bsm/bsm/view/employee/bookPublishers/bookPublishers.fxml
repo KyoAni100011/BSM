@@ -29,7 +29,7 @@
             </Group>
          </graphic>
       </Button>
-         <Button fx:id="addPublisherButton1" layoutX="373.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleAddPublisherButton" prefHeight="30.0" prefWidth="30.0" style="-fx-background-radius: 20px;">
+         <Button fx:id="refreshButton" layoutX="373.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleRefreshButton" prefHeight="30.0" prefWidth="30.0" style="-fx-background-radius: 20px;">
             <graphic>
                <Group>
                   <children>

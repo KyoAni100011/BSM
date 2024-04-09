@@ -83,8 +83,8 @@ public class bookController implements Initializable {
         isbn = bookIsbn; // Store the selected book
     }
     private void loadAllBooks() {
-        book = bookService.getAllBooksBySortInfo(sortOrder, column);
-        bookInfo.setBooks(book);
+//        book = bookService.getAllBooksBySortInfo(sortOrder, column);
+//        bookInfo.setBooks(book);
 
         try {
             type = "book";

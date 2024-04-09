@@ -22,11 +22,10 @@ public class UpdatePublisherController {
     TextArea addressTextField;
     private final PublisherService publisherService = new PublisherService();
 
-    //set temp id
-    String id = "44441111";
+    private static String id;
 
-    public static void handleTableItemSelection(String name) {
-        name = name;
+    static void handleTableItemSelection(String userId) {
+        id = userId;
     }
     @FXML
     void initialize() {
