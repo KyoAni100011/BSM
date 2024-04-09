@@ -1,7 +1,6 @@
 package com.bsm.bsm.employee.bookCategories;
 
 import com.bsm.bsm.employee.EmployeeModel;
-import com.bsm.bsm.employee.bookCategories.TableItemController;
 import com.bsm.bsm.category.Category;
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
@@ -84,7 +83,7 @@ public class CategoriesController implements Initializable {
     }
 
     private void loadAllCategory() {
-//        categories = categoryService.getAllCategory();
+        categories = categoryService.getAllCategories();
         employeeInfo.setCategories(categories);
         try {
             updateCategoryList();
@@ -123,7 +122,7 @@ public class CategoriesController implements Initializable {
         try {
             FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookCategories/addCategory");
             //update categories list after adding new category
-//            categories = categoryService.getAllCategory();
+            categories = categoryService.getAllCategories();
             updateCategoryList();
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -134,7 +133,7 @@ public class CategoriesController implements Initializable {
     void handleUpdateCategoryButton(ActionEvent event) {
         try {
             if (id != null) {
-//                UpdateCategoryController.handleTableItemSelection(id);
+                UpdateCategoryController.handleTableItemSelection(id);
                 FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookCategory/updateCategory");
             } else {
                 AlertUtils.showAlert("Error", "Can't find category", Alert.AlertType.ERROR);
@@ -149,7 +148,6 @@ public class CategoriesController implements Initializable {
         loadAllCategory();
     }
 
-    //-------------------
 
     @FXML
     private void handlePaginationButton(ActionEvent event) {
@@ -230,7 +228,7 @@ public class CategoriesController implements Initializable {
                 Node item = fxmlLoader.load();
                 TableItemController tableItemController = fxmlLoader.getController();
                 tableItemController.setToggleGroup(toggleGroup);
-//                tableItemController.setCategoryModel(category);
+                tableItemController.setCategoryModel(category);
                 pnItems.getChildren().add(item);
             } catch (IOException e) {
                 e.printStackTrace();

@@ -111,15 +111,16 @@ public class PublishersController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         initializeButtonsAndLabels();
         loadAllPublishers();
+        publishers.forEach(System.out::println);
         initializePaginationButtons();
 
         inputSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 inputSearchText = newValue;
-                publishers = null; // Add backend
+                publishers = publisherService.search(inputSearchText);
                 try {
-                    updateUsersList();
+                    updatePublishersList();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -128,8 +129,13 @@ public class PublishersController implements Initializable {
     }
 
     private void loadAllPublishers() {
-        publishers = null;
+        publishers = publisherService.getAllPublishers();
         employeeInfo.setPublishers(publishers);
+        try {
+            updatePublishersList();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void initializeButtonsAndLabels() {
@@ -159,8 +165,8 @@ public class PublishersController implements Initializable {
     void handleAddPublisherButton(ActionEvent event) {
         try {
             FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookPublishers/addPublisher");
-            publishers = null; // Add backend
-            updateUsersList();
+            publishers = publisherService.getAllPublishers();
+            updatePublishersList();
         } catch (IOException e) {
             e.printStackTrace();
             AlertUtils.showAlert("Error", "Error loading addUser FXML", Alert.AlertType.ERROR);
@@ -190,7 +196,7 @@ public class PublishersController implements Initializable {
     static void handleTableItemSelection(String publisherName) {
         name = publisherName; // Store the selected user
     }
-    private void updateUsersList() throws IOException {
+    private void updatePublishersList() throws IOException {
         pnItems.getChildren().clear();
         int startIndex = (currentPage - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, publishers.size());
@@ -282,14 +288,17 @@ public class PublishersController implements Initializable {
         idSortLabel.setContent(column.equals("ID") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
         nameSortLabel.setContent(column.equals("Name") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
         actionSortLabel.setContent(column.equals("Action") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+
+        var isAscending = sortOrder.equals("ASC");
+
         try {
-            updateUsersList();
+            updatePublishersList();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        publishers = null; // Add backend
+        publishers = publisherService.sort(publishers, isAscending, column);
         try {
-            updateUsersList();
+            updatePublishersList();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
