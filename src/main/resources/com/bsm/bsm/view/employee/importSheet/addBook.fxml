@@ -1,14 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import org.controlsfx.control.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+<AnchorPane prefHeight="635.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.importSheet.AddBookController">
 
+    <Label fx:id="bookNameErrorLabel" layoutX="76.0" layoutY="169.0" prefHeight="17.0" prefWidth="307.0" styleClass="error-label" />
+    <Label fx:id="authorErrorLabel" layoutX="77.0" layoutY="244.0" prefHeight="17.0" prefWidth="450.0" styleClass="error-label" />
+    <Label fx:id="quantityErrorLabel" layoutX="77.0" layoutY="501.0" prefHeight="17.0" prefWidth="217.0" styleClass="error-label" />
+    <Label fx:id="categoryErrorLabel" layoutX="78.0" layoutY="331.0" prefHeight="17.0" prefWidth="199.0" styleClass="error-label" />
+    <Label fx:id="publisherErrorLabel" layoutX="77.0" layoutY="413.0" prefHeight="17.0" prefWidth="199.0" styleClass="error-label" />
+    <Label fx:id="priceErrorLabel" layoutX="317.0" layoutY="501.0" prefHeight="17.0" prefWidth="207.0" styleClass="error-label" />
+    <Label fx:id="releaseErrorLabel" layoutX="317.0" layoutY="331.0" prefHeight="17.0" prefWidth="216.0" styleClass="error-label" />
+
+    <Label layoutX="76.0" layoutY="108.0" styleClass="label-bold" text="Book Name">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+    <Label layoutX="77.0" layoutY="184.0" styleClass="label-bold" text="Author">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+    <Label layoutX="77.0" layoutY="353.0" styleClass="label-bold" text="Publisher">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+    <Label layoutX="316.0" layoutY="269.0" styleClass="label-bold" text="Release date">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+
+    <TextField fx:id="fullNameField" layoutX="75.0" layoutY="129.0" prefHeight="40.0" prefWidth="450.0" promptText="Enter your full name" styleClass="input-field-add" />
+    <SearchableComboBox fx:id="publisherComboBox" layoutX="76.0" layoutY="373.0" prefHeight="40.0" prefWidth="217.0" promptText="Enter publisher name" />
+    <DatePicker fx:id="releaseDatePicker" layoutX="317.0" layoutY="289.0" prefHeight="40.0" prefWidth="207.0" promptText="Select release date" styleClass="input-field-add" />
+
+
+    <Button fx:id="saveChangesButton" layoutX="370.0" layoutY="546.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="40.0" prefWidth="153.0" styleClass="button-custom-admin" text="Save" textFill="WHITE">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Button>
+    <Label layoutX="223.0" layoutY="47.0" text="ADD BOOK">
+        <font>
+            <Font size="25.0" />
+        </font>
+    </Label>
+    <Label layoutX="80.0" layoutY="441.0" styleClass="label-bold" text="Quantity">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+    <Label layoutX="320.0" layoutY="440.0" styleClass="label-bold" text="Price">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+    <TextField fx:id="bookQuantityField" layoutX="76.0" layoutY="460.0" prefHeight="40.0" prefWidth="217.0" promptText="Enter book quantity" styleClass="input-field-add-normal-disable" />
+    <TextField fx:id="bookPriceField" layoutX="317.0" layoutY="460.0" prefHeight="40.0" prefWidth="207.0" promptText="Enter book price" styleClass="input-field-add" />
+    <Label layoutX="82.0" layoutY="269.0" styleClass="label-bold" text="Category">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+    <CheckComboBox fx:id="categoryCheckCombo" layoutX="77.0" layoutY="291.0" prefHeight="40.0" prefWidth="216.0" styleClass="check-combo-box" VBox.vgrow="ALWAYS">
+
+    </CheckComboBox>
+    <CheckComboBox fx:id="authorNameCheckCombo" layoutX="77.0" layoutY="203.0" prefHeight="40.0" prefWidth="450.0" styleClass="check-combo-box" />
+    <Label layoutX="316.0" layoutY="352.0" styleClass="label-bold" text="Language">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+
+    <SearchableComboBox fx:id="languageComboBox" layoutX="316.0" layoutY="373.0" prefHeight="40.0" prefWidth="207.0" />
+    <TextField fx:id="categorySearch" layoutX="160.0" layoutY="265.0" prefHeight="27.0" prefWidth="133.0" promptText="Search category" />
+    <TextField fx:id="authorSearch" layoutX="138.0" layoutY="177.0" prefHeight="27.0" prefWidth="388.0" promptText="Search author" />
+    <Label fx:id="languageErrorLabel" layoutX="317.0" layoutY="413.0" prefHeight="17.0" prefWidth="216.0" styleClass="error-label" />
 </AnchorPane>
