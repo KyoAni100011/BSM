@@ -102,7 +102,7 @@ public class sidebarController {
 
     @FXML
     void SwitchImportSheet(ActionEvent event) throws IOException {
-        loadPage("importSheets/importSheets");
+        loadPage("importSheet/importSheet");
     }
 
     @FXML
