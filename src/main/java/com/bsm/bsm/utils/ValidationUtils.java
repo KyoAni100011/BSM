@@ -37,6 +37,7 @@ public class ValidationUtils {
         }
     }
 
+
     public static String validateIntroduction(String introduction,  String field) {
         int introductionLength = introduction.length();
         boolean checkWrongField = introductionLength > 255 ;
@@ -114,15 +115,18 @@ public class ValidationUtils {
     }
 
     public static String validateCategory(ObservableList<String> category, String field) {
-        return category.isEmpty() ? "Please enter "+ field +" category." : null;
+        return category.isEmpty() ? "Please choose "+ field +" category." : null;
     }
 
     public static String validateAuthor(ObservableList<String> author, String field) {
-        return author.isEmpty() ? "Please enter "+ field +" name." : null;
+        return author.isEmpty() ? "Please choose "+ field +" name." : null;
     }
 
     public static String validateLanguage(String languages, String field) {
-        return languages == null ? "Please enter "+ field +" language." : null;
+        return languages == null ? "Please choose "+ field +" language." : null;
+    }
+    public static String validatePublisher(String publisher, String field) {
+        return publisher == null ? "Please choose "+ field  : null;
     }
     public static String validateQuantity(String quantity, String field) {
         if (quantity.isEmpty()) {
