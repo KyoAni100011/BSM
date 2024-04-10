@@ -52,7 +52,8 @@ public class UpdateBookController {
     @FXML
     private DatePicker releaseDatePicker;
     @FXML
-    private TextField categorySearch,authorSearch;
+    private TextField categorySearch, authorSearch;
+
     Book book;
     private BookService bookService = new BookService();
     private CategoryService categoryService = new CategoryService();

@@ -107,7 +107,7 @@ public class sidebarController {
 
     @FXML
     void SwitchOrder(ActionEvent event) throws IOException {
-        loadPage("order/order");
+        loadPage("book/addBook");
     }
 
     @FXML
