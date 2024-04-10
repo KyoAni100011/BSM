@@ -107,6 +107,13 @@
 .input-field-add:disabled {
   -fx-opacity: 1;
 }
+.input-field-add-normal-disable {
+  -fx-background-color: transparent;
+  -fx-border-width: 1px;
+  -fx-border-color: black;
+  -fx-border-radius: 5px;
+}
+
 .button-custom-admin {
   -fx-font-family: "Roboto Bold";
   -fx-padding: 1px;
