@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.imporSheets">
+   <children>
+      <VBox prefHeight="600.0" prefWidth="700.0">
+         <children>
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+               <VBox alignment="CENTER_LEFT" layoutY="-1.0" prefHeight="470.0" prefWidth="700.0">
+                  <AnchorPane prefHeight="470.0" prefWidth="700.0">
+                     <VBox fx:id="pnItems" layoutY="43.0" prefHeight="428.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 0px 0px 10px 10px;" />
+                     <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-color: #F3F3F3; -fx-border-width: 0px 0px 2px 0px;">
+                        <AnchorPane prefHeight="44.0" prefWidth="194.0">
+                           <Button fx:id="idLabel" layoutX="-3.0" layoutY="9.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="200.0" style="-fx-background-color: transparent;" text="Book name" />
+                        </AnchorPane>
+                        <AnchorPane prefHeight="44.0" prefWidth="62.0">
+                           <Button fx:id="nameLabel" layoutY="9.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" style="-fx-background-color: transparent;" text="Author">
+                              <graphic>
+                                 <Group />
+                              </graphic>
+                           </Button>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="44.0" prefWidth="114.0">
+                           <Button fx:id="introductionLabel" layoutY="7.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: transparent;" text="Publisher" />
+                        </AnchorPane>
+                        <AnchorPane prefHeight="44.0" prefWidth="36.0">
+                           <children>
+                              <Button fx:id="introductionLabel1" layoutY="7.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="50.0" style="-fx-background-color: transparent;" text="Qty" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="44.0" prefWidth="36.0">
+                           <children>
+                              <Button fx:id="introductionLabel11" layoutY="7.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: transparent;" text="Type" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="44.0" prefWidth="36.0">
+                           <children>
+                              <Button fx:id="introductionLabel111" layoutY="7.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: transparent;" text="Price" />
+                           </children>
+                        </AnchorPane>
+                     </HBox>
+                  </AnchorPane>
+               </VBox>
+               <HBox alignment="CENTER_LEFT" layoutY="470.0" prefHeight="50.0" prefWidth="700.0" spacing="15.0" style="-fx-background-color: white; -fx-border-width: 2px 0px 0px 0px; -fx-border-color: #F3F3F3;">
+                  <Button fx:id="previousPaginationButton" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: #F5A11C;" text=" Add book">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                     <graphic>
+                        <Group>
+                           <children>
+                              <SVGPath content="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" scaleX="0.03" scaleY="0.03" style="-fx-fill: #F5A11C;" />
+                           </children>
+                        </Group>
+                     </graphic>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <opaqueInsets>
+                     <Insets />
+                  </opaqueInsets>
+               </HBox>
+            </AnchorPane>
+         </children>
+      </VBox>
+
+      <HBox alignment="CENTER_LEFT" layoutY="540.0" prefHeight="60.0" prefWidth="700.0" style="-fx-background-color: white;">
+         <children>
+            <Label text="Import date">
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+            </Label>
+            <DatePicker>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </DatePicker>
+            <Label text="Total cost">
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+            </Label>
+            <TextField>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </TextField>
+            <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="82.0" style="-fx-background-color: #F5A11C;" text="Add sheet">
+               <HBox.margin>
+                  <Insets left="60.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
+
+
