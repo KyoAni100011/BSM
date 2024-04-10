@@ -78,14 +78,6 @@
                               <Insets left="24.0" />
                            </padding>
                         </Button>
-                        <Button fx:id="btnLogOut" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleLogOut" prefHeight="46.0" prefWidth="274.0" style="-fx-background-color: none; -fx-border-radius: 0;" styleClass="sideBarItemEmployee" text="Logout">
-                           <graphic>
-                              <FontAwesomeIcon glyphName="ARROW_CIRCLE_RIGHT" size="1.3em" styleClass="graphic" />
-                           </graphic>
-                           <padding>
-                              <Insets left="24.0" />
-                           </padding>
-                        </Button>
                      </children>
                   </VBox>
                   <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="20.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true">

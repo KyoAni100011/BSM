@@ -24,29 +24,24 @@ public class BookBarChartController {
     public void initialize() {
         // Tạo dữ liệu giả định
         ObservableList<XYChart.Data<String, Number>> data = FXCollections.observableArrayList();
-        data.add(new XYChart.Data<>("doraemon tập 1", 80000000));
-        data.add(new XYChart.Data<>("shin cau be but chi tập 2", 120000000));
-        data.add(new XYChart.Data<>("shin cau be but chi tập 3", 100000000));
-        data.add(new XYChart.Data<>("shin cau be but chi tập 4", 150000000));
-        data.add(new XYChart.Data<>("shin cau be but chi tập 5", 200000000));
-        data.add(new XYChart.Data<>("shin cau be but chi tập 6", 250000000));
-        data.add(new XYChart.Data<>("shin cau be but chi tập 7", 300000000));
-        data.add(new XYChart.Data<>("shin cau be but chi tập 8", 350000000));
-        data.add(new XYChart.Data<>("shin cau be but chi tập 9", 400000000));
-        data.add(new XYChart.Data<>("shin cau be but chi tập 10", 450000000));
-
+        data.add(new XYChart.Data<>("1", 80000000));
+        data.add(new XYChart.Data<>("2", 120000000));
+        data.add(new XYChart.Data<>("3", 100000000));
+        data.add(new XYChart.Data<>("4", 150000000));
+        data.add(new XYChart.Data<>("5", 200000000));
+        data.add(new XYChart.Data<>("6", 250000000));
+        data.add(new XYChart.Data<>("7", 300000000));
+        data.add(new XYChart.Data<>("8", 350000000));
+        data.add(new XYChart.Data<>("9", 400000000));
+        data.add(new XYChart.Data<>("10", 450000000));
 
         // Thêm dữ liệu vào biểu đồ
         XYChart.Series<String, Number> series = new XYChart.Series<>();
 
-
         // Tạo một chuỗi chuyển đổi để định dạng giá trị trục y
         NumberAxis yAxis = (NumberAxis) bookBarChart.getYAxis();
         CategoryAxis xAxis = (CategoryAxis) bookBarChart.getXAxis();
-        xAxis.setTickLabelRotation(-90);
         xAxis.setTickLength(10);
-        // Áp dụng CSS cho CategoryAxis để label tự động xuống dòng
-        xAxis.getStyleClass().add("chart-axis-label");
 
         yAxis.setTickLabelFormatter(new StringConverter<Number>() {
             @Override
@@ -65,7 +60,6 @@ public class BookBarChartController {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
         });
-
 
         series.setData(data);
 
