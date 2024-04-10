@@ -160,7 +160,7 @@ public class BookDAO {
     }
 
     public boolean isNameExist(String id, String name) {
-        String QUERY_CHECK_NAME = "select 1 from book where title = ? and isbn != ?";
+        String QUERY_CHECK_NAME = "select isbn from book where title = ? and isbn != ?";
         AtomicReference<Boolean> isExist = new AtomicReference<>(false);
 
         DatabaseConnection.executeQuery(QUERY_CHECK_NAME, resultSet -> {
