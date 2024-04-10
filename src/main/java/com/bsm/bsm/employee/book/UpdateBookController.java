@@ -165,7 +165,7 @@ public class UpdateBookController {
         if (validateInputs(fullName, releaseDate, price, publisherName, selectedLanguage, selectedCategory, selectedAuthor, quantity)) {
 
             //check name exist
-            if (bookService.isNameExist(fullName, bookID)) {
+            if (bookService.isNameExist(bookID, fullName)) {
                 bookNameErrorLabel.setText("Book name already exists.");
                 return;
             }
