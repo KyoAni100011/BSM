@@ -9,6 +9,7 @@ import com.bsm.bsm.utils.DateUtils;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -147,6 +148,31 @@ public class BookDAO {
         connection.setAutoCommit(true);
 
         return true;
+    }
+
+    // get isbn all books
+    public List<String> getAllISBN() {
+        List<String> isbns = new ArrayList<>();
+        String QUERY_ALL_ISBN = "select isbn from book";
+        DatabaseConnection.executeQuery(QUERY_ALL_ISBN, resultSet -> {
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    isbns.add(resultSet.getString("isbn"));
+                }
+            }
+        });
+        return isbns;
+    }
+
+    // get all books from list isbn
+    public List<Book> getAllBooks() {
+        List<Book> books = new ArrayList<>();
+        List<String> isbns = getAllISBN();
+        for (var isbn : isbns) {
+            books.add(getBookByISBN(isbn));
+        }
+        System.out.println(books);
+        return books;
     }
 
 

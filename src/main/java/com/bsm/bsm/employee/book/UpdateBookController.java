@@ -55,7 +55,6 @@ public class UpdateBookController {
 
     public static void handleTableItemSelection(String id) {
         bookID = id;
-        bookID  = "66661111";
     }
     @FXML
     public void initialize() {
