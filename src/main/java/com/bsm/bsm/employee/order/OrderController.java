@@ -4,6 +4,7 @@ import com.bsm.bsm.order.Order;
 import com.bsm.bsm.employee.EmployeeModel;
 import com.bsm.bsm.user.UserSingleton;
 
+import com.bsm.bsm.utils.NumericValidationUtils;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -11,32 +12,32 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class OrderController implements Initializable  {
     private static String id;
     private final ToggleGroup toggleGroup = new ToggleGroup();
-    private final EmployeeModel employeeInfo = (EmployeeModel) UserSingleton.getInstance().getUser();
 //    private final Orderservice Orderservice = new Orderservice();
     @FXML
     public Button customerLabel,employeeLabel,orderLabel,priceLabel,idLabel;
     @FXML
     public SVGPath priceSortLabel,CustomerSortLabel,orderSortLabel,employeeSortLabel,idSortLabel;
-
+    @FXML
+    public DatePicker fromDateField, toDateField;
     @FXML
     private TextField inputSearch;
     @FXML
@@ -54,15 +55,19 @@ public class OrderController implements Initializable  {
     private String column = "id";
     private int currentPage = 1;
     private String inputSearchText = "";
-
-    static void handleTableItemSelection(String userId) {
-        id = userId; // Store the selected user
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    static void handleTableItemSelection(String orderId) {
+        id = orderId; // Store the selected user
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeButtonsAndLabels();
-        loadAllOrders();
+        try {
+            loadAllOrders();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         initializePaginationButtons();
 
         inputSearch.textProperty().addListener(new ChangeListener<String>() {
@@ -78,17 +83,51 @@ public class OrderController implements Initializable  {
             }
         });
     }
+//    public DatePicker fromDateField, toDateField;
+    private void setupDatePicker() {
+        fromDateField.setPromptText("dd/mm/yyyy");
+        toDateField.setPromptText("dd/mm/yyyy");
 
-    private void loadAllOrders() {
-//        orders = Orderservice.getAllOrders();
-//        employeeInfo.setOrders(orders);
+        fromDateField.setConverter(new StringConverter<LocalDate>() {
+            @Override
+            public String toString(LocalDate date) {
+                return date != null ? dateFormatter.format(date) : "";
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                return string != null && !string.isEmpty() ? LocalDate.parse(string, dateFormatter) : null;
+            }
+        });
+
+        toDateField.setConverter(new StringConverter<LocalDate>() {
+            @Override
+            public String toString(LocalDate date) {
+                return date != null ? dateFormatter.format(date) : "";
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                return string != null && !string.isEmpty() ? LocalDate.parse(string, dateFormatter) : null;
+            }
+        });
+        fromDateField.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
+        toDateField.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
+    }
+
+    private void loadAllOrders() throws IOException {
+        orders = new ArrayList<>();
+        orders.add(new Order(UUID.randomUUID(),324,UUID.randomUUID(),LocalDate.of(2024, 4, 11),new BigDecimal("100.00")));
+        updateOrdersList();
+        //        orders = Orderservice.getAllOrders();
 //        try {
 //            updateOrdersList();
 //        } catch (IOException e) {
 //            System.out.println(e.getMessage());
 //        }
     }
-     private void initializeButtonsAndLabels() {
+
+    private void initializeButtonsAndLabels() {
         customerLabel.setOnMouseClicked(this::handleLabelClick);
         employeeLabel.setOnMouseClicked(this::handleLabelClick);
         orderLabel.setOnMouseClicked(this::handleLabelClick);
@@ -101,7 +140,6 @@ public class OrderController implements Initializable  {
         employeeSortLabel.setContent("");
         idSortLabel.setContent("");
 
-         filterButton.setOnAction(this::handleFilterButton);
     }
 
     private void initializePaginationButtons() {
@@ -112,12 +150,47 @@ public class OrderController implements Initializable  {
         fifthPaginationButton.setOnAction(this::handlePaginationButton);
         previousPaginationButton.setOnAction(this::handlePaginationButton);
         nextPaginationButton.setOnAction(this::handlePaginationButton);
+        fromDateField.setPromptText("dd/mm/yyyy");
+        toDateField.setPromptText("dd/mm/yyyy");
     }
 
     @FXML
-    void handleFilterButton(ActionEvent event) {
+    void handleFromDayButton(ActionEvent event) {
+        toDateField.setDayCellFactory(param -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                setDisable(empty || date.compareTo(fromDateField.getValue()) < 0 );
+            }
+        });
+        if(fromDateField.getValue() != null && toDateField.getValue() != null  ){
+            System.out.println("get in");
+            // Sort calendar her
+        }
 //        try {
-//            FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookOrders/addOrder");
+//            FXMLLoaderHelper.loadFXML(new Stage(), "order/bookOrders/addOrder");
+//            //update orders list after adding new Order
+//            orders = Orderservice.getAllOrders();
+//            updateOrdersList();
+//        } catch (IOException e) {
+//            System.out.println(e.getMessage());
+//        }
+    }
+    @FXML
+    void handleToDayButton(ActionEvent event) {
+        fromDateField.setDayCellFactory(param -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                setDisable(empty || date.compareTo(toDateField.getValue()) > 0 );
+            }
+        });
+        if(fromDateField.getValue() != null && toDateField.getValue() != null  ){
+            System.out.println("get in");
+            // Sort calendar her
+        }
+//        try {
+//            FXMLLoaderHelper.loadFXML(new Stage(), "order/bookOrders/addOrder");
 //            //update orders list after adding new Order
 //            orders = Orderservice.getAllOrders();
 //            updateOrdersList();
@@ -126,19 +199,7 @@ public class OrderController implements Initializable  {
 //        }
     }
 
-    @FXML
-    void handleUpdateOrderButton(ActionEvent event) {
-//        try {
-//            if (id != null) {
-//                UpdateOrderController.handleTableItemSelection(id);
-//                FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookOrders/updateOrder");
-//            } else {
-//                AlertUtils.showAlert("Error", "Can't find Order", Alert.AlertType.ERROR);
-//            }
-//        } catch (IOException e) {
-//            AlertUtils.showAlert("Error", "Error loading updateOrder FXML", Alert.AlertType.ERROR);
-//        }
-    }
+
 
     @FXML
     private void handlePaginationButton(ActionEvent event) {
@@ -213,14 +274,12 @@ public class OrderController implements Initializable  {
         int endIndex = Math.min(startIndex + itemsPerPage, orders.size());
 
         for (int i = startIndex; i < endIndex; i++) {
-            Order Order = orders.get(i);
-
+            Order order = orders.get(i);
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/bookOrders/tableItem.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/order/tableItem.fxml"));
                 Node item = fxmlLoader.load();
                 TableItemController tableItemController = fxmlLoader.getController();
-                tableItemController.setToggleGroup(toggleGroup);
-                tableItemController.setOrder(Order);
+                tableItemController.setOrder(order);
                 pnItems.getChildren().add(item);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -229,6 +288,7 @@ public class OrderController implements Initializable  {
         int totalPages = (int) Math.ceil((double) orders.size() / itemsPerPage);
         updatePaginationButtons(totalPages);
     }
+
 
     @FXML
     private void handleLabelClick(MouseEvent event) {
@@ -242,8 +302,8 @@ public class OrderController implements Initializable  {
         column = columnName;
         idSortLabel.setContent(column.equals("ID") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
         CustomerSortLabel.setContent(column.equals("Customer") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
-        orderSortLabel.setContent(column.equals("Employee") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
-        employeeSortLabel.setContent(column.equals("Order Date") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        orderSortLabel.setContent(column.equals("Order Date") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        employeeSortLabel.setContent(column.equals("Employee") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
         priceSortLabel.setContent(column.equals("Total Price") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
         try {
 //            orders = Orderservice.sort(orders, isAscending, column);

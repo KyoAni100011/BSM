@@ -2,16 +2,10 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.HBox?>
 
 <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleTableItemDoubleClick" prefHeight="45.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: #F3F3F3;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.order.TableItemController">
    <children>
-      <ToggleButton fx:id="toogleButton" onAction="#handleRadioButtonClick" prefHeight="28.0" prefWidth="26.0" style="-fx-border-color: #F3F3F3; -fx-background-color: transparent; -fx-background-radius: 5; -fx-border-radius: 5;" styleClass="toggle-button">
-         <HBox.margin>
-            <Insets left="30.0" />
-         </HBox.margin>
-      </ToggleButton>
       <Label fx:id="idLabel" alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="1034067323133">
          <HBox.margin>
             <Insets />
@@ -22,7 +16,7 @@
             <Insets />
          </HBox.margin>
       </Label>
-      <Label fx:id="EmployeeNameLabel" alignment="CENTER" prefHeight="17.0" prefWidth="136.0" text="100">
+      <Label fx:id="EmployeeNameLabel" alignment="CENTER" prefHeight="17.0" prefWidth="136.0" text="Nguyen Ho">
          <HBox.margin>
             <Insets />
          </HBox.margin>

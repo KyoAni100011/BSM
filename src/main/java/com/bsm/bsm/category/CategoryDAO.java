@@ -78,4 +78,23 @@ public class CategoryDAO {
 
         return categories;
     }
+    public boolean enableCategory(String categoryId) {
+        try {
+            String ENABLE_USER_QUERY = "UPDATE category SET isEnabled = 1 WHERE id = ?";
+            int rowEffected = DatabaseConnection.executeUpdate(ENABLE_USER_QUERY, categoryId);
+            return rowEffected > 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean disableCategory(String categoryId) {
+        try {
+            String DISABLE_USER_QUERY = "UPDATE category SET isEnabled = 0 WHERE id = ?";
+            int rowEffected = DatabaseConnection.executeUpdate(DISABLE_USER_QUERY, categoryId);
+            return rowEffected > 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

@@ -106,4 +106,18 @@ public class CategoryService implements Activable, Searchable<Category>, Sortabl
     public List<Category> getAllCategories() {
         return categoryDAO.getAllCatogories();
     }
+    public boolean disableCategory(String categoryId) {
+        try {
+            return categoryDAO.disableCategory(categoryId);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    public boolean enableCategory(String categoryId) {
+        try {
+            return categoryDAO.enableCategory(categoryId);
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
