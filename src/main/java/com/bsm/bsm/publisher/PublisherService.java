@@ -96,5 +96,18 @@ public class PublisherService implements Activable, Searchable<Publisher>, Sorta
     public List<Publisher> getAllPublishers() {
         return publisherDAO.getAllPublisher();
     }
-
+    public boolean disablePublisher(String publisherId) {
+        try {
+            return publisherDAO.disablePublisher(publisherId);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    public boolean enablePublisher(String publisherId) {
+        try {
+            return publisherDAO.enablePublisher(publisherId);
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

@@ -79,4 +79,23 @@ public class PublisherDAO {
 
         return publishers;
     }
+    public boolean enablePublisher(String publisherId) {
+        try {
+            String ENABLE_USER_QUERY = "UPDATE publisher SET isEnabled = 1 WHERE id = ?";
+            int rowEffected = DatabaseConnection.executeUpdate(ENABLE_USER_QUERY, publisherId);
+            return rowEffected > 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean disablePublisher(String publisherId) {
+        try {
+            String DISABLE_USER_QUERY = "UPDATE publisher SET isEnabled = 0 WHERE id = ?";
+            int rowEffected = DatabaseConnection.executeUpdate(DISABLE_USER_QUERY, publisherId);
+            return rowEffected > 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

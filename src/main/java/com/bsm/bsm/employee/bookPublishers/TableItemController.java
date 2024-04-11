@@ -44,7 +44,6 @@ public class TableItemController {
 
     @FXML
     private void handleToggleSwitchClick() {
-//        isOn.setUserId(id); // Pass the idLabel data to ToggleSwitch
         BooleanProperty oldState = isOn.switchedProperty();
         String confirmationMessage = "Are you sure you want to " + (!oldState.get() ? "enable" : "disable") + " this publisher?";
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -52,17 +51,20 @@ public class TableItemController {
         confirmationAlert.setHeaderText(confirmationMessage);
         confirmationAlert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-//                if (oldState.get()) {
-//                    if (!publisherService.disablePublisher(id)) {
-//                        AlertUtils.showAlert("Error", "Failed to disable publisher", Alert.AlertType.ERROR);
-//                        return;
-//                    }
-//                } else {
-//                    if (!publisherService.enablePublisher(id)) {
-//                        AlertUtils.showAlert("Error", "Failed to enable publisher", Alert.AlertType.ERROR);
-//                        return;
-//                    }
-//                }
+                if (oldState.get()) {
+                    if (!publisherService.disablePublisher(id)) {
+                        AlertUtils.showAlert("Error", "Failed to disable publisher", Alert.AlertType.ERROR);
+                        return;
+                    }
+                   // Update userModel's property
+                } else {
+                    if (!publisherService.enablePublisher(id)) {
+                        AlertUtils.showAlert("Error", "Failed to enable publisher", Alert.AlertType.ERROR);
+                        return;
+                    }
+                }
+                isOn.setSwitchedProperty(!oldState.get());
+                publisherModel.setEnabled(!oldState.get());
                 AlertUtils.showAlert("Success", "Publisher has been " + (!oldState.get() ? "enabled" : "disabled"), Alert.AlertType.INFORMATION);
             } else {
                 oldState.setValue(!oldState.get());
