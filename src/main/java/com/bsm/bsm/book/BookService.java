@@ -72,7 +72,12 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
 
     @Override
     public boolean add(Book item) {
-        return true;
+        try {
+            return bookDAO.add(item);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 
     @Override
@@ -85,8 +90,15 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
         return bookDAO.getBookByISBN(isbn);
     }
 
+
+    // use this for check update book name
     public boolean isNameExist(String id, String name) {
         return bookDAO.isNameExist(id, name);
+    }
+
+    // use this for check add book name
+    public boolean isNameExist(String name) {
+        return bookDAO.isNameExist("", name);
     }
 
     public boolean isSalePriceValid(Book book, BigDecimal salePrice) {

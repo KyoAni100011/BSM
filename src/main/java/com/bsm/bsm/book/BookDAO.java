@@ -9,7 +9,6 @@ import com.bsm.bsm.utils.DateUtils;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -28,6 +27,7 @@ public class BookDAO {
         });
         return languages;
     }
+
     // get publisher of a book
     private Publisher getBookPublisher(String isbn) {
         String QUERY_PUBLISHER = "select p.id as publisher_id, p.name as publisher_name, p.isEnabled  from book b join publisher p on b.publisherId = p.id where isbn = ?";
@@ -176,8 +176,60 @@ public class BookDAO {
     }
 
 
-    public void add(Book book) {
-        // Implement add logic
+    public boolean add(Book book) throws SQLException {
+        Connection connection = DatabaseConnection.getConnection();
+        connection.setAutoCommit(false);
+
+        // insert into table book
+        String formattedDate = DateUtils.formatDOB(book.getPublishingDate()); // convert date to yyyy-MM-dd
+        String QUERY_ADD_BOOK = "insert into book(title, publisherID, publishingDate, language) values (?, ?, ?, ?)";
+        int rowAffected = DatabaseConnection.executeUpdate(connection, QUERY_ADD_BOOK,
+                book.getTitle(), book.getPublisher().getId(),
+                formattedDate, book.getLanguages());
+
+        if (!checkRowAffected(connection, rowAffected)) return false;
+        connection.commit(); // commit to save book before insert into bookAuthor and bookCategory
+
+        // retrieve isbn
+        String QUERY_GET_ISBN_BOOK = "select isbn from book where title = ?";
+        AtomicReference<String> bookIsbn = new AtomicReference<>();
+        DatabaseConnection.executeQuery(connection,QUERY_GET_ISBN_BOOK, resultSet -> {
+            if (resultSet != null && resultSet.next()) {
+                bookIsbn.set(resultSet.getString("isbn"));
+            }
+        }, book.getTitle());
+
+        // insert into table bookAuthor
+        String QUERY_ADD_BOOKAUTHOR = "insert into bookAuthor values (?, ?)";
+        for (var item : book.getAuthors()) {
+            rowAffected = DatabaseConnection.executeUpdate(connection, QUERY_ADD_BOOKAUTHOR, bookIsbn.get(), item.getId());
+            if (!checkRowAffected(connection, rowAffected)) return false;
+        }
+
+        //insert into table bookCategory
+        String QUERY_ADD_BOOKCATEGORY = "insert into bookCategory values (?, ?)";
+        for (var item : book.getCategories()) {
+            rowAffected = DatabaseConnection.executeUpdate(connection, QUERY_ADD_BOOKCATEGORY, bookIsbn.get(), item.getId());
+            if (!checkRowAffected(connection, rowAffected)) return false;
+        }
+
+        connection.commit();
+        connection.setAutoCommit(true);
+        return true;
+    }
+
+    public static void main(String[] args) {
+        BookDAO bookDAO = new BookDAO();
+        Book book = new Book("title", new Publisher("44441120", "name", true),
+                "2021-01-01", "english", List.of(new Author("33331114", "name", true)),
+                List.of(new Category("55551115", "name", true)));
+        try {
+            if(bookDAO.add(book)) {
+                System.out.println("Add book successfully");
+            }
+        } catch (SQLException e) {
+            System.out.print(e.getMessage());
+        }
     }
 
     public Book search(String keyword) {
@@ -211,7 +263,7 @@ public class BookDAO {
                 }
             }
         }, book.getIsbn());
-        
+
         return isValid.get();
     }
 }
