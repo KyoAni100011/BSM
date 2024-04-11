@@ -44,7 +44,6 @@ public class TableItemController {
 
     @FXML
     private void handleToggleSwitchClick() {
-//        isOn.setUserId(id); // Pass the idLabel data to ToggleSwitch
         BooleanProperty oldState = isOn.switchedProperty();
         String confirmationMessage = "Are you sure you want to " + (!oldState.get() ? "enable" : "disable") + " this category?";
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -52,17 +51,19 @@ public class TableItemController {
         confirmationAlert.setHeaderText(confirmationMessage);
         confirmationAlert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-//                if (oldState.get()) {
-//                    if (!categoryService.disableCategory(id)) {
-//                        AlertUtils.showAlert("Error", "Failed to disable category", Alert.AlertType.ERROR);
-//                        return;
-//                    }
-//                } else {
-//                    if (!categoryService.enableCategory(id)) {
-//                        AlertUtils.showAlert("Error", "Failed to enable category", Alert.AlertType.ERROR);
-//                        return;
-//                    }
-//                }
+                if (oldState.get()) {
+                    if (!categoryService.disableCategory(id)) {
+                        AlertUtils.showAlert("Error", "Failed to disable category", Alert.AlertType.ERROR);
+                        return;
+                    }
+                } else {
+                    if (!categoryService.enableCategory(id)) {
+                        AlertUtils.showAlert("Error", "Failed to enable category", Alert.AlertType.ERROR);
+                        return;
+                    }
+                }
+                isOn.setSwitchedProperty(!oldState.get());
+                categoryModel.setEnabled(!oldState.get());
                 AlertUtils.showAlert("Success", "Category has been " + (!oldState.get() ? "enabled" : "disabled"), Alert.AlertType.INFORMATION);
             } else {
                 oldState.setValue(!oldState.get());
