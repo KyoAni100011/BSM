@@ -33,48 +33,8 @@ public class TableItemController {
     private void initialize() {
         OrderController.handleTableItemSelection(null);
     }
-    @FXML
-    private void handleRadioButtonClick(){
-        if(!toogleButton.isSelected()){
-            OrderController.handleTableItemSelection(null);
-        } else {
-            OrderController.handleTableItemSelection(isbn);
-        }
-    }
 
-    @FXML
-    private void handleToggleSwitchClick() {
-//        BooleanProperty oldState = isOn.switchedProperty();
-//        String confirmationMessage = "Are you sure you want to " + (!oldState.get() ? "enable" : "disable") + " this order?";
-//        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-//        confirmationAlert.setTitle("Confirmation");
-//        confirmationAlert.setHeaderText(confirmationMessage);
-//        confirmationAlert.showAndWait().ifPresent(response -> {
-//            if (response == ButtonType.OK) {
-//                if (oldState.get()) {
-//                    if (!orderService.disableOrder(idLabel.getText())) {
-//                        AlertUtils.showAlert("Error", "Failed to disable order", Alert.AlertType.ERROR);
-//                        return;
-//                    }
-//                    isOn.setSwitchedProperty(false);
-//                    order.setEnabled(false); // Update order's property
-//                    AlertUtils.showAlert("Success", "Order disabled successfully", Alert.AlertType.INFORMATION);
-//                } else {
-//                    if (!orderService.enableOrder(idLabel.getText())) {
-//                        AlertUtils.showAlert("Error", "Failed to enable order", Alert.AlertType.ERROR);
-//                        return;
-//                    }
-//                    isOn.setSwitchedProperty(true);
-//                    order.setEnabled(true); // Update order's property
-//                    AlertUtils.showAlert("Success", "Order enabled successfully", Alert.AlertType.INFORMATION);
-//                }
-//            }
-//        });
-    }
 
-    public void setToggleGroup(ToggleGroup toggleGroup) {
-        toogleButton.setToggleGroup(toggleGroup);
-    }
     @FXML
     private void handleTableItemDoubleClick(MouseEvent event) throws IOException {
         if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
@@ -89,15 +49,15 @@ public class TableItemController {
     }
 
     public void setOrder(Order thisOrder) {
+        System.out.println("have"+thisOrder.toString());
         order = thisOrder;
         isbn = String.valueOf(thisOrder.getId());
 
         idLabel.setText(String.valueOf(thisOrder.getId()));
+
         customerNameLabel.setText(String.valueOf(thisOrder.getCustomerID()));
         EmployeeNameLabel.setText(String.valueOf(thisOrder.getEmployeeID()));
         OrderDateLabel.setText(String.valueOf(thisOrder.getOrderDate()));
         PriceLabel.setText(String.valueOf(thisOrder.getTotalPrice()));
-        // Set the last login label with the time elapsed
-//        isOn.setSwitchedProperty(order.isEnabled());
     }
 }
