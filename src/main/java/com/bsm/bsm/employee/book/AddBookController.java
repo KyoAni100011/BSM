@@ -358,7 +358,7 @@ public class AddBookController {
         String fullName = fullNameField.getText();
         String releaseDate = releaseDatePicker.getEditor().getText();
         String publisherName = (String)publisherComboBox.getValue();
-        String quantity = bookQuantityField.getText();
+//        String quantity = bookQuantityField.getText();
         String price = bookPriceField.getText();
         var selectedAuthor = authorNameCheckCombo.getCheckModel().getCheckedItems();
         var selectedCategory = categoryCheckCombo.getCheckModel().getCheckedItems();
