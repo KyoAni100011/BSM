@@ -40,6 +40,21 @@ public class DatabaseConnection {
         }
     }
 
+    //use this method to execute a transaction
+    public static void executeQuery(Connection connection, String query, QueryResultHandler handler, Object... parameters) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            setParameters(preparedStatement, parameters);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                handler.handleResult(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
     public static int executeUpdate(String query, Object... parameters) {
         int linesAffected = 0;
         try (Connection connection = getConnection();
