@@ -1,7 +1,7 @@
 package com.bsm.bsm.employee.book;
 
 import com.bsm.bsm.book.BookService;
-import com.bsm.bsm.book.ToggleSwitch;
+import com.bsm.bsm.admin.userAccount.ToggleSwitch;
 import com.bsm.bsm.employee.book.bookController;
 import com.bsm.bsm.book.Book;
 import com.bsm.bsm.utils.AlertUtils;
@@ -49,32 +49,30 @@ public class TableItemController {
 
     @FXML
     private void handleToggleSwitchClick() {
-//        BooleanProperty oldState = isOn.switchedProperty();
-//        String confirmationMessage = "Are you sure you want to " + (!oldState.get() ? "enable" : "disable") + " this book?";
-//        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-//        confirmationAlert.setTitle("Confirmation");
-//        confirmationAlert.setHeaderText(confirmationMessage);
-//        confirmationAlert.showAndWait().ifPresent(response -> {
-//            if (response == ButtonType.OK) {
+//        isOn.setUserId(id); // Pass the idLabel data to ToggleSwitch
+        BooleanProperty oldState = isOn.switchedProperty();
+        String confirmationMessage = "Are you sure you want to " + (!oldState.get() ? "enable" : "disable") + " this author?";
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirmation");
+        confirmationAlert.setHeaderText(confirmationMessage);
+        confirmationAlert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
 //                if (oldState.get()) {
-//                    if (!bookService.disableBook(idLabel.getText())) {
-//                        AlertUtils.showAlert("Error", "Failed to disable book", Alert.AlertType.ERROR);
+//                    if (!authorService.disableAuthor(id)) {
+//                        AlertUtils.showAlert("Error", "Failed to disable author", Alert.AlertType.ERROR);
 //                        return;
 //                    }
-//                    isOn.setSwitchedProperty(false);
-//                    book.setEnabled(false); // Update book's property
-//                    AlertUtils.showAlert("Success", "Book disabled successfully", Alert.AlertType.INFORMATION);
 //                } else {
-//                    if (!bookService.enableBook(idLabel.getText())) {
-//                        AlertUtils.showAlert("Error", "Failed to enable book", Alert.AlertType.ERROR);
+//                    if (!authorService.enableAuthor(id)) {
+//                        AlertUtils.showAlert("Error", "Failed to enable author", Alert.AlertType.ERROR);
 //                        return;
 //                    }
-//                    isOn.setSwitchedProperty(true);
-//                    book.setEnabled(true); // Update book's property
-//                    AlertUtils.showAlert("Success", "Book enabled successfully", Alert.AlertType.INFORMATION);
 //                }
-//            }
-//        });
+                AlertUtils.showAlert("Success", "Author has been " + (!oldState.get() ? "enabled" : "disabled"), Alert.AlertType.INFORMATION);
+            } else {
+                oldState.setValue(!oldState.get());
+            }
+        });
     }
 
     public void setToggleGroup(ToggleGroup toggleGroup) {
@@ -102,6 +100,6 @@ public class TableItemController {
         priceLabel.setText(String.valueOf(thisBook.getSalePrice()));
         quantityLabel.setText(String.valueOf(thisBook.getQuantity()));
         // Set the last login label with the time elapsed
-//        isOn.setSwitchedProperty(book.isEnabled());
+        isOn.setSwitchedProperty(book.isEnabled());
     }
 }

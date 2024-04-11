@@ -22,7 +22,6 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
 
     @Override
     public List<Author> sort(List<Author> authors, boolean isAscending, String column) {
-        System.out.println(", isAscending = " + isAscending + ", column = " + column);
         List<Author> sortedAuthors = new ArrayList<>(authors);
         Comparator<Author> comparator = (author1, author2) -> {
             switch(column) {

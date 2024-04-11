@@ -76,6 +76,18 @@ public class ValidationUtils {
         }
     }
 
+    public static String validateImportDay(String dob) {
+        String dobRegex = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\\d{4}$";
+        if (dob.isEmpty()) {
+            return "Please enter " + " import day.";
+        }
+        if (!dob.matches(dobRegex)) {
+            return "Invalid date format. Please use dd/mm/yyyy.";
+        } else {
+            return null;
+        }
+    }
+
     public static String validatePassword(String password, String field) {
         if (password.isEmpty()) {
             return "Please enter " + field +" password.";

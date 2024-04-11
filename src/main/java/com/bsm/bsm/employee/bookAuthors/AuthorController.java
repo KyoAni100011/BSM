@@ -44,11 +44,12 @@ public class AuthorController implements Initializable {
     @FXML
     private Button addAuthorButton, updateAuthorButton;
     @FXML
-    public Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
-    @FXML
     public Button idLabel, nameLabel, introductionLabel, actionLabel;
     @FXML
     private SVGPath  idSortLabel, nameSortLabel, introductionSortLabel ,actionSortLabel;
+    @FXML
+    public Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
+
 
     private List<Author> authors = null;
     private String sortOrder = "ASC";
@@ -146,6 +147,30 @@ public class AuthorController implements Initializable {
         }
     }
 
+    private void updateAuthorsList() throws IOException {
+        pnItems.getChildren().clear();
+        int itemsPerPage = 10;
+        int startIndex = (currentPage - 1) * itemsPerPage;
+        int endIndex = Math.min(startIndex + itemsPerPage, authors.size());
+
+        for (int i = startIndex; i < endIndex; i++) {
+            Author author = authors.get(i);
+
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/bookAuthors/tableItem.fxml"));
+                Node item = fxmlLoader.load();
+                TableItemController tableItemController = fxmlLoader.getController();
+                tableItemController.setToggleGroup(toggleGroup);
+                tableItemController.setAuthorModel(author);
+                pnItems.getChildren().add(item);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        int totalPages = (int) Math.ceil((double) authors.size() / itemsPerPage);
+        updatePaginationButtons(totalPages);
+    }
+
     @FXML
     private void handlePaginationButton(ActionEvent event) {
         Button buttonClicked = (Button) event.getSource();
@@ -211,30 +236,7 @@ public class AuthorController implements Initializable {
         }
     }
 
-    // fix this
-    private void updateAuthorsList() throws IOException {
-        pnItems.getChildren().clear();
-        int itemsPerPage = 10;
-        int startIndex = (currentPage - 1) * itemsPerPage;
-        int endIndex = Math.min(startIndex + itemsPerPage, authors.size());
 
-        for (int i = startIndex; i < endIndex; i++) {
-            Author author = authors.get(i);
-
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/bookAuthors/tableItem.fxml"));
-                Node item = fxmlLoader.load();
-                TableItemController tableItemController = fxmlLoader.getController();
-                tableItemController.setToggleGroup(toggleGroup);
-                tableItemController.setAuthorModel(author);
-                pnItems.getChildren().add(item);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        int totalPages = (int) Math.ceil((double) authors.size() / itemsPerPage);
-        updatePaginationButtons(totalPages);
-    }
 
     @FXML
     private void handleLabelClick(MouseEvent event) {
@@ -243,8 +245,6 @@ public class AuthorController implements Initializable {
 
         column = column.equals("author") ? "name" : column;
         columnName = columnName.equals("author") ? "name" : columnName;
-
-        System.out.println(sortOrder);
 
         if (columnName.equals(column)) {
             sortOrder = sortOrder.equals("ASC") ? "DESC" : "ASC";
@@ -263,8 +263,6 @@ public class AuthorController implements Initializable {
         try {
             authors = authorService.sort(authors, isAscending, column);
             updateAuthorsList();
-            authors.forEach(System.out::println);
-            System.out.println("-".repeat(30));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

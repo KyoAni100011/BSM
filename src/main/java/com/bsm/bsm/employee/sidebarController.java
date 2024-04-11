@@ -82,7 +82,7 @@ public class sidebarController {
 
     @FXML
     void SwitchBook(ActionEvent event) throws IOException {
-        loadPage("book/updateBook");
+        loadPage("book/book");
     }
 
     @FXML
@@ -102,12 +102,12 @@ public class sidebarController {
 
     @FXML
     void SwitchImportSheet(ActionEvent event) throws IOException {
-        loadPage("importSheets/importSheets");
+        loadPage("importSheet/importSheet");
     }
 
     @FXML
     void SwitchOrder(ActionEvent event) throws IOException {
-        loadPage("order/order");
+        loadPage("book/addBook");
     }
 
     @FXML

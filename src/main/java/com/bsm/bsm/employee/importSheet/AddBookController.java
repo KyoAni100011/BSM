@@ -1,5 +1,4 @@
-
-package com.bsm.bsm.employee.book;
+package com.bsm.bsm.employee.importSheet;
 
 import com.bsm.bsm.author.Author;
 import com.bsm.bsm.author.AuthorService;
@@ -10,7 +9,6 @@ import com.bsm.bsm.category.CategoryService;
 import com.bsm.bsm.publisher.Publisher;
 import com.bsm.bsm.publisher.PublisherService;
 import com.bsm.bsm.utils.AlertUtils;
-import com.bsm.bsm.utils.DateUtils;
 import com.bsm.bsm.utils.NumericValidationUtils;
 import com.bsm.bsm.utils.ValidationUtils;
 import javafx.collections.FXCollections;
@@ -18,35 +16,33 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.PopupWindow;
-import javafx.stage.WindowEvent;
-import javafx.util.Callback;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.SearchableComboBox;
 
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-public class UpdateBookController {
-    @FXML
+public class AddBookController {
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     @FXML
-    public Label bookNameErrorLabel, languageErrorLabel, categoryErrorLabel, authorErrorLabel, quantityErrorLabel, publisherErrorLabel, priceErrorLabel, releaseErrorLabel;
+    public Label bookNameErrorLabel,languageErrorLabel,categoryErrorLabel,authorErrorLabel,quantityErrorLabel,publisherErrorLabel,priceErrorLabel,releaseErrorLabel;
     @FXML
-    public TextField fullNameField,  bookQuantityField, bookPriceField;
+    public TextField fullNameField, bookQuantityField, bookPriceField;
     @FXML
-    public CheckComboBox<String> authorNameCheckCombo, categoryCheckCombo;
+    public CheckComboBox<String> authorNameCheckCombo , categoryCheckCombo;
     @FXML
-    public SearchableComboBox languageComboBox , publisherComboBox;
+    public SearchableComboBox languageComboBox, publisherComboBox;
     @FXML
     public Button saveChangesButton;
     @FXML
@@ -66,22 +62,11 @@ public class UpdateBookController {
     ObservableList<String> categoriesItems = FXCollections.observableArrayList();
     ObservableList<String> publisherItems = FXCollections.observableArrayList();
 
-
     private ObservableList<String> filteredCategoriesItems = FXCollections.observableArrayList(); // Store filtered category items
     private ObservableList<String> filteredAuthorItems = FXCollections.observableArrayList(); // Store filtered category items
 
-
-
-    // assume id book
-    private static String bookID;
-
-
-    public static void handleTableItemSelection(String id) {
-        bookID = id;
-    }
     @FXML
     public void initialize() {
-        book = bookService.getBookByISBN(bookID);
         for (var item: categoryService.getAllCategories()) {
             // check category is enabled
             if (item.isEnabled())
@@ -99,7 +84,7 @@ public class UpdateBookController {
                 // check category is enabled
                 publisherItems.add(item.getName());
         }
-        
+
 
         List<String> languages = bookService.getLanguages();
         ObservableList<String> languageItems = FXCollections.observableArrayList(languages);
@@ -108,7 +93,6 @@ public class UpdateBookController {
         authorNameCheckCombo.getItems().addAll(authorItems);
         languageComboBox.setItems(languageItems);
         publisherComboBox.getItems().addAll(publisherItems);
-        setBookInfo(book);
         setupDatePicker();
 
 
@@ -310,30 +294,6 @@ public class UpdateBookController {
         return popup != null && popup.isVisible();
     }
 
-    private void setBookInfo(Book thisBook) {
-        fullNameField.setText(thisBook.getTitle());
-        publisherComboBox.setValue(thisBook.getPublisher().getName());
-        bookPriceField.setText(String.valueOf(thisBook.getSalePrice()));
-        String releaseDate = book.getPublishingDate(); // has format dd/MM/yyyy
-        releaseDatePicker.setValue(LocalDate.parse(releaseDate, dateFormatter));
-        bookQuantityField.setText(String.valueOf(thisBook.getQuantity()));
-
-        ObservableList<String> authorBook = FXCollections.observableArrayList();
-
-
-        List<Category> cate = thisBook.getCategories();
-        for (Category category : cate) {
-            categoryCheckCombo.getCheckModel().check(category.getName());
-        }
-
-        List<Author> au = thisBook.getAuthors();
-
-        for (Author author : au) {
-            authorNameCheckCombo.getCheckModel().check(author.getName());
-        }
-        languageComboBox.setValue(thisBook.getLanguages());
-    }
-
 
     private void setupDatePicker() {
         releaseDatePicker.setPromptText("dd/mm/yyyy");
@@ -407,17 +367,12 @@ public class UpdateBookController {
         if (validateInputs(fullName, releaseDate, price, publisherName, selectedLanguage, selectedCategory, selectedAuthor, quantity)) {
 
             //check name exist
-            if (bookService.isNameExist(bookID, fullName)) {
-                bookNameErrorLabel.setText("Book name already exists.");
-                return;
-            }
+//            if (bookService.isNameExist(bookID, fullName)) {
+//                bookNameErrorLabel.setText("Book name already exists.");
+//                return;
+//            }
 
-            // check sale price > import price * 1.1
             BigDecimal salePrice = new BigDecimal(price);
-            if (!bookService.isSalePriceValid(book, salePrice)) {
-                priceErrorLabel.setText("Sale price must be greater than import price 10%");
-                return;
-            }
 
             Publisher publiser = publisherService.getPublisherByName(publisherName);
             List<Category> categories = new ArrayList<>();
@@ -434,12 +389,12 @@ public class UpdateBookController {
 //            authors.forEach(System.out::println);
 
             int quantityInt = Integer.parseInt(quantity);
-            if (bookService.update(new Book(book.getIsbn(), fullName, publiser, releaseDate, selectedLanguage, true,
-                    quantityInt, salePrice, authors, categories))) {
-                AlertUtils.showAlert("Success", "Book updated successfully.", Alert.AlertType.INFORMATION);
-            } else {
-                AlertUtils.showAlert("Error", "Book update failed.", Alert.AlertType.ERROR);
-            }
+
+
+            ImportSheetController.addBookToSheet(new Book(fullName, publiser, releaseDate, selectedLanguage, true, quantityInt, salePrice, authors, categories));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            // Close the stage
+            stage.close();
         }
     }
 

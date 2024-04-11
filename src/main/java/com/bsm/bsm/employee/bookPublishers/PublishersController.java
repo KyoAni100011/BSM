@@ -32,86 +32,43 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class PublishersController implements Initializable {
-    private EmployeeModel employeeInfo = (EmployeeModel) UserSingleton.getInstance().getUser();
+    private static String id;
+    private final ToggleGroup toggleGroup = new ToggleGroup();
+    private final EmployeeModel employeeInfo = (EmployeeModel) UserSingleton.getInstance().getUser();
+    private final PublisherService publisherService = new PublisherService();
 
-    private static String name;
-
-    @FXML
-    private Button actionLabel;
-
-    @FXML
-    private SVGPath actionSortLabel;
-
-    @FXML
-    private Button addPublisherButton;
-
-    @FXML
-    private Button addressLabel;
-
-    @FXML
-    private Button fifthPaginationButton;
-
-    @FXML
-    private Button firstPaginationButton;
-
-    @FXML
-    private Button fourthPaginationButton;
-
-    @FXML
-    private Button idLabel;
-
-    @FXML
-    private SVGPath idSortLabel;
 
     @FXML
     private TextField inputSearch;
-
-    @FXML
-    private Button nameLabel;
-
-    @FXML
-    private SVGPath nameSortLabel;
-
-    @FXML
-    private Button nextPaginationButton;
-
     @FXML
     private VBox pnItems;
-
-    @FXML
-    private Button previousPaginationButton;
-
-    @FXML
-    private Button secondPaginationButton;
-
     @FXML
     private AnchorPane tableToolbar;
-
     @FXML
-    private Button thirdPaginationButton;
-
+    private Button addPublisherButton, updatePublisherButton;
     @FXML
-    private Button updatePublisherButton;
+    private Button idLabel, nameLabel, introductionLabel, actionLabel;
+    @FXML
+    private SVGPath idSortLabel, nameSortLabel, introductionSortLabel, actionSortLabel;
+    @FXML
+    public Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
+
 
     private List<Publisher> publishers = null;
-
-    private final int itemsPerPage = 9;
     private String sortOrder = "ASC";
     private String column = "id";
-    private String role;
     private int currentPage = 1;
     private String inputSearchText = "";
 
-    private final ToggleGroup toggleGroup = new ToggleGroup();
 
-    private PublisherService publisherService = new PublisherService();
-
+    static void handleTableItemSelection(String userId) {
+        id = userId;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeButtonsAndLabels();
         loadAllPublishers();
-        publishers.forEach(System.out::println);
         initializePaginationButtons();
 
         inputSearch.textProperty().addListener(new ChangeListener<String>() {
@@ -141,10 +98,12 @@ public class PublishersController implements Initializable {
     private void initializeButtonsAndLabels() {
         idLabel.setOnMouseClicked(this::handleLabelClick);
         nameLabel.setOnMouseClicked(this::handleLabelClick);
+        introductionLabel.setOnMouseClicked(this::handleLabelClick);
         actionLabel.setOnMouseClicked(this::handleLabelClick);
 
         idSortLabel.setContent("");
         nameSortLabel.setContent("");
+        introductionSortLabel.setContent("");
         actionSortLabel.setContent("");
 
         addPublisherButton.setOnAction(this::handleAddPublisherButton);
@@ -162,6 +121,11 @@ public class PublishersController implements Initializable {
     }
 
     @FXML
+    void handleRefreshButton(ActionEvent event) {
+        loadAllPublishers();
+    }
+
+    @FXML
     void handleAddPublisherButton(ActionEvent event) {
         try {
             FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookPublishers/addPublisher");
@@ -176,8 +140,8 @@ public class PublishersController implements Initializable {
     @FXML
     void handleUpdatePublisherButton(ActionEvent event) {
         try {
-            if (name != null) {
-                UpdatePublisherController.handleTableItemSelection(name);
+            if (id != null) {
+                UpdatePublisherController.handleTableItemSelection(id);
                 FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookPublishers/updatePublisher");
             } else {
                 AlertUtils.showAlert("Error", "Can't find publisher", Alert.AlertType.ERROR);
@@ -188,16 +152,9 @@ public class PublishersController implements Initializable {
         }
     }
 
-    @FXML
-    void handleRefreshButton(ActionEvent event) {
-        loadAllPublishers();
-    }
-
-    static void handleTableItemSelection(String publisherName) {
-        name = publisherName; // Store the selected user
-    }
     private void updatePublishersList() throws IOException {
         pnItems.getChildren().clear();
+        int itemsPerPage = 10;
         int startIndex = (currentPage - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, publishers.size());
 
@@ -218,6 +175,25 @@ public class PublishersController implements Initializable {
         int totalPages = (int) Math.ceil((double) publishers.size() / itemsPerPage);
         updatePaginationButtons(totalPages);
     }
+
+    @FXML
+    private void handlePaginationButton(ActionEvent event) {
+        Button buttonClicked = (Button) event.getSource();
+        if (buttonClicked == previousPaginationButton) {
+            currentPage--;
+        } else if (buttonClicked == nextPaginationButton) {
+            currentPage++;
+        } else {
+            currentPage = Integer.parseInt(buttonClicked.getText());
+        }
+
+        try {
+            updatePublishersList();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     private void updatePaginationButtons(int totalPages) {
         // Clear all pagination buttons visibility
         List<Button> paginationButtons = Arrays.asList(firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton);
@@ -240,7 +216,7 @@ public class PublishersController implements Initializable {
                 int buttonIndex = i - startPage;
                 if (totalPages > 5 && startPage < 6) {
                     button = paginationButtons.get(buttonIndex);
-                } else if (totalPages > 5 && startPage >= 6) {
+                } else if (totalPages > 5) {
                     button = paginationButtons.get(buttonIndex + 1);
                 } else {
                     button = paginationButtons.get(buttonIndex);
@@ -264,43 +240,34 @@ public class PublishersController implements Initializable {
             nextPaginationButton.setDisable(true);
         }
     }
-    @FXML
-    private void handlePaginationButton(ActionEvent event) {
-        Button buttonClicked = (Button) event.getSource();
-        if (buttonClicked == previousPaginationButton) {
-            currentPage--;
-        } else if (buttonClicked == nextPaginationButton) {
-            currentPage++;
-        } else {
-            currentPage = Integer.parseInt(buttonClicked.getText());
-        }
-    }
+
     @FXML
     private void handleLabelClick(MouseEvent event){
         Button clickedLabel = (Button) event.getSource();
-        String columnName = clickedLabel.getText();
+        String columnName = clickedLabel.getText().toLowerCase();
+
+        column = column.equals("publisher") ? "name" : column;
+        columnName = columnName.equals("publisher") ? "name" : columnName;
+
         if (columnName.equals(column)) {
             sortOrder = sortOrder.equals("ASC") ? "DESC" : "ASC";
         } else {
             sortOrder = "ASC";
         }
-        column = columnName;
-        idSortLabel.setContent(column.equals("ID") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
-        nameSortLabel.setContent(column.equals("Name") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
-        actionSortLabel.setContent(column.equals("Action") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
-
         var isAscending = sortOrder.equals("ASC");
 
+        column = columnName;
+        idSortLabel.setContent(column.equals("id") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        nameSortLabel.setContent(column.equals("name") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        introductionSortLabel.setContent(column.equals("address") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        actionSortLabel.setContent(column.equals("action") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+
+
         try {
+            publishers = publisherService.sort(publishers, isAscending, column);
             updatePublishersList();
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-        publishers = publisherService.sort(publishers, isAscending, column);
-        try {
-            updatePublishersList();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         }
     }
 }

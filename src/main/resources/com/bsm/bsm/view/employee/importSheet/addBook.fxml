@@ -5,7 +5,7 @@
 <?import javafx.scene.text.*?>
 <?import org.controlsfx.control.*?>
 
-<AnchorPane prefHeight="635.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.book.AddBookController">
+<AnchorPane prefHeight="635.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.importSheet.AddBookController">
 
     <Label fx:id="bookNameErrorLabel" layoutX="76.0" layoutY="169.0" prefHeight="17.0" prefWidth="307.0" styleClass="error-label" />
     <Label fx:id="authorErrorLabel" layoutX="77.0" layoutY="244.0" prefHeight="17.0" prefWidth="450.0" styleClass="error-label" />

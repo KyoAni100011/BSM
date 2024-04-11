@@ -24,8 +24,6 @@ public class UpdateAuthorController {
     private TextField fullNameField;
     @FXML
     private TextArea introductionTextField;
-
-    @FXML
     private static String id;
 
     private final AuthorService authorService = new AuthorService();
