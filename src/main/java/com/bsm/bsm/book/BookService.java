@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BookService implements Activable, Searchable<Book>, Sortable<Book>, Updatable<Book>, Addable<Book> {
-    private BookDAO bookDAO = null;
+    private BookDAO bookDAO;
 
     public BookService() {
         this.bookDAO = new BookDAO();
@@ -82,9 +82,12 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
 
     @Override
     public boolean setEnable(boolean state) {
-
-        return state;
+        return true;
     }
+//    @Override
+//    public boolean setEnable(String id, boolean state) {
+//        return bookDAO.setEnable(id, state);
+//    }
 
     public Book getBookByISBN(String isbn) {
         return bookDAO.getBookByISBN(isbn);

@@ -232,11 +232,6 @@ public class BookDAO {
         }
     }
 
-    public Book search(String keyword) {
-        // Implement search logic
-        return null;
-    }
-
     public boolean isNameExist(String id, String name) {
         String QUERY_CHECK_NAME = "select isbn from book where title = ? and isbn != ?";
         AtomicReference<Boolean> isExist = new AtomicReference<>(false);
@@ -265,5 +260,11 @@ public class BookDAO {
         }, book.getIsbn());
 
         return isValid.get();
+    }
+
+    public boolean setEnable(String id, boolean state) {
+        String QUERY_SET_ENABLE = "update book set isEnabled = ? where isbn = ?";
+        int rowAffected = DatabaseConnection.executeUpdate(QUERY_SET_ENABLE, state, id);
+        return rowAffected > 0;
     }
 }
