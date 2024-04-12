@@ -261,6 +261,7 @@ public class AuthorController implements Initializable {
 
 
         try {
+            authors = authorService.getAllAuthors();
             authors = authorService.sort(authors, isAscending, column);
             updateAuthorsList();
         } catch (Exception e) {

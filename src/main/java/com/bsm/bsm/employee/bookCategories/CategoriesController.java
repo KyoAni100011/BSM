@@ -263,10 +263,9 @@ public class CategoriesController implements Initializable {
 
 
         try {
+            categories = categoryService.getAllCategories();
             categories = categoryService.sort(categories, isAscending, column);
             updateCategoryList();
-            categories.forEach(System.out::println);
-            System.out.println("-".repeat(30));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

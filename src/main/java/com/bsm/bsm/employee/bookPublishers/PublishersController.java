@@ -264,6 +264,7 @@ public class PublishersController implements Initializable {
 
 
         try {
+            publishers = publisherService.getAllPublishers();
             publishers = publisherService.sort(publishers, isAscending, column);
             updatePublishersList();
         } catch (IOException e) {
