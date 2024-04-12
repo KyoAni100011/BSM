@@ -10,6 +10,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class AuthorDAO {
+    public boolean update(Author author) {
+        // Implement update logic
+        return true;
+    }
+
+
+    public Author search(String keyword) {
+        // Implement search logic
+        return null;
+    }
+
     public boolean checkAuthorExists(String name, String id) {
         String QUERY_AUTHOR = "select 1 from author where name = ? and id != ?";
         AtomicBoolean hasExisted = new AtomicBoolean(false);
