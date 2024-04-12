@@ -20,16 +20,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -55,7 +51,7 @@ public class bookController implements Initializable {
 
     private List<Book> books = null;
     private String sortOrder = "ASC";
-    private String column = "id";
+    private String column = "isbn";
     private String type = "book";
     private int currentPage = 1;
     private String inputSearchText = "";
@@ -389,6 +385,7 @@ private boolean isNewBook(Book thisBook) {
         priceSortLabel.setContent(column.equals("price") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
 
         try {
+            books = bookService.getAllBooks();
             books = bookService.sort(books, isAscending, column);
             updateBooksList();
         } catch (IOException e) {

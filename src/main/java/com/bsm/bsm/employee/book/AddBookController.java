@@ -313,27 +313,19 @@ public class AddBookController {
         releaseDatePicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
     }
 
-    private boolean validateInputs(String fullName, String release, String price, String publisher, String language, ObservableList<String> category, ObservableList<String> author, String quantity) {
+    private boolean validateInputs(String fullName, String release, String publisher, String language, ObservableList<String> category, ObservableList<String> author) {
         String bookNameError = ValidationUtils.validateFullName(fullName, "book");
         String publisherError = ValidationUtils.validatePublisher(publisher, "publisher");
         String languageError = ValidationUtils.validateLanguage(language, "book");
         String categoryError = ValidationUtils.validateCategory(category, "book");
         String authorError = ValidationUtils.validateAuthor(author, "author");
-        String quantityError = ValidationUtils.validateQuantity(quantity, "book");
-        String priceError = ValidationUtils.validatePrice(price, "book");
         String releaseError = ValidationUtils.validateReleaseDay(release, "book");
 
         if (bookNameError != null) {
             bookNameErrorLabel.setText(bookNameError);
         }
-        if (quantityError != null) {
-            quantityErrorLabel.setText(quantityError);
-        }
         if (releaseError != null) {
             releaseErrorLabel.setText(releaseError);
-        }
-        if (priceError != null) {
-            priceErrorLabel.setText(priceError);
         }
         if (authorError != null) {
             authorErrorLabel.setText(authorError);
@@ -348,7 +340,7 @@ public class AddBookController {
             languageErrorLabel.setText(languageError);
         }
 
-        return bookNameError == null && quantityError == null && authorError == null && releaseError == null && languageError == null && publisherError == null && categoryError == null;
+        return bookNameError == null && authorError == null && releaseError == null && languageError == null && publisherError == null && categoryError == null;
     }
 
     @FXML
@@ -358,49 +350,40 @@ public class AddBookController {
         String fullName = fullNameField.getText();
         String releaseDate = releaseDatePicker.getEditor().getText();
         String publisherName = (String)publisherComboBox.getValue();
-        String quantity = bookQuantityField.getText();
-        String price = bookPriceField.getText();
         var selectedAuthor = authorNameCheckCombo.getCheckModel().getCheckedItems();
         var selectedCategory = categoryCheckCombo.getCheckModel().getCheckedItems();
         String selectedLanguage = (String) languageComboBox.getValue();
 
-//        if (validateInputs(fullName, releaseDate, price, publisherName, selectedLanguage, selectedCategory, selectedAuthor, quantity)) {
-//
-//            //check name exist
-////            if (bookService.isNameExist(bookID, fullName)) {
-////                bookNameErrorLabel.setText("Book name already exists.");
-////                return;
-////            }
-//
-//            // check sale price > import price * 1.1
-//            BigDecimal salePrice = new BigDecimal(price);
-//            if (!bookService.isSalePriceValid(book, salePrice)) {
-//                priceErrorLabel.setText("Sale price must be greater than import price 10%");
-//                return;
-//            }
-//
-//            Publisher publiser = publisherService.getPublisherByName(publisherName);
-//            List<Category> categories = new ArrayList<>();
-//            for (var item: selectedCategory) {
-//                categories.add(categoryService.getCategoryByName(item));
-//            }
-//
-//            List<Author> authors = new ArrayList<>();
-//            for (var item: selectedAuthor) {
-//                authors.add(authorService.getAuthorByName(item));
-//            }
-//
-////            categories.forEach(System.out::println);
-////            authors.forEach(System.out::println);
-//
-//            int quantityInt = Integer.parseInt(quantity);
-//            if (bookService.update(new Book(book.getIsbn(), fullName, publiser, releaseDate, selectedLanguage, true,
-//                    quantityInt, salePrice, authors, categories))) {
-//                AlertUtils.showAlert("Success", "Book updated successfully.", Alert.AlertType.INFORMATION);
-//            } else {
-//                AlertUtils.showAlert("Error", "Book update failed.", Alert.AlertType.ERROR);
-//            }
-//        }
+        if (validateInputs(fullName, releaseDate, publisherName, selectedLanguage, selectedCategory, selectedAuthor)) {
+
+            //check name exist
+            if (bookService.isNameExist(fullName)) {
+                bookNameErrorLabel.setText("Book name already exists.");
+                return;
+            }
+
+
+            Publisher publisers = publisherService.getPublisherByName(publisherName);
+            List<Category> categories = new ArrayList<>();
+            for (var item: selectedCategory) {
+                categories.add(categoryService.getCategoryByName(item));
+            }
+
+            List<Author> authors = new ArrayList<>();
+            for (var item: selectedAuthor) {
+                authors.add(authorService.getAuthorByName(item));
+            }
+
+//            categories.forEach(System.out::println);
+//            authors.forEach(System.out::println);
+
+            if (bookService.add(new Book(fullName, publisers, releaseDate, selectedLanguage, authors, categories))) {
+                AlertUtils.showAlert("Success", "Book added successfully.", Alert.AlertType.INFORMATION);
+                clearInputs();
+            } else {
+                AlertUtils.showAlert("Error", "Book add failed.", Alert.AlertType.ERROR);
+            }
+        }
     }
 
     private void clearErrorMessages() {
@@ -415,6 +398,13 @@ public class AddBookController {
     }
 
     private void clearInputs() {
-
+        fullNameField.clear();
+        bookQuantityField.clear();
+        bookPriceField.clear();
+        releaseDatePicker.getEditor().clear();
+        languageComboBox.getSelectionModel().clearSelection();
+        publisherComboBox.getSelectionModel().clearSelection();
+        authorNameCheckCombo.getCheckModel().clearChecks();
+        categoryCheckCombo.getCheckModel().clearChecks();
     }
 }

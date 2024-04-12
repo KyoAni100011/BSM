@@ -45,6 +45,15 @@ public class Book {
         this.categories = categories;
     }
 
+    public Book(String title, Publisher publisher, String publishingDate, String languages, List<Author> authors, List<Category> categories) {
+        this.title = title;
+        this.publisher = publisher;
+        this.publishingDate = publishingDate;
+        this.languages = languages;
+        this.authors = authors;
+        this.categories = categories;
+    }
+
     public String getIsbn() {
         return isbn;
     }

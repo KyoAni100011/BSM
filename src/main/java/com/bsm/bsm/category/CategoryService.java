@@ -82,7 +82,7 @@ public class CategoryService implements Activable, Searchable<Category>, Sortabl
     }
 
     @Override
-    public boolean setEnable(boolean state) {
+    public boolean setEnable(String id, boolean state) {
 
         return state;
     }

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BookService implements Activable, Searchable<Book>, Sortable<Book>, Updatable<Book>, Addable<Book> {
-    private BookDAO bookDAO = null;
+    private BookDAO bookDAO;
 
     public BookService() {
         this.bookDAO = new BookDAO();
@@ -72,21 +72,32 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
 
     @Override
     public boolean add(Book item) {
-        return true;
+        try {
+            return bookDAO.add(item);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 
     @Override
-    public boolean setEnable(boolean state) {
-
-        return state;
+    public boolean setEnable(String id, boolean state) {
+        return bookDAO.setEnable(id, state);
     }
 
     public Book getBookByISBN(String isbn) {
         return bookDAO.getBookByISBN(isbn);
     }
 
+
+    // use this for check update book name
     public boolean isNameExist(String id, String name) {
         return bookDAO.isNameExist(id, name);
+    }
+
+    // use this for check add book name
+    public boolean isNameExist(String name) {
+        return bookDAO.isNameExist("", name);
     }
 
     public boolean isSalePriceValid(Book book, BigDecimal salePrice) {
