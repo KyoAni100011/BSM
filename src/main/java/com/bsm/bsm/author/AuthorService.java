@@ -68,7 +68,7 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
     }
 
     @Override
-    public boolean setEnable(boolean state) {
+    public boolean setEnable(String id, boolean state) {
         return state;
     }
 

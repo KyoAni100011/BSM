@@ -81,13 +81,9 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
     }
 
     @Override
-    public boolean setEnable(boolean state) {
-        return true;
+    public boolean setEnable(String id, boolean state) {
+        return bookDAO.setEnable(id, state);
     }
-//    @Override
-//    public boolean setEnable(String id, boolean state) {
-//        return bookDAO.setEnable(id, state);
-//    }
 
     public Book getBookByISBN(String isbn) {
         return bookDAO.getBookByISBN(isbn);
