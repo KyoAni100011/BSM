@@ -44,12 +44,11 @@ public class AuthorController implements Initializable {
     @FXML
     private Button addAuthorButton, updateAuthorButton;
     @FXML
-    public Button idLabel, nameLabel, introductionLabel, actionLabel;
+    private Button idLabel, nameLabel, introductionLabel, actionLabel;
     @FXML
     private SVGPath  idSortLabel, nameSortLabel, introductionSortLabel ,actionSortLabel;
     @FXML
-    public Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
-
+    private Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
 
     private List<Author> authors = null;
     private String sortOrder = "ASC";
@@ -235,8 +234,6 @@ public class AuthorController implements Initializable {
             nextPaginationButton.setDisable(true);
         }
     }
-
-
 
     @FXML
     private void handleLabelClick(MouseEvent event) {

@@ -2,20 +2,19 @@ package com.bsm.bsm.sheet;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.UUID;
 
-public class Sheet {
+public class ImportSheet {
     private String id;
     private int employeeID;
     private LocalDate importDate;
     private int quantity;
     private BigDecimal totalPrice;
 
-    public Sheet() {
+    public ImportSheet() {
         // Default constructor
     }
 
-    public Sheet(String id, int employeeID, LocalDate importDate, int quantity, BigDecimal totalPrice) {
+    public ImportSheet(String id, int employeeID, LocalDate importDate, int quantity, BigDecimal totalPrice) {
         this.id = id;
         this.employeeID = employeeID;
         this.importDate = importDate;
