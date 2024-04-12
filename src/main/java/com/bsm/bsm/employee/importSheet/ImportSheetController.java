@@ -2,6 +2,7 @@ package com.bsm.bsm.employee.importSheet;
 
 import com.bsm.bsm.book.Book;
 import com.bsm.bsm.utils.AlertUtils;
+import com.bsm.bsm.utils.NumericValidationUtils;
 import javafx.event.ActionEvent;
 import com.bsm.bsm.utils.ValidationUtils;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
@@ -9,11 +10,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +35,9 @@ public class ImportSheetController {
     @FXML
     public DatePicker importDatePicker;
     @FXML
-    public TextField totalCostTextField;
+    public TextField totalCostTextField, totalQuantityTextField;
     @FXML
-    public Label totalCostErrorLabel, importDateErrorLabel;
+    public Label totalCostErrorLabel, importDateErrorLabel, totalQuantityErrorLabel;
     @FXML
     public Button btnAddSheet;
 
@@ -54,12 +58,34 @@ public class ImportSheetController {
 
     @FXML
     public void initialize() {
+        setupDatePicker();
+        importDatePicker.setValue(LocalDate.now());
+        clearErrorMessages();
+        clearInputs();
         books = new ArrayList<>();
         try {
             updateBookList();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private void setupDatePicker() {
+        importDatePicker.setPromptText("dd/mm/yyyy");
+
+        importDatePicker.setConverter(new StringConverter<LocalDate>() {
+            @Override
+            public String toString(LocalDate date) {
+                return date != null ? dateFormatter.format(date) : "";
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                return string != null && !string.isEmpty() ? LocalDate.parse(string, dateFormatter) : null;
+            }
+        });
+
+        importDatePicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
     }
 
     @FXML
@@ -95,6 +121,8 @@ public class ImportSheetController {
         }
         long totalCost = books.stream().mapToLong(book -> book.getSalePrice().longValue() * book.getQuantity()).sum();
         totalCostTextField.setText(String.valueOf(totalCost));
+        long totalQuantity = books.stream().mapToLong(Book::getQuantity).sum();
+        totalQuantityTextField.setText(String.valueOf(totalQuantity));
     }
 
     @FXML
@@ -138,10 +166,12 @@ public class ImportSheetController {
     private void clearErrorMessages() {
         totalCostErrorLabel.setText("");
         importDateErrorLabel.setText("");
+        totalQuantityErrorLabel.setText("");
     }
 
     private void clearInputs() {
         totalCostTextField.setText("");
         importDatePicker.getEditor().setText("");
+        totalQuantityTextField.setText("");
     }
 }
