@@ -28,5 +28,4 @@ module com.bsm.bsm {
     opens com.bsm.bsm.order to javafx.fxml;
     opens com.bsm.bsm.employee.importSheet to javafx.fxml;
     exports com.bsm.bsm;
-    opens com.bsm.bsm.employee.orderManagement to javafx.fxml;
 }
