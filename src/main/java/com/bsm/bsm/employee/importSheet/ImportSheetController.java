@@ -1,7 +1,12 @@
 package com.bsm.bsm.employee.importSheet;
 
-import com.bsm.bsm.book.Book;
+import com.bsm.bsm.book.BookBatch;
+import com.bsm.bsm.employee.EmployeeModel;
+import com.bsm.bsm.sheet.ImportSheet;
+import com.bsm.bsm.sheet.ImportSheetService;
+import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
+import com.bsm.bsm.utils.DateUtils;
 import javafx.event.ActionEvent;
 import com.bsm.bsm.utils.ValidationUtils;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
@@ -13,7 +18,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,24 +41,21 @@ public class ImportSheetController {
     @FXML
     public Button btnAddSheet;
 
-    private static List<Book> books;
+    private static List<BookBatch> bookBatches;
     public Button refreshButton;
+
+    private ImportSheetService importSheetService = new ImportSheetService();
 
     static void handleTableItemSelection(String thisBookName) {
         if (thisBookName == null) {
             return;
         }
-        books.removeIf(book -> book.getTitle().equals(thisBookName));
+        bookBatches.removeIf(bookBatch -> bookBatch.getBook().getTitle().equals(thisBookName));
     }
-
-    static void addBookToSheet(Book book) {
-        books.add(book);
-    }
-
 
     @FXML
     public void initialize() {
-        books = new ArrayList<>();
+        bookBatches = new ArrayList<>();
         try {
             updateBookList();
         } catch (Exception e) {
@@ -80,20 +81,24 @@ public class ImportSheetController {
         }
     }
 
+    static void addBookBatchToSheet(BookBatch bookBatch) {
+        bookBatches.add(bookBatch);
+    }
+
     private void updateBookList() throws Exception {
         pnItems.getChildren().clear();
-        for (Book b : books) {
+        for (BookBatch b : bookBatches) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/importSheet/itemImport.fxml"));
                 Node item = fxmlLoader.load();
                 ItemImportController tableItemController = fxmlLoader.getController();
-                tableItemController.setBook(b);
+                tableItemController.setBookBatch(b);
                 pnItems.getChildren().add(item);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
-        long totalCost = books.stream().mapToLong(book -> book.getSalePrice().longValue() * book.getQuantity()).sum();
+        long totalCost = bookBatches.stream().mapToLong(bookBatch -> bookBatch.getImportPrice().longValue() * bookBatch.getQuantity()).sum();
         totalCostTextField.setText(String.valueOf(totalCost));
     }
 
@@ -103,17 +108,30 @@ public class ImportSheetController {
         String importDate = importDatePicker.getEditor().getText();
         String totalCost = totalCostTextField.getText();
 
+        int totalQuantity = 0;
+        for (BookBatch bookBatch : bookBatches) {
+            totalQuantity += bookBatch.getQuantity();
+        }
+
         if (validateInputs(importDate, totalCost)) {
-            // Add import sheet to database
-            // Add books to database
-            // Clear inputs
-            if (books.isEmpty()) {
+            if (bookBatches.isEmpty()) {
                 AlertUtils.showAlert("Error", "Please add books to import sheet.", Alert.AlertType.ERROR);
                 return;
             }
+
+            bookBatches.forEach(System.out::println);
+            EmployeeModel employee = (EmployeeModel) UserSingleton.getInstance().getUser();
+            String importDateConverted = DateUtils.formatDOB(importDate);
+            ImportSheet importSheet = new ImportSheet(employee, importDateConverted, totalQuantity, new BigDecimal(totalCost));
+            if (importSheetService.createImportSheet(importSheet, bookBatches)) {
+                System.out.println("ok");
+            }
+
             AlertUtils.showAlert("Success", "Import sheet successfully.", Alert.AlertType.INFORMATION);
+
+            // Clear inputs
             clearInputs();
-            books = new ArrayList<>();
+            bookBatches = new ArrayList<>();
         }
         else {
             AlertUtils.showAlert("Error", "Import sheet failed.", Alert.AlertType.ERROR);
