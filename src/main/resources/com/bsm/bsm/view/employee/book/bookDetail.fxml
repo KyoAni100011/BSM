@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="565.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.book.BookDetailController">
+    <Label layoutX="76.0" layoutY="108.0" styleClass="label-bold" text="Book Name">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+    <Label layoutX="77.0" layoutY="184.0" styleClass="label-bold" text="Author">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+    <Label layoutX="78.0" layoutY="299.0" styleClass="label-bold" text="Publisher">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+    <Label layoutX="76.0" layoutY="453.0" styleClass="label-bold" text="Release date">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+
+    <TextField fx:id="fullNameField" disable="true" layoutX="75.0" layoutY="129.0" prefHeight="40.0" prefWidth="450.0" styleClass="input-field-add" />
+    <TextField fx:id="publisherField" disable="true" layoutX="77.0" layoutY="319.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add" />
+    <DatePicker fx:id="releaseDatePicker" disable="true" layoutX="75.0" layoutY="473.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add" />
+    <Label layoutX="217.0" layoutY="45.0" text="BOOK DETAIL">
+        <font>
+            <Font size="25.0" />
+        </font>
+    </Label>
+    <Label layoutX="80.0" layoutY="376.0" styleClass="label-bold" text="Quantity">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+    <Label layoutX="320.0" layoutY="375.0" styleClass="label-bold" text="Price">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+    <TextField fx:id="bookQuantityField" disable="true" layoutX="76.0" layoutY="395.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add" text="0" />
+    <TextField fx:id="bookPriceField" disable="true" layoutX="317.0" layoutY="395.0" prefHeight="40.0" prefWidth="207.0" styleClass="input-field-add" text="0" />
+    <Label layoutX="316.0" layoutY="182.0" styleClass="label-bold" text="Category">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+
+    <Label layoutX="317.0" layoutY="298.0" styleClass="label-bold" text="Language">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+    <TextField fx:id="languageField" disable="true" layoutX="317.0" layoutY="319.0" prefHeight="40.0" prefWidth="207.0" styleClass="input-field-add" />
+   <Button fx:id="isEnabledLabel" alignment="CENTER" disable="true" layoutX="374.0" layoutY="475.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="81.0" styleClass="text-menu-item-5 input-field-add" text="Disable">
+      <padding>
+         <Insets bottom="3.0" left="15.0" right="15.0" top="3.0" />
+      </padding>
+   </Button>
+   <Label layoutX="318.0" layoutY="479.0" styleClass="label-bold" text="Status">
+      <font>
+         <Font size="18.0" />
+      </font>
+   </Label>
+   <ScrollPane layoutX="78.0" layoutY="211.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="69.0" prefWidth="217.0" styleClass="input-field-add">
+      <content>
+         <VBox fx:id="pnAuthor" prefHeight="69.0" prefWidth="199.0" />
+      </content>
+   </ScrollPane>
+   <ScrollPane layoutX="317.0" layoutY="211.0" prefHeight="69.0" prefWidth="207.0" styleClass="input-field-add">
+      <content>
+         <VBox fx:id="pnCate" prefHeight="70.0" prefWidth="187.0" />
+      </content>
+   </ScrollPane>
+
+</AnchorPane>

@@ -109,7 +109,6 @@ public class bookController implements Initializable {
         priceSortLabel.setContent("");
 
         addBookButton.setOnAction(this::handleAddUserButton);
-        filterBookButton.setOnAction(this::handleFilterButton);
         updateBookButton.setOnAction(this::handleUpdateUserButton);
         bookButton.setOnAction(this::handleBookButton);
         newBookButton.setOnAction(this::handleNewBookButton);
@@ -165,20 +164,7 @@ public class bookController implements Initializable {
         }
     }
 
-    @FXML
-    private void handleFilterButton(ActionEvent event) {
-//        try {
-//            if (isbn != null) {
-//                PasswordResetController.handleTableItemSelection(isbn);
-//                FXMLLoaderHelper.loadFXML(new Stage(), "admin/bookBook/passwordReset");
-//            } else {
-//                AlertUtils.showAlert("Error", "Can't find book", Alert.AlertType.ERROR);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            AlertUtils.showAlert("Error", "Error loading passwordReset FXML", Alert.AlertType.ERROR);
-//        }
-    }
+
 
     @FXML
     private void handleUpdateUserButton(ActionEvent event) {
