@@ -106,6 +106,19 @@ public class BookDAO {
         return book.get();
     }
 
+    public Book getBookByName(String name) {
+        String QUERY_GET_BOOKID = "select id from book where name = ?";
+        AtomicReference<String> bookID = new AtomicReference<>();
+
+        DatabaseConnection.executeQuery(QUERY_GET_BOOKID, resultSet -> {
+            if (resultSet != null && resultSet.next()) {
+                bookID.set(resultSet.getString("id"));
+            }
+        }, name);
+
+        return getBookByISBN(bookID.get());
+    }
+
     private boolean checkRowAffected(Connection connection, int rowAffected) throws SQLException {
         if (rowAffected == 0) {
             connection.rollback();
@@ -181,7 +194,9 @@ public class BookDAO {
         connection.setAutoCommit(false);
 
         // insert into table book
-        String formattedDate = DateUtils.formatDOB(book.getPublishingDate()); // convert date to yyyy-MM-dd
+        System.out.println("here" + book.getPublishingDate());
+        String formattedDate = (book.getPublishingDate().matches("\\d{4}-\\d{2}-\\d{2}"))
+                ? book.getPublishingDate() : DateUtils.formatDOB(book.getPublishingDate());
         String QUERY_ADD_BOOK = "insert into book(title, publisherID, publishingDate, language) values (?, ?, ?, ?)";
         int rowAffected = DatabaseConnection.executeUpdate(connection, QUERY_ADD_BOOK,
                 book.getTitle(), book.getPublisher().getId(),
@@ -218,20 +233,6 @@ public class BookDAO {
         return true;
     }
 
-    public static void main(String[] args) {
-        BookDAO bookDAO = new BookDAO();
-        Book book = new Book("title", new Publisher("44441120", "name", true),
-                "2021-01-01", "english", List.of(new Author("33331114", "name", true)),
-                List.of(new Category("55551115", "name", true)));
-        try {
-            if(bookDAO.add(book)) {
-                System.out.println("Add book successfully");
-            }
-        } catch (SQLException e) {
-            System.out.print(e.getMessage());
-        }
-    }
-
     public boolean isNameExist(String id, String name) {
         String QUERY_CHECK_NAME = "select isbn from book where title = ? and isbn != ?";
         AtomicReference<Boolean> isExist = new AtomicReference<>(false);
@@ -253,6 +254,8 @@ public class BookDAO {
         DatabaseConnection.executeQuery(QUERY_IMPORT_PRICE, resultSet -> {
             if (resultSet != null && resultSet.next()) {
                 BigDecimal importPrice = resultSet.getBigDecimal("import_price");
+
+                importPrice = (importPrice == null) ? new BigDecimal("0") : importPrice;
                 if (salePrice.compareTo(importPrice.multiply(new BigDecimal("1.1"))) < 0) {
                     isValid.set(false);
                 }

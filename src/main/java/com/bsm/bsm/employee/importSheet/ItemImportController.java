@@ -2,18 +2,16 @@ package com.bsm.bsm.employee.importSheet;
 
 import com.bsm.bsm.author.Author;
 import com.bsm.bsm.book.Book;
+import com.bsm.bsm.book.BookBatch;
 import com.bsm.bsm.category.Category;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
 
 import java.util.List;
 
 public class ItemImportController {
     @FXML
     public Label bookNameLabel, authorLabel, publisherLabel, qtyLabel, typeLabel, priceLabel;
-
-    private String bookName;
 
     @FXML
     private void initialize() {
@@ -22,32 +20,29 @@ public class ItemImportController {
 
     @FXML
     private void handleRemoveButtonClick() {
-        ImportSheetController.handleTableItemSelection(bookName);
-        System.out.println(bookName);
+        ImportSheetController.handleTableItemSelection(bookNameLabel.getText());
     }
 
-    public void setBook(Book book) {
-        bookName = book.getTitle();
-        bookNameLabel.setText(bookName);
+    public void setBookBatch(BookBatch bookBatch) {
+        bookNameLabel.setText(bookBatch.getBook().getTitle());
 
-        List<Author> authors = book.getAuthors();
-        StringBuilder authorNames = new StringBuilder();
-        for (Author author : authors) {
-            authorNames.append(author.getName()).append(", ");
+        List<Author> authors = bookBatch.getBook().getAuthors();
+        StringBuilder authorsName = new StringBuilder();
+        for (var author: authors) {
+            authorsName.append(author.getName().trim()).append(", ");
         }
-        authorLabel.setText(authorNames.toString());
+        authorLabel.setText(authorsName.toString());
 
-        publisherLabel.setText(book.getPublisher().getName());
+        publisherLabel.setText(bookBatch.getBook().getPublisher().getName());
+        qtyLabel.setText(String.valueOf(bookBatch.getQuantity()));
 
-        qtyLabel.setText(String.valueOf(book.getQuantity()));
-
-        List<Category> categories = book.getCategories();
-        StringBuilder categoryNames = new StringBuilder();
-        for (Category category : categories) {
-            categoryNames.append(category.getName()).append(", ");
+        List<Category> categories = bookBatch.getBook().getCategories();
+        StringBuilder categoriesName = new StringBuilder();
+        for (var category: categories) {
+            categoriesName.append(category.getName().trim()).append(", ");
         }
-        typeLabel.setText(categoryNames.toString());
+        typeLabel.setText(categoriesName.toString());
 
-        priceLabel.setText(String.valueOf(book.getSalePrice()));
+        priceLabel.setText(String.valueOf(bookBatch.getImportPrice()));
     }
 }

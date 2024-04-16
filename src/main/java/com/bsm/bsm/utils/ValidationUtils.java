@@ -30,7 +30,7 @@ public class ValidationUtils {
     public static String validateFullName(String fullName, String field) {
         if (fullName.isEmpty()) {
             return "Please enter " + field + " name.";
-        } else if (fullName.matches(".*\\d.*")) {
+        } else if (!field.equalsIgnoreCase("book") && fullName.matches(".*\\d.*")) {
             return "Full name should not contain numbers.";
         } else {
             return null;
@@ -172,6 +172,5 @@ public class ValidationUtils {
         } else {
             return null;
         }
-
     }
 }

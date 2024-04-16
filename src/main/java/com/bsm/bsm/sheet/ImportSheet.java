@@ -1,28 +1,28 @@
 package com.bsm.bsm.sheet;
 
+import com.bsm.bsm.employee.EmployeeModel;
+
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 public class ImportSheet {
     private String id;
-    private int employeeID;
-    private LocalDate importDate;
+    private EmployeeModel employee;
+    private String importDate;
     private int quantity;
     private BigDecimal totalPrice;
 
-    public ImportSheet() {
-        // Default constructor
-    }
-
-    public ImportSheet(String id, int employeeID, LocalDate importDate, int quantity, BigDecimal totalPrice) {
+    public ImportSheet(String id, EmployeeModel employee, String importDate, int quantity, BigDecimal totalPrice) {
         this.id = id;
-        this.employeeID = employeeID;
+        this.employee = employee;
         this.importDate = importDate;
         this.quantity = quantity;
         this.totalPrice = totalPrice;
     }
 
-    // Getters and setters
+    public ImportSheet(EmployeeModel employee, String importDate, int quantity, BigDecimal totalPrice) {
+        this(null, employee, importDate, quantity,totalPrice);
+    }
+
     public String getId() {
         return id;
     }
@@ -31,19 +31,19 @@ public class ImportSheet {
         this.id = id;
     }
 
-    public int getEmployeeID() {
-        return employeeID;
+    public EmployeeModel getEmployee() {
+        return employee;
     }
 
-    public void setEmployeeID(int employeeID) {
-        this.employeeID = employeeID;
+    public void setEmployee(EmployeeModel employee) {
+        this.employee = employee;
     }
 
-    public LocalDate getImportDate() {
+    public String getImportDate() {
         return importDate;
     }
 
-    public void setImportDate(LocalDate importDate) {
+    public void setImportDate(String importDate) {
         this.importDate = importDate;
     }
 
@@ -66,9 +66,9 @@ public class ImportSheet {
     @Override
     public String toString() {
         return "ImportSheet{" +
-                "id=" + id +
-                ", employeeID=" + employeeID +
-                ", importDate=" + importDate +
+                "id='" + id + '\'' +
+                ", employee=" + employee +
+                ", importDate='" + importDate + '\'' +
                 ", quantity=" + quantity +
                 ", totalPrice=" + totalPrice +
                 '}';
