@@ -77,12 +77,7 @@ public class ViewSheetController {
     private List<ImportSheet> generateDummyData() {
         List<ImportSheet> dummySheets = new ArrayList<>();
         for (int i = 1; i <= 50; i++) {
-            ImportSheet sheet = new ImportSheet();
-            sheet.setId(String.valueOf(i));
-            sheet.setImportDate(LocalDate.parse("2024-04-12"));
-            sheet.setEmployeeID(Integer.parseInt(String.valueOf(i)));
-            sheet.setQuantity(Integer.parseInt("50"));
-            sheet.setTotalPrice(BigDecimal.valueOf(100 * i));
+            ImportSheet sheet = new ImportSheet("ID" + i, employeeInfo, LocalDate.now().toString(), i, BigDecimal.valueOf(i * 1000));
             dummySheets.add(sheet);
         }
         return dummySheets;

@@ -37,6 +37,14 @@ public class ValidationUtils {
         }
     }
 
+    public static String validateBookName(String fullName) {
+        if (fullName.isEmpty()) {
+            return "Please enter book name.";
+        } else {
+            return null;
+        }
+    }
+
 
     public static String validateIntroduction(String introduction,  String field) {
         int introductionLength = introduction.length();

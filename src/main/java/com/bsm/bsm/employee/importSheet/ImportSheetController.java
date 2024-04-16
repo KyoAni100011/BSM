@@ -132,7 +132,7 @@ public class ImportSheetController {
     }
 
     @FXML
-    public void handleAddSheetButton(ActionEvent event) {
+    public void handleAddSheetButton(ActionEvent event) throws Exception {
         clearErrorMessages();
         String importDate = importDatePicker.getEditor().getText();
         String totalCost = totalCostTextField.getText();
@@ -161,6 +161,7 @@ public class ImportSheetController {
             // Clear inputs
             clearInputs();
             bookBatches = new ArrayList<>();
+            updateBookList();
         }
         else {
             AlertUtils.showAlert("Error", "Import sheet failed.", Alert.AlertType.ERROR);

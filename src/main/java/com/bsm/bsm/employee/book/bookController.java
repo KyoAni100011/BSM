@@ -36,6 +36,7 @@ public class bookController implements Initializable {
     private final BookService bookService = new BookService();
     private final EmployeeModel employeeInfo = (EmployeeModel) UserSingleton.getInstance().getUser();
 
+
     @FXML
     private TextField inputSearch;
     @FXML
@@ -43,9 +44,11 @@ public class bookController implements Initializable {
     @FXML
     public SVGPath quantitySortLabel,actionSortLabel ,bookNameSortLabel, idSortLabel,priceSortLabel;
     @FXML
-    public Button bookNameLabel,actionLabel,priceLabel,quantityLabel,idLabel,outOfStockBookButton,updateBookButton,filterBookButton,addBookButton,bookButton,newBookButton;
+    public Button bookNameLabel,actionLabel,priceLabel,quantityLabel,idLabel,outOfStockBookButton,updateBookButton,addBookButton,bookButton,newBookButton;
     @FXML
     public Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
+    @FXML
+    public Button refreshButton;
 
     private Book bookInfo ;
 
@@ -80,6 +83,11 @@ public class bookController implements Initializable {
         });
     }
 
+    @FXML
+    void handleRefreshButton(ActionEvent event) {
+        loadAllBooks();
+    }
+
     private void loadAllBooks() {
         books = bookService.getAllBooks();
         employeeInfo.setBooks(books);
@@ -109,7 +117,6 @@ public class bookController implements Initializable {
         priceSortLabel.setContent("");
 
         addBookButton.setOnAction(this::handleAddUserButton);
-        filterBookButton.setOnAction(this::handleFilterButton);
         updateBookButton.setOnAction(this::handleUpdateUserButton);
         bookButton.setOnAction(this::handleBookButton);
         newBookButton.setOnAction(this::handleNewBookButton);
