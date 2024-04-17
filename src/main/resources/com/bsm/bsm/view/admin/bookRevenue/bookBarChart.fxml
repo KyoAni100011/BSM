@@ -29,11 +29,12 @@
                             </Group>
                         </graphic>
                     </Button>
-                    <DatePicker prefHeight="26.0" prefWidth="239.0">
-                        <HBox.margin>
-                            <Insets top="8.0" />
-                        </HBox.margin>
-                    </DatePicker>
+               <AnchorPane fx:id="datePickerContainer" prefHeight="200.0" prefWidth="200.0">
+                  <children>
+                     <DatePicker fx:id="datePicker1" layoutX="110.0" layoutY="7.0" prefHeight="26.0" prefWidth="110.0" />
+                          <DatePicker fx:id="datePicker" layoutY="7.0" prefHeight="26.0" prefWidth="110.0" />
+                  </children>
+               </AnchorPane>
                     <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="30.0" styleClass="chartActionButton">
                         <graphic>
                             <Group styleClass="chartActionButton">

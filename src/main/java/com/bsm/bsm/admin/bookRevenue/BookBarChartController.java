@@ -1,125 +1,234 @@
 package com.bsm.bsm.admin.bookRevenue;
 
+import com.bsm.bsm.revenue.ResultStatistic;
+import com.bsm.bsm.revenue.RevenueStatisticService;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
-import javafx.util.StringConverter;
 
+import java.sql.SQLException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.WeekFields;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class BookBarChartController {
+    private final RevenueStatisticService revenueStatisticService = new RevenueStatisticService();
+    private final ExecutorService executorService = Executors.newCachedThreadPool();
+    @FXML private Button btnByMonth, btnByWeek, btnByDate, btnFromDateToDate;
+    @FXML private BarChart<String, Number> bookBarChart;
+    @FXML private DatePicker datePicker, datePicker1;
+    @FXML private AnchorPane datePickerContainer;
 
-    public Button btnByMonth, btnByWeek, btnByDate, btnFromDateToDate;
-    @FXML
-    private BarChart<String, Number> bookBarChart;
+    private LocalDate currentDate;
+    private boolean isDailyActive = false;
+    private boolean isMonthActive = false;
+    private boolean isWeekActive = false;
 
     public void initialize() {
-        // Tạo dữ liệu giả định
-        ObservableList<XYChart.Data<String, Number>> data = FXCollections.observableArrayList();
-        data.add(new XYChart.Data<>("1", 80000000));
-        data.add(new XYChart.Data<>("2", 120000000));
-        data.add(new XYChart.Data<>("3", 100000000));
-        data.add(new XYChart.Data<>("4", 150000000));
-        data.add(new XYChart.Data<>("5", 200000000));
-        data.add(new XYChart.Data<>("6", 250000000));
-        data.add(new XYChart.Data<>("7", 300000000));
-        data.add(new XYChart.Data<>("8", 350000000));
-        data.add(new XYChart.Data<>("9", 400000000));
-        data.add(new XYChart.Data<>("10", 450000000));
+        currentDate = LocalDate.now();
+        datePicker.setValue(currentDate);
+        datePicker1.setValue(currentDate);
+        datePicker1.setVisible(false);
+        handleByMonth();
 
-        // Thêm dữ liệu vào biểu đồ
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-
-        // Tạo một chuỗi chuyển đổi để định dạng giá trị trục y
-        NumberAxis yAxis = (NumberAxis) bookBarChart.getYAxis();
-        CategoryAxis xAxis = (CategoryAxis) bookBarChart.getXAxis();
-        xAxis.setTickLength(10);
-
-        yAxis.setTickLabelFormatter(new StringConverter<Number>() {
-            @Override
-            public String toString(Number object) {
-                if (object.intValue() < 1000000) {
-                    return String.format("%.0f", object);
-                } else if (object.intValue() < 1000000000) {
-                    return String.format("%.0fM", object.doubleValue() / 1000000);
-                } else {
-                    return String.format("%.0fB", object.doubleValue() / 1000000000);
+        datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Platform.runLater(() -> {
+                if(isMonthActive) {
+                    handleByMonth();
+                } else if (isWeekActive) {
+                    handleByWeek();
+                } else if (isDailyActive) {
+                    handleByDate();
+                } else if (datePicker1.isVisible()) {
+                    handleFromDateToDate();
                 }
-            }
-
-            @Override
-            public Number fromString(String string) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
+            });
         });
 
-        series.setData(data);
-
-        bookBarChart.getData().add(series);
-        series.setName("Doanh thu");
-        for (XYChart.Series<String, Number> currentSeries : bookBarChart.getData()) {
-            for (XYChart.Data<String, Number> currentData : currentSeries.getData()) {
-
-                Tooltip tooltip = new Tooltip("Category: " + currentData.getXValue() + "\nValue: " + currentData.getYValue());
-                tooltip.setShowDelay(Duration.ZERO);
-                Tooltip.install(currentData.getNode(), tooltip);
-                tooltip.setAutoHide(true);
-            }
-        }
-
-        btnByMonth.getStyleClass().addAll("chartActionButton-admin-selected", "chartActionButton");
-        btnByWeek.getStyleClass().add("chartActionButton");
-        btnByDate.getStyleClass().add("chartActionButton");
-        btnFromDateToDate.getStyleClass().add("chartActionButton");
-        updateChart("Top 10 Best Selling Books By Month");
+        datePicker1.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Platform.runLater(() -> {
+                if (!isDailyActive && datePicker1.isVisible()) {
+                    handleFromDateToDate();
+                }
+            });
+        });
     }
 
     @FXML
     private void handleByMonth() {
-        updateChart("Top 10 Best Selling Books By Month");
+        datePicker.setShowWeekNumbers(false);
+        isMonthActive = true;
+        isDailyActive = false;
+        isWeekActive = false;
+        updateDatePickerCellStyle();  // Update the cell style
+        setVisibility(false);
+        LocalDate selectedDate = datePicker.getValue();
+        executorService.submit(() -> {
+            try {
+                List<ResultStatistic> bookMonthly = revenueStatisticService.getBookMonthlyRevenue(selectedDate.getYear(), selectedDate.getMonthValue());
+                Platform.runLater(() -> updateChartWithData(bookMonthly, "Top 10 Best Selling Books By Month"));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
         updateButtonStyle(btnByMonth);
     }
 
     @FXML
     private void handleByWeek() {
-        updateChart("Top 10 Best Selling Books By Week");
+        datePicker.setShowWeekNumbers(true);
+        isMonthActive = false;
+        isDailyActive = false;
+        isWeekActive = true;
+        updateDatePickerCellStyle();  // Update the cell style for week view
+        setVisibility(false);
+        LocalDate selectedDate = datePicker.getValue();
+        executorService.submit(() -> {
+            try {
+                List<ResultStatistic> bookWeekly = revenueStatisticService.getBookWeeklyRevenue( selectedDate.getYear(),  selectedDate.get(WeekFields.ISO.weekOfYear()));
+                System.out.println(bookWeekly);
+                Platform.runLater(() -> updateChartWithData(bookWeekly, "Top 10 Best Selling Books By Week"));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
         updateButtonStyle(btnByWeek);
     }
 
+    private void updateDatePickerCellStyle() {
+        if (isWeekActive) {
+            datePicker.setDayCellFactory(picker -> new DateCell() {
+                @Override
+                public void updateItem(LocalDate itemDate, boolean empty) {
+                    super.updateItem(itemDate, empty);
+                    if (itemDate != null && !empty) {
+                        LocalDate selectedDate = datePicker.getValue();
+                        LocalDate startOfWeek = selectedDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+                        LocalDate endOfWeek = selectedDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+                        if (!itemDate.isBefore(startOfWeek) && !itemDate.isAfter(endOfWeek)) {
+                            this.setStyle("-fx-background-color: #0096C9; -fx-text-fill: white;");
+                        } else {
+                            this.setStyle("");
+                        }
+                    }
+                }
+            });
+        } else {
+            datePicker.setDayCellFactory(picker -> new DateCell() {
+                @Override
+                public void updateItem(LocalDate itemDate, boolean empty) {
+                    super.updateItem(itemDate, empty);
+                    this.setStyle("");  // Reset style to default for all days
+                }
+            });
+        }
+    }
+
+
+
     @FXML
     private void handleByDate() {
-        updateChart("Top 10 Best Selling Books By Date");
+        isDailyActive = true;
+        isMonthActive = false;
+        isWeekActive = false;
+        updateDatePickerCellStyle();
+        datePicker.setShowWeekNumbers(false);
+        setVisibility(false);
+        LocalDate selectedDate = datePicker.getValue();
+        executorService.submit(() -> {
+            try {
+                List<ResultStatistic> bookDaily = revenueStatisticService.getBookDailyRevenue(selectedDate.toString());
+                Platform.runLater(() -> updateChartWithData(bookDaily, "Top 10 Best Selling Books By Date"));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
         updateButtonStyle(btnByDate);
     }
 
     @FXML
     private void handleFromDateToDate() {
-        updateChart("Top 10 Best Selling Books From Date To Date");
+        datePicker.setShowWeekNumbers(false);
+        isMonthActive = false;
+        isWeekActive = false;
+        isDailyActive = false;
+        setVisibility(true);
+        updateDatePickerCellStyle();
+        executorService.submit(() -> {
+            LocalDate startDate = datePicker.getValue(), endDate = datePicker1.getValue();
+            if (startDate != null && endDate != null && !startDate.isAfter(endDate)) {
+                try {
+                    List<ResultStatistic> booksFromTo = revenueStatisticService.getBookDateToDateRevenue(startDate.toString(), endDate.toString());
+                    Platform.runLater(() -> updateChartWithData(booksFromTo, "Top 10 Best Selling Books From " + startDate + " To " + endDate));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Platform.runLater(() -> {
+                    bookBarChart.getData().clear();
+                    bookBarChart.setTitle("Invalid Date Range");
+                });
+            }
+        });
         updateButtonStyle(btnFromDateToDate);
     }
 
-    private void updateChart(String title) {
-        bookBarChart.setTitle(title);
-        bookBarChart.lookup(".chart-title").getStyleClass().add("chart-title");
+    private void setVisibility(boolean fromDateToDateActive) {
+        datePicker1.setVisible(fromDateToDateActive);
+        if (fromDateToDateActive) {
+            datePicker.prefWidthProperty().unbind();
+            datePicker.setPrefWidth(datePickerContainer.getWidth() / 2);
+            datePicker1.setPrefWidth(datePickerContainer.getWidth() / 2);
+        } else {
+            datePicker.prefWidthProperty().bind(datePickerContainer.widthProperty());
+        }
+    }
+
+    private void updateChartWithData(List<ResultStatistic> data, String chartTitle) {
+        ObservableList<XYChart.Data<String, Number>> chartData = FXCollections.observableArrayList();
+        if (data != null) {
+            data.forEach(rs -> chartData.add(new XYChart.Data<>(rs.getTitle(), rs.getStatisticValue())));
+        }
+        XYChart.Series<String, Number> series = new XYChart.Series<>(chartData);
+        bookBarChart.getData().clear();
+        bookBarChart.getData().add(series);
+        bookBarChart.setTitle(chartTitle);
+        applyTooltip(series);
+    }
+
+    private void applyTooltip(XYChart.Series<String, Number> series) {
+        series.getData().forEach(data -> {
+            Tooltip tooltip = new Tooltip("Category: " + data.getXValue() + "\nValue: " + data.getYValue());
+            tooltip.setShowDelay(Duration.ZERO);
+            Tooltip.install(data.getNode(), tooltip);
+        });
     }
 
     private void updateButtonStyle(Button selectedButton) {
-        List<Button> buttons = Arrays.asList(btnByMonth, btnByWeek, btnByDate, btnFromDateToDate);
-        for (Button button : buttons) {
+        Arrays.asList(btnByMonth, btnByWeek, btnByDate, btnFromDateToDate).forEach(button -> {
             if (button == selectedButton) {
-                button.getStyleClass().remove("chartActionButton-admin");
+                button.getStyleClass().removeAll("chartActionButton-admin");
                 button.getStyleClass().add("chartActionButton-admin-selected");
             } else {
                 button.getStyleClass().remove("chartActionButton-admin-selected");
+                button.getStyleClass().add("chartActionButton-admin");
             }
-        }
+        });
     }
 }

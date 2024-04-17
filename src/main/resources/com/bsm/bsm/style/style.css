@@ -220,7 +220,7 @@
 }
 
 .chart-plot-background {
-    -fx-background-color: red;
+    -fx-background-color: #F4F6F6;
     -fx-pref-width: 700px;
     -fx-pref-height: 460px;
 }
