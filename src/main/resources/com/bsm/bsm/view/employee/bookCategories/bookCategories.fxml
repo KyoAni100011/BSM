@@ -13,7 +13,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.bookCategories.CategoriesController">
     <VBox alignment="CENTER_LEFT" layoutY="-1.0" prefHeight="600.0" prefWidth="700.0">
         <AnchorPane fx:id="tableToolbar" prefHeight="56.0" prefWidth="693.0" style="-fx-background-color: white; -fx-background-radius: 10px;">
-            <Button fx:id="updateCategoryButton" layoutX="522.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleUpdateCategoryButton" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 20px;" text="Update">
+            <Button fx:id="updateCategoryButton" layoutX="562.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleUpdateCategoryButton" prefHeight="30.0" prefWidth="121.0" style="-fx-background-radius: 20px;" text="Update">
                 <graphic>
                     <Group>
                         <SVGPath content="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z" scaleX="0.03" scaleY="0.03" />
@@ -26,14 +26,14 @@
                     <SVGPath content="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" scaleX="0.03" scaleY="0.03" />
                 </Group>
             </AnchorPane>
-            <Button fx:id="addCategoryButton" layoutX="412.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleAddCategoryButton" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 20px;" text="Add Order">
+            <Button fx:id="addCategoryButton" layoutX="422.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleAddCategoryButton" prefHeight="30.0" prefWidth="121.0" style="-fx-background-radius: 20px;" text="Add Order">
                 <graphic>
                     <Group>
                         <SVGPath content="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" scaleX="0.028" scaleY="0.028" />
                     </Group>
                 </graphic>
             </Button>
-         <Button fx:id="refreshButton" layoutX="372.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleRefreshButton" prefHeight="30.0" prefWidth="30.0" style="-fx-background-radius: 20px;">
+         <Button fx:id="refreshButton" layoutX="378.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleRefreshButton" prefHeight="30.0" prefWidth="30.0" style="-fx-background-radius: 20px;">
             <graphic>
                <Group>
                   <children>
@@ -70,7 +70,7 @@
                     </Button>
                 </AnchorPane>
                 <AnchorPane prefHeight="43.0" prefWidth="150.0">
-                    <Button fx:id="introductionLabel" layoutY="7.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="265.0" style="-fx-background-color: transparent;" text="Description">
+                    <Button fx:id="introductionLabel" layoutY="7.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="242.0" style="-fx-background-color: transparent;" text="Description">
                         <graphic>
                             <Group>
                                 <SVGPath fx:id="introductionSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" scaleX="0.03" scaleY="0.03" />
@@ -78,7 +78,7 @@
                         </graphic></Button>
                 </AnchorPane>
                 <AnchorPane prefHeight="43.0" prefWidth="87.0">
-                    <Button fx:id="actionLabel" layoutX="-1.0" layoutY="9.0" mnemonicParsing="false" prefWidth="100.0" style="-fx-background-color: transparent;" text="Action">
+                    <Button fx:id="actionLabel" layoutX="-1.0" layoutY="9.0" mnemonicParsing="false" prefWidth="121.0" style="-fx-background-color: transparent;" text="Enable/Disable">
                         <graphic>
                             <Group>
                                 <SVGPath fx:id="actionSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-48.0" layoutY="-4.0" scaleX="0.03" scaleY="0.03" />
