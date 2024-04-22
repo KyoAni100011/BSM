@@ -314,7 +314,7 @@ public class AddBookBatchController {
     }
 
     private boolean validateInputs(String fullName, String release, String price, String publisher, String language, ObservableList<String> category, ObservableList<String> author, String quantity) {
-        String bookNameError = ValidationUtils.validateFullName(fullName, "book");
+        String bookNameError = ValidationUtils.validateBookName(fullName);
         String publisherError = ValidationUtils.validatePublisher(publisher, "publisher");
         String languageError = ValidationUtils.validateLanguage(language, "book");
         String categoryError = ValidationUtils.validateCategory(category, "book");

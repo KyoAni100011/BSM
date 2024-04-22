@@ -1,78 +1,72 @@
-package com.bsm.bsm.employee.bookAuthors;
+package com.bsm.bsm.employee.importSheet;
 
 import com.bsm.bsm.author.Author;
-import com.bsm.bsm.author.AuthorService;
 import com.bsm.bsm.employee.EmployeeModel;
+import com.bsm.bsm.employee.importSheet.TableItemController;
+import com.bsm.bsm.sheet.ImportSheet;
+import com.bsm.bsm.sheet.ImportSheetService;
 import com.bsm.bsm.user.UserSingleton;
-import com.bsm.bsm.utils.AlertUtils;
-import com.bsm.bsm.utils.FXMLLoaderHelper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
-import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ResourceBundle;
 
-public class AuthorController implements Initializable {
+public class ViewSheetController {
     private static String id;
     private final ToggleGroup toggleGroup = new ToggleGroup();
+    private final ImportSheetService importSheetService = new ImportSheetService();
     private final EmployeeModel employeeInfo = (EmployeeModel) UserSingleton.getInstance().getUser();
-    private final AuthorService authorService = new AuthorService();
 
     @FXML
     private TextField inputSearch;
     @FXML
     private VBox pnItems;
     @FXML
-    private AnchorPane tableToolbar;
+    private Button idLabel, dateImportLabel, employeeLabel, quantityLabel, totalPriceLabel;
     @FXML
-    private Button addAuthorButton, updateAuthorButton;
-    @FXML
-    private Button idLabel, nameLabel, introductionLabel, actionLabel;
-    @FXML
-    private SVGPath  idSortLabel, nameSortLabel, introductionSortLabel ,actionSortLabel;
+    private SVGPath idSortLabel, dateImportSortLabel, employeeSortLabel, quantitySortLabel, totalPriceSortLabel;
     @FXML
     private Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
 
-    private List<Author> authors = null;
+    private List<ImportSheet> sheets;
     private String sortOrder = "ASC";
     private String column = "id";
     private int currentPage = 1;
     private String inputSearchText = "";
 
-    static void handleTableItemSelection(String userId) {
-        id = userId; // Store the selected user
+    static void handleTableItemSelection(String thisId) {
+        id = thisId;
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
+        sheets = generateDummyData();
         initializeButtonsAndLabels();
-        loadAllAuthors();
+        loadAllSheets();
         initializePaginationButtons();
 
         inputSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 inputSearchText = newValue;
-                authors = authorService.search(inputSearchText);
+//                sheets = importSheetService.search(inputSearchText);
                 try {
-                    updateAuthorsList();
+                    updateSheetsList();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -80,11 +74,20 @@ public class AuthorController implements Initializable {
         });
     }
 
-    private void loadAllAuthors() {
-        authors = authorService.getAllAuthors();
-        employeeInfo.setAuthors(authors);
+    private List<ImportSheet> generateDummyData() {
+        List<ImportSheet> dummySheets = new ArrayList<>();
+        for (int i = 1; i <= 50; i++) {
+            ImportSheet sheet = new ImportSheet("ID" + i, employeeInfo, LocalDate.now().toString(), i, BigDecimal.valueOf(i * 1000));
+            dummySheets.add(sheet);
+        }
+        return dummySheets;
+    }
+
+    private void loadAllSheets() {
+//        sheets = importSheetService.getAllSheets();
+//        employeeInfo.setSheets(sheets);
         try {
-            updateAuthorsList();
+            updateSheetsList();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -92,17 +95,16 @@ public class AuthorController implements Initializable {
 
     private void initializeButtonsAndLabels() {
         idLabel.setOnMouseClicked(this::handleLabelClick);
-        nameLabel.setOnMouseClicked(this::handleLabelClick);
-        introductionLabel.setOnMouseClicked(this::handleLabelClick);
-        actionLabel.setOnMouseClicked(this::handleLabelClick);
+        dateImportLabel.setOnMouseClicked(this::handleLabelClick);
+        employeeLabel.setOnMouseClicked(this::handleLabelClick);
+        quantityLabel.setOnMouseClicked(this::handleLabelClick);
+        totalPriceLabel.setOnMouseClicked(this::handleLabelClick);
 
         idSortLabel.setContent("");
-        nameSortLabel.setContent("");
-        introductionSortLabel.setContent("");
-        actionSortLabel.setContent("");
-
-        addAuthorButton.setOnAction(this::handleAddAuthorButton);
-        updateAuthorButton.setOnAction(this::handleUpdateAuthorButton);
+        dateImportSortLabel.setContent("");
+        employeeSortLabel.setContent("");
+        quantitySortLabel.setContent("");
+        totalPriceSortLabel.setContent("");
     }
 
     private void initializePaginationButtons() {
@@ -115,58 +117,26 @@ public class AuthorController implements Initializable {
         nextPaginationButton.setOnAction(this::handlePaginationButton);
     }
 
-    @FXML
-    void handleRefreshButton(ActionEvent event) {
-        loadAllAuthors();
-    }
-
-    @FXML
-    void handleAddAuthorButton(ActionEvent event) {
-        try {
-            FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/addAuthor");
-            //update authors list after adding new author
-            authors = authorService.getAllAuthors();
-            updateAuthorsList();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    @FXML
-    void handleUpdateAuthorButton(ActionEvent event) {
-        try {
-            if (id != null) {
-                UpdateAuthorController.handleTableItemSelection(id);
-                FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/updateAuthor");
-            } else {
-                AlertUtils.showAlert("Error", "Can't find author", Alert.AlertType.ERROR);
-            }
-        } catch (IOException e) {
-            AlertUtils.showAlert("Error", "Error loading updateAuthor FXML", Alert.AlertType.ERROR);
-        }
-    }
-
-    private void updateAuthorsList() throws IOException {
+    private void updateSheetsList() throws IOException {
         pnItems.getChildren().clear();
         int itemsPerPage = 10;
         int startIndex = (currentPage - 1) * itemsPerPage;
-        int endIndex = Math.min(startIndex + itemsPerPage, authors.size());
+        int endIndex = Math.min(startIndex + itemsPerPage, sheets.size());
 
         for (int i = startIndex; i < endIndex; i++) {
-            Author author = authors.get(i);
+            ImportSheet sheet = sheets.get(i);
 
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/bookAuthors/tableItem.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/importSheet/tableItem.fxml"));
                 Node item = fxmlLoader.load();
                 TableItemController tableItemController = fxmlLoader.getController();
-                tableItemController.setToggleGroup(toggleGroup);
-                tableItemController.setAuthorModel(author);
+                tableItemController.setSheetModel(sheet);
                 pnItems.getChildren().add(item);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        int totalPages = (int) Math.ceil((double) authors.size() / itemsPerPage);
+        int totalPages = (int) Math.ceil((double) sheets.size() / itemsPerPage);
         updatePaginationButtons(totalPages);
     }
 
@@ -182,7 +152,7 @@ public class AuthorController implements Initializable {
         }
 
         try {
-            updateAuthorsList();
+            updateSheetsList();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -220,7 +190,7 @@ public class AuthorController implements Initializable {
                 button.setVisible(true);
 
                 if (i == currentPage) {
-                    button.setStyle("-fx-background-color: #f5a11c; -fx-text-fill: white;");
+                    button.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
                 } else {
                     button.setStyle(null);
                 }
@@ -230,7 +200,7 @@ public class AuthorController implements Initializable {
             firstPaginationButton.setText("1");
             firstPaginationButton.setVisible(true);
             firstPaginationButton.setManaged(true);
-            firstPaginationButton.setStyle("-fx-background-color: #f5a11c; -fx-text-fill: white;");
+            firstPaginationButton.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
             nextPaginationButton.setDisable(true);
         }
     }
@@ -240,8 +210,6 @@ public class AuthorController implements Initializable {
         Button clickedLabel = (Button) event.getSource();
         String columnName = clickedLabel.getText().toLowerCase();
 
-        column = column.equals("author") ? "name" : column;
-        columnName = columnName.equals("author") ? "name" : columnName;
 
         if (columnName.equals(column)) {
             sortOrder = sortOrder.equals("ASC") ? "DESC" : "ASC";
@@ -252,15 +220,15 @@ public class AuthorController implements Initializable {
 
         column = columnName;
         idSortLabel.setContent(column.equals("id") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
-        nameSortLabel.setContent(column.equals("name") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
-        introductionSortLabel.setContent(column.equals("introduction") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
-        actionSortLabel.setContent(column.equals("action") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
-
+        dateImportSortLabel.setContent(column.equals("date import") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        employeeSortLabel.setContent(column.equals("employee") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        quantitySortLabel.setContent(column.equals("quantity") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        totalPriceSortLabel.setContent(column.equals("total price") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
 
         try {
-            authors = authorService.getAllAuthors();
-            authors = authorService.sort(authors, isAscending, column);
-            updateAuthorsList();
+//            sheets = importSheetService.getAllSheets();
+//            sheets = importSheetService.sort(sheets, isAscending, column);
+            updateSheetsList();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
