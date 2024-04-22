@@ -47,6 +47,7 @@
   -fx-background-color: none;
 }
 
+
 .sideBarItemEmployee:hover {
   -fx-background-color: #F4E7D3 !important;
   -fx-text-fill: #F5A11C;
@@ -58,7 +59,8 @@
 
 
 .sideBarTitle {
-  -fx-font-size: 16px !important;
+  -fx-font-size: 20px;
+  -fx-font-family: "Roboto Black";
 }
 
 .profile-setting-button {
@@ -107,7 +109,9 @@
 .input-field-add:disabled {
   -fx-opacity: 1  ;
 }
-
+.combo-box-popup .list-cell:disabled  {
+    -fx-opacity: 0.4 ;
+}
 .input-field-add-normal-disable {
   -fx-background-color: transparent;
   -fx-border-width: 1px;
