@@ -21,8 +21,8 @@
             </font>
         </Label>
 
-        <TextField fx:id="fullNameField" layoutX="308.0" layoutY="138.0" prefHeight="40.0" prefWidth="216.0" styleClass="input-field-add" />
-        <TextArea fx:id="addressField" layoutX="75.0" layoutY="225.0" prefHeight="147.0" prefWidth="450.0" styleClass="input-field-add" wrapText="true" />
+        <TextField disable="true" fx:id="fullNameField" layoutX="308.0" layoutY="138.0" prefHeight="40.0" prefWidth="216.0" styleClass="input-field-add" />
+        <TextArea disable="true" fx:id="addressField" layoutX="75.0" layoutY="225.0" prefHeight="147.0" prefWidth="450.0" styleClass="input-field-add" wrapText="true" />
 
 
 
@@ -46,6 +46,6 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="iDField" layoutX="75.0" layoutY="137.0" prefHeight="40.0" prefWidth="216.0" styleClass="input-field-add" />
+      <TextField disable="true" fx:id="iDField" layoutX="75.0" layoutY="137.0" prefHeight="40.0" prefWidth="216.0" styleClass="input-field-add" />
     </children>
 </AnchorPane>

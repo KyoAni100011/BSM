@@ -49,15 +49,15 @@ public class TableItemController {
     }
 
     public void setOrder(Order thisOrder) {
-        System.out.println("have"+thisOrder.toString());
-        order = thisOrder;
-        isbn = String.valueOf(thisOrder.getId());
-
-        idLabel.setText(String.valueOf(thisOrder.getId()));
-
-        customerNameLabel.setText(String.valueOf(thisOrder.getCustomerID()));
-        EmployeeNameLabel.setText(String.valueOf(thisOrder.getEmployeeID()));
-        OrderDateLabel.setText(String.valueOf(thisOrder.getOrderDate()));
-        PriceLabel.setText(String.valueOf(thisOrder.getTotalPrice()));
+//        System.out.println("have"+thisOrder.toString());
+//        order = thisOrder;
+//        isbn = String.valueOf(thisOrder.getId());
+//
+//        idLabel.setText(String.valueOf(thisOrder.getId()));
+//
+//        customerNameLabel.setText(String.valueOf(thisOrder.getCustomerID()));
+//        EmployeeNameLabel.setText(String.valueOf(thisOrder.getEmployeeID()));
+//        OrderDateLabel.setText(String.valueOf(thisOrder.getOrderDate()));
+//        PriceLabel.setText(String.valueOf(thisOrder.getTotalPrice()));
     }
 }

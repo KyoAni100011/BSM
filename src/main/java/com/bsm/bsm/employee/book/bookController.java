@@ -172,20 +172,7 @@ public class bookController implements Initializable {
         }
     }
 
-    @FXML
-    private void handleFilterButton(ActionEvent event) {
-//        try {
-//            if (isbn != null) {
-//                PasswordResetController.handleTableItemSelection(isbn);
-//                FXMLLoaderHelper.loadFXML(new Stage(), "admin/bookBook/passwordReset");
-//            } else {
-//                AlertUtils.showAlert("Error", "Can't find book", Alert.AlertType.ERROR);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            AlertUtils.showAlert("Error", "Error loading passwordReset FXML", Alert.AlertType.ERROR);
-//        }
-    }
+
 
     @FXML
     private void handleUpdateUserButton(ActionEvent event) {
@@ -220,14 +207,14 @@ public class bookController implements Initializable {
         } else {
             currentPage = Integer.parseInt(buttonClicked.getText());
         }
-        if (bookButton.getStyleClass().contains("profile-setting-button-admin")) {
+        if (bookButton.getStyleClass().contains("profile-setting-button-employee")) {
             try {
                 type = "book";
                 updateBooksList();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else if (newBookButton.getStyleClass().contains("profile-setting-button-admin")) {
+        }else if (newBookButton.getStyleClass().contains("profile-setting-button-employee")) {
             try {
                 type = "newBook";
                 updateBooksList();
@@ -276,7 +263,7 @@ public class bookController implements Initializable {
                 button.setVisible(true);
 
                 if (i == currentPage) {
-                    button.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
+                    button.setStyle("-fx-background-color: #F5A11C; -fx-text-fill: white;");
                 } else {
                     button.setStyle(null);
                 }
@@ -286,7 +273,7 @@ public class bookController implements Initializable {
             firstPaginationButton.setText("1");
             firstPaginationButton.setVisible(true);
             firstPaginationButton.setManaged(true);
-            firstPaginationButton.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
+            firstPaginationButton.setStyle("-fx-background-color: #F5A11C; -fx-text-fill: white;");
             nextPaginationButton.setDisable(true);
         }
     }
@@ -294,20 +281,20 @@ public class bookController implements Initializable {
     private void updateButtonStyle(Button activeButton) {
 
         if (activeButton == bookButton) {
-            bookButton.getStyleClass().remove("profile-setting-button-admin");
-            outOfStockBookButton.getStyleClass().remove("profile-setting-button-admin");
-            newBookButton.getStyleClass().remove("profile-setting-button-admin");
-            bookButton.getStyleClass().add("profile-setting-button-admin");
+            bookButton.getStyleClass().remove("profile-setting-button-employee");
+            outOfStockBookButton.getStyleClass().remove("profile-setting-button-employee");
+            newBookButton.getStyleClass().remove("profile-setting-button-employee");
+            bookButton.getStyleClass().add("profile-setting-button-employee");
         }else if (activeButton == newBookButton) {
-            outOfStockBookButton.getStyleClass().remove("profile-setting-button-admin");
-            bookButton.getStyleClass().remove("profile-setting-button-admin");
-            newBookButton.getStyleClass().remove("profile-setting-button-admin");
-            newBookButton.getStyleClass().add("profile-setting-button-admin");
+            outOfStockBookButton.getStyleClass().remove("profile-setting-button-employee");
+            bookButton.getStyleClass().remove("profile-setting-button-employee");
+            newBookButton.getStyleClass().remove("profile-setting-button-employee");
+            newBookButton.getStyleClass().add("profile-setting-button-employee");
         } else {
-            outOfStockBookButton.getStyleClass().remove("profile-setting-button-admin");
-            newBookButton.getStyleClass().remove("profile-setting-button-admin");
-            bookButton.getStyleClass().remove("profile-setting-button-admin");
-            outOfStockBookButton.getStyleClass().add("profile-setting-button-admin");
+            outOfStockBookButton.getStyleClass().remove("profile-setting-button-employee");
+            newBookButton.getStyleClass().remove("profile-setting-button-employee");
+            bookButton.getStyleClass().remove("profile-setting-button-employee");
+            outOfStockBookButton.getStyleClass().add("profile-setting-button-employee");
 
         }
     }

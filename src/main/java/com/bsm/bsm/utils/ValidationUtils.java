@@ -119,12 +119,8 @@ public class ValidationUtils {
     }
 
     public static String validatePhone(String phone, String field) {
-        if (phone.isEmpty()) {
-            return "Please enter " + field + " phone number.";
-        }
-        if (!phone.matches("^[0-9]{10}$")) {
-            return "Please enter a 10-digit phone number..";
-        }
+        if (phone.isEmpty()) return "Please enter " + field + " phone number.";
+        if (!phone.matches("^[0-9]{10}$")) return "Please enter a 10-digit phone number..";
         return null;
     }
 

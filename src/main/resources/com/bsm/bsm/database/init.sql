@@ -12,7 +12,7 @@ create table user (
     address char(255),
     isEnabled boolean default true,
     createdAt datetime default current_timestamp(),
-    lastLogin datetime default current_timestamp()
+    lastLogin datetime
 );
 
 create table admin (

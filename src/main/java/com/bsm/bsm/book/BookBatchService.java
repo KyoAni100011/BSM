@@ -6,9 +6,9 @@ public class BookBatchService {
 //    public BookBatchService() {
 //        this.bookBatchDAO = new BookBatchDAO();
 //    }
-
-    public boolean createBookBatch(BookBatch bookBatch) {
-//        return bookBatchDAO.createBookBatch(bookBatch);
-        return true;
-    }
+//
+//    public boolean createBookBatch(BookBatch bookBatch) {
+////        return bookBatchDAO.createBookBatch(bookBatch);
+//        return true;
+//    }
 }
