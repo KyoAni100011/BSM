@@ -80,7 +80,7 @@ public class TableItemController {
         if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
             if (id != null) {
                 CategoryDetailController.handleTableItemSelection(id);
-                FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookCategorys/categoryDetail");
+                FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookCategories/categoryDetail");
             } else {
                 AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
 

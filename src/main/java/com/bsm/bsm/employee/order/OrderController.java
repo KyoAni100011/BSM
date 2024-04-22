@@ -279,7 +279,7 @@ public class OrderController implements Initializable  {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/order/tableItem.fxml"));
                 Node item = fxmlLoader.load();
                 TableItemController tableItemController = fxmlLoader.getController();
-                tableItemController.setOrder(order);
+//                tableItemController.setOrder(order);
                 pnItems.getChildren().add(item);
             } catch (IOException e) {
                 e.printStackTrace();

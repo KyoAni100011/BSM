@@ -4,11 +4,13 @@ import com.bsm.bsm.book.BookService;
 import com.bsm.bsm.admin.userAccount.ToggleSwitch;
 import com.bsm.bsm.book.Book;
 import com.bsm.bsm.utils.AlertUtils;
+import com.bsm.bsm.utils.FXMLLoaderHelper;
 import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -72,8 +74,8 @@ public class TableItemController {
     private void handleTableItemDoubleClick(MouseEvent event) throws IOException {
         if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
             if (isbn != null) {
-//                BookDetailController.handleTableItemSelection(isbn);
-//                FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/bookDetail");
+                BookDetailController.handleTableItemSelection(isbn);
+                FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/bookDetail");
             } else {
                 AlertUtils.showAlert("Error", "Can't find book", Alert.AlertType.ERROR);
 
