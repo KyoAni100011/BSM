@@ -135,7 +135,7 @@
       </BorderPane>
       <AnchorPane layoutX="239.0" prefHeight="48.0" prefWidth="827.0">
          <children>
-            <MenuButton layoutX="612.0" layoutY="1.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="162.0" style="-fx-background-color: white;">
+            <MenuButton layoutX="612.0" layoutY="10.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="162.0" style="-fx-background-color: white;">
                <items>
                   <MenuItem fx:id="buttonProfileSetting" mnemonicParsing="false" onAction="#handleProfileSetting" style="-fx-padding: 8px;" styleClass="text-menu" text="Profile setting">
                      <graphic>

@@ -148,7 +148,7 @@ public class AuthorController implements Initializable {
 
     private void updateAuthorsList() throws IOException {
         pnItems.getChildren().clear();
-        int itemsPerPage = 10;
+        int itemsPerPage = 9;
         int startIndex = (currentPage - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, authors.size());
 
