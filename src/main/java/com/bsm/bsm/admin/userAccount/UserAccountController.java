@@ -176,7 +176,17 @@ public class UserAccountController implements Initializable {
         try {
             if (email != null) {
                 UpdateUserController.handleTableItemSelection(email);
-                FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/updateUser");
+
+                UserModel user = users.stream()
+                        .filter(userModel -> userModel.getEmail().equals(email))
+                        .findFirst()
+                        .orElse(new UserModel());
+
+                if (!user.isEnabled()) {
+                    AlertUtils.showAlert("Error", "This user has been disabled. Please enable the user to update profile.", Alert.AlertType.ERROR);
+                } else {
+                    FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/updateUser");
+                }
             } else {
                 AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
             }
@@ -314,7 +324,6 @@ public class UserAccountController implements Initializable {
                 }
             }
         }
-        System.out.println("\n\n");
 
         int totalPages = (int) Math.ceil((double) totalUserCountForRole / itemsPerPage);
         updatePaginationButtons(totalPages);

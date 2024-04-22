@@ -86,7 +86,14 @@ public class UpdateUserController {
     }
     @FXML
     private void handleSaveChanges(ActionEvent event) throws ParseException {
+
         clearErrorMessages();
+
+        if (!userModel.isEnabled()) {
+            AlertUtils.showAlert("Error", "This user has been disabled. Please enable the user to update profile.", Alert.AlertType.ERROR);
+            return;
+        }
+
         String fullName = fullNameField.getText();
         String dob = dobPicker.getEditor().getText();
         String phone = phoneTextField.getText();

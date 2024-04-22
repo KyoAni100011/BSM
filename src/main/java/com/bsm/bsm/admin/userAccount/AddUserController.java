@@ -10,7 +10,6 @@ import javafx.event.ActionEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-import org.controlsfx.validation.ValidateEvent;
 
 import java.io.IOException;
 import java.time.LocalDate;
