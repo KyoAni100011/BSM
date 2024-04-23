@@ -66,7 +66,10 @@ public class sidebarController {
     public void initialize()
     {
         new sidebarController();
-        nameText.setText(adminInfo.getName().split(" ")[1]);
+
+        String[] nameParts = adminInfo.getName().split(" ");
+        nameText.setText(nameParts[nameParts.length - 1]);
+
         if (adminInfo instanceof AdminModel) {
             roleText.setText("Admin");
         }

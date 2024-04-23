@@ -13,17 +13,16 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class TableItemController {
 
+    private final AccountService accountService = new AccountService();
     @FXML
     public ToggleButton toogleButton;
     @FXML
     public ToggleSwitch isOn;
-    private final AccountService accountService = new AccountService();
     @FXML
     private Label idLabel, nameLabel, emailLabel, lastLoginLabel, dobLabel, phoneLabel, addressLabel;
     private String email;

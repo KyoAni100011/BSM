@@ -1,48 +1,43 @@
 package com.bsm.bsm.admin.userAccount;
 
 import com.bsm.bsm.auth.AuthService;
-import com.bsm.bsm.user.UserController;
 import com.bsm.bsm.user.UserModel;
-import com.bsm.bsm.user.UserService;
-import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.NumericValidationUtils;
-import com.bsm.bsm.utils.ValidationUtils;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.util.StringConverter;
 
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static com.bsm.bsm.utils.DateUtils.convertDOBFormat;
 
 public class UserDetailController {
     @FXML
+    private static String email; // Variable to store the selected user
+    @FXML
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    @FXML
     public Button isEnabledLabel;
     @FXML
 
-    private TextField fullNameField, phoneTextField, addressTextField, lastLoginField,emailField,idField;
+    private TextField fullNameField, phoneTextField, addressTextField, lastLoginField, emailField, idField;
     @FXML
     private DatePicker dobPicker;
-    @FXML
-    private static String email; // Variable to store the selected user
-
-    @FXML
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
     private UserModel userInfoDetail = null;
 
     private AuthService userDetailController = null;
 
-    public UserDetailController()
-    {
+    public UserDetailController() {
         userDetailController = new AuthService();
     }
 
+    static void handleTableItemSelection(String userEmail) {
+        email = userEmail;
+    }
 
     @FXML
     public void initialize() {
@@ -51,9 +46,6 @@ public class UserDetailController {
         // Set the prompt text for the DatePicker
         setupDatePicker();
         setUserInfo();
-    }
-    static  void handleTableItemSelection(String userEmail) {
-        email = userEmail;
     }
 
     private void setupDatePicker() {
@@ -73,6 +65,7 @@ public class UserDetailController {
 
         dobPicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
     }
+
     private void setUserInfo() {
         idField.setText(userInfoDetail.getId());
         fullNameField.setText(userInfoDetail.getName());
@@ -82,9 +75,9 @@ public class UserDetailController {
         dobPicker.setValue(LocalDate.parse(dob, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         emailField.setText(userInfoDetail.getEmail());
         isEnabledLabel.setText(userInfoDetail.isEnabled() ? "Enable" : "Disable");
-        if(userInfoDetail.isEnabled()){
+        if (userInfoDetail.isEnabled()) {
             isEnabledLabel.getStyleClass().add("enable-button");
-        }else {
+        } else {
             isEnabledLabel.getStyleClass().add("disable-button");
         }
         lastLoginField.setText(userInfoDetail.getLastLogin());

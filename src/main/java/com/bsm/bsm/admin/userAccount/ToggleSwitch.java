@@ -1,4 +1,5 @@
 package com.bsm.bsm.admin.userAccount;
+
 import javafx.animation.FillTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
@@ -11,22 +12,13 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class ToggleSwitch extends HBox {
-    private BooleanProperty switchedOn = new SimpleBooleanProperty(false);
-    private FillTransition fillAnimation = new FillTransition(Duration.seconds(0.25));
-    private TranslateTransition translateAnimation = new TranslateTransition(Duration.seconds(0.25));
+    private final BooleanProperty switchedOn = new SimpleBooleanProperty(false);
+    private final FillTransition fillAnimation = new FillTransition(Duration.seconds(0.25));
+    private final TranslateTransition translateAnimation = new TranslateTransition(Duration.seconds(0.25));
 
-    private ParallelTransition animation;
+    private final ParallelTransition animation;
 
-    public BooleanProperty switchedProperty(){
-        return switchedOn;
-    }
-
-
-    public void setSwitchedProperty(Boolean a){
-        switchedOn.set(a);
-    }
-
-    public ToggleSwitch(){
+    public ToggleSwitch() {
         Rectangle bg = new Rectangle(35, 20);
         bg.setArcWidth(20);
         bg.setArcHeight(20);
@@ -45,7 +37,7 @@ public class ToggleSwitch extends HBox {
         trigger.setTranslateX(switchedOn.get() ? -20 : -36);
 
         fillAnimation.setFromValue(switchedOn.get() ? Color.WHITE : Color.valueOf("#20B042"));
-        fillAnimation.setToValue(switchedOn.get() ? Color.valueOf("#20B042"): Color.WHITE);
+        fillAnimation.setToValue(switchedOn.get() ? Color.valueOf("#20B042") : Color.WHITE);
         animation = new ParallelTransition(translateAnimation, fillAnimation);
         animation.play();
 
@@ -56,15 +48,22 @@ public class ToggleSwitch extends HBox {
 
 
             fillAnimation.setFromValue(isOn ? Color.WHITE : Color.valueOf("#20B042"));
-            fillAnimation.setToValue(isOn ? Color.valueOf("#20B042"): Color.WHITE);
+            fillAnimation.setToValue(isOn ? Color.valueOf("#20B042") : Color.WHITE);
             animation.play(); // Restart the animation
-            System.out.println(oldState +" " + newState);
         });
 
         setOnMouseClicked(event -> {
 
             switchedOn.set(!switchedOn.get());
         });
+    }
+
+    public BooleanProperty switchedProperty() {
+        return switchedOn;
+    }
+
+    public void setSwitchedProperty(Boolean a) {
+        switchedOn.set(a);
     }
 }
 
