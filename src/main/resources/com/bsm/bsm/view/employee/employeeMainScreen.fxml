@@ -24,7 +24,7 @@
             <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="20.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true">
                <Image url="@../../images/logo.png" />
             </ImageView>
-            <VBox layoutY="114.0" prefHeight="477.0" prefWidth="259.0" style="-fx-background-color: #FFFFFF; -fx-border-radius: 0;" AnchorPane.bottomAnchor="161.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="114.0">
+            <VBox layoutY="147.0" prefHeight="477.0" prefWidth="259.0" style="-fx-background-color: #FFFFFF; -fx-border-radius: 0;" AnchorPane.bottomAnchor="129.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="147.0">
                <children>
                   <Label prefHeight="49.0" prefWidth="257.0" style="-fx-label-padding: 10px;" styleClass="sideBarTitle" text="Order" />
                   <Button fx:id="addOrder" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#SwitchAddOrder" prefHeight="43.0" prefWidth="260.0" style="-fx-background-color: none;" styleClass="sideBarItemEmployee" text="Add order">

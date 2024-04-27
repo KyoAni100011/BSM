@@ -81,6 +81,8 @@ create table bookAuthor (
     foreign key(authorID) references author(id)
 );
 
+select * from bookAuthor;
+
 create table importSheet (
     id int auto_increment primary key,
     employeeID int not null,
