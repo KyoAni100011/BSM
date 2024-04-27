@@ -31,15 +31,22 @@
   -fx-font-family: "Roboto Bold";
   -fx-background-color: none;
 }
-
-.sideBarItem:hover {
-  -fx-background-color: #f7e4db !important;
-  -fx-text-fill: #914d2a;
+.sideBarItemActive {
+   -fx-background-color: #f7e4db !important;
+    -fx-text-fill: #914d2a;
 }
 
-.sideBarItem:hover .graphic {
+.sideBarItemActive .graphic {
   -fx-fill: #914d2a;
 }
+.sideBarIconActive {
+  -fx-fill: #914d2a !important;
+}
+.sideBarItem:hover {
+  -fx-background-color: #FDF5F2 !important;
+}
+
+
 
 .sideBarItemEmployee {
   -fx-font-size: 16px;
@@ -48,14 +55,24 @@
 }
 
 
-.sideBarItemEmployee:hover {
+
+.sideBarItemEmployeeActive {
   -fx-background-color: #F4E7D3 !important;
-  -fx-text-fill: #F5A11C;
+  -fx-text-fill: #F5A11C!important;
+}
+.sideBarItemEmployeeActive .graphic{
+  -fx-fill: #F5A11C!important;
 }
 
-.sideBarItemEmployee:hover .graphic {
-  -fx-fill: #F5A11C;
+.sideBarIconEmployeeActive {
+  -fx-fill: #F5A11C !important;
 }
+.sideBarItemEmployee:hover {
+  -fx-background-color: #F6F1E8 !important;
+}
+
+
+
 
 
 .sideBarTitle {
