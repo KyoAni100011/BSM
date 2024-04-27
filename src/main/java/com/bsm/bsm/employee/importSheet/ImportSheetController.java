@@ -102,7 +102,7 @@ public class ImportSheetController {
     @FXML
     public void handleAddBookButton() {
         try {
-            FXMLLoaderHelper.loadFXML(new Stage(),"employee/importSheet/addBook");
+            FXMLLoaderHelper.loadFXML(new Stage(),"employee/importSheet/addBook", "Add Book");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
