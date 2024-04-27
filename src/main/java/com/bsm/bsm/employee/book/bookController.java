@@ -4,6 +4,8 @@ import com.bsm.bsm.book.BookService;
 import com.bsm.bsm.book.Book;
 
 
+import com.bsm.bsm.employee.EmployeeModel;
+import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
 import javafx.beans.value.ChangeListener;
@@ -18,50 +20,53 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class bookController implements Initializable {
     private static String isbn;
     private final ToggleGroup toggleGroup = new ToggleGroup();
     private final BookService bookService = new BookService();
+    private final EmployeeModel employeeInfo = (EmployeeModel) UserSingleton.getInstance().getUser();
 
-    @FXML
-    public SVGPath quantitySortLabel,actionSortLabel ,bookNameSortLabel, idSortLabel,priceSortLabel;
-    @FXML
-    public Button bookNameLabel,actionLabel,priceLabel,quantityLabel,idLabel,outOfStockBookButton,updateBookButton,filterBookButton,addBookButton,bookButton,newBookButton;
+    private boolean isSearch = false;
 
-    @FXML
-    private VBox pnItems;
-
-    @FXML
-    public Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
 
     @FXML
     private TextField inputSearch;
+    @FXML
+    private VBox pnItems;
+    @FXML
+    public SVGPath quantitySortLabel,actionSortLabel ,bookNameSortLabel, idSortLabel,priceSortLabel;
+    @FXML
+    public Button bookNameLabel,actionLabel,priceLabel,quantityLabel,idLabel,outOfStockBookButton,updateBookButton,addBookButton,bookButton,newBookButton;
+    @FXML
+    public Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
+    @FXML
+    public Button refreshButton;
+
     private Book bookInfo ;
 
-    private List<Book> book = null;
+    private List<Book> books = null;
     private String sortOrder = "ASC";
-    private String column = "id";
-    private String type;
+    private String column = "isbn";
+    private String type = "book";
     private int currentPage = 1;
     private String inputSearchText = "";
 
+    static void handleTableItemSelection(String bookIsbn) {
+        isbn = bookIsbn; // Store the selected book
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        book = new ArrayList<>();
-//        book.add(new Book("1034067320125","Giao thua","44441111","",new Date(),"",true,100, BigDecimal.valueOf(61600.00)));
-//        book.add(new Book("1034067320126","Trung thu","44441111","",new Date(2020-01-01),"",true,100, BigDecimal.valueOf(61600.00)));
-//        book.add(new Book("1034067320127","Giao ","44441111","",new Date(2020-01-01),"",true,100, BigDecimal.valueOf(61600.00)));
-
         initializeButtonsAndLabels();
         loadAllBooks();
         initializePaginationButtons();
@@ -69,8 +74,10 @@ public class bookController implements Initializable {
         inputSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                isSearch = !newValue.isEmpty();
                 inputSearchText = newValue;
-//                book = bookService.search(inputSearchText, bookInfo.getIsbn());
+                if(!isSearch) loadAllBooks();
+                else  books = bookService.search(inputSearchText);
                 try {
                     updateBooksList();
                 } catch (IOException e) {
@@ -79,13 +86,21 @@ public class bookController implements Initializable {
             }
         });
     }
-    static void handleTableItemSelection(String bookIsbn) {
-        isbn = bookIsbn; // Store the selected book
-    }
-    private void loadAllBooks() {
-//        book = bookService.getAllBooksBySortInfo(bookInfo.getId(), sortOrder, column);
-//        bookInfo.setBooks(book);
 
+    @FXML
+    void handleRefreshButton(ActionEvent event) {
+        idSortLabel.setContent("");
+        quantitySortLabel.setContent("");
+        bookNameSortLabel.setContent("");
+        actionSortLabel.setContent("");
+        priceSortLabel.setContent("");
+        loadAllBooks();
+    }
+
+    private void loadAllBooks() {
+        books = bookService.getAllBooks();
+        books = bookService.sort(books, true, "isbn");
+        employeeInfo.setBooks(books);
         try {
             type = "book";
             updateBooksList();
@@ -112,7 +127,6 @@ public class bookController implements Initializable {
         priceSortLabel.setContent("");
 
         addBookButton.setOnAction(this::handleAddUserButton);
-        filterBookButton.setOnAction(this::handleFilterButton);
         updateBookButton.setOnAction(this::handleUpdateUserButton);
         bookButton.setOnAction(this::handleBookButton);
         newBookButton.setOnAction(this::handleNewBookButton);
@@ -168,45 +182,29 @@ public class bookController implements Initializable {
         }
     }
 
-    @FXML
-    private void handleFilterButton(ActionEvent event) {
-//        try {
-//            if (isbn != null) {
-//                PasswordResetController.handleTableItemSelection(isbn);
-//                FXMLLoaderHelper.loadFXML(new Stage(), "admin/bookBook/passwordReset");
-//            } else {
-//                AlertUtils.showAlert("Error", "Can't find book", Alert.AlertType.ERROR);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            AlertUtils.showAlert("Error", "Error loading passwordReset FXML", Alert.AlertType.ERROR);
-//        }
-    }
+
 
     @FXML
     private void handleUpdateUserButton(ActionEvent event) {
-//        try {
-//            if (isbn != null) {
-//                UpdateUserController.handleTableItemSelection(isbn);
-//                FXMLLoaderHelper.loadFXML(new Stage(), "admin/bookBook/updateUser");
-//            } else {
-//                AlertUtils.showAlert("Error", "Can't find book", Alert.AlertType.ERROR);
-//            }
-//        } catch (IOException e) {
-//            AlertUtils.showAlert("Error", "Error loading updateUser FXML", Alert.AlertType.ERROR);
-//        }
+        try {
+            if (isbn != null) {
+                UpdateBookController.handleTableItemSelection(isbn);
+                FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/updateBook");
+            } else {
+                AlertUtils.showAlert("Error", "Can't find book", Alert.AlertType.ERROR);
+            }
+        } catch (IOException e) {
+            AlertUtils.showAlert("Error", "Error loading updateUser FXML", Alert.AlertType.ERROR);
+        }
     }
 
     @FXML
     private void handleAddUserButton(ActionEvent event) {
-//        try {
-//            FXMLLoaderHelper.loadFXML(new Stage(), "admin/bookBook/addUser");
-//            book = bookService.getAllBooksBySortInfo(UserSingleton.getInstance().getUser().getId(), sortOrder, column);
-//            updateBooksList();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            AlertUtils.showAlert("Error", "Error loading addUser FXML", Alert.AlertType.ERROR);
-//        }
+        try {
+            FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/addBook");
+        } catch (IOException e) {
+            AlertUtils.showAlert("Error", "Error loading addUser FXML", Alert.AlertType.ERROR);
+        }
     }
 
     @FXML
@@ -219,14 +217,14 @@ public class bookController implements Initializable {
         } else {
             currentPage = Integer.parseInt(buttonClicked.getText());
         }
-        if (bookButton.getStyleClass().contains("profile-setting-button-admin")) {
+        if (bookButton.getStyleClass().contains("profile-setting-button-employee")) {
             try {
                 type = "book";
                 updateBooksList();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else if (newBookButton.getStyleClass().contains("profile-setting-button-admin")) {
+        }else if (newBookButton.getStyleClass().contains("profile-setting-button-employee")) {
             try {
                 type = "newBook";
                 updateBooksList();
@@ -275,7 +273,7 @@ public class bookController implements Initializable {
                 button.setVisible(true);
 
                 if (i == currentPage) {
-                    button.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
+                    button.setStyle("-fx-background-color: #F5A11C; -fx-text-fill: white;");
                 } else {
                     button.setStyle(null);
                 }
@@ -285,7 +283,7 @@ public class bookController implements Initializable {
             firstPaginationButton.setText("1");
             firstPaginationButton.setVisible(true);
             firstPaginationButton.setManaged(true);
-            firstPaginationButton.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
+            firstPaginationButton.setStyle("-fx-background-color: #F5A11C; -fx-text-fill: white;");
             nextPaginationButton.setDisable(true);
         }
     }
@@ -293,20 +291,20 @@ public class bookController implements Initializable {
     private void updateButtonStyle(Button activeButton) {
 
         if (activeButton == bookButton) {
-            bookButton.getStyleClass().remove("profile-setting-button-admin");
-            outOfStockBookButton.getStyleClass().remove("profile-setting-button-admin");
-            newBookButton.getStyleClass().remove("profile-setting-button-admin");
-            bookButton.getStyleClass().add("profile-setting-button-admin");
+            bookButton.getStyleClass().remove("profile-setting-button-employee");
+            outOfStockBookButton.getStyleClass().remove("profile-setting-button-employee");
+            newBookButton.getStyleClass().remove("profile-setting-button-employee");
+            bookButton.getStyleClass().add("profile-setting-button-employee");
         }else if (activeButton == newBookButton) {
-            outOfStockBookButton.getStyleClass().remove("profile-setting-button-admin");
-            bookButton.getStyleClass().remove("profile-setting-button-admin");
-            newBookButton.getStyleClass().remove("profile-setting-button-admin");
-            newBookButton.getStyleClass().add("profile-setting-button-admin");
+            outOfStockBookButton.getStyleClass().remove("profile-setting-button-employee");
+            bookButton.getStyleClass().remove("profile-setting-button-employee");
+            newBookButton.getStyleClass().remove("profile-setting-button-employee");
+            newBookButton.getStyleClass().add("profile-setting-button-employee");
         } else {
-            outOfStockBookButton.getStyleClass().remove("profile-setting-button-admin");
-            newBookButton.getStyleClass().remove("profile-setting-button-admin");
-            bookButton.getStyleClass().remove("profile-setting-button-admin");
-            outOfStockBookButton.getStyleClass().add("profile-setting-button-admin");
+            outOfStockBookButton.getStyleClass().remove("profile-setting-button-employee");
+            newBookButton.getStyleClass().remove("profile-setting-button-employee");
+            bookButton.getStyleClass().remove("profile-setting-button-employee");
+            outOfStockBookButton.getStyleClass().add("profile-setting-button-employee");
 
         }
     }
@@ -314,14 +312,14 @@ public class bookController implements Initializable {
     private void updateBooksList() throws IOException {
         pnItems.getChildren().clear();
         int itemsPerPage = 9;
-        int startIndex = (currentPage - 1) * itemsPerPage;
+        int startIndex = isSearch ? 0 : (currentPage - 1) * itemsPerPage;
         int totalUserCountForRole = getTotalBookCountForRole(type);
         int endIndex = Math.min(startIndex + itemsPerPage, totalUserCountForRole);
         int totalCount = 0;
 
-        for (int i = startIndex; i < book.size() && totalCount < endIndex; i++) {
-            Book b = book.get(i);
-            if ((isNormalBook(b) && Objects.equals(type, "book")) || ( isNewBook(b) && Objects.equals(type, "newBook") )|| ( isOutOfStockBook(b) &&   Objects.equals(type, "outOfStockBook"))){
+        for (int i = startIndex; i < books.size() && totalCount < endIndex; i++) {
+            Book b = books.get(i);
+            if ((isNormalBook(b) && type.equals("book")) || ( isNewBook(b) && type.equals("newBook") )|| ( isOutOfStockBook(b) && type.equals("outOfStockBook"))){
                 totalCount++;
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/book/tableItem.fxml"));
@@ -344,21 +342,24 @@ public class bookController implements Initializable {
 
     private int getTotalBookCountForRole(String type) {
         int count = 0;
-        for (Book books : book) {
-            if ((isNormalBook(books) && Objects.equals(type, "book")) || ( isNewBook(books) && Objects.equals(type, "newBook") )|| ( isOutOfStockBook(books) &&   Objects.equals(type, "outOfStockBook")))
+        for (Book book : books) {
+            if ((isNormalBook(book) && Objects.equals(type, "book")) || ( isNewBook(book) && Objects.equals(type, "newBook") )|| ( isOutOfStockBook(book) &&   Objects.equals(type, "outOfStockBook")))
             {
                 count++;
             }
         }
+        System.out.println("type = " + type + "quality: " + count);
         return count;
     }
-    private boolean isNewBook(Book thisBook){
-        Date futureDate = new Date("2022-01-01");
-        futureDate.setMonth(futureDate.getMonth() + 2);
-        Calendar calendar = Calendar.getInstance();
-        Date today = new Date(calendar.getTimeInMillis());
-        return futureDate.compareTo(today) > 0;
-    }
+
+private boolean isNewBook(Book thisBook) {
+    LocalDate currentDate = LocalDate.now();
+    String publishingDate = thisBook.getPublishingDate();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    LocalDate publicationDate = LocalDate.parse(publishingDate, formatter);
+    return publicationDate.plusMonths(2).isAfter(currentDate);
+}
+
     private boolean isOutOfStockBook(Book thisBook){
         return !(thisBook.getQuantity() > 0);
     }
@@ -370,27 +371,26 @@ public class bookController implements Initializable {
     @FXML
     private void handleLabelClick(MouseEvent event) {
         Button clickedLabel = (Button) event.getSource();
-        String columnName = clickedLabel.getText();
+        String columnName = clickedLabel.getText().toLowerCase();
+
         if (columnName.equals(column)) {
             sortOrder = sortOrder.equals("ASC") ? "DESC" : "ASC";
         } else {
             sortOrder = "ASC";
         }
+        var isAscending = sortOrder.equals("ASC");
 
         column = columnName;
 
-        idSortLabel.setContent(column.equals("ISBN") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
-        quantitySortLabel.setContent(column.equals("Quantity") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
-        bookNameSortLabel.setContent(column.equals("Book Name") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
-        actionSortLabel.setContent(column.equals("Action") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
-        priceSortLabel.setContent(column.equals("Price") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        idSortLabel.setContent(column.equals("isbn") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        quantitySortLabel.setContent(column.equals("quantity") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        bookNameSortLabel.setContent(column.equals("book name") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        actionSortLabel.setContent(column.equals("enable/disable") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        priceSortLabel.setContent(column.equals("price") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+
         try {
-            updateBooksList();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-//        book = bookService.getAllBooksBySortInfo(bookInfo.getId(), sortOrder, column);
-        try {
+            books = bookService.getAllBooks();
+            books = bookService.sort(books, isAscending, column);
             updateBooksList();
         } catch (IOException e) {
             throw new RuntimeException(e);

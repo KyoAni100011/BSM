@@ -15,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import com.bsm.bsm.user.UserModel;
 import com.bsm.bsm.user.UserSingleton;
@@ -24,12 +25,14 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Scanner;
 
 
 public class sidebarController {
     private final SceneSwitch sceneSwitch = new SceneSwitch();
     public UserModel employeeInfo = UserSingleton.getInstance().getUser();
     public MenuItem buttonProfileSetting, buttonLogOut;
+    public VBox bp;
 
     @FXML
     private AnchorPane AnchorPaneEmployee;
@@ -46,8 +49,6 @@ public class sidebarController {
     @FXML
     private Button bookPublishers;
 
-    @FXML
-    private BorderPane bp;
 
     @FXML
     private Button importSheet;
@@ -79,7 +80,7 @@ public class sidebarController {
 
     @FXML
     void SwitchBook(ActionEvent event) throws IOException {
-        loadPage("book/addBook");
+        loadPage("book/book");
     }
 
     @FXML
@@ -99,12 +100,17 @@ public class sidebarController {
 
     @FXML
     void SwitchImportSheet(ActionEvent event) throws IOException {
-        loadPage("importSheets/importSheets");
+        loadPage("importSheet/importSheet");
+    }
+
+    @FXML
+    void SwitchViewSheet(ActionEvent event) throws  IOException {
+        loadPage("importSheet/viewSheet");
     }
 
     @FXML
     void SwitchOrder(ActionEvent event) throws IOException {
-        loadPage("profileSetting/profileSetting");
+        loadPage("order/order");
     }
 
     @FXML
@@ -120,8 +126,7 @@ public class sidebarController {
 
     private void loadPage(String page) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/bsm/bsm/view/employee/" + page + ".fxml")));
-        bp.setCenter(null);
-
-        bp.setCenter(root);
+        bp.getChildren().clear();
+        bp.getChildren().add(root);
     }
 }

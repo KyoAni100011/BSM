@@ -27,6 +27,7 @@ public class BookDAO {
         });
         return languages;
     }
+
     // get publisher of a book
     private Publisher getBookPublisher(String isbn) {
         String QUERY_PUBLISHER = "select p.id as publisher_id, p.name as publisher_name, p.isEnabled  from book b join publisher p on b.publisherId = p.id where isbn = ?";
@@ -105,6 +106,19 @@ public class BookDAO {
         return book.get();
     }
 
+    public Book getBookByName(String name) {
+        String QUERY_GET_BOOKID = "select id from book where name = ?";
+        AtomicReference<String> bookID = new AtomicReference<>();
+
+        DatabaseConnection.executeQuery(QUERY_GET_BOOKID, resultSet -> {
+            if (resultSet != null && resultSet.next()) {
+                bookID.set(resultSet.getString("id"));
+            }
+        }, name);
+
+        return getBookByISBN(bookID.get());
+    }
+
     private boolean checkRowAffected(Connection connection, int rowAffected) throws SQLException {
         if (rowAffected == 0) {
             connection.rollback();
@@ -149,18 +163,77 @@ public class BookDAO {
         return true;
     }
 
-
-    public void add(Book book) {
-        // Implement add logic
+    // get isbn all books
+    public List<String> getAllISBN() {
+        List<String> isbns = new ArrayList<>();
+        String QUERY_ALL_ISBN = "select isbn from book";
+        DatabaseConnection.executeQuery(QUERY_ALL_ISBN, resultSet -> {
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    isbns.add(resultSet.getString("isbn"));
+                }
+            }
+        });
+        return isbns;
     }
 
-    public Book search(String keyword) {
-        // Implement search logic
-        return null;
+    // get all books from list isbn
+    public List<Book> getAllBooks() {
+        List<Book> books = new ArrayList<>();
+        List<String> isbns = getAllISBN();
+        for (var isbn : isbns) {
+            books.add(getBookByISBN(isbn));
+        }
+        return books;
+    }
+
+
+    public boolean add(Book book) throws SQLException {
+        Connection connection = DatabaseConnection.getConnection();
+        connection.setAutoCommit(false);
+
+        // insert into table book
+        System.out.println("here" + book.getPublishingDate());
+        String formattedDate = (book.getPublishingDate().matches("\\d{4}-\\d{2}-\\d{2}"))
+                ? book.getPublishingDate() : DateUtils.formatDOB(book.getPublishingDate());
+        String QUERY_ADD_BOOK = "insert into book(title, publisherID, publishingDate, language) values (?, ?, ?, ?)";
+        int rowAffected = DatabaseConnection.executeUpdate(connection, QUERY_ADD_BOOK,
+                book.getTitle(), book.getPublisher().getId(),
+                formattedDate, book.getLanguages());
+
+        if (!checkRowAffected(connection, rowAffected)) return false;
+        connection.commit(); // commit to save book before insert into bookAuthor and bookCategory
+
+        // retrieve isbn
+        String QUERY_GET_ISBN_BOOK = "select isbn from book where title = ?";
+        AtomicReference<String> bookIsbn = new AtomicReference<>();
+        DatabaseConnection.executeQuery(connection,QUERY_GET_ISBN_BOOK, resultSet -> {
+            if (resultSet != null && resultSet.next()) {
+                bookIsbn.set(resultSet.getString("isbn"));
+            }
+        }, book.getTitle());
+
+        // insert into table bookAuthor
+        String QUERY_ADD_BOOKAUTHOR = "insert into bookAuthor values (?, ?)";
+        for (var item : book.getAuthors()) {
+            rowAffected = DatabaseConnection.executeUpdate(connection, QUERY_ADD_BOOKAUTHOR, bookIsbn.get(), item.getId());
+            if (!checkRowAffected(connection, rowAffected)) return false;
+        }
+
+        //insert into table bookCategory
+        String QUERY_ADD_BOOKCATEGORY = "insert into bookCategory values (?, ?)";
+        for (var item : book.getCategories()) {
+            rowAffected = DatabaseConnection.executeUpdate(connection, QUERY_ADD_BOOKCATEGORY, bookIsbn.get(), item.getId());
+            if (!checkRowAffected(connection, rowAffected)) return false;
+        }
+
+        connection.commit();
+        connection.setAutoCommit(true);
+        return true;
     }
 
     public boolean isNameExist(String id, String name) {
-        String QUERY_CHECK_NAME = "select 1 from book where title = ? and isbn != ?";
+        String QUERY_CHECK_NAME = "select isbn from book where title = ? and isbn != ?";
         AtomicReference<Boolean> isExist = new AtomicReference<>(false);
 
         DatabaseConnection.executeQuery(QUERY_CHECK_NAME, resultSet -> {
@@ -180,12 +253,20 @@ public class BookDAO {
         DatabaseConnection.executeQuery(QUERY_IMPORT_PRICE, resultSet -> {
             if (resultSet != null && resultSet.next()) {
                 BigDecimal importPrice = resultSet.getBigDecimal("import_price");
+
+                importPrice = (importPrice == null) ? new BigDecimal("0") : importPrice;
                 if (salePrice.compareTo(importPrice.multiply(new BigDecimal("1.1"))) < 0) {
                     isValid.set(false);
                 }
             }
         }, book.getIsbn());
-        
+
         return isValid.get();
+    }
+
+    public boolean setEnable(String id, boolean state) {
+        String QUERY_SET_ENABLE = "update book set isEnabled = ? where isbn = ?";
+        int rowAffected = DatabaseConnection.executeUpdate(QUERY_SET_ENABLE, state, id);
+        return rowAffected > 0;
     }
 }

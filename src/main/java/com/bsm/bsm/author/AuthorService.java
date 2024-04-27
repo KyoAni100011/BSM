@@ -22,7 +22,6 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
 
     @Override
     public List<Author> sort(List<Author> authors, boolean isAscending, String column) {
-        System.out.println(", isAscending = " + isAscending + ", column = " + column);
         List<Author> sortedAuthors = new ArrayList<>(authors);
         Comparator<Author> comparator = (author1, author2) -> {
             switch(column) {
@@ -59,7 +58,7 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
                 .filter(author ->
                         author.getName().toLowerCase().contains(finalKeyword) ||
                                 author.getIntroduction().toLowerCase().contains(finalKeyword) ||
-                                author.getId().toLowerCase().contains(finalKeyword))
+                                author.getId().contains(finalKeyword))
                 .collect(Collectors.toList());
     }
 
@@ -69,7 +68,7 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
     }
 
     @Override
-    public boolean setEnable(boolean state) {
+    public boolean setEnable(String id, boolean state) {
         return state;
     }
     public boolean enableAuthor(String authorId) {

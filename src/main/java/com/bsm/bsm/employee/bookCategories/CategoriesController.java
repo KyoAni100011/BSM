@@ -1,7 +1,6 @@
 package com.bsm.bsm.employee.bookCategories;
 
 import com.bsm.bsm.employee.EmployeeModel;
-import com.bsm.bsm.employee.bookCategories.TableItemController;
 import com.bsm.bsm.category.Category;
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
@@ -53,6 +52,8 @@ public class CategoriesController implements Initializable {
     @FXML
     private SVGPath idSortLabel, nameSortLabel, introductionSortLabel ,actionSortLabel;
 
+    private boolean isSearch = false;
+
     private List<Category> categories = null;
     private String sortOrder = "ASC";
     private String column = "id";
@@ -72,8 +73,10 @@ public class CategoriesController implements Initializable {
         inputSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                isSearch = !newValue.isEmpty();
                 inputSearchText = newValue;
-                categories = categoryService.search(inputSearchText);
+                if(!isSearch) loadAllCategory();
+                else categories = categoryService.search(inputSearchText);
                 try {
                     updateCategoryList();
                 } catch (IOException e) {
@@ -84,7 +87,7 @@ public class CategoriesController implements Initializable {
     }
 
     private void loadAllCategory() {
-//        categories = categoryService.getAllCategory();
+        categories = categoryService.getAllCategories();
         employeeInfo.setCategories(categories);
         try {
             updateCategoryList();
@@ -123,7 +126,7 @@ public class CategoriesController implements Initializable {
         try {
             FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookCategories/addCategory");
             //update categories list after adding new category
-//            categories = categoryService.getAllCategory();
+            categories = categoryService.getAllCategories();
             updateCategoryList();
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -134,8 +137,8 @@ public class CategoriesController implements Initializable {
     void handleUpdateCategoryButton(ActionEvent event) {
         try {
             if (id != null) {
-//                UpdateCategoryController.handleTableItemSelection(id);
-                FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookCategory/updateCategory");
+                UpdateCategoryController.handleTableItemSelection(id);
+                FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookCategories/updateCategory");
             } else {
                 AlertUtils.showAlert("Error", "Can't find category", Alert.AlertType.ERROR);
             }
@@ -149,7 +152,6 @@ public class CategoriesController implements Initializable {
         loadAllCategory();
     }
 
-    //-------------------
 
     @FXML
     private void handlePaginationButton(ActionEvent event) {
@@ -201,7 +203,7 @@ public class CategoriesController implements Initializable {
                 button.setVisible(true);
 
                 if (i == currentPage) {
-                    button.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
+                    button.setStyle("-fx-background-color: #f5a11c; -fx-text-fill: white;");
                 } else {
                     button.setStyle(null);
                 }
@@ -211,15 +213,15 @@ public class CategoriesController implements Initializable {
             firstPaginationButton.setText("1");
             firstPaginationButton.setVisible(true);
             firstPaginationButton.setManaged(true);
-            firstPaginationButton.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
+            firstPaginationButton.setStyle("-fx-background-color: #f5a11c; -fx-text-fill: white;");
             nextPaginationButton.setDisable(true);
         }
     }
 
     private void updateCategoryList() throws IOException {
         pnItems.getChildren().clear();
-        int itemsPerPage = 10;
-        int startIndex = (currentPage - 1) * itemsPerPage;
+        int itemsPerPage = 9;
+        int startIndex = isSearch ? 0 : (currentPage - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, categories.size());
 
         for (int i = startIndex; i < endIndex; i++) {
@@ -230,7 +232,7 @@ public class CategoriesController implements Initializable {
                 Node item = fxmlLoader.load();
                 TableItemController tableItemController = fxmlLoader.getController();
                 tableItemController.setToggleGroup(toggleGroup);
-//                tableItemController.setCategoryModel(category);
+                tableItemController.setCategoryModel(category);
                 pnItems.getChildren().add(item);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -260,15 +262,14 @@ public class CategoriesController implements Initializable {
         column = columnName;
         idSortLabel.setContent(column.equals("id") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
         nameSortLabel.setContent(column.equals("name") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
-        introductionSortLabel.setContent(column.equals("introduction") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        introductionSortLabel.setContent(column.equals("description") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
         actionSortLabel.setContent(column.equals("action") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
 
 
         try {
+            categories = categoryService.getAllCategories();
             categories = categoryService.sort(categories, isAscending, column);
             updateCategoryList();
-            categories.forEach(System.out::println);
-            System.out.println("-".repeat(30));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

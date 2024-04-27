@@ -20,9 +20,12 @@ module com.bsm.bsm {
     opens com.bsm.bsm.employee.profileSetting to javafx.fxml;
     opens com.bsm.bsm.admin.bookRevenue to javafx.fxml;
     opens com.bsm.bsm.category to javafx.fxml;
+    opens com.bsm.bsm.employee.order to javafx.fxml;
     opens com.bsm.bsm.employee.book to javafx.fxml;
     opens com.bsm.bsm.employee.bookCategories to javafx.fxml;
     opens com.bsm.bsm.employee.bookAuthors to javafx.fxml;
     opens com.bsm.bsm.employee.bookPublishers to javafx.fxml;
+    opens com.bsm.bsm.order to javafx.fxml;
+    opens com.bsm.bsm.employee.importSheet to javafx.fxml;
     exports com.bsm.bsm;
 }

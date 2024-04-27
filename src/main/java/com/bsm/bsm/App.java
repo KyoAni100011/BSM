@@ -26,7 +26,10 @@ public class App extends Application {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource(cssPath).toExternalForm());
 
-        stage.setTitle("FXML Welcome");
+        // Set the position of the stage to the center of the screen
+        stage.centerOnScreen();
+
+        stage.setTitle("BSM Welcome");
         stage.setScene(scene);
         stage.show();
     }

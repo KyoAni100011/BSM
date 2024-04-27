@@ -45,11 +45,6 @@ public class CategoryDAO {
         return rowsAffected > 0;
     }
 
-    public Category search(String keyword) {
-        // Implement search logic
-        return null;
-    }
-
     public boolean checkCategoryExists(String name, String id) {
         AtomicBoolean hasExisted = new AtomicBoolean(false);
         String QUERY_CHECK_CATEGORY = "select 1 from category where name = ? and id != ?";
@@ -82,5 +77,24 @@ public class CategoryDAO {
         });
 
         return categories;
+    }
+    public boolean enableCategory(String categoryId) {
+        try {
+            String ENABLE_USER_QUERY = "UPDATE category SET isEnabled = 1 WHERE id = ?";
+            int rowEffected = DatabaseConnection.executeUpdate(ENABLE_USER_QUERY, categoryId);
+            return rowEffected > 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean disableCategory(String categoryId) {
+        try {
+            String DISABLE_USER_QUERY = "UPDATE category SET isEnabled = 0 WHERE id = ?";
+            int rowEffected = DatabaseConnection.executeUpdate(DISABLE_USER_QUERY, categoryId);
+            return rowEffected > 0;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

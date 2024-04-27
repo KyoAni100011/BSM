@@ -6,14 +6,12 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Tooltip;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
@@ -101,7 +99,7 @@ public class BookBarChartController {
         LocalDate selectedDate = datePicker.getValue();
         executorService.submit(() -> {
             try {
-                List<ResultStatistic> bookWeekly = revenueStatisticService.getBookWeeklyRevenue( selectedDate.getYear(),  selectedDate.get(WeekFields.ISO.weekOfYear()));
+                List<ResultStatistic> bookWeekly = revenueStatisticService.getBookWeeklyRevenue(selectedDate.getYear(), selectedDate.get(WeekFields.ISO.weekOfYear()));
                 System.out.println(bookWeekly);
                 Platform.runLater(() -> updateChartWithData(bookWeekly, "Top 10 Best Selling Books By Week"));
             } catch (SQLException e) {
@@ -139,8 +137,6 @@ public class BookBarChartController {
             });
         }
     }
-
-
 
     @FXML
     private void handleByDate() {
@@ -201,16 +197,34 @@ public class BookBarChartController {
     }
 
     private void updateChartWithData(List<ResultStatistic> data, String chartTitle) {
+        // Tạo một biểu đồ mới
+        BarChart<String, Number> newChart = new BarChart<>(bookBarChart.getXAxis(), bookBarChart.getYAxis());
+        newChart.setTitle(chartTitle);
+
         ObservableList<XYChart.Data<String, Number>> chartData = FXCollections.observableArrayList();
         if (data != null) {
             data.forEach(rs -> chartData.add(new XYChart.Data<>(rs.getTitle(), rs.getStatisticValue())));
         }
         XYChart.Series<String, Number> series = new XYChart.Series<>(chartData);
-        bookBarChart.getData().clear();
-        bookBarChart.getData().add(series);
-        bookBarChart.setTitle(chartTitle);
+
+        // Thêm dữ liệu vào biểu đồ mới
+        newChart.getData().add(series);
         applyTooltip(series);
+
+        // Xác định kích thước của cha và thiết lập kích thước của biểu đồ mới bằng với cha
+        AnchorPane parentPane = (AnchorPane) bookBarChart.getParent();
+        double parentWidth = parentPane.getWidth();
+        double parentHeight = parentPane.getHeight();
+        newChart.setPrefWidth(parentWidth);
+        newChart.setPrefHeight(parentHeight);
+
+        // Xóa biểu đồ hiện tại và thêm biểu đồ mới vào cùng cha của nó
+        parentPane.getChildren().remove(bookBarChart);
+        parentPane.getChildren().add(newChart);
+        bookBarChart = newChart;
     }
+
+
 
     private void applyTooltip(XYChart.Series<String, Number> series) {
         series.getData().forEach(data -> {

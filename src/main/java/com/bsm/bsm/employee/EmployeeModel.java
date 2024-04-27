@@ -5,7 +5,7 @@ import com.bsm.bsm.book.Book;
 import com.bsm.bsm.category.Category;
 import com.bsm.bsm.order.Order;
 import com.bsm.bsm.publisher.Publisher;
-import com.bsm.bsm.sheet.Sheet;
+import com.bsm.bsm.sheet.ImportSheet;
 import com.bsm.bsm.user.UserModel;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class EmployeeModel extends UserModel {
     private List<Author> authors;
     private List<Publisher> publishers;
     private List<Category> categories;
-    private List<Sheet> importSlips;
+    private List<ImportSheet> importSlips;
 
     public void setBooks(List<Book> books) {
         this.books = books;
@@ -34,7 +34,7 @@ public class EmployeeModel extends UserModel {
         this.categories = categories;
     }
 
-    public void setImportSlips(List<Sheet> importSlips) {
+    public void setImportSlips(List<ImportSheet> importSlips) {
         this.importSlips = importSlips;
     }
 

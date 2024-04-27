@@ -30,12 +30,21 @@ public class ValidationUtils {
     public static String validateFullName(String fullName, String field) {
         if (fullName.isEmpty()) {
             return "Please enter " + field + " name.";
-        } else if (fullName.matches(".*\\d.*")) {
+        } else if (!field.equalsIgnoreCase("book") && fullName.matches(".*\\d.*")) {
             return "Full name should not contain numbers.";
         } else {
             return null;
         }
     }
+
+    public static String validateBookName(String fullName) {
+        if (fullName.isEmpty()) {
+            return "Please enter book name.";
+        } else {
+            return null;
+        }
+    }
+
 
     public static String validateIntroduction(String introduction,  String field) {
         int introductionLength = introduction.length();
@@ -75,6 +84,18 @@ public class ValidationUtils {
         }
     }
 
+    public static String validateImportDay(String dob) {
+        String dobRegex = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\\d{4}$";
+        if (dob.isEmpty()) {
+            return "Please enter " + " import day.";
+        }
+        if (!dob.matches(dobRegex)) {
+            return "Invalid date format. Please use dd/mm/yyyy.";
+        } else {
+            return null;
+        }
+    }
+
     public static String validatePassword(String password, String field) {
         if (password.isEmpty()) {
             return "Please enter " + field +" password.";
@@ -98,12 +119,8 @@ public class ValidationUtils {
     }
 
     public static String validatePhone(String phone, String field) {
-        if (phone.isEmpty()) {
-            return "Please enter " + field + " phone number.";
-        }
-        if (!phone.matches("^[0-9]{10}$")) {
-            return "Please enter a 10-digit phone number..";
-        }
+        if (phone.isEmpty()) return "Please enter " + field + " phone number.";
+        if (!phone.matches("^[0-9]{10}$")) return "Please enter a 10-digit phone number..";
         return null;
     }
 
@@ -114,15 +131,18 @@ public class ValidationUtils {
     }
 
     public static String validateCategory(ObservableList<String> category, String field) {
-        return category.isEmpty() ? "Please enter "+ field +" category." : null;
+        return category.isEmpty() ? "Please choose "+ field +" category." : null;
     }
 
     public static String validateAuthor(ObservableList<String> author, String field) {
-        return author.isEmpty() ? "Please enter "+ field +" name." : null;
+        return author.isEmpty() ? "Please choose "+ field +" name." : null;
     }
 
     public static String validateLanguage(String languages, String field) {
-        return languages == null ? "Please enter "+ field +" language." : null;
+        return languages == null ? "Please choose "+ field +" language." : null;
+    }
+    public static String validatePublisher(String publisher, String field) {
+        return publisher == null ? "Please choose "+ field  : null;
     }
     public static String validateQuantity(String quantity, String field) {
         if (quantity.isEmpty()) {
@@ -156,6 +176,5 @@ public class ValidationUtils {
         } else {
             return null;
         }
-
     }
 }

@@ -6,6 +6,7 @@ import com.bsm.bsm.employee.EmployeeModel;
 import com.bsm.bsm.user.UserModel;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.sql.Timestamp;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -43,7 +44,10 @@ public class AuthDAO {
                 String phone = resultSet.getString("telephone");
                 String address = resultSet.getString("address");
                 boolean isEnabled = resultSet.getBoolean("isEnabled");
-                String lastLogin = String.valueOf(new java.sql.Timestamp(System.currentTimeMillis()));
+                Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+                String lastLogin = String.valueOf(currentTime);
+                DatabaseConnection.executeUpdate("UPDATE user SET lastLogin = ? WHERE id = ?", currentTime, id);
+                System.out.println("Last login time updated after login");
 
                 if (email.endsWith(".admin@bms.com")) {
                     userModel.set(new AdminModel(id, name, email, dob, phone, address, isEnabled, lastLogin));
@@ -51,8 +55,6 @@ public class AuthDAO {
                     userModel.set(new EmployeeModel(id, name, email, dob, phone, address, isEnabled, lastLogin));
                 }
 
-                //update last login
-                DatabaseConnection.executeUpdate(UPDATE_USER_LAST_LOGIN, new java.sql.Timestamp(System.currentTimeMillis()), id);
             }
         }, id);
 
@@ -71,11 +73,9 @@ public class AuthDAO {
                 String phone = resultSet.getString("telephone");
                 String address = resultSet.getString("address");
                 boolean isEnabled = resultSet.getBoolean("isEnabled");
-                String lastLogin = String.valueOf(new java.sql.Timestamp(System.currentTimeMillis()));
-
+                String lastLogin = resultSet.getString("lastLogin");
 
                 userModel.set(new EmployeeModel(id, name, email, dob, phone, address, isEnabled, lastLogin));
-                DatabaseConnection.executeUpdate(UPDATE_USER_LAST_LOGIN, new java.sql.Timestamp(System.currentTimeMillis()), id);
             }
         }, email);
 

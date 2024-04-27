@@ -35,6 +35,8 @@ public class AuthorController implements Initializable {
     private final EmployeeModel employeeInfo = (EmployeeModel) UserSingleton.getInstance().getUser();
     private final AuthorService authorService = new AuthorService();
 
+    private boolean isSearch = false;
+
     @FXML
     private TextField inputSearch;
     @FXML
@@ -44,11 +46,11 @@ public class AuthorController implements Initializable {
     @FXML
     private Button addAuthorButton, updateAuthorButton;
     @FXML
-    public Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
-    @FXML
-    public Button idLabel, nameLabel, introductionLabel, actionLabel;
+    private Button idLabel, nameLabel, introductionLabel, actionLabel;
     @FXML
     private SVGPath  idSortLabel, nameSortLabel, introductionSortLabel ,actionSortLabel;
+    @FXML
+    private Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
 
     private List<Author> authors = null;
     private String sortOrder = "ASC";
@@ -69,8 +71,10 @@ public class AuthorController implements Initializable {
         inputSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                isSearch = !newValue.isEmpty();
                 inputSearchText = newValue;
-                authors = authorService.search(inputSearchText);
+                if(!isSearch) loadAllAuthors();
+                else  authors = authorService.search(inputSearchText);
                 try {
                     updateAuthorsList();
                 } catch (IOException e) {
@@ -146,6 +150,30 @@ public class AuthorController implements Initializable {
         }
     }
 
+    private void updateAuthorsList() throws IOException {
+        pnItems.getChildren().clear();
+        int itemsPerPage = 9;
+        int startIndex = isSearch ? 0 : (currentPage - 1) * itemsPerPage;
+        int endIndex = Math.min(startIndex + itemsPerPage, authors.size());
+
+        for (int i = startIndex; i < endIndex; i++) {
+            Author author = authors.get(i);
+
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/bookAuthors/tableItem.fxml"));
+                Node item = fxmlLoader.load();
+                TableItemController tableItemController = fxmlLoader.getController();
+                tableItemController.setToggleGroup(toggleGroup);
+                tableItemController.setAuthorModel(author);
+                pnItems.getChildren().add(item);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        int totalPages = (int) Math.ceil((double) authors.size() / itemsPerPage);
+        updatePaginationButtons(totalPages);
+    }
+
     @FXML
     private void handlePaginationButton(ActionEvent event) {
         Button buttonClicked = (Button) event.getSource();
@@ -196,7 +224,7 @@ public class AuthorController implements Initializable {
                 button.setVisible(true);
 
                 if (i == currentPage) {
-                    button.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
+                    button.setStyle("-fx-background-color: #f5a11c; -fx-text-fill: white;");
                 } else {
                     button.setStyle(null);
                 }
@@ -206,34 +234,9 @@ public class AuthorController implements Initializable {
             firstPaginationButton.setText("1");
             firstPaginationButton.setVisible(true);
             firstPaginationButton.setManaged(true);
-            firstPaginationButton.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
+            firstPaginationButton.setStyle("-fx-background-color: #f5a11c; -fx-text-fill: white;");
             nextPaginationButton.setDisable(true);
         }
-    }
-
-    // fix this
-    private void updateAuthorsList() throws IOException {
-        pnItems.getChildren().clear();
-        int itemsPerPage = 10;
-        int startIndex = (currentPage - 1) * itemsPerPage;
-        int endIndex = Math.min(startIndex + itemsPerPage, authors.size());
-
-        for (int i = startIndex; i < endIndex; i++) {
-            Author author = authors.get(i);
-
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/bookAuthors/tableItem.fxml"));
-                Node item = fxmlLoader.load();
-                TableItemController tableItemController = fxmlLoader.getController();
-                tableItemController.setToggleGroup(toggleGroup);
-                tableItemController.setAuthorModel(author);
-                pnItems.getChildren().add(item);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        int totalPages = (int) Math.ceil((double) authors.size() / itemsPerPage);
-        updatePaginationButtons(totalPages);
     }
 
     @FXML
@@ -243,8 +246,6 @@ public class AuthorController implements Initializable {
 
         column = column.equals("author") ? "name" : column;
         columnName = columnName.equals("author") ? "name" : columnName;
-
-        System.out.println(sortOrder);
 
         if (columnName.equals(column)) {
             sortOrder = sortOrder.equals("ASC") ? "DESC" : "ASC";
@@ -261,10 +262,9 @@ public class AuthorController implements Initializable {
 
 
         try {
+            authors = authorService.getAllAuthors();
             authors = authorService.sort(authors, isAscending, column);
             updateAuthorsList();
-            authors.forEach(System.out::println);
-            System.out.println("-".repeat(30));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

@@ -6,10 +6,12 @@ import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.ValidationUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -22,8 +24,6 @@ public class UpdateAuthorController {
     private TextField fullNameField;
     @FXML
     private TextArea introductionTextField;
-
-    @FXML
     private static String id;
 
     private final AuthorService authorService = new AuthorService();
@@ -67,6 +67,9 @@ public class UpdateAuthorController {
             Author newAuthor = new Author(id, fullName, introduction, isEnabled);
             if (authorService.updateAuthor(newAuthor)) {
                 AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
+                clearInputs();
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.close();
             } else {
                 AlertUtils.showAlert("Error", "Profile update failed.", Alert.AlertType.ERROR);
             }
