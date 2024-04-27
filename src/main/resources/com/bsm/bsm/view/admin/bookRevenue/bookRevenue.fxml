@@ -8,15 +8,15 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.admin.bookRevenue.BookRevenueController">
-    <VBox prefHeight="600.0" prefWidth="700.0">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.admin.bookRevenue.BookRevenueController">
+    <VBox layoutY="7.0" prefHeight="593.0" prefWidth="700.0" style="-fx-background-radius: 15px; -fx-background-color: white;">
         <AnchorPane prefHeight="40.0" prefWidth="700.0" style="-fx-border-color: #F3F3F3; -fx-border-width: 0px 0px 2px 0px;">
             <HBox prefHeight="40.0" prefWidth="700.0">
                 <Button id="btnByMonth" fx:id="btnByMonth" mnemonicParsing="false" onAction="#handleByMonth" prefHeight="40.0" prefWidth="90.0" styleClass="chartActionButton" text="By month" />
                 <Button id="btnByWeek" fx:id="btnByWeek" mnemonicParsing="false" onAction="#handleByWeek" prefHeight="40.0" prefWidth="90.0" styleClass="chartActionButton" text="By week" />
                 <Button id="btnByDate" fx:id="btnByDate" mnemonicParsing="false" onAction="#handleByDate" prefHeight="40.0" prefWidth="90.0" styleClass="chartActionButton" text="By date" />
                 <Button id="btnFromDateToDate" fx:id="btnFromDateToDate" mnemonicParsing="false" onAction="#handleFromDateToDate" prefHeight="40.0" prefWidth="150.0" styleClass="chartActionButton" text="From date to date" />
-                <HBox prefHeight="40.0" prefWidth="310.0" style="-fx-background-color: #F7E4DB;">
+                <HBox prefHeight="40.0" prefWidth="310.0" style="-fx-background-color: #F7E4DB; -fx-background-radius: 0px 15px 0px 0px;">
                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="30.0" styleClass="chartActionButton">
                         <graphic>
                             <Group>
@@ -29,7 +29,7 @@
                             <Insets top="8.0" />
                         </HBox.margin>
                     </DatePicker>
-                    <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="30.0" styleClass="chartActionButton">
+                    <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="30.0" style="-fx-background-radius: 0px 15px 0px 0px;" styleClass="chartActionButton">
                         <graphic>
                             <Group styleClass="chartActionButton">
                                 <SVGPath content="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l370.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128z" scaleX="0.04" scaleY="0.04" />
@@ -38,9 +38,12 @@
                     </Button>
                 </HBox>
             </HBox>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
         </AnchorPane>
         <AnchorPane fx:id="AncBookBarChart" prefHeight="560.0" prefWidth="700.0">
-            <BarChart fx:id="bookBarChart" alternativeRowFillVisible="false" barGap="10.0" legendSide="TOP" prefHeight="560.0" prefWidth="700.0" titleSide="BOTTOM" verticalGridLinesVisible="false">
+            <BarChart fx:id="bookBarChart" alternativeRowFillVisible="false" barGap="10.0" legendSide="TOP" prefHeight="536.0" prefWidth="700.0" titleSide="BOTTOM" verticalGridLinesVisible="false">
                 <xAxis>
                     <CategoryAxis label="Book Name" maxHeight="50.0" prefHeight="31.0" prefWidth="616.0" styleClass="axis-label" tickLabelGap="20.0" tickLength="5.0">
                         <tickLabelFont>
@@ -64,4 +67,7 @@
             </BarChart>
         </AnchorPane>
     </VBox>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
 </AnchorPane>
