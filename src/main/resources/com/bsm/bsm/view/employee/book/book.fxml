@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="614.0" prefWidth="702.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.book.bookController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="614.0" prefWidth="702.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.book.bookController">
    <children>
-      <VBox alignment="CENTER_LEFT" layoutX="2.0" layoutY="-1.0" prefHeight="614.0" prefWidth="700.0">
+      <VBox alignment="CENTER_LEFT" layoutX="2.0" layoutY="15.0" prefHeight="598.0" prefWidth="700.0">
          <children>
             <AnchorPane fx:id="tableToolbar" prefHeight="65.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 10px;">
                <children>
@@ -53,7 +57,7 @@
             </AnchorPane>
             <AnchorPane prefHeight="545.0" prefWidth="700.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" layoutY="14.0" prefHeight="45.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 10px 10px 0px 0px; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: #F3F3F3;">
+                  <HBox alignment="CENTER_LEFT" layoutY="7.0" prefHeight="45.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 10px 10px 0px 0px; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: #F3F3F3;">
                      <children>
                         <Button fx:id="bookButton" mnemonicParsing="false" onAction="#handleBookButton" prefHeight="43.2" prefWidth="160.0" style="-fx-background-color: transparent;" text="Book" textAlignment="CENTER">
                            <HBox.margin>
@@ -68,8 +72,8 @@
                         <Button fx:id="outOfStockBookButton" mnemonicParsing="false" onAction="#handleOutOfStockBookButton" prefHeight="43.2" prefWidth="160.0" style="-fx-background-color: transparent;" text="Out of stock book" textAlignment="CENTER" />
                      </children>
                   </HBox>
-                  <VBox fx:id="pnItems" layoutY="103.0" prefHeight="455.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 0px 0px 10px 10px;" />
-                  <HBox alignment="CENTER_LEFT" layoutX="-1.0" layoutY="59.0" prefHeight="46.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-color: #F3F3F3; -fx-border-width: 0px 0px 2px 0px;">
+                  <VBox fx:id="pnItems" layoutY="98.0" prefHeight="406.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 0px 0px 10px 10px;" />
+                  <HBox alignment="CENTER_LEFT" layoutX="-1.0" layoutY="52.0" prefHeight="46.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-color: #F3F3F3; -fx-border-width: 0px 0px 2px 0px;">
                      <children>
                         <Label alignment="CENTER" prefWidth="20.0">
                            <HBox.margin>
@@ -143,7 +147,7 @@
             </AnchorPane>
          </children>
       </VBox>
-      <HBox alignment="CENTER" layoutY="564.0" prefHeight="50.0" prefWidth="700.0" spacing="15.0">
+      <HBox alignment="CENTER" layoutY="571.0" prefHeight="43.0" prefWidth="700.0" spacing="15.0" style="-fx-background-color: white;">
          <children>
             <Button fx:id="previousPaginationButton" mnemonicParsing="false" style="-fx-background-color: transparent;" text=" Previous">
                <graphic>

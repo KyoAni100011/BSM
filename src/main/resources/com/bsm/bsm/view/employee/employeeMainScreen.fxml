@@ -18,7 +18,7 @@
 
 <AnchorPane fx:id="AnchorPaneEmployee" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="718.0" prefWidth="1066.0" style="-fx-background-color: #F3F3F3;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.sidebarController">
    <children>
-      <BorderPane fx:id="bp" layoutY="-2.0" prefHeight="718.0" prefWidth="1066.0" AnchorPane.bottomAnchor="1.2000000000000455" AnchorPane.leftAnchor="0.3999999999998636" AnchorPane.rightAnchor="-0.40000000000009095" AnchorPane.topAnchor="-2.0">
+      <BorderPane layoutY="-2.0" prefHeight="718.0" prefWidth="1066.0" AnchorPane.bottomAnchor="1.2000000000000455" AnchorPane.leftAnchor="0.3999999999998636" AnchorPane.rightAnchor="-0.40000000000009095" AnchorPane.topAnchor="-2.0">
          <left>
             <AnchorPane prefHeight="654.0" prefWidth="240.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
                <children>
@@ -121,21 +121,24 @@
             </AnchorPane>
          </left>
          <center>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="657.0" prefWidth="827.0" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fitHeight="482.0" fitWidth="598.0" layoutX="115.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../images/catWelcome.jpg" />
-                     </image>
-                  </ImageView>
-                  <Text layoutX="242.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 45px;" text="Welcome to BSM" />
+                  <VBox fx:id="bp" alignment="CENTER" layoutX="-1.0" layoutY="63.0" prefHeight="655.0" prefWidth="827.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 45px;" text="Welcome to BSM" />
+                        <ImageView fitHeight="482.0" fitWidth="598.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../images/catWelcome.jpg" />
+                           </image>
+                        </ImageView>
+                     </children></VBox>
                </children>
             </AnchorPane>
          </center>
       </BorderPane>
       <AnchorPane layoutX="239.0" prefHeight="48.0" prefWidth="827.0">
          <children>
-            <MenuButton layoutX="612.0" layoutY="1.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="162.0" style="-fx-background-color: white;">
+            <MenuButton layoutX="612.0" layoutY="10.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="162.0" style="-fx-background-color: white;">
                <items>
                   <MenuItem fx:id="buttonProfileSetting" mnemonicParsing="false" onAction="#handleProfileSetting" style="-fx-padding: 8px;" styleClass="text-menu" text="Profile setting">
                      <graphic>
