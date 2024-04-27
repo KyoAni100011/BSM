@@ -42,6 +42,9 @@ END; //
 
 DELIMITER ;
 
+-----------------------------------------------------------------------------------
+
+
 DROP PROCEDURE IF EXISTS CreateImportSheets;
 
 DELIMITER //
@@ -95,3 +98,83 @@ END WHILE;
 END;
 
 call CreateImportSheets();
+DELIMITER ;
+
+-----------------------------------------------------------------------------------
+
+DROP PROCEDURE IF EXISTS CREATEORDERS;
+
+DELIMITER //
+
+CREATE PROCEDURE CREATEORDERS()
+BEGIN
+    DECLARE i INT DEFAULT 0;
+    DECLARE j INT DEFAULT 0;
+    DECLARE orderID INT;
+
+    WHILE i < 10 DO
+        SET @employeeID = (SELECT id FROM employee ORDER BY RAND() LIMIT 1);
+        SET @customerID = (SELECT id FROM customer ORDER BY RAND() LIMIT 1);
+        SET @orderDate = (SELECT DATE_FORMAT(
+							DATE_ADD(
+								'2024-01-01',
+								INTERVAL FLOOR(RAND() * DATEDIFF(NOW(), '2024-01-01')) DAY
+							), '%Y-%m-%d'));
+
+        INSERT INTO orderSheet (employeeID, customerID, orderDate) VALUES (@employeeID, @customerID, @orderDate);
+        SET @orderID = LAST_INSERT_ID();
+
+        WHILE j < 3 DO
+            SET @bookID = (SELECT ISBN FROM BOOK ORDER BY RAND() LIMIT 1);
+            SET @quantityInput = 2;
+            SET @qtyBook = (SELECT quantity FROM book WHERE isbn = @bookID);
+            SET @salePrice = (SELECT salePrice FROM book WHERE isbn = @bookID);
+
+            IF @qtyBook >= @quantityInput THEN
+                WHILE @quantityInput != 0 DO
+                    SET @qtyFromBookBatch = (SELECT bb.quantity
+                                             FROM bookBatch bb
+                                             JOIN importsheet i ON bb.importSheetID = i.id
+                                             WHERE bb.quantity > @quantityInput
+                                             AND bookID = @bookID
+                                             ORDER BY importDate
+                                             LIMIT 1);
+                    SET @bookBatchID = (SELECT bb.id
+                                        FROM bookBatch bb
+                                        JOIN importsheet i ON bb.importSheetID = i.id
+                                        WHERE bb.quantity > @quantityInput
+                                        AND bookID = @bookID
+                                        ORDER BY importDate
+                                        LIMIT 1);
+
+                    IF @qtyFromBookBatch >= @quantityInput THEN
+                        INSERT IGNORE INTO orderBooksDetails (orderID, bookBatchID, quantity, salePrice)
+                        VALUES (@orderID, @bookBatchID, @quantityInput, @salePrice);
+                        UPDATE bookBatch SET quantity = quantity - @quantityInput WHERE id = @bookBatchID;
+                        UPDATE book SET quantity = quantity - @quantityInput WHERE isbn = @bookID;
+                        UPDATE orderSheet SET totalPrice = totalPrice + @salePrice * @quantityInput WHERE id = @orderID;
+                        SET @quantityInput = 0;
+                    ELSE
+                        INSERT IGNORE INTO orderBooksDetails (orderID, bookBatchID, quantity, salePrice)
+                        VALUES (@orderID, @bookBatchID, @qtyFromBookBatch, @salePrice);
+                        UPDATE bookBatch SET quantity = 0 WHERE id = @bookBatchID;
+                        UPDATE book SET quantity = quantity - @qtyFromBookBatch WHERE isbn = @bookID;
+                        UPDATE orderSheet SET totalPrice = totalPrice + @salePrice * @qtyFromBookBatch WHERE id = @orderID;
+                        SET @quantityInput = @quantityInput - @qtyFromBookBatch;
+                    END IF;
+                END WHILE;
+            END IF;
+            SET j = j + 1;
+        END WHILE;
+        SET j = 0;
+        SET i = i + 1;
+    END WHILE;
+END//
+
+DELIMITER ;
+
+CALL CREATEORDERS();
+DELIMITER ;
+
+
+-- select * from orderSheet o join orderBooksDetails i on o.id = i.orderID;
