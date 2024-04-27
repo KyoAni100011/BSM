@@ -5,16 +5,18 @@ import com.bsm.bsm.account.AccountService;
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.ValidationUtils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 public class PasswordResetController {
+    private static String userEmail; // Variable to store the selected user
+    private final AccountService accountService = new AccountService();
     @FXML
     public Label textNote;
     @FXML
@@ -23,9 +25,10 @@ public class PasswordResetController {
     private Button resetButton;
     @FXML
     private Label emailErrorLabel, passwordErrorLabel;
-    private static String userEmail; // Variable to store the selected user
 
-    private final AccountService accountService = new AccountService();
+    static void handleTableItemSelection(String email) {
+        userEmail = email; // Store the selected user
+    }
 
     @FXML
     public void initialize() {
@@ -33,9 +36,6 @@ public class PasswordResetController {
         clearErrorMessages();
         textNote.setVisible(true);
         customPassword.setOnMouseClicked(event -> textNote.setVisible(false)); // Add event handler to hide textNote when customPassword is clicked
-    }
-    static  void handleTableItemSelection(String email) {
-        userEmail = email; // Store the selected user
     }
 
     @FXML
@@ -70,7 +70,7 @@ public class PasswordResetController {
 
     private boolean validateInputs(String email, String password) {
         String emailValidationMessage = ValidationUtils.validateEmail(email);
-        String passwordValidationMessage = ValidationUtils.validatePassword(password,"user");
+        String passwordValidationMessage = ValidationUtils.validatePassword(password, "user");
 
         if (emailValidationMessage != null) {
             emailErrorLabel.setText(emailValidationMessage);
@@ -78,8 +78,7 @@ public class PasswordResetController {
 
         if (password.isEmpty()) {
             passwordValidationMessage = null;
-        }
-        else if (passwordValidationMessage != null) {
+        } else if (passwordValidationMessage != null) {
             passwordErrorLabel.setText(passwordValidationMessage);
         }
 

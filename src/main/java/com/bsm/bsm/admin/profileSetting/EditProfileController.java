@@ -112,25 +112,37 @@ public class EditProfileController {
 
 
     private boolean validateInputs(String fullName, String dob, String phone, String address) {
-        String fullNameError = ValidationUtils.validateFullName(fullName,"your");
-        String dobError = ValidationUtils.validateDOB(dob, "your");
-        String phoneError = ValidationUtils.validatePhone(phone,"your ");
-        String addressError = ValidationUtils.validateAddress(address, "your");
-
-        if (fullNameError != null) {
-            fullNameErrorLabel.setText(fullNameError);
+        // validate inputs
+        String fullNameError = null;
+        if (!fullName.isEmpty()) {
+            fullNameError = ValidationUtils.validateFullName(fullName, "your");
+            if (fullNameError != null) {
+                fullNameErrorLabel.setText(fullNameError);
+            }
         }
 
-        if (dobError != null) {
-            dobErrorLabel.setText(dobError);
+        String dobError = null;
+        if (!dob.isEmpty()) {
+            dobError = ValidationUtils.validateDOB(dob, "your");
+            if (dobError != null) {
+                dobErrorLabel.setText(dobError);
+            }
         }
 
-        if (phoneError != null) {
-            phoneErrorLabel.setText(phoneError);
+        String phoneError = null;
+        if (!phone.isEmpty()) {
+            phoneError = ValidationUtils.validatePhone(phone, "your ");
+            if (phoneError != null) {
+                phoneErrorLabel.setText(phoneError);
+            }
         }
 
-        if (addressError != null) {
-            addressErrorLabel.setText(addressError);
+        String addressError = null;
+        if (!address.isEmpty()) {
+            addressError = ValidationUtils.validateAddress(address, "your");
+            if (addressError != null) {
+                addressErrorLabel.setText(addressError);
+            }
         }
 
         return fullNameError == null && dobError == null && phoneError == null && addressError == null;

@@ -30,8 +30,16 @@ public class ValidationUtils {
     public static String validateFullName(String fullName, String field) {
         if (fullName.isEmpty()) {
             return "Please enter " + field + " name.";
-        } else if (fullName.matches(".*\\d.*")) {
+        } else if (!field.equalsIgnoreCase("book") && fullName.matches(".*\\d.*")) {
             return "Full name should not contain numbers.";
+        } else {
+            return null;
+        }
+    }
+
+    public static String validateBookName(String fullName) {
+        if (fullName.isEmpty()) {
+            return "Please enter book name.";
         } else {
             return null;
         }
@@ -111,12 +119,8 @@ public class ValidationUtils {
     }
 
     public static String validatePhone(String phone, String field) {
-        if (phone.isEmpty()) {
-            return "Please enter " + field + " phone number.";
-        }
-        if (!phone.matches("^[0-9]{10}$")) {
-            return "Please enter a 10-digit phone number..";
-        }
+        if (phone.isEmpty()) return "Please enter " + field + " phone number.";
+        if (!phone.matches("^[0-9]{10}$")) return "Please enter a 10-digit phone number..";
         return null;
     }
 
@@ -172,6 +176,5 @@ public class ValidationUtils {
         } else {
             return null;
         }
-
     }
 }

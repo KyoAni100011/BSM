@@ -89,6 +89,9 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
         return bookDAO.getBookByISBN(isbn);
     }
 
+    public Book getBookByName(String name) {
+        return bookDAO.getBookByName(name);
+    }
 
     // use this for check update book name
     public boolean isNameExist(String id, String name) {

@@ -45,7 +45,7 @@
    </AnchorPane>
    <AnchorPane prefHeight="543.0" prefWidth="700.0">
       <VBox fx:id="pnItems" layoutY="57.0" prefHeight="494.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 0px 0px 10px 10px;" />
-      <HBox alignment="CENTER_LEFT" layoutY="10.0" prefHeight="46.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-color: #F3F3F3; -fx-border-width: 0px 0px 2px 0px;">
+      <HBox alignment="CENTER_LEFT" layoutY="10.0" prefHeight="46.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-color: #F3F3F3; -fx-border-width: 0px 0px 2px 0px; -fx-background-radius: 10px 10px 0px 0px;">
          <Label alignment="CENTER" prefWidth="20.0">
             <HBox.margin>
                <Insets left="30.0" right="20.0" />

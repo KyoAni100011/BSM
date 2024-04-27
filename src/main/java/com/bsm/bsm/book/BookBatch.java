@@ -1,23 +1,30 @@
 package com.bsm.bsm.book;
 
+import com.bsm.bsm.sheet.ImportSheet;
+
 import java.math.BigDecimal;
-import java.util.UUID;
 
 public class BookBatch {
     private String id;
     private int quantity;
     private BigDecimal importPrice;
-    private String importSheetID;
+    private ImportSheet importSheet;
+    private Book book;
 
-    public BookBatch() {
-        // Default constructor
-    }
-
-    public BookBatch(String id, int quantity, BigDecimal importPrice, String importSheetID) {
+    public BookBatch(String id, int quantity, BigDecimal importPrice, ImportSheet importSheet, Book book) {
         this.id = id;
         this.quantity = quantity;
         this.importPrice = importPrice;
-        this.importSheetID = importSheetID;
+        this.importSheet = importSheet;
+        this.book = book;
+    }
+
+    public BookBatch(int quantity, BigDecimal importPrice, ImportSheet importSheet, Book book) {
+       this(null, quantity, importPrice, importSheet, book);
+    }
+
+    public BookBatch(int quantity, BigDecimal importPrice, Book book) {
+        this(null, quantity, importPrice, null, book);
     }
 
     // Getters and setters
@@ -45,12 +52,20 @@ public class BookBatch {
         this.importPrice = importPrice;
     }
 
-    public String getImportSheetID() {
-        return importSheetID;
+    public ImportSheet getImportSheet() {
+        return importSheet;
     }
 
-    public void setImportSheetID(String importSheetID) {
-        this.importSheetID = importSheetID;
+    public void setImportSheet(ImportSheet importSheet) {
+        this.importSheet = importSheet;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     @Override
@@ -59,7 +74,8 @@ public class BookBatch {
                 "id='" + id + '\'' +
                 ", quantity=" + quantity +
                 ", importPrice=" + importPrice +
-                ", importSheetID=" + importSheetID +
+                ", importSheet=" + importSheet +
+                ", book=" + book +
                 '}';
     }
 }

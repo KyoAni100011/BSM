@@ -106,6 +106,11 @@ public class sidebarController {
     }
 
     @FXML
+    void SwitchViewSheet(ActionEvent event) throws  IOException {
+        loadPage("importSheet/viewSheet");
+    }
+
+    @FXML
     void SwitchOrder(ActionEvent event) throws IOException {
         loadPage("order/order");
     }
