@@ -94,8 +94,8 @@ public class EditProfileController {
 
         String fullName = fullNameField.getText();
         String dob = dobPicker.getEditor().getText();
-        String phone = phoneTextField.getText();
-        String address = addressTextField.getText();
+        String phone = (phoneTextField.getText() == null || phoneTextField.getText().isEmpty() ) ? null : phoneTextField.getText();
+        String address = (addressTextField.getText() == null || addressTextField.getText().isEmpty()) ? null : addressTextField.getText();
         String id = UserSingleton.getInstance().getUser().getId();
 
         if (validateInputs(fullName, dob, phone, address)) {
@@ -129,20 +129,19 @@ public class EditProfileController {
             }
         }
 
-        String phoneError = null;
-        if (!phone.isEmpty()) {
-            phoneError = ValidationUtils.validatePhone(phone, "your ");
-            if (phoneError != null) {
-                phoneErrorLabel.setText(phoneError);
-            }
+        String phoneError = ValidationUtils.validatePhone(phone,"your");
+        if (phoneError != null && !phoneError.equalsIgnoreCase("Please enter your phone number.")) {
+            phoneErrorLabel.setText(phoneError);
+        } else {
+            phoneError = null;
         }
 
-        String addressError = null;
-        if (!address.isEmpty()) {
-            addressError = ValidationUtils.validateAddress(address, "your");
-            if (addressError != null) {
-                addressErrorLabel.setText(addressError);
-            }
+
+        String addressError = ValidationUtils.validateAddress(address,"your");
+        if (addressError != null && !addressError.equalsIgnoreCase("Please enter your address.")) {
+            addressErrorLabel.setText(addressError);
+        } else {
+            addressError = null;
         }
 
         return fullNameError == null && dobError == null && phoneError == null && addressError == null;
