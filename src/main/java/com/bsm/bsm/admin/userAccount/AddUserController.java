@@ -3,10 +3,10 @@ package com.bsm.bsm.admin.userAccount;
 import com.bsm.bsm.account.AccountService;
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.event.ActionEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -17,24 +17,18 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class AddUserController {
+    private final AccountService accountService = new AccountService();
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     @FXML
     public Label emailErrorLabel, dobErrorLabel, nameErrorLabel, addressErrorLabel;
-
     @FXML
     public TextField emailField, customPassword, nameField, addressField;
-
     @FXML
     public DatePicker dobPicker;
-
     @FXML
     public Label textNote;
-
     @FXML
     public Button resetButton;
-
-    private final AccountService accountService = new AccountService();
-
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @FXML
     public void initialize() {
@@ -48,6 +42,7 @@ public class AddUserController {
             updatePasswordField();
         });
     }
+
     @FXML
     private void updatePasswordField() {
         String dob = dobPicker.getEditor().getText();
@@ -122,7 +117,7 @@ public class AddUserController {
 
     private boolean validateInputs(String email, String name, String dob, String address) {
         String emailError = ValidationUtils.validateEmail(email);
-        String dobError = ValidationUtils.validateDOB(dob,"user");
+        String dobError = ValidationUtils.validateDOB(dob, "user");
         String nameError = ValidationUtils.validateFullName(name, "user");
         String addressError = ValidationUtils.validateAddress(address, "user");
 

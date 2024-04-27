@@ -24,3 +24,4 @@ public class RevenueStatistic<T> {
         return revenues;
     }
 }
+

@@ -28,6 +28,8 @@ public class BookDetailController {
     @FXML
     private VBox pnAuthor,pnCate;
     @FXML
+    private TextField idField;
+    @FXML
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final BookService bookService = new BookService();
     private static String id;
@@ -77,6 +79,7 @@ public class BookDetailController {
         publisherField.setText(bookDetail.getPublisher().getName());
         languageField.setText(bookDetail.getLanguages());
         fullNameField.setText(bookDetail.getTitle());
+        idField.setText(bookDetail.getIsbn());
         bookPriceField.setText(String.valueOf(bookDetail.getSalePrice()));
         bookQuantityField.setText(String.valueOf(bookDetail.getQuantity()));
         isEnabledLabel.setText(bookDetail.isEnabled() ? "Enable" : "Disable");

@@ -35,12 +35,6 @@ public class UserAccountController implements Initializable {
     private final AdminModel adminInfo = (AdminModel) UserSingleton.getInstance().getUser();
     private final AccountService accountService = new AccountService();
     @FXML
-    private VBox pnItems;
-    @FXML
-    private Button refreshButton;
-    @FXML
-    private TextField inputSearch;
-    @FXML
     public Button employeeButton, adminButton, addUserButton, passwordResetButton, updateUserButton;
     @FXML
     public Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
@@ -48,13 +42,21 @@ public class UserAccountController implements Initializable {
     public Button idLabel, nameLabel, emailLabel, lastLoginLabel, actionLabel;
     @FXML
     public SVGPath idSortLabel, nameSortLabel, emailSortLabel, lastLoginSortLabel, actionSortLabel;
-
     public List<UserModel> users = null;
+    @FXML
+    private VBox pnItems;
+    @FXML
+    private Button refreshButton;
+    @FXML
+    private TextField inputSearch;
     private String sortOrder = "ASC";
     private String column = "id";
-    private String role;
     private int currentPage = 1;
     private String inputSearchText = "";
+    private static final String EMPLOYEE_ROLE = ".employee@bms.com";
+    private static final String ADMIN_ROLE = ".admin@bms.com";
+    private static final int ITEMS_PER_PAGE = 9;
+
 
 
     static void handleTableItemSelection(String userEmail) {
@@ -64,7 +66,7 @@ public class UserAccountController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeButtonsAndLabels();
-        loadAllUsers();
+        loadAllUsers(EMPLOYEE_ROLE);
         initializePaginationButtons();
 
         inputSearch.textProperty().addListener(new ChangeListener<String>() {
@@ -73,7 +75,7 @@ public class UserAccountController implements Initializable {
                 inputSearchText = newValue;
                 users = accountService.search(inputSearchText, adminInfo.getId());
                 try {
-                    updateUsersList();
+                    updateUsersList(EMPLOYEE_ROLE);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -81,17 +83,23 @@ public class UserAccountController implements Initializable {
         });
     }
 
-    private void loadAllUsers() {
+    private String getRoleFromButton() {
+        return employeeButton.getStyleClass().contains("profile-setting-button-admin") ? EMPLOYEE_ROLE : ADMIN_ROLE;
+    }
+
+    private void loadAllUsers(String role) {
         users = accountService.getAllUsersBySortInfo(adminInfo.getId(), sortOrder, column);
         adminInfo.setUsers(users);
 
         try {
-            role = ".employee@bms.com";
-            updateUsersList();
+            if (role == null) role = getRoleFromButton();
+
+            updateUsersList(role);
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
+
     private void initializeButtonsAndLabels() {
         employeeButton.getStyleClass().add("profile-setting-button");
         updateButtonStyle(employeeButton);
@@ -128,27 +136,16 @@ public class UserAccountController implements Initializable {
 
     @FXML
     private void handleEmployeeButton(ActionEvent event) {
-        try {
-            role = ".employee@bms.com";
-            currentPage = 1;
-            updateUsersList();
-            updateButtonStyle(employeeButton);
-        } catch (IOException e) {
-            AlertUtils.showAlert("Error", "Error loading employee users", Alert.AlertType.ERROR);
-        }
+        currentPage = 1;
+        loadAllUsers(EMPLOYEE_ROLE);
+        updateButtonStyle(employeeButton);
     }
 
     @FXML
     private void handleAdminButton(ActionEvent event) {
-        try {
-            role = ".admin@bms.com";
-            currentPage = 1;
-            updateUsersList();
-            updateButtonStyle(adminButton);
-        } catch (IOException e) {
-            e.printStackTrace();
-            AlertUtils.showAlert("Error", "Error loading admin users", Alert.AlertType.ERROR);
-        }
+        currentPage = 1;
+        loadAllUsers(ADMIN_ROLE);
+        updateButtonStyle(adminButton);
     }
 
     @FXML
@@ -168,7 +165,7 @@ public class UserAccountController implements Initializable {
 
     @FXML
     void handleRefreshButton(ActionEvent event) {
-        loadAllUsers();
+        loadAllUsers(getRoleFromButton());
     }
 
     @FXML
@@ -216,21 +213,8 @@ public class UserAccountController implements Initializable {
         } else {
             currentPage = Integer.parseInt(buttonClicked.getText());
         }
-        if (employeeButton.getStyleClass().contains("profile-setting-button-admin")) {
-            try {
-                role = ".employee@bms.com";
-                updateUsersList();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                role = ".admin@bms.com";
-                updateUsersList();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+
+        loadAllUsers(getRoleFromButton());
     }
 
     private void updatePaginationButtons(int totalPages) {
@@ -293,12 +277,13 @@ public class UserAccountController implements Initializable {
         }
     }
 
-    void updateListAfterChanging() throws IOException {
-        users = accountService.view(adminInfo.getId());
-        updateUsersList();
-    }
+//    void updateListAfterChanging() throws IOException {
+//        users = accountService.view(adminInfo.getId());
+//        String role = employeeButton.getStyleClass().contains("profile-setting-button-admin") ? ".employee@bms.com" : ".admin@bms.com";
+//        updateUsersList(role);
+//    }
 
-    private void updateUsersList() throws IOException {
+    private void updateUsersList(String role) throws IOException {
         pnItems.getChildren().clear();
         int itemsPerPage = 9;
         int startIndex = (currentPage - 1) * itemsPerPage;
@@ -339,8 +324,7 @@ public class UserAccountController implements Initializable {
         }
         return count;
     }
-
-
+    
     @FXML
     private void handleLabelClick(MouseEvent event) {
         Button clickedLabel = (Button) event.getSource();
@@ -356,16 +340,8 @@ public class UserAccountController implements Initializable {
         emailSortLabel.setContent(column.equals("Email") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
         lastLoginSortLabel.setContent(column.equals("Last login") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
         actionSortLabel.setContent(column.equals("Action") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
-        try {
-            updateUsersList();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         users = accountService.getAllUsersBySortInfo(adminInfo.getId(), sortOrder, column);
-        try {
-            updateUsersList();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadAllUsers(getRoleFromButton());
     }
 }

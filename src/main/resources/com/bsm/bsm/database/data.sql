@@ -11,7 +11,6 @@ select * from author;
 
 update author set name ='Nguyen Nhat Anh' where name ='Nguyen Ngoc Tu';
 
-
 -- insert data for table admin
 set @adminID1 = (select id from user where email = 'thu.admin@bms.com');
 insert admin (userId) values(@adminID1);

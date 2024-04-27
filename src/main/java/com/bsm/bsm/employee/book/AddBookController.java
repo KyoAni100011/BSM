@@ -99,7 +99,6 @@ public class AddBookController {
         publisherComboBox.getItems().addAll(publisherItems);
         setupDatePicker();
 
-
         categorySearch.setVisible(false);
         authorSearch.setVisible(false);
 
@@ -188,8 +187,6 @@ public class AddBookController {
 
                 System.err.println("IndexOutOfBoundsException caught: " + e.getMessage());
             }
-
-
         });
         authorSearch.getParent().addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
             // Check if the mouse event target is outside the authorSearch field

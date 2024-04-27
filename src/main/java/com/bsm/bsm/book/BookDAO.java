@@ -184,7 +184,6 @@ public class BookDAO {
         for (var isbn : isbns) {
             books.add(getBookByISBN(isbn));
         }
-        System.out.println(books);
         return books;
     }
 

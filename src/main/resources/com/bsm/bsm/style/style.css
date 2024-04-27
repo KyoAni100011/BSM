@@ -232,7 +232,7 @@
 }
 
 .chart-plot-background {
-    -fx-background-color: red;
+    -fx-background-color: #F4F6F6;
     -fx-pref-width: 700px;
     -fx-pref-height: 460px;
 }
@@ -264,6 +264,10 @@
     -fx-min-height: 20px;
     -fx-max-width: 20px;
     -fx-max-height: 20px;
+}
+
+.chart-axis-label {
+    -fx-wrap-text: true;
 }
 
 .toggle-button:selected {

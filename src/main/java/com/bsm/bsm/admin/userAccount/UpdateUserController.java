@@ -2,29 +2,30 @@ package com.bsm.bsm.admin.userAccount;
 
 import com.bsm.bsm.account.AccountService;
 import com.bsm.bsm.user.UserModel;
-import com.bsm.bsm.user.UserSingleton;
+import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.DateUtils;
+import com.bsm.bsm.utils.NumericValidationUtils;
+import com.bsm.bsm.utils.ValidationUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import javafx.stage.Stage;
-import javafx.util.StringConverter;
-import javafx.scene.input.KeyEvent;
-import javafx.event.EventHandler;
-
-import com.bsm.bsm.utils.ValidationUtils;
-import com.bsm.bsm.utils.AlertUtils;
-import com.bsm.bsm.utils.NumericValidationUtils;
-
 import static com.bsm.bsm.utils.DateUtils.convertDOBFormat;
 
 public class UpdateUserController {
+    @FXML
+    private static String email; // Variable to store the selected user
+    @FXML
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private final AccountService accountService = new AccountService();
     @FXML
     public Button saveChangesButton;
     @FXML
@@ -34,22 +35,17 @@ public class UpdateUserController {
     @FXML
     private DatePicker dobPicker;
     @FXML
-    private static String email; // Variable to store the selected user
-    @FXML
     private UserModel userModel;
-    @FXML
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    private final AccountService accountService = new AccountService();
+    static void handleTableItemSelection(String userEmail) {
+        email = userEmail; // Store the selected user
+    }
 
     @FXML
     public void initialize() {
         // Set the prompt text for the DatePicker
         setupDatePicker();
         setUserInfo();
-    }
-    static  void handleTableItemSelection(String userEmail) {
-        email = userEmail; // Store the selected user
     }
 
     private void setupDatePicker() {
@@ -69,6 +65,7 @@ public class UpdateUserController {
 
         dobPicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
     }
+
     private void setUserInfo() {
         userModel = accountService.getUserProfile(email);
         fullNameField.setText(userModel.getName());
@@ -77,6 +74,7 @@ public class UpdateUserController {
         String dob = convertDOBFormat(userModel.getDob());
         dobPicker.setValue(LocalDate.parse(dob, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
+
     private void updateUserInformation(String fullName, String telephone, String dob, String address) throws ParseException {
         String formattedDOB = DateUtils.formatDOB(dob);
         userModel.setName(fullName);
@@ -84,6 +82,7 @@ public class UpdateUserController {
         userModel.setAddress(address);
         userModel.setDob(formattedDOB);
     }
+
     @FXML
     private void handleSaveChanges(ActionEvent event) throws ParseException {
 
@@ -102,7 +101,7 @@ public class UpdateUserController {
         if (validateInputs(fullName, dob, phone, address)) {
             // need to call ID
             String id = userModel.getId();
-            if (accountService.updateUserProfile(id, fullName, phone, dob, address)){
+            if (accountService.updateUserProfile(id, fullName, phone, dob, address)) {
                 AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
                 updateUserInformation(fullName, phone, dob, address);
                 clearInputs();
@@ -117,9 +116,9 @@ public class UpdateUserController {
 
     private boolean validateInputs(String fullName, String dob, String phone, String address) {
         String fullNameError = ValidationUtils.validateFullName(fullName, "user");
-        String dobError = ValidationUtils.validateDOB(dob,"user");
-        String phoneError = ValidationUtils.validatePhone(phone,"user");
-        String addressError = ValidationUtils.validateAddress(address,"user");
+        String dobError = ValidationUtils.validateDOB(dob, "user");
+        String phoneError = ValidationUtils.validatePhone(phone, "user");
+        String addressError = ValidationUtils.validateAddress(address, "user");
 
         if (fullNameError != null) {
             fullNameErrorLabel.setText(fullNameError);
