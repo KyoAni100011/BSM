@@ -31,12 +31,6 @@ public class AuthController {
     private TextField idTextField;
 
     @FXML
-    private Text idErrorLabel;
-
-    @FXML
-    private Text passwordErrorText;
-
-    @FXML
     private PasswordField passwordField;
 
     private static final String EMPLOYEE_ROLE = "employee";
@@ -65,10 +59,7 @@ public class AuthController {
     private void handleLoginButtonClicked(String role) throws IOException {
         String password = passwordField.getText();
         String id = idTextField.getText();
-        int passwordLength = password.length();
-        boolean checkWrongField = passwordLength < 8 || passwordLength > 255 || id.isEmpty();
-        passwordErrorText.setVisible(passwordLength < 8 || passwordLength > 255);
-        idErrorLabel.setVisible(id.isEmpty());
+        boolean checkWrongField = password.isEmpty() || id.isEmpty();
         String fxmlPath = "";
 
         if (ADMIN_ROLE.equals(role)) {
