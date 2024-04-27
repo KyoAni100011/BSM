@@ -56,6 +56,8 @@ public class EmployeeModel extends UserModel {
         this.orders = new ArrayList<>();
     }
 
+    public EmployeeModel(){};
+
     @Override
     public void setPassword(String password) {
         super.setPassword(password);

@@ -1,8 +1,6 @@
 package com.bsm.bsm.employee.importSheet;
 
-import com.bsm.bsm.author.Author;
 import com.bsm.bsm.employee.EmployeeModel;
-import com.bsm.bsm.employee.importSheet.TableItemController;
 import com.bsm.bsm.sheet.ImportSheet;
 import com.bsm.bsm.sheet.ImportSheetService;
 import com.bsm.bsm.user.UserSingleton;
@@ -21,6 +19,7 @@ import javafx.scene.shape.SVGPath;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +41,7 @@ public class ViewSheetController {
     private SVGPath idSortLabel, dateImportSortLabel, employeeSortLabel, quantitySortLabel, totalPriceSortLabel;
     @FXML
     private Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
-
+    private boolean isSearch = false;
     private List<ImportSheet> sheets;
     private String sortOrder = "ASC";
     private String column = "id";
@@ -54,7 +53,7 @@ public class ViewSheetController {
     }
 
     @FXML
-    public void initialize() {
+    public void initialize() throws SQLException {
         sheets = generateDummyData();
         initializeButtonsAndLabels();
         loadAllSheets();
@@ -63,8 +62,22 @@ public class ViewSheetController {
         inputSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                isSearch = !newValue.isEmpty();
                 inputSearchText = newValue;
-//                sheets = importSheetService.search(inputSearchText);
+                if(!isSearch) {
+                    try {
+                        loadAllSheets();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                else {
+                    try {
+                        sheets = importSheetService.search(inputSearchText);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
                 try {
                     updateSheetsList();
                 } catch (IOException e) {
@@ -83,9 +96,9 @@ public class ViewSheetController {
         return dummySheets;
     }
 
-    private void loadAllSheets() {
-//        sheets = importSheetService.getAllSheets();
-//        employeeInfo.setSheets(sheets);
+    private void loadAllSheets() throws SQLException {
+        sheets = importSheetService.getAllSheets();
+        employeeInfo.setImportSlips(sheets);
         try {
             updateSheetsList();
         } catch (IOException e) {
@@ -120,22 +133,22 @@ public class ViewSheetController {
     private void updateSheetsList() throws IOException {
         pnItems.getChildren().clear();
         int itemsPerPage = 10;
-        int startIndex = (currentPage - 1) * itemsPerPage;
+        int startIndex = isSearch ? 0 : (currentPage - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, sheets.size());
 
-//        for (int i = startIndex; i < endIndex; i++) {
-//            ImportSheet sheet = sheets.get(i);
-//
-//            try {
-//                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/importSheet/tableItem.fxml"));
-//                Node item = fxmlLoader.load();
-//                TableItemController tableItemController = fxmlLoader.getController();
-//                tableItemController.setSheetModel(sheet);
-//                pnItems.getChildren().add(item);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        for (int i = startIndex; i < endIndex; i++) {
+            ImportSheet sheet = sheets.get(i);
+
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/importSheet/tableItem.fxml"));
+                Node item = fxmlLoader.load();
+                TableItemController tableItemController = fxmlLoader.getController();
+                tableItemController.setSheetModel(sheet);
+                pnItems.getChildren().add(item);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         int totalPages = (int) Math.ceil((double) sheets.size() / itemsPerPage);
         updatePaginationButtons(totalPages);
     }

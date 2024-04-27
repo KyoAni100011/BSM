@@ -46,17 +46,11 @@ public class TableItemController {
     public void setSheetModel(ImportSheet sheet) {
         sheetModel = sheet;
         id = sheet.getId();
-//        idLabel.setText(sheet.getId());
-//        dateImportLabel.setText(sheet.getDateImport().toString());
-//        employeeLabel.setText(sheet.getEmployee().getName());
-//        quantityLabel.setText(sheet.getQuality().toString());
-//        totalPriceLabel.setText(sheet.getTotalPrice().toString());
-        idLabel.setText("1");
-        dateImportLabel.setText("2021-06-01");
-        employeeLabel.setText("Triet Minh");
-        quantityLabel.setText("10");
-        totalPriceLabel.setText("1000");
-
+        idLabel.setText(sheet.getId());
+        dateImportLabel.setText(sheet.getImportDate());
+        employeeLabel.setText(sheet.getEmployee().getName());
+        quantityLabel.setText(String.valueOf(sheet.getQuantity()));
+        totalPriceLabel.setText(sheet.getTotalPrice().toString());
     }
 
 }
