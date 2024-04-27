@@ -120,7 +120,7 @@ public class CategoriesController implements Initializable {
     @FXML
     void handleAddCategoryButton(ActionEvent event) {
         try {
-            FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookCategories/addCategory");
+            FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookCategories/addCategory", "Add Category");
             //update categories list after adding new category
             categories = categoryService.getAllCategories();
             updateCategoryList();
@@ -134,7 +134,7 @@ public class CategoriesController implements Initializable {
         try {
             if (id != null) {
                 UpdateCategoryController.handleTableItemSelection(id);
-                FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookCategories/updateCategory");
+                FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookCategories/updateCategory", "Update Category");
             } else {
                 AlertUtils.showAlert("Error", "Can't find category", Alert.AlertType.ERROR);
             }

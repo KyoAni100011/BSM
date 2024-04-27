@@ -12,6 +12,10 @@ import java.util.Objects;
 public class FXMLLoaderHelper {
 
     public static void loadFXML(Stage currentStage, String fxmlPath) throws IOException {
+        loadFXML(currentStage, fxmlPath, "Welcome to FXML");
+    }
+
+    public static void loadFXML(Stage currentStage, String fxmlPath, String title) throws IOException {
         if (currentStage == null || fxmlPath == null) {
             throw new IllegalArgumentException("currentStage and fxmlPath cannot be null");
         }
@@ -21,10 +25,8 @@ public class FXMLLoaderHelper {
 
         scene.getStylesheets().add(Objects.requireNonNull(FXMLLoaderHelper.class.getResource("/com/bsm/bsm/style/style.css")).toExternalForm());
 
-        currentStage.setTitle("Welcome to FXML");
+        currentStage.setTitle(title);
         currentStage.setScene(scene);
         currentStage.show();
     }
-
-
 }
