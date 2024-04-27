@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
 import javafx.scene.text.Text;
@@ -29,7 +30,7 @@ public class sidebarController {
     private Button bookRevenue;
 
     @FXML
-    private BorderPane bp;
+    private VBox bp;
 
     @FXML
     private Button categoryRevenue;
@@ -114,7 +115,7 @@ public class sidebarController {
 
     private void loadPage(String page) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/bsm/bsm/view/admin/" + page + ".fxml")));
-        bp.setCenter(null);
-        bp.setCenter(root);
+        bp.getChildren().clear();
+        bp.getChildren().add(root);
     }
 }

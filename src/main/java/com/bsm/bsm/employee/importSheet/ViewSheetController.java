@@ -123,19 +123,19 @@ public class ViewSheetController {
         int startIndex = (currentPage - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, sheets.size());
 
-        for (int i = startIndex; i < endIndex; i++) {
-            ImportSheet sheet = sheets.get(i);
-
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/importSheet/tableItem.fxml"));
-                Node item = fxmlLoader.load();
-                TableItemController tableItemController = fxmlLoader.getController();
-                tableItemController.setSheetModel(sheet);
-                pnItems.getChildren().add(item);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        for (int i = startIndex; i < endIndex; i++) {
+//            ImportSheet sheet = sheets.get(i);
+//
+//            try {
+//                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/importSheet/tableItem.fxml"));
+//                Node item = fxmlLoader.load();
+//                TableItemController tableItemController = fxmlLoader.getController();
+//                tableItemController.setSheetModel(sheet);
+//                pnItems.getChildren().add(item);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
         int totalPages = (int) Math.ceil((double) sheets.size() / itemsPerPage);
         updatePaginationButtons(totalPages);
     }
