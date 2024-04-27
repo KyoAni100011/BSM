@@ -1,5 +1,6 @@
 package com.bsm.bsm.employee.book;
 
+import com.bsm.bsm.admin.userAccount.UserDetailController;
 import com.bsm.bsm.author.Author;
 import com.bsm.bsm.author.AuthorService;
 import com.bsm.bsm.book.Book;
@@ -9,6 +10,7 @@ import com.bsm.bsm.category.CategoryService;
 import com.bsm.bsm.publisher.Publisher;
 import com.bsm.bsm.publisher.PublisherService;
 import com.bsm.bsm.utils.AlertUtils;
+import com.bsm.bsm.utils.FXMLLoaderHelper;
 import com.bsm.bsm.utils.NumericValidationUtils;
 import com.bsm.bsm.utils.ValidationUtils;
 import javafx.collections.FXCollections;
@@ -20,10 +22,12 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.SearchableComboBox;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -341,7 +345,7 @@ public class AddBookController {
     }
 
     @FXML
-    private void handleSaveChanges(ActionEvent event) {
+    private void handleSaveChanges(ActionEvent event) throws IOException {
         clearErrorMessages();
 
         String fullName = fullNameField.getText();
@@ -377,10 +381,20 @@ public class AddBookController {
             if (bookService.add(new Book(fullName, publisers, releaseDate, selectedLanguage, authors, categories))) {
                 AlertUtils.showAlert("Success", "Book added successfully.", Alert.AlertType.INFORMATION);
                 clearInputs();
+                Book a = bookService.getBookByName(fullName);
+                BookDetailController.handleTableItemSelection(a.getIsbn());
+                FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/bookDetail");
+                closeWindow(event);
             } else {
                 AlertUtils.showAlert("Error", "Book add failed.", Alert.AlertType.ERROR);
             }
         }
+    }
+
+    private void closeWindow(ActionEvent event) {
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 
     private void clearErrorMessages() {

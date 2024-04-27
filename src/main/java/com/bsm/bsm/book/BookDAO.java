@@ -107,12 +107,12 @@ public class BookDAO {
     }
 
     public Book getBookByName(String name) {
-        String QUERY_GET_BOOKID = "select id from book where name = ?";
+        String QUERY_GET_BOOKID = "select isbn from book where title = ?";
         AtomicReference<String> bookID = new AtomicReference<>();
 
         DatabaseConnection.executeQuery(QUERY_GET_BOOKID, resultSet -> {
             if (resultSet != null && resultSet.next()) {
-                bookID.set(resultSet.getString("id"));
+                bookID.set(resultSet.getString("isbn"));
             }
         }, name);
 

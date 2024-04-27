@@ -1,121 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Group?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.SVGPath?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.bookPublishers.PublishersController">
-<VBox alignment="CENTER_LEFT" layoutY="-1.0" prefHeight="600.0" prefWidth="700.0">
-   <AnchorPane fx:id="tableToolbar" prefHeight="56.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 10px;">
-      <Button fx:id="updatePublisherButton" layoutX="606.0" layoutY="13.0" mnemonicParsing="false" onAction="#handleUpdatePublisherButton" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 20px;" text="Update">
-         <graphic>
-            <Group>
-               <SVGPath content="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z" scaleX="0.03" scaleY="0.03" />
-            </Group>
-         </graphic>
-      </Button>
-      <AnchorPane layoutX="14.0" layoutY="10.0" prefHeight="36.0" prefWidth="349.0" style="-fx-background-color: #f5f5f5; -fx-background-radius: 20px;">
-         <TextField fx:id="inputSearch" layoutX="9.0" layoutY="3.0" prefHeight="30.0" prefWidth="425.0" promptText="Search" style="-fx-background-color: #f5f5f5; -fx-background-radius: 0px 20px 20px 0px;" />
-         <Group layoutX="157.0" layoutY="-238.0">
-            <SVGPath content="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" scaleX="0.03" scaleY="0.03" />
-         </Group>
-      </AnchorPane>
-      <Button fx:id="addPublisherButton" layoutX="496.0" layoutY="13.0" mnemonicParsing="false" onAction="#handleAddPublisherButton" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 20px;" text="Add Order">
-         <graphic>
-            <Group>
-               <SVGPath content="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" scaleX="0.028" scaleY="0.028" />
-            </Group>
-         </graphic>
-      </Button>
-         <Button fx:id="refreshButton" layoutX="459.0" layoutY="13.0" mnemonicParsing="false" onAction="#handleRefreshButton" prefHeight="30.0" prefWidth="30.0" style="-fx-background-radius: 20px;">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.bookPublishers.PublishersController">
+   <VBox alignment="CENTER_LEFT" prefHeight="600.0" prefWidth="700.0">
+      <AnchorPane fx:id="tableToolbar" prefHeight="47.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 10px;">
+         <Button fx:id="updatePublisherButton" layoutX="585.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleUpdatePublisherButton" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 20px;" text="Update">
             <graphic>
                <Group>
-                  <children>
-                     <SVGPath content="M105.1 202.6c7.7-21.8 20.2-42.3 37.8-59.8c62.5-62.5 163.8-62.5 226.3 0L386.3 160H352c-17.7 0-32 14.3-32 32s14.3 32 32 32H463.5c0 0 0 0 0 0h.4c17.7 0 32-14.3 32-32V80c0-17.7-14.3-32-32-32s-32 14.3-32 32v35.2L414.4 97.6c-87.5-87.5-229.3-87.5-316.8 0C73.2 122 55.6 150.7 44.8 181.4c-5.9 16.7 2.9 34.9 19.5 40.8s34.9-2.9 40.8-19.5zM39 289.3c-5 1.5-9.8 4.2-13.7 8.2c-4 4-6.7 8.8-8.1 14c-.3 1.2-.6 2.5-.8 3.8c-.3 1.7-.4 3.4-.4 5.1V432c0 17.7 14.3 32 32 32s32-14.3 32-32V396.9l17.6 17.5 0 0c87.5 87.4 229.3 87.4 316.7 0c24.4-24.4 42.1-53.1 52.9-83.7c5.9-16.7-2.9-34.9-19.5-40.8s-34.9 2.9-40.8 19.5c-7.7 21.8-20.2 42.3-37.8 59.8c-62.5 62.5-163.8 62.5-226.3 0l-.1-.1L125.6 352H160c17.7 0 32-14.3 32-32s-14.3-32-32-32H48.4c-1.6 0-3.2 .1-4.8 .3s-3.1 .5-4.6 1z" scaleX="0.028" scaleY="0.028" />
-                  </children>
+                  <SVGPath content="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z" scaleX="0.03" scaleY="0.03" />
                </Group>
             </graphic>
          </Button>
-   </AnchorPane>
-   <AnchorPane prefHeight="507.0" prefWidth="700.0">
-      <VBox fx:id="pnItems" layoutX="-1.0" layoutY="56.0" prefHeight="424.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 0px 0px 10px 10px;" />
-      <HBox alignment="CENTER_LEFT" layoutY="10.0" prefHeight="46.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-color: #F3F3F3; -fx-border-width: 0px 0px 2px 0px; -fx-background-radius: 10px 10px 0px 0px;">
-         <Label alignment="CENTER" prefWidth="20.0">
-            <HBox.margin>
-               <Insets left="30.0" right="20.0" />
-            </HBox.margin>
-         </Label>
-         <AnchorPane prefHeight="44.0" prefWidth="12.0">
-            <Button fx:id="idLabel" layoutX="-3.0" layoutY="9.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" style="-fx-background-color: transparent;" text="ID">
-               <graphic>
-                  <Group>
-                     <SVGPath fx:id="idSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-47.0" layoutY="-2.0" scaleX="0.03" scaleY="0.03" />
-                  </Group>
-               </graphic>
-            </Button>
+         <AnchorPane layoutX="13.0" layoutY="6.0" prefHeight="36.0" prefWidth="349.0" style="-fx-background-color: #f5f5f5; -fx-background-radius: 20px;">
+            <TextField fx:id="inputSearch" layoutX="9.0" layoutY="3.0" prefHeight="30.0" prefWidth="324.0" promptText="Search" style="-fx-background-color: #f5f5f5; -fx-background-radius: 0px 20px 20px 0px;" />
+            <Group layoutX="69.0" layoutY="-238.0">
+               <SVGPath content="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" scaleX="0.03" scaleY="0.03" />
+            </Group>
          </AnchorPane>
-         <AnchorPane prefHeight="43.0" prefWidth="122.0">
-            <Button fx:id="nameLabel" layoutY="9.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="164.0" style="-fx-background-color: transparent;" text="Publisher">
-               <graphic>
-                  <Group>
-                     <SVGPath fx:id="nameSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-48.0" layoutY="-4.0" scaleX="0.03" scaleY="0.03" />
-                  </Group>
-               </graphic>
-            </Button>
-         </AnchorPane>
-         <AnchorPane prefHeight="43.0" prefWidth="150.0">
-            <Button fx:id="introductionLabel" layoutY="7.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="243.0" style="-fx-background-color: transparent;" text="Address">
-               <graphic>
-                  <Group>
-                     <SVGPath fx:id="introductionSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" scaleX="0.03" scaleY="0.03" />
-                  </Group>
-               </graphic></Button>
-         </AnchorPane>
-         <AnchorPane prefHeight="44.0" prefWidth="127.0">
-            <Button fx:id="actionLabel" layoutX="-1.0" layoutY="9.0" mnemonicParsing="false" prefWidth="121.0" style="-fx-background-color: transparent;" text="Enable/Disable">
-               <graphic>
-                  <Group>
-                     <SVGPath fx:id="actionSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-48.0" layoutY="-4.0" scaleX="0.03" scaleY="0.03" />
-                  </Group>
-               </graphic>
-            </Button>
-            <HBox.margin>
-               <Insets left="20.0" />
-            </HBox.margin>
-         </AnchorPane>
-      </HBox>
-   </AnchorPane>
-</VBox>
-<HBox alignment="CENTER" layoutY="549.0" prefHeight="50.0" prefWidth="700.0" spacing="15.0" style="-fx-background-color: white;">
-   <Button fx:id="previousPaginationButton" mnemonicParsing="false" style="-fx-background-color: transparent;" text=" Previous">
-      <graphic>
-         <Group>
-            <SVGPath content="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" scaleX="0.03" scaleY="0.03" />
-         </Group>
-      </graphic>
-      <HBox.margin>
-         <Insets />
-      </HBox.margin>
-   </Button>
-   <Button fx:id="firstPaginationButton" mnemonicParsing="false" style="-fx-background-color: transparent;" text="1" />
-   <Button fx:id="secondPaginationButton" mnemonicParsing="false" style="-fx-background-color: transparent;" text="2" />
-   <Button fx:id="thirdPaginationButton" mnemonicParsing="false" style="-fx-background-color: transparent;" text="3" />
-   <Button fx:id="fourthPaginationButton" mnemonicParsing="false" style="-fx-background-color: transparent;" text="4" />
-   <Button fx:id="fifthPaginationButton" mnemonicParsing="false" style="-fx-background-color: transparent;" text="5" />
-   <Button fx:id="nextPaginationButton" contentDisplay="RIGHT" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Next ">
-      <graphic>
-         <Group>
-            <children>
+         <Button fx:id="refreshButton" layoutX="393.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleRefreshButton" prefHeight="30.0" prefWidth="30.0" style="-fx-background-radius: 20px;">
+            <graphic>
+               <Group>
+                  <SVGPath content="M105.1 202.6c7.7-21.8 20.2-42.3 37.8-59.8c62.5-62.5 163.8-62.5 226.3 0L386.3 160H352c-17.7 0-32 14.3-32 32s14.3 32 32 32H463.5c0 0 0 0 0 0h.4c17.7 0 32-14.3 32-32V80c0-17.7-14.3-32-32-32s-32 14.3-32 32v35.2L414.4 97.6c-87.5-87.5-229.3-87.5-316.8 0C73.2 122 55.6 150.7 44.8 181.4c-5.9 16.7 2.9 34.9 19.5 40.8s34.9-2.9 40.8-19.5zM39 289.3c-5 1.5-9.8 4.2-13.7 8.2c-4 4-6.7 8.8-8.1 14c-.3 1.2-.6 2.5-.8 3.8c-.3 1.7-.4 3.4-.4 5.1V432c0 17.7 14.3 32 32 32s32-14.3 32-32V396.9l17.6 17.5 0 0c87.5 87.4 229.3 87.4 316.7 0c24.4-24.4 42.1-53.1 52.9-83.7c5.9-16.7-2.9-34.9-19.5-40.8s-34.9 2.9-40.8 19.5c-7.7 21.8-20.2 42.3-37.8 59.8c-62.5 62.5-163.8 62.5-226.3 0l-.1-.1L125.6 352H160c17.7 0 32-14.3 32-32s-14.3-32-32-32H48.4c-1.6 0-3.2 .1-4.8 .3s-3.1 .5-4.6 1z" scaleX="0.028" scaleY="0.028" />
+               </Group>
+            </graphic>
+         </Button>
+         <Button fx:id="addPublisherButton" layoutX="453.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleAddPublisherButton" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 20px;" text="Add Order">
+            <graphic>
+               <Group>
+                  <SVGPath content="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" scaleX="0.028" scaleY="0.028" />
+               </Group>
+            </graphic>
+         </Button>
+
+      </AnchorPane>
+      <AnchorPane prefHeight="550.0" prefWidth="700.0">
+         <HBox alignment="CENTER_LEFT" layoutY="7.0" prefHeight="46.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-color: #F3F3F3; -fx-border-width: 0px 0px 2px 0px; -fx-background-radius: 10px 10px 0px 0px;">
+            <Label alignment="CENTER" prefWidth="20.0">
+               <HBox.margin>
+                  <Insets left="30.0" right="20.0" />
+               </HBox.margin>
+            </Label>
+            <AnchorPane prefHeight="44.0" prefWidth="12.0">
+               <Button fx:id="idLabel" layoutX="-3.0" layoutY="9.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" style="-fx-background-color: transparent;" text="ID">
+                  <graphic>
+                     <Group>
+                        <SVGPath fx:id="idSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-47.0" layoutY="-2.0" scaleX="0.03" scaleY="0.03" />
+                     </Group>
+                  </graphic>
+               </Button>
+            </AnchorPane>
+            <AnchorPane prefHeight="43.0" prefWidth="122.0">
+               <Button fx:id="nameLabel" layoutY="9.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="164.0" style="-fx-background-color: transparent;" text="Publisher">
+                  <graphic>
+                     <Group>
+                        <SVGPath fx:id="nameSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-48.0" layoutY="-4.0" scaleX="0.03" scaleY="0.03" />
+                     </Group>
+                  </graphic>
+               </Button>
+            </AnchorPane>
+            <AnchorPane prefHeight="43.0" prefWidth="150.0">
+               <Button fx:id="introductionLabel" layoutY="7.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="265.0" style="-fx-background-color: transparent;" text="Address">
+                  <graphic>
+                     <Group>
+                        <SVGPath fx:id="introductionSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" scaleX="0.03" scaleY="0.03" />
+                     </Group>
+                  </graphic></Button>
+            </AnchorPane>
+            <AnchorPane prefHeight="43.0" prefWidth="87.0">
+               <Button fx:id="actionLabel" layoutY="9.0" mnemonicParsing="false" prefWidth="100.0" style="-fx-background-color: transparent;" text="Action">
+                  <graphic>
+                     <Group>
+                        <SVGPath fx:id="actionSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-48.0" layoutY="-4.0" scaleX="0.03" scaleY="0.03" />
+                     </Group>
+                  </graphic>
+               </Button>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </AnchorPane>
+         </HBox>
+         <VBox fx:id="pnItems" layoutY="54.0" prefHeight="445.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 0px 0px 10px 10px;" />
+      </AnchorPane>
+   </VBox>
+   <HBox alignment="CENTER" layoutY="509.0" prefHeight="50.0" prefWidth="700.0" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 15px;">
+      <Button fx:id="previousPaginationButton" mnemonicParsing="false" style="-fx-background-color: transparent;" text=" Previous">
+         <graphic>
+            <Group>
+               <SVGPath content="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" scaleX="0.03" scaleY="0.03" />
+            </Group>
+         </graphic>
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+      </Button>
+      <Button fx:id="firstPaginationButton" mnemonicParsing="false" style="-fx-background-color: transparent;" text="1" />
+      <Button fx:id="secondPaginationButton" mnemonicParsing="false" style="-fx-background-color: transparent;" text="2" />
+      <Button fx:id="thirdPaginationButton" mnemonicParsing="false" style="-fx-background-color: transparent;" text="3" />
+      <Button fx:id="fourthPaginationButton" mnemonicParsing="false" style="-fx-background-color: transparent;" text="4" />
+      <Button fx:id="fifthPaginationButton" mnemonicParsing="false" style="-fx-background-color: transparent;" text="5" />
+      <Button fx:id="nextPaginationButton" contentDisplay="RIGHT" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Next ">
+         <graphic>
+            <Group>
                <SVGPath content="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" scaleX="0.03" scaleY="0.03" />
-            </children>
-         </Group>
-      </graphic>
-   </Button>
-</HBox>
+            </Group>
+         </graphic>
+      </Button>
+   </HBox>
 </AnchorPane>
