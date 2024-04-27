@@ -30,6 +30,7 @@ public class sidebarController {
     private final SceneSwitch sceneSwitch = new SceneSwitch();
     public UserModel employeeInfo = UserSingleton.getInstance().getUser();
     public MenuItem buttonProfileSetting, buttonLogOut;
+    public Button addOrder;
 
     @FXML
     private AnchorPane AnchorPaneEmployee;
@@ -88,6 +89,10 @@ public class sidebarController {
     @FXML
     void SwitchBookAuthors(ActionEvent event) throws IOException {
         loadPage("bookAuthors/bookAuthors");
+    }
+    @FXML
+    void SwitchAddOrder(ActionEvent event) throws IOException {
+        loadPage("order/createOrder");
     }
 
     @FXML
