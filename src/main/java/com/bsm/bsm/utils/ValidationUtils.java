@@ -46,13 +46,13 @@ public class ValidationUtils {
     }
 
 
-    public static String validateIntroduction(String introduction,  String field) {
+    public static String validateIntroduction(String introduction, String field) {
         int introductionLength = introduction.length();
-        boolean checkWrongField = introductionLength > 255 ;
+        boolean checkWrongField = introductionLength > 255;
         if (checkWrongField) {
             return "Introduction should be less than 255 characters.";
         }
-        return introduction.isEmpty() ? "Please enter "+ field + " introduction." : null;
+        return introduction.isEmpty() ? "Please enter " + field + " introduction." : null;
     }
 
     public static String validateDescription(String description, String field) {
@@ -98,7 +98,7 @@ public class ValidationUtils {
 
     public static String validatePassword(String password, String field) {
         if (password.isEmpty()) {
-            return "Please enter " + field +" password.";
+            return "Please enter " + field + " password.";
         }
         if (password.length() < 8 || password.length() > 255) {
             return "Your password should be between 8 and 255 characters.";
@@ -119,43 +119,46 @@ public class ValidationUtils {
     }
 
     public static String validatePhone(String phone, String field) {
-        if (phone.isEmpty()) return "Please enter " + field + " phone number.";
+        if (phone == null || phone.isBlank()) return "Please enter " + field + " phone number.";
         if (!phone.matches("^[0-9]{10}$")) return "Please enter a 10-digit phone number..";
         return null;
     }
 
     public static String validateAddress(String address, String field) {
-        if(address.isEmpty()) return "Please enter "+ field +" address.";
+        if (address == null || address.isBlank()) return "Please enter " + field + " address.";
         if (address.length() > 255) return "Address should be less than 255 characters.";
         return null;
     }
 
     public static String validateCategory(ObservableList<String> category, String field) {
-        return category.isEmpty() ? "Please choose "+ field +" category." : null;
+        return category.isEmpty() ? "Please choose " + field + " category." : null;
     }
 
     public static String validateAuthor(ObservableList<String> author, String field) {
-        return author.isEmpty() ? "Please choose "+ field +" name." : null;
+        return author.isEmpty() ? "Please choose " + field + " name." : null;
     }
 
     public static String validateLanguage(String languages, String field) {
-        return languages == null ? "Please choose "+ field +" language." : null;
+        return languages == null ? "Please choose " + field + " language." : null;
     }
+
     public static String validatePublisher(String publisher, String field) {
-        return publisher == null ? "Please choose "+ field  : null;
+        return publisher == null ? "Please choose " + field : null;
     }
+
     public static String validateQuantity(String quantity, String field) {
         if (quantity.isEmpty()) {
-            return "Please enter "+ field +" quantity.";
+            return "Please enter " + field + " quantity.";
         }
         if (!quantity.matches("^[0-9]+$")) {
             return "Quantity should contain only number.";
         }
         return null;
     }
+
     public static String validatePrice(String price, String field) {
         if (price.isEmpty()) {
-            return "Please enter "+ field +" price.";
+            return "Please enter " + field + " price.";
         }
         if (!price.matches("^[0-9]+$")) {
             return "Price should contain only number.";

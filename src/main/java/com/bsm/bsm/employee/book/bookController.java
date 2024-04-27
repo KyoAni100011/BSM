@@ -189,7 +189,7 @@ public class bookController implements Initializable {
         try {
             if (isbn != null) {
                 UpdateBookController.handleTableItemSelection(isbn);
-                FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/updateBook");
+                FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/updateBook", "Update Book");
             } else {
                 AlertUtils.showAlert("Error", "Can't find book", Alert.AlertType.ERROR);
             }
@@ -201,7 +201,7 @@ public class bookController implements Initializable {
     @FXML
     private void handleAddUserButton(ActionEvent event) {
         try {
-            FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/addBook");
+            FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/addBook", "Add Book");
         } catch (IOException e) {
             AlertUtils.showAlert("Error", "Error loading addUser FXML", Alert.AlertType.ERROR);
         }

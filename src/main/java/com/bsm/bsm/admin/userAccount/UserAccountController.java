@@ -153,7 +153,7 @@ public class UserAccountController implements Initializable {
         try {
             if (email != null) {
                 PasswordResetController.handleTableItemSelection(email);
-                FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/passwordReset");
+                FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/passwordReset", "Reset Password");
             } else {
                 AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
             }
@@ -182,7 +182,7 @@ public class UserAccountController implements Initializable {
                 if (!user.isEnabled()) {
                     AlertUtils.showAlert("Error", "This user has been disabled. Please enable the user to update profile.", Alert.AlertType.ERROR);
                 } else {
-                    FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/updateUser");
+                    FXMLLoaderHelper.loadFXML(new Stage(), "admin/userAccount/updateUser", "Update User");
                 }
             } else {
                 AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
@@ -196,7 +196,7 @@ public class UserAccountController implements Initializable {
     private void handleAddUserButton(ActionEvent event) {
         try {
             Stage stage = new Stage();
-            FXMLLoaderHelper.loadFXML(stage, "admin/userAccount/addUser");
+            FXMLLoaderHelper.loadFXML(stage, "admin/userAccount/addUser", "Add User ");
         } catch (IOException e) {
             e.printStackTrace();
             AlertUtils.showAlert("Error", "Error loading addUser FXML", Alert.AlertType.ERROR);

@@ -127,7 +127,7 @@ public class AuthorController implements Initializable {
     @FXML
     void handleAddAuthorButton(ActionEvent event) {
         try {
-            FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/addAuthor");
+            FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/addAuthor", "Add Author");
             //update authors list after adding new author
             authors = authorService.getAllAuthors();
             updateAuthorsList();
@@ -141,7 +141,7 @@ public class AuthorController implements Initializable {
         try {
             if (id != null) {
                 UpdateAuthorController.handleTableItemSelection(id);
-                FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/updateAuthor");
+                FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/updateAuthor", "Update Author");
             } else {
                 AlertUtils.showAlert("Error", "Can't find author", Alert.AlertType.ERROR);
             }
