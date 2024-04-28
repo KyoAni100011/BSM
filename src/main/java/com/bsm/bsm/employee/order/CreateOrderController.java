@@ -58,23 +58,24 @@ public class CreateOrderController implements Initializable {
             currentBookNamesData = bookNames;
 
             MoneyTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-                if(newValue == null){
-                    MoneyReturnLabel.setText("0");
+                if(newValue != null  && !newValue.isEmpty() ){
+                    MoneyReturnLabel.setText(String.valueOf(Integer.parseInt(newValue) - Integer.parseInt(totalLabel.getText().isEmpty() ? "0" : totalLabel.getText() )));
                 } else {
-                    MoneyReturnLabel.setText(String.valueOf(Integer.parseInt(newValue) - Integer.parseInt(subtotalLabel.getText())));
+                    MoneyReturnLabel.setText("0");
+
                 }
             });
             handleNameField.textProperty().addListener((observable, oldValue, newValue) -> {
-                if(newValue != null && (handlePhoneField.getText().length() == 11 || handlePhoneField.getText().length() == 10)){
+                if((newValue != null && !newValue.isEmpty()) && (handlePhoneField.getText().length() == 11 || handlePhoneField.getText().length() == 10)){
                     discountLabel.setText("(-30%)" +(int) (Integer.parseInt(subtotalLabel.getText()) * 0.3 ));
                     totalLabel.setText(String.valueOf( (int)( Integer.parseInt(subtotalLabel.getText()) * 0.7)));
-
                 } else{
                     discountLabel.setText("0%");
                 }
             });
             handlePhoneField.textProperty().addListener((observable, oldValue, newValue) -> {
-                if(newValue.length() == 11 || newValue.length() == 10 && handleNameField.getText() != null){
+                if((newValue.length() == 11 || newValue.length() == 10 ) && !handleNameField.getText().isEmpty()){
+                    System.out.println("get in phone" +handleNameField.getText() );
                     discountLabel.setText("(-30%)" + (int)(Integer.parseInt(subtotalLabel.getText()) * 0.3) );
                     totalLabel.setText(String.valueOf((int) (Integer.parseInt(subtotalLabel.getText()) * 0.7)) );
 
