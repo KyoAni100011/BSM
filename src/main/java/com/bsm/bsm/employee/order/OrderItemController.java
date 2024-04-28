@@ -12,14 +12,13 @@ import javafx.util.StringConverter;
 import org.controlsfx.control.SearchableComboBox;
 
 import java.math.BigDecimal;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class OrderItemController {
+    CreateOrderController thisParentController;
     @FXML
-    private Label pricePerItemLabel,indexLabel,totalPriceLabel;
+    private Label pricePerItemLabel, indexLabel, totalPriceLabel;
     @FXML
-    private Button minusButton ,addButton;
+    private Button minusButton, addButton;
     @FXML
     private Group removeButton;
     @FXML
@@ -28,22 +27,19 @@ public class OrderItemController {
     private TextField QuantityField;
     private int subtotal = 0;
     private int itemQuan = 0;
-
-    private String bookName ="";
-    private Book thisBook = new Book("978-3-16-148420-0", "", null, "2023-02-01",
-            "English", true, 150, BigDecimal.valueOf(1900), null, null
-    );
-
+    private String bookName = "";
+    private Book thisBook;
     private int quantity;
-    CreateOrderController thisParentController;
-    public String getBookName(){
+
+    public String getBookName() {
         return bookName;
     }
 
     public int getSubtotal() {
         return subtotal;
     }
-    public int getItemQuantity(){
+
+    public int getItemQuantity() {
         return itemQuan;
     }
 
@@ -55,25 +51,25 @@ public class OrderItemController {
         QuantityField.setDisable(true);
         QuantityField.textProperty().addListener((observable, oldValue, newValue) -> {
             int quantity = Integer.parseInt(QuantityField.getText());
-            itemQuan = Integer.parseInt(QuantityField.getText());;
+            itemQuan = Integer.parseInt(QuantityField.getText());
             String totalPrice = String.valueOf(thisBook.getSalePrice().multiply(BigDecimal.valueOf(quantity)));
             totalPriceLabel.setText(totalPrice);
             subtotal = Integer.parseInt(totalPrice);
             thisParentController.handleCountSubtotalAndQuantity();
         });
+
         bookNameComboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
             try {
                 if (newValue != null) {
-                    quantity = 200;
+                    quantity = thisBook.getQuantity();
+
                     // get detail data here
-                    Book book = new Book("978-3-16-148420-0", newValue.toString(), null, "2023-02-01",
-                            "English", true, 150, BigDecimal.valueOf(19000), null, null
-                    );
-                    setBook(String.valueOf(newValue));
-                    thisBook = book;
+                    Book book = thisParentController.getBookByTitle(String.valueOf(newValue));
+                    setBook(book);
                     // Your other code here
+                    System.out.println("Book here: " + book.getTitle() + " " + book.getQuantity() + " " + book.getSalePrice());
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("listener " + e);
             }
         });
@@ -81,19 +77,18 @@ public class OrderItemController {
     }
 
     public void setListBook(ObservableList<String> bookNames) {
-        if(bookNameComboBox.getItems().isEmpty()){
+        if (bookNameComboBox.getItems().isEmpty()) {
             bookNameComboBox.getItems().addAll(bookNames);
-        }
-        else{
+        } else {
             // Create a copy of the current items in the ComboBox
             ObservableList<String> listDis = FXCollections.observableArrayList();
             ObservableList<String> currentItems = FXCollections.observableArrayList(bookNameComboBox.getItems());
 
             for (String item : currentItems) {
-                    if (!bookNames.contains(item)) {
-                        listDis.add(item);
-                    }
+                if (!bookNames.contains(item)) {
+                    listDis.add(item);
                 }
+            }
 
             bookNameComboBox.setCellFactory(lv -> new ListCell<String>() {
                 @Override
@@ -112,13 +107,15 @@ public class OrderItemController {
     }
 
 
-    public void setIndex(CreateOrderController controller , int index) {
+    public void setIndex(CreateOrderController controller, int index) {
         indexLabel.setText(String.valueOf(index));
         thisParentController = controller;
     }
-    public void setBook(String title) {
+
+    public void setBook(Book book) {
         try {
-            if (!Objects.equals(thisBook.getTitle(), title)) {
+            thisBook = book;
+            if (thisBook != null) {
                 bookName = thisBook.getTitle();
                 pricePerItemLabel.setText(String.valueOf(thisBook.getSalePrice()));
                 totalPriceLabel.setText(String.valueOf(thisBook.getSalePrice()));
@@ -128,24 +125,23 @@ public class OrderItemController {
                 QuantityField.setDisable(false);
                 bookName = (String) bookNameComboBox.getValue();
                 thisParentController.setAlreadyClick();
+            } else {
+                System.out.println("That book is not available");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("set book" + e);
         }
 
     }
+
     @FXML
     private void handleRemoveButtonClick() {
         thisParentController.handleTableItemSelection(Integer.parseInt(indexLabel.getText()));
 
     }
 
-
-
-
-
     public void handleMinusButton(ActionEvent actionEvent) {
-        if(Integer.parseInt(QuantityField.getText()) == 1 ){
+        if (Integer.parseInt(QuantityField.getText()) == 1) {
             String confirmationMessage = "Are you sure you want to delete this book?";
             Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
             confirmationAlert.setTitle("Confirmation");
@@ -156,8 +152,7 @@ public class OrderItemController {
                 }
             });
 
-        }
-        else {
+        } else {
             QuantityField.setText(String.valueOf(Integer.parseInt(QuantityField.getText()) - 1));
 
         }
@@ -165,10 +160,9 @@ public class OrderItemController {
     }
 
     public void handleAddButton(ActionEvent actionEvent) {
-        if(Integer.parseInt(QuantityField.getText()) == quantity){
-            AlertUtils.showAlert("Error", "There are only " + quantity +" book left", Alert.AlertType.ERROR);
-        }
-        else{
+        if (Integer.parseInt(QuantityField.getText()) == quantity) {
+            AlertUtils.showAlert("Error", "There are only " + quantity + " book left", Alert.AlertType.ERROR);
+        } else {
             QuantityField.setText(String.valueOf(Integer.parseInt(QuantityField.getText()) + 1));
 
         }

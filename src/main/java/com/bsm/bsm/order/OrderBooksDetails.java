@@ -1,11 +1,12 @@
 package com.bsm.bsm.order;
 
+import com.bsm.bsm.book.BookBatch;
+
 import java.math.BigDecimal;
 
 public class OrderBooksDetails {
     private String orderID;
-    private String bookID;
-    private String importSheetID;
+    private String bookBatchID;
     private int quantity;
     private BigDecimal salePrice;
 
@@ -13,15 +14,13 @@ public class OrderBooksDetails {
         // Default constructor
     }
 
-    public OrderBooksDetails(String orderID, String bookID, String importSheetID, int quantity, BigDecimal salePrice) {
+    public OrderBooksDetails(String orderID, String bookBatchID, int quantity, BigDecimal salePrice) {
         this.orderID = orderID;
-        this.bookID = bookID;
-        this.importSheetID = importSheetID;
+        this.bookBatchID = bookBatchID;
         this.quantity = quantity;
         this.salePrice = salePrice;
     }
 
-    // Getters and setters
     public String getOrderID() {
         return orderID;
     }
@@ -30,20 +29,12 @@ public class OrderBooksDetails {
         this.orderID = orderID;
     }
 
-    public String getBookID() {
-        return bookID;
+    public String getBookBatchID() {
+        return bookBatchID;
     }
 
-    public void setBookID(String bookID) {
-        this.bookID = bookID;
-    }
-
-    public String getImportSheetID() {
-        return importSheetID;
-    }
-
-    public void setImportSheetID(String importSheetID) {
-        this.importSheetID = importSheetID;
+    public void setBookBatchID(String bookBatchID) {
+        this.bookBatchID = bookBatchID;
     }
 
     public int getQuantity() {
@@ -66,8 +57,7 @@ public class OrderBooksDetails {
     public String toString() {
         return "OrderBooksDetails{" +
                 "orderID=" + orderID +
-                ", bookID='" + bookID + '\'' +
-                ", importSheetID=" + importSheetID +
+                ", bookBatchID=" + bookBatchID +
                 ", quantity=" + quantity +
                 ", salePrice=" + salePrice +
                 '}';
