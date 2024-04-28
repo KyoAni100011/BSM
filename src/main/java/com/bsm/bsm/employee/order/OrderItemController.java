@@ -116,6 +116,7 @@ public class OrderItemController {
         indexLabel.setText(String.valueOf(index));
         thisParentController = controller;
     }
+
     public void setBook(String title) {
         try {
             if (!Objects.equals(thisBook.getTitle(), title)) {
@@ -139,10 +140,6 @@ public class OrderItemController {
         thisParentController.handleTableItemSelection(Integer.parseInt(indexLabel.getText()));
 
     }
-
-
-
-
 
     public void handleMinusButton(ActionEvent actionEvent) {
         if(Integer.parseInt(QuantityField.getText()) == 1 ){
