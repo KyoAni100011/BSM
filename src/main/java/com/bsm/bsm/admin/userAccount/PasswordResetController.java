@@ -59,7 +59,7 @@ public class PasswordResetController {
 
             String adminID = UserSingleton.getInstance().getUser().getId();
             accountService.updatePassword(adminID, userEmail, password);
-            AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
+            AlertUtils.showAlert("Success", "Reset password successfully.", Alert.AlertType.INFORMATION);
             clearInputs();
             clearErrorMessages();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -79,6 +79,7 @@ public class PasswordResetController {
         if (password.isEmpty()) {
             passwordValidationMessage = null;
         } else if (passwordValidationMessage != null) {
+            textNote.setVisible(false);
             passwordErrorLabel.setText(passwordValidationMessage);
         }
 

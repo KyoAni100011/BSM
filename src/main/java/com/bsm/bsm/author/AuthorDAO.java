@@ -94,4 +94,24 @@ public class AuthorDAO {
         }, name);
         return author.get();
     }
+
+    public boolean enableBookAuthor(String authorId) {
+        try {
+            String ENABLE_USER_QUERY = "UPDATE author SET isEnabled = 1 WHERE id = ?";
+            int rowEffected = DatabaseConnection.executeUpdate(ENABLE_USER_QUERY, authorId);
+            return rowEffected > 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean disableBookAuthor(String authorId) {
+        try {
+            String ENABLE_USER_QUERY = "UPDATE author SET isEnabled = 0 WHERE id = ?";
+            int rowEffected = DatabaseConnection.executeUpdate(ENABLE_USER_QUERY, authorId);
+            return rowEffected > 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

@@ -1,58 +1,61 @@
 package com.bsm.bsm.order;
 
+import com.bsm.bsm.customer.Customer;
+import com.bsm.bsm.employee.EmployeeModel;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
 public class Order {
-    private UUID id;
-    private int employeeID;
-    private UUID customerID;
-    private LocalDate orderDate;
+    private String id;
+    private EmployeeModel employee;
+    private Customer customer;
+    private String orderDate;
     private BigDecimal totalPrice;
 
     public Order() {
         // Default constructor
     }
 
-    public Order(UUID id, int employeeID, UUID customerID, LocalDate orderDate, BigDecimal totalPrice) {
+    public Order(String id, EmployeeModel employee, Customer customer, String orderDate, BigDecimal totalPrice) {
         this.id = id;
-        this.employeeID = employeeID;
-        this.customerID = customerID;
+        this.employee = employee;
+        this.customer = customer;
         this.orderDate = orderDate;
         this.totalPrice = totalPrice;
     }
 
     // Getters and setters
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getEmployeeID() {
-        return employeeID;
+    public EmployeeModel getEmployee() {
+        return employee;
     }
 
-    public void setEmployeeID(int employeeID) {
-        this.employeeID = employeeID;
+    public void setEmployeeID(EmployeeModel employee) {
+        this.employee = employee;
     }
 
-    public UUID getCustomerID() {
-        return customerID;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerID(UUID customerID) {
-        this.customerID = customerID;
+    public void setCustomerID(Customer customer) {
+        this.customer = customer;
     }
 
-    public LocalDate getOrderDate() {
+    public String getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(LocalDate orderDate) {
+    public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }
 
@@ -68,8 +71,8 @@ public class Order {
     public String toString() {
         return "OrderSheet{" +
                 "id=" + id +
-                ", employeeID=" + employeeID +
-                ", customerID=" + customerID +
+                ", employee=" + employee +
+                ", customerID=" + customer +
                 ", orderDate=" + orderDate +
                 ", totalPrice=" + totalPrice +
                 '}';

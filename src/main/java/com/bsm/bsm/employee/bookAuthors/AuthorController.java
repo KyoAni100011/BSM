@@ -35,6 +35,8 @@ public class AuthorController implements Initializable {
     private final EmployeeModel employeeInfo = (EmployeeModel) UserSingleton.getInstance().getUser();
     private final AuthorService authorService = new AuthorService();
 
+    private boolean isSearch = false;
+
     @FXML
     private TextField inputSearch;
     @FXML
@@ -69,8 +71,10 @@ public class AuthorController implements Initializable {
         inputSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                isSearch = !newValue.isEmpty();
                 inputSearchText = newValue;
-                authors = authorService.search(inputSearchText);
+                if(!isSearch) loadAllAuthors();
+                else  authors = authorService.search(inputSearchText);
                 try {
                     updateAuthorsList();
                 } catch (IOException e) {
@@ -149,7 +153,7 @@ public class AuthorController implements Initializable {
     private void updateAuthorsList() throws IOException {
         pnItems.getChildren().clear();
         int itemsPerPage = 9;
-        int startIndex = (currentPage - 1) * itemsPerPage;
+        int startIndex = isSearch ? 0 : (currentPage - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, authors.size());
 
         for (int i = startIndex; i < endIndex; i++) {

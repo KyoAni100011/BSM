@@ -117,7 +117,7 @@ public class OrderController implements Initializable  {
 
     private void loadAllOrders() throws IOException {
         orders = new ArrayList<>();
-        orders.add(new Order(UUID.randomUUID(),324,UUID.randomUUID(),LocalDate.of(2024, 4, 11),new BigDecimal("100.00")));
+        //orders.add(new Order(UUID.randomUUID(),324,UUID.randomUUID(),LocalDate.of(2024, 4, 11),new BigDecimal("100.00")));
         updateOrdersList();
         //        orders = Orderservice.getAllOrders();
 //        try {

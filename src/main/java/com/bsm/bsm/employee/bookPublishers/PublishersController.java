@@ -40,6 +40,8 @@ public class PublishersController implements Initializable {
     private final EmployeeModel employeeInfo = (EmployeeModel) UserSingleton.getInstance().getUser();
     private final PublisherService publisherService = new PublisherService();
 
+    private boolean isSearch = false;
+
 
     @FXML
     private TextField inputSearch;
@@ -63,7 +65,6 @@ public class PublishersController implements Initializable {
     private int currentPage = 1;
     private String inputSearchText = "";
 
-
     static void handleTableItemSelection(String userId) {
         id = userId;
     }
@@ -77,8 +78,10 @@ public class PublishersController implements Initializable {
         inputSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                isSearch = !newValue.isEmpty();
                 inputSearchText = newValue;
-                publishers = publisherService.search(inputSearchText);
+                if(!isSearch) loadAllPublishers();
+                else   publishers = publisherService.search(inputSearchText);
                 try {
                     updatePublishersList();
                 } catch (IOException e) {
@@ -159,7 +162,7 @@ public class PublishersController implements Initializable {
     private void updatePublishersList() throws IOException {
         pnItems.getChildren().clear();
         int itemsPerPage = 9;
-        int startIndex = (currentPage - 1) * itemsPerPage;
+        int startIndex = isSearch ? 0 : (currentPage - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, publishers.size());
 
         for (int i = startIndex; i < endIndex; i++) {

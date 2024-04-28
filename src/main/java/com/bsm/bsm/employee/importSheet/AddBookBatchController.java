@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 
 public class AddBookBatchController {
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -70,8 +72,20 @@ public class AddBookBatchController {
     private ObservableList<String> filteredCategoriesItems = FXCollections.observableArrayList(); // Store filtered category items
     private ObservableList<String> filteredAuthorItems = FXCollections.observableArrayList(); // Store filtered category items
 
+    // Khai báo biến kiểm tra số nguyên
+    private final UnaryOperator<TextFormatter.Change> integerFilter = change -> {
+        // Kiểm tra nếu chuỗi mới chứa chỉ chứa các ký tự số hoặc là chuỗi rỗng
+        if (Pattern.matches("\\d*", change.getControlNewText())) {
+            return change;
+        } else {
+            return null; // Nếu không phải là số, chặn việc nhập
+        }
+    };
+
     @FXML
     public void initialize() {
+        bookQuantityField.setTextFormatter(new TextFormatter<>(integerFilter));
+        bookPriceField.setTextFormatter(new TextFormatter<>(integerFilter));
         for (var category: categoryService.getAllCategories()) {
             if (category.isEnabled())
                 categoriesItems.add(category.getName());

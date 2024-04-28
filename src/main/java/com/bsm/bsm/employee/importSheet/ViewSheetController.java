@@ -1,8 +1,7 @@
 package com.bsm.bsm.employee.importSheet;
 
-import com.bsm.bsm.author.Author;
 import com.bsm.bsm.employee.EmployeeModel;
-import com.bsm.bsm.employee.importSheet.TableItemController;
+import com.bsm.bsm.sheet.BookSheetDetail;
 import com.bsm.bsm.sheet.ImportSheet;
 import com.bsm.bsm.sheet.ImportSheetService;
 import com.bsm.bsm.user.UserSingleton;
@@ -21,6 +20,7 @@ import javafx.scene.shape.SVGPath;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +42,7 @@ public class ViewSheetController {
     private SVGPath idSortLabel, dateImportSortLabel, employeeSortLabel, quantitySortLabel, totalPriceSortLabel;
     @FXML
     private Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
-
+    private boolean isSearch = false;
     private List<ImportSheet> sheets;
     private String sortOrder = "ASC";
     private String column = "id";
@@ -54,8 +54,7 @@ public class ViewSheetController {
     }
 
     @FXML
-    public void initialize() {
-        sheets = generateDummyData();
+    public void initialize() throws SQLException {
         initializeButtonsAndLabels();
         loadAllSheets();
         initializePaginationButtons();
@@ -63,8 +62,22 @@ public class ViewSheetController {
         inputSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                isSearch = !newValue.isEmpty();
                 inputSearchText = newValue;
-//                sheets = importSheetService.search(inputSearchText);
+                if(!isSearch) {
+                    try {
+                        loadAllSheets();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                else {
+                    try {
+                        sheets = importSheetService.search(inputSearchText);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
                 try {
                     updateSheetsList();
                 } catch (IOException e) {
@@ -74,18 +87,10 @@ public class ViewSheetController {
         });
     }
 
-    private List<ImportSheet> generateDummyData() {
-        List<ImportSheet> dummySheets = new ArrayList<>();
-        for (int i = 1; i <= 50; i++) {
-            ImportSheet sheet = new ImportSheet("ID" + i, employeeInfo, LocalDate.now().toString(), i, BigDecimal.valueOf(i * 1000));
-            dummySheets.add(sheet);
-        }
-        return dummySheets;
-    }
-
-    private void loadAllSheets() {
-//        sheets = importSheetService.getAllSheets();
-//        employeeInfo.setSheets(sheets);
+    private void loadAllSheets() throws SQLException {
+        sheets = importSheetService.getAllSheets();
+        sheets = importSheetService.sort(sheets, true, "id");
+        employeeInfo.setImportSlips(sheets);
         try {
             updateSheetsList();
         } catch (IOException e) {
@@ -120,22 +125,22 @@ public class ViewSheetController {
     private void updateSheetsList() throws IOException {
         pnItems.getChildren().clear();
         int itemsPerPage = 10;
-        int startIndex = (currentPage - 1) * itemsPerPage;
+        int startIndex = isSearch ? 0 : (currentPage - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, sheets.size());
 
-//        for (int i = startIndex; i < endIndex; i++) {
-//            ImportSheet sheet = sheets.get(i);
-//
-//            try {
-//                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/importSheet/tableItem.fxml"));
-//                Node item = fxmlLoader.load();
-//                TableItemController tableItemController = fxmlLoader.getController();
-//                tableItemController.setSheetModel(sheet);
-//                pnItems.getChildren().add(item);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        for (int i = startIndex; i < endIndex; i++) {
+            ImportSheet sheet = sheets.get(i);
+
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/importSheet/tableItem.fxml"));
+                Node item = fxmlLoader.load();
+                TableItemController tableItemController = fxmlLoader.getController();
+                tableItemController.setSheetModel(sheet);
+                pnItems.getChildren().add(item);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         int totalPages = (int) Math.ceil((double) sheets.size() / itemsPerPage);
         updatePaginationButtons(totalPages);
     }
@@ -190,7 +195,7 @@ public class ViewSheetController {
                 button.setVisible(true);
 
                 if (i == currentPage) {
-                    button.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
+                    button.setStyle("-fx-background-color: #f5a11c; -fx-text-fill: white;");
                 } else {
                     button.setStyle(null);
                 }
@@ -200,7 +205,7 @@ public class ViewSheetController {
             firstPaginationButton.setText("1");
             firstPaginationButton.setVisible(true);
             firstPaginationButton.setManaged(true);
-            firstPaginationButton.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
+            firstPaginationButton.setStyle("-fx-background-color: #f5a11c; -fx-text-fill: white;");
             nextPaginationButton.setDisable(true);
         }
     }
@@ -209,7 +214,6 @@ public class ViewSheetController {
     private void handleLabelClick(MouseEvent event) {
         Button clickedLabel = (Button) event.getSource();
         String columnName = clickedLabel.getText().toLowerCase();
-
 
         if (columnName.equals(column)) {
             sortOrder = sortOrder.equals("ASC") ? "DESC" : "ASC";
@@ -226,8 +230,8 @@ public class ViewSheetController {
         totalPriceSortLabel.setContent(column.equals("total price") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
 
         try {
-//            sheets = importSheetService.getAllSheets();
-//            sheets = importSheetService.sort(sheets, isAscending, column);
+            sheets = importSheetService.getAllSheets();
+            sheets = importSheetService.sort(sheets, isAscending, column);
             updateSheetsList();
         } catch (Exception e) {
             System.out.println(e.getMessage());

@@ -22,6 +22,7 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Scanner;
 
 public class sidebarController {
     private final SceneSwitch sceneSwitch = new SceneSwitch();

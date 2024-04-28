@@ -42,7 +42,7 @@
         </Label>
 
         <TextField fx:id="fullNameField" layoutX="75.0" layoutY="50.0" prefHeight="40.0" prefWidth="217.0" promptText="Enter your full name" styleClass="input-field-add" />
-        <TextField fx:id="emailTextField" layoutX="308.0" layoutY="50.0" prefHeight="40.0" prefWidth="217.0" promptText="Enter your email address" styleClass="input-field-add" />
+        <TextField fx:id="emailTextField" disable="true" layoutX="308.0" layoutY="50.0" prefHeight="40.0" prefWidth="217.0" promptText="Enter your email address" styleClass="input-field-add-normal-disable" />
         <TextField fx:id="phoneTextField" layoutX="75.0" layoutY="130.0" prefHeight="40.0" prefWidth="217.0" promptText="Enter your number phone" styleClass="input-field-add" />
         <TextField fx:id="addressTextField" layoutX="75.0" layoutY="210.0" prefHeight="40.0" prefWidth="450.0" promptText="Enter your address" styleClass="input-field-add" />
         <DatePicker fx:id="dobPicker" layoutX="308.0" layoutY="130.0" prefHeight="40.0" prefWidth="217.0" promptText="Select your date of birth" styleClass="input-field-add" />

@@ -410,6 +410,11 @@ public class UpdateBookController {
 
     @FXML
     private void handleSaveChanges(ActionEvent event) {
+        if(!book.isEnabled())
+        {
+            AlertUtils.showAlert("Error", "This book is disable", Alert.AlertType.ERROR);
+            return;
+        }
         clearErrorMessages();
 
         String fullName = fullNameField.getText();
