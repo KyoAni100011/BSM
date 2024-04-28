@@ -88,14 +88,14 @@ create table importSheet (
     employeeID int not null,
     importDate date not null default (CURRENT_DATE),
     quantity int not null default 0,
-    totalPrice decimal(50, 2) not null default 0.0,
+    totalPrice decimal(50, 0) not null default 0.0,
     foreign key(employeeID) references employee(id)
 );
 
 create table bookBatch (
     id int auto_increment primary key,
     quantity int not null,
-    importPrice decimal(50, 2) not null,
+    importPrice decimal(50, 0) not null,
     importSheetID int not null,
     bookID int not null,
     foreign key(bookID) references book(isbn),
@@ -113,7 +113,7 @@ create table orderSheet (
     employeeID int not null,
     customerID int not null,
     orderDate date not null default (CURRENT_DATE),
-    totalPrice decimal(50, 2) not null default 0.0,
+    totalPrice decimal(50, 0) not null default 0.0,
     foreign key(employeeID) references employee(id),
     foreign key(customerID) references customer(id)
 );
@@ -122,8 +122,10 @@ create table orderBooksDetails (
     orderID int not null,
     bookBatchID int not null,
     quantity int not null,
-    salePrice decimal(50, 2) not null,
+    salePrice decimal(50, 0) not null,
     primary key (orderID, bookBatchID),
     foreign key(orderID) references orderSheet(id),
     foreign key (bookBatchID) references bookBatch(id)
 );
+
+

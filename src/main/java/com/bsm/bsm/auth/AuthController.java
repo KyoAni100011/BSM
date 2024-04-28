@@ -3,8 +3,10 @@ package com.bsm.bsm.auth;
 import com.bsm.bsm.user.UserModel;
 import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
+import com.bsm.bsm.utils.PasswordUtils;
 import com.bsm.bsm.utils.SceneSwitch;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -17,6 +19,9 @@ import java.io.IOException;
 
 public class AuthController {
     private final AuthService authService = new AuthService();
+    public TextField currentPasswordTextField;
+    public Button showHideCurrentPasswordButton;
+    public FontAwesomeIcon eyeIcon1;
 
     @FXML
     private AnchorPane AnchorPaneLogin;
@@ -40,6 +45,9 @@ public class AuthController {
 
     @FXML
     public void initialize() {
+        currentPasswordTextField.setVisible(false);
+        showHideCurrentPasswordButton.setOnAction(event -> PasswordUtils.handleShowHidePassword(event, passwordField, currentPasswordTextField, eyeIcon1));
+
         btnLoginAsEmployee.setOnAction(event -> {
             try {
                 handleLoginButtonClicked(EMPLOYEE_ROLE);
@@ -57,7 +65,7 @@ public class AuthController {
     }
 
     private void handleLoginButtonClicked(String role) throws IOException {
-        String password = passwordField.getText();
+        String password = currentPasswordTextField.isVisible() ? currentPasswordTextField.getText() : passwordField.getText();
         String id = idTextField.getText();
         boolean checkWrongField = password.isEmpty() || id.isEmpty();
         String fxmlPath = "";
@@ -104,5 +112,12 @@ public class AuthController {
 
         UserSingleton.getInstance().setUser(userInfo);
         sceneSwitch.SceneSwitchDifferSize(AnchorPaneLogin, fxmlPath);
+        clearInputs();
+    }
+
+    private void clearInputs() {
+        idTextField.clear();
+        passwordField.clear();
+        currentPasswordTextField.clear();
     }
 }

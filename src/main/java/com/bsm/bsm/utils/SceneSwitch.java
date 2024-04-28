@@ -48,6 +48,8 @@ public class SceneSwitch {
         currentAnchorPane.getChildren().clear();
         currentAnchorPane.getChildren().add(nextAnchorPane);
 
+        // Resize the scene and stage based on the content
+        resizeSceneAndStage(nextAnchorPane);
     }
 
     private void resizeSceneAndStage(AnchorPane anchorPane) {
@@ -73,8 +75,8 @@ public class SceneSwitch {
             if (prefWidth > 0 && prefHeight > 0) {
                 stage.setMinWidth(prefWidth);
                 stage.setMinHeight(prefHeight);
-                stage.setMaxWidth(prefWidth);
-                stage.setMaxHeight(prefHeight);
+                stage.setMaxWidth(Double.MAX_VALUE); // Allow maximum width resizing
+                stage.setMaxHeight(Double.MAX_VALUE); // Allow maximum height resizing
             }
 
             // Resize the scene and stage based on the content
