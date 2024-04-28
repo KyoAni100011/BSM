@@ -56,14 +56,15 @@ public class ImportSheetController {
             return;
         }
         bookBatches.removeIf(bookBatch -> bookBatch.getBook().getTitle().equals(thisBookName));
+        AlertUtils.showAlert("Success", "Book removed from import sheet.", Alert.AlertType.INFORMATION);
     }
 
     @FXML
     public void initialize() {
         setupDatePicker();
-        importDatePicker.setValue(LocalDate.now());
-        clearErrorMessages();
         clearInputs();
+        clearErrorMessages();
+        importDatePicker.setValue(LocalDate.now());
         bookBatches = new ArrayList<>();
         try {
             updateBookList();
@@ -161,6 +162,8 @@ public class ImportSheetController {
             // Clear inputs
             clearInputs();
             bookBatches = new ArrayList<>();
+            setupDatePicker();
+            importDatePicker.setValue(LocalDate.now());
             updateBookList();
         }
         else {

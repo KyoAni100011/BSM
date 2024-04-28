@@ -36,6 +36,8 @@ public class bookController implements Initializable {
     private final BookService bookService = new BookService();
     private final EmployeeModel employeeInfo = (EmployeeModel) UserSingleton.getInstance().getUser();
 
+    private boolean isSearch = false;
+
 
     @FXML
     private TextField inputSearch;
@@ -72,8 +74,10 @@ public class bookController implements Initializable {
         inputSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                isSearch = !newValue.isEmpty();
                 inputSearchText = newValue;
-                books = bookService.search(inputSearchText);
+                if(!isSearch) loadAllBooks();
+                else  books = bookService.search(inputSearchText);
                 try {
                     updateBooksList();
                 } catch (IOException e) {
@@ -85,11 +89,17 @@ public class bookController implements Initializable {
 
     @FXML
     void handleRefreshButton(ActionEvent event) {
+        idSortLabel.setContent("");
+        quantitySortLabel.setContent("");
+        bookNameSortLabel.setContent("");
+        actionSortLabel.setContent("");
+        priceSortLabel.setContent("");
         loadAllBooks();
     }
 
     private void loadAllBooks() {
         books = bookService.getAllBooks();
+        books = bookService.sort(books, true, "isbn");
         employeeInfo.setBooks(books);
         try {
             type = "book";
@@ -302,7 +312,7 @@ public class bookController implements Initializable {
     private void updateBooksList() throws IOException {
         pnItems.getChildren().clear();
         int itemsPerPage = 9;
-        int startIndex = (currentPage - 1) * itemsPerPage;
+        int startIndex = isSearch ? 0 : (currentPage - 1) * itemsPerPage;
         int totalUserCountForRole = getTotalBookCountForRole(type);
         int endIndex = Math.min(startIndex + itemsPerPage, totalUserCountForRole);
         int totalCount = 0;

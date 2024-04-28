@@ -8,6 +8,7 @@ import com.bsm.bsm.utils.FXMLLoaderHelper;
 import com.bsm.bsm.utils.ValidationUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -46,12 +47,18 @@ public class AddCategoryController {
                     Category a = categoryService.getCategoryByName(name);
                     CategoryDetailController.handleTableItemSelection(a.getId());
                     FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookCategories/categoryDetail");
-//                    closeWindow(event);
+                    closeWindow(event);
                 } else {
                     AlertUtils.showAlert("Error", "An error occurred while adding the category.", Alert.AlertType.ERROR);
                 }
             }
         }
+    }
+
+    private void closeWindow(ActionEvent event) {
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 
     private boolean validateInputs(String name, String description) {

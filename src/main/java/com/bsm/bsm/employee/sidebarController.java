@@ -60,9 +60,6 @@ public class sidebarController {
 
 
     @FXML
-    private Button btnLogOut;
-
-    @FXML
     private Button importSheet;
     @FXML
     private Text roleText;

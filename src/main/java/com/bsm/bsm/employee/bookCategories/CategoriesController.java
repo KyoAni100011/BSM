@@ -52,6 +52,8 @@ public class CategoriesController implements Initializable {
     @FXML
     private SVGPath idSortLabel, nameSortLabel, introductionSortLabel ,actionSortLabel;
 
+    private boolean isSearch = false;
+
     private List<Category> categories = null;
     private String sortOrder = "ASC";
     private String column = "id";
@@ -71,8 +73,10 @@ public class CategoriesController implements Initializable {
         inputSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                isSearch = !newValue.isEmpty();
                 inputSearchText = newValue;
-                categories = categoryService.search(inputSearchText);
+                if(!isSearch) loadAllCategory();
+                else categories = categoryService.search(inputSearchText);
                 try {
                     updateCategoryList();
                 } catch (IOException e) {
@@ -217,7 +221,7 @@ public class CategoriesController implements Initializable {
     private void updateCategoryList() throws IOException {
         pnItems.getChildren().clear();
         int itemsPerPage = 9;
-        int startIndex = (currentPage - 1) * itemsPerPage;
+        int startIndex = isSearch ? 0 : (currentPage - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, categories.size());
 
         for (int i = startIndex; i < endIndex; i++) {

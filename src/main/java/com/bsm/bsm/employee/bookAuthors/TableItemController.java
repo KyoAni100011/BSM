@@ -51,18 +51,24 @@ public class TableItemController {
         confirmationAlert.setHeaderText(confirmationMessage);
         confirmationAlert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-//                if (oldState.get()) {
-//                    if (!authorService.disableAuthor(id)) {
-//                        AlertUtils.showAlert("Error", "Failed to disable author", Alert.AlertType.ERROR);
-//                        return;
-//                    }
-//                } else {
-//                    if (!authorService.enableAuthor(id)) {
-//                        AlertUtils.showAlert("Error", "Failed to enable author", Alert.AlertType.ERROR);
-//                        return;
-//                    }
-//                }
-                AlertUtils.showAlert("Success", "Author has been " + (!oldState.get() ? "enabled" : "disabled"), Alert.AlertType.INFORMATION);
+                if (oldState.get()) {
+                    if (!authorService.disableAuthor(id)) {
+                        AlertUtils.showAlert("Error", "Failed to disable author", Alert.AlertType.ERROR);
+                        return;
+                    }
+                    isOn.setSwitchedProperty(false);
+                    authorModel.setEnabled(false);
+                    AlertUtils.showAlert("Success", "author disabled successfully", Alert.AlertType.INFORMATION);
+                } else {
+                    if (!authorService.enableAuthor(id)) {
+                        AlertUtils.showAlert("Error", "Failed to enable author", Alert.AlertType.ERROR);
+                        return;
+                    }
+                    isOn.setSwitchedProperty(false);
+                    authorModel.setEnabled(false);
+                    AlertUtils.showAlert("Success", "author enabled successfully", Alert.AlertType.INFORMATION);
+                }
+                //AlertUtils.showAlert("Success", "Author has been " + (!oldState.get() ? "enabled" : "disabled"), Alert.AlertType.INFORMATION);
             } else {
                 oldState.setValue(!oldState.get());
             }

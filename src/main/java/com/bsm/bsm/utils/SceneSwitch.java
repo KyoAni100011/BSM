@@ -2,8 +2,10 @@ package com.bsm.bsm.utils;
 
 import com.bsm.bsm.App;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -53,6 +55,15 @@ public class SceneSwitch {
         Stage stage = (Stage) anchorPane.getScene().getWindow();
         if (stage != null) {
             stage.setResizable(true); // Ensure the stage is resizable
+
+            // Calculate the center position of the screen
+            Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+            double centerX = primaryScreenBounds.getMinX() + (primaryScreenBounds.getWidth() - anchorPane.getPrefWidth()) / 2;
+            double centerY = primaryScreenBounds.getMinY() + (primaryScreenBounds.getHeight() - anchorPane.getPrefHeight()) / 2;
+
+            // Set the position of the stage
+            stage.setX(centerX);
+            stage.setY(centerY);
 
             // Set preferred width and height based on the content
             double prefWidth = anchorPane.getPrefWidth();
