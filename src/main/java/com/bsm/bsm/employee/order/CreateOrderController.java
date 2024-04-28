@@ -172,8 +172,6 @@ public class CreateOrderController implements Initializable {
             return null;
         }
     };
-    public void handleRefreshButton(ActionEvent actionEvent) {
-    }
 
     public void handlePayActionButton(MouseEvent mouseEvent) {
     }
