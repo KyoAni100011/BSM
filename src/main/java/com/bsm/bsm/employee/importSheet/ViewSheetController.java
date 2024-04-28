@@ -1,6 +1,7 @@
 package com.bsm.bsm.employee.importSheet;
 
 import com.bsm.bsm.employee.EmployeeModel;
+import com.bsm.bsm.sheet.BookSheetDetail;
 import com.bsm.bsm.sheet.ImportSheet;
 import com.bsm.bsm.sheet.ImportSheetService;
 import com.bsm.bsm.user.UserSingleton;
@@ -54,7 +55,6 @@ public class ViewSheetController {
 
     @FXML
     public void initialize() throws SQLException {
-        sheets = generateDummyData();
         initializeButtonsAndLabels();
         loadAllSheets();
         initializePaginationButtons();
@@ -87,17 +87,9 @@ public class ViewSheetController {
         });
     }
 
-    private List<ImportSheet> generateDummyData() {
-        List<ImportSheet> dummySheets = new ArrayList<>();
-        for (int i = 1; i <= 50; i++) {
-            ImportSheet sheet = new ImportSheet("ID" + i, employeeInfo, LocalDate.now().toString(), i, BigDecimal.valueOf(i * 1000));
-            dummySheets.add(sheet);
-        }
-        return dummySheets;
-    }
-
     private void loadAllSheets() throws SQLException {
         sheets = importSheetService.getAllSheets();
+        sheets = importSheetService.sort(sheets, true, "id");
         employeeInfo.setImportSlips(sheets);
         try {
             updateSheetsList();
@@ -223,7 +215,6 @@ public class ViewSheetController {
         Button clickedLabel = (Button) event.getSource();
         String columnName = clickedLabel.getText().toLowerCase();
 
-
         if (columnName.equals(column)) {
             sortOrder = sortOrder.equals("ASC") ? "DESC" : "ASC";
         } else {
@@ -239,8 +230,8 @@ public class ViewSheetController {
         totalPriceSortLabel.setContent(column.equals("total price") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
 
         try {
-//            sheets = importSheetService.getAllSheets();
-//            sheets = importSheetService.sort(sheets, isAscending, column);
+            sheets = importSheetService.getAllSheets();
+            sheets = importSheetService.sort(sheets, isAscending, column);
             updateSheetsList();
         } catch (Exception e) {
             System.out.println(e.getMessage());

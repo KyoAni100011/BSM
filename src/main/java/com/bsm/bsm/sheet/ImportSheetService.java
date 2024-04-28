@@ -6,6 +6,7 @@ import com.bsm.bsm.book.BookBatch;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,5 +39,39 @@ public class ImportSheetService {
                         sheet.getEmployee().getName().toLowerCase().contains(finalKeyword) ||
                                 sheet.getId().contains(finalKeyword))
                 .collect(Collectors.toList());
+    }
+
+    public List<ImportSheet> sort(List<ImportSheet> sheets, boolean isAscending, String column) {
+        List<ImportSheet> sortedImportSheet = new ArrayList<>(sheets);
+        Comparator<ImportSheet> comparator = (importSheet1,importSheet2) -> {
+            switch (column) {
+                case "id" -> {
+                    return Comparator.comparing(ImportSheet::getId).compare(importSheet1, importSheet2);
+                }
+                case "date import" -> {
+                    return Comparator.comparing(ImportSheet::getImportDate).compare(importSheet1, importSheet2);
+                }
+                case "quantity" -> {
+                    return Comparator.comparing(ImportSheet::getQuantity).compare(importSheet1, importSheet2);
+                }
+                case "total price" -> {
+                    return Comparator.comparing(ImportSheet::getTotalPrice).compare(importSheet1, importSheet2);
+                }
+                default -> {
+                    return 0;
+                }
+            }
+        };
+
+        if (!isAscending) {
+            comparator = comparator.reversed();
+        }
+
+        return sortedImportSheet.stream().sorted(comparator).collect(Collectors.toList());
+    }
+
+    public List<BookSheetDetail> getISheetBookDetails(String id)
+    {
+        return importSheetDAO.getISheetBookDetails(id);
     }
 }

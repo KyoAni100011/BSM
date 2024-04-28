@@ -43,6 +43,34 @@ public class ImportSheetDAO {
         if (!checkRowAffected(connection, rowAffected)) throw new SQLException("Insert bookBatch failed");
     }
 
+    public List<BookSheetDetail> getISheetBookDetails(String idSheet) {
+        List<BookSheetDetail> bookSheetDetails = new ArrayList<>();
+        String query = "SELECT " +
+                "    b.title AS bookTitle, " +
+                "    bBatch.quantity AS quantity, " +
+                "    bBatch.importPrice as price " +
+                "FROM " +
+                "    importSheet isheet " +
+                "JOIN " +
+                "    bookBatch bBatch ON isheet.id = bBatch.importSheetID " +
+                "JOIN " +
+                "    book b ON bBatch.bookID = b.isbn " +
+                "WHERE " +
+                "    isheet.id = ?";
+
+        DatabaseConnection.executeQuery(query, resultSet -> {
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    String title = resultSet.getString("bookTitle");
+                    BigDecimal price = resultSet.getBigDecimal("price");
+                    int quantity = resultSet.getInt("quantity");
+                    bookSheetDetails.add(new BookSheetDetail(title, price, quantity));
+                }
+            }
+        }, idSheet);
+        return bookSheetDetails;
+    }
+
 
     private void setBookIsbn(Connection connection, BookBatch bookBatch) throws SQLException {
         String QUERY_GET_BOOK_ID = "select isbn from book where title = ?";
