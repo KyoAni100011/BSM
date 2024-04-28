@@ -1,5 +1,8 @@
 package com.bsm.bsm.admin.bookRevenue;
 
+import com.bsm.bsm.revenue.ResultStatistic;
+import com.bsm.bsm.revenue.RevenueStatisticService;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,15 +11,25 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import javafx.geometry.Side;
 
+import java.sql.SQLException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.WeekFields;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class BookBarChartController {
+class BookBarChartController {
     private final RevenueStatisticService revenueStatisticService = new RevenueStatisticService();
     private final ExecutorService executorService = Executors.newCachedThreadPool();
     @FXML private Button btnByMonth, btnByWeek, btnByDate, btnFromDateToDate;
