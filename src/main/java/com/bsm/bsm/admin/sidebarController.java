@@ -15,6 +15,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
 import javafx.scene.text.Text;
@@ -27,6 +28,7 @@ public class sidebarController {
     private final SceneSwitch sceneSwitch = new SceneSwitch();
     public UserModel adminInfo = UserSingleton.getInstance().getUser();
     public MenuItem buttonProfileSetting, buttonLogOut;
+    public SVGPath svgCategory;
     @FXML
     private Button bookRevenue;
 
@@ -80,27 +82,61 @@ public class sidebarController {
     @FXML
     void SwitchBookRevenue(ActionEvent event) throws IOException {
         loadPage("bookRevenue/bookRevenue");
+        bookRevenue.getStyleClass().add("sideBarItemActive");
+        categoryRevenue.getStyleClass().remove("sideBarItemActive");
+        revenueByCustomer.getStyleClass().remove("sideBarItemActive");
+        userAccount.getStyleClass().remove("sideBarItemActive");
+        revenueByEmployee.getStyleClass().remove("sideBarItemActive");
+        svgCategory.getStyleClass().remove("sideBarIconActive");
     }
 
     @FXML
     void SwitchCategoryRevenue(ActionEvent event) throws IOException {
         loadPage("categoryRevenue/categoryRevenue");
+        categoryRevenue.getStyleClass().add("sideBarItemActive");
+        revenueByCustomer.getStyleClass().remove("sideBarItemActive");
+        userAccount.getStyleClass().remove("sideBarItemActive");
+        bookRevenue.getStyleClass().remove("sideBarItemActive");
+        revenueByEmployee.getStyleClass().remove("sideBarItemActive");
+        svgCategory.getStyleClass().add("sideBarIconActive");
     }
 
     @FXML
     void SwitchRevenueByCustomer(ActionEvent event) throws IOException {
         loadPage("revenueByCustomer/revenueByCustomer");
+        categoryRevenue.getStyleClass().remove("sideBarItemActive");
+        userAccount.getStyleClass().remove("sideBarItemActive");
+        bookRevenue.getStyleClass().remove("sideBarItemActive");
+        revenueByEmployee.getStyleClass().remove("sideBarItemActive");
+        svgCategory.getStyleClass().remove("sideBarIconActive");
+        revenueByCustomer.getStyleClass().add("sideBarItemActive");
+
+
     }
 
     @FXML
     void SwitchRevenueByEmployee(ActionEvent event) throws IOException {
 //        loadPage("revenueByEmployee/revenueByEmployee");
         loadPage("userAccount/passwordReset");
+        revenueByEmployee.getStyleClass().add("sideBarItemActive");
+        categoryRevenue.getStyleClass().remove("sideBarItemActive");
+        revenueByCustomer.getStyleClass().remove("sideBarItemActive");
+        userAccount.getStyleClass().remove("sideBarItemActive");
+        bookRevenue.getStyleClass().remove("sideBarItemActive");
+        svgCategory.getStyleClass().remove("sideBarIconActive");
+
     }
 
     @FXML
     void SwitchUserAccount(ActionEvent event) throws IOException {
         loadPage("userAccount/userAccount");
+        revenueByEmployee.getStyleClass().remove("sideBarItemActive");
+        userAccount.getStyleClass().add("sideBarItemActive");
+        categoryRevenue.getStyleClass().remove("sideBarItemActive");
+        revenueByCustomer.getStyleClass().remove("sideBarItemActive");
+        bookRevenue.getStyleClass().remove("sideBarItemActive");
+        svgCategory.getStyleClass().remove("sideBarIconActive");
+
     }
 
     @FXML

@@ -117,7 +117,7 @@ public class OrderController implements Initializable  {
 
     private void loadAllOrders() throws IOException {
         orders = new ArrayList<>();
-        orders.add(new Order(UUID.randomUUID(),324,UUID.randomUUID(),LocalDate.of(2024, 4, 11),new BigDecimal("100.00")));
+        //orders.add(new Order(UUID.randomUUID(),324,UUID.randomUUID(),LocalDate.of(2024, 4, 11),new BigDecimal("100.00")));
         updateOrdersList();
         //        orders = Orderservice.getAllOrders();
 //        try {
@@ -251,7 +251,7 @@ public class OrderController implements Initializable  {
                 button.setVisible(true);
 
                 if (i == currentPage) {
-                    button.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
+                    button.setStyle("-fx-background-color: #F5A11C; -fx-text-fill: white;");
                 } else {
                     button.setStyle(null);
                 }
@@ -261,7 +261,7 @@ public class OrderController implements Initializable  {
             firstPaginationButton.setText("1");
             firstPaginationButton.setVisible(true);
             firstPaginationButton.setManaged(true);
-            firstPaginationButton.setStyle("-fx-background-color: #914d2a; -fx-text-fill: white;");
+            firstPaginationButton.setStyle("-fx-background-color: #F5A11C; -fx-text-fill: white;");
             nextPaginationButton.setDisable(true);
         }
     }
