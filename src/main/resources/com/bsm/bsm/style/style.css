@@ -58,7 +58,7 @@
 
 .sideBarItemEmployeeActive {
   -fx-background-color: #F4E7D3 !important;
-  -fx-text-fill: #F5A11C!important;
+  -fx-text-fill: #F5A11C !important;
 }
 .sideBarItemEmployeeActive .graphic{
   -fx-fill: #F5A11C!important;
@@ -176,9 +176,19 @@
   -fx-font-size: 16px;
 }
 
-.text-menu:focused {
-  -fx-background-color: #f7e4db;
-  -fx-text-fill: #914d2a !important;
+
+.text-menu:focused #svgProfileSetting {
+  -fx-fill: white !important;
+
+}
+
+.text-menu:focused #svgLogOut {
+  -fx-fill: white !important;
+
+}
+
+.text-menu:focused  {
+  -fx-background-color: #F5A11C;
 }
 
 .text-menu-item-1 {
