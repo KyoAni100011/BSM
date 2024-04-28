@@ -18,6 +18,10 @@ public class Customer {
         this.isMember =isMember;
     }
 
+    public Customer(String name, String phone, boolean isMember) {
+        this(null, name, phone, isMember);
+    }
+
     public String getId() {
         return id;
     }

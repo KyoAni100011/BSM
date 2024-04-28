@@ -68,36 +68,36 @@ SET importSheetID = LAST_INSERT_ID();
             SET @importPrice = FLOOR(RAND() * 100000) + 50000;
 
             -- Thêm lô sách vào đơn nhập sách
-INSERT INTO bookBatch (quantity, importPrice, importSheetID, bookID)
-VALUES (@quantity, @importPrice, importSheetID, @bookID);
+        INSERT INTO bookBatch (quantity, importPrice, importSheetID, bookID)
+        VALUES (@quantity, @importPrice, importSheetID, @bookID);
 
--- Cập nhật tổng số lượng và giá trị của đơn nhập sách
-UPDATE importSheet
-SET quantity = quantity + @quantity,
-    totalPrice = totalPrice + (@importPrice * @quantity)
-WHERE id = importSheetID;
+        -- Cập nhật tổng số lượng và giá trị của đơn nhập sách
+        UPDATE importSheet
+        SET quantity = quantity + @quantity,
+            totalPrice = totalPrice + (@importPrice * @quantity)
+        WHERE id = importSheetID;
 
--- Cập nhật số lượng sách trong kho
-UPDATE book
-SET quantity = quantity + @quantity
-WHERE isbn = @bookID;
+        -- Cập nhật số lượng sách trong kho
+        UPDATE book
+        SET quantity = quantity + @quantity
+        WHERE isbn = @bookID;
 
--- Cập nhật lại giá bán sách
-SET @maxImportPrice = (SELECT DISTINCT MAX(importPrice) FROM bookBatch WHERE bookID = @bookID);
+        -- Cập nhật lại giá bán sách
+        SET @maxImportPrice = (SELECT DISTINCT MAX(importPrice) FROM bookBatch WHERE bookID = @bookID);
 
-UPDATE book
-SET salePrice = @maxImportPrice * 1.1
-WHERE isbn = @bookID;
+        UPDATE book
+        SET salePrice = @maxImportPrice * 1.1
+        WHERE isbn = @bookID;
 
-SET j = j + 1;
-END WHILE;
+        SET j = j + 1;
+        END WHILE;
 
-        SET j = 0;
-        SET i = i + 1;
-END WHILE;
-END;
+                SET j = 0;
+                SET i = i + 1;
+        END WHILE;
+        END;
 
-call CreateImportSheets();
+        call CreateImportSheets();
 DELIMITER ;
 
 -----------------------------------------------------------------------------------

@@ -24,8 +24,8 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-    public Order(EmployeeModel employee, Customer customer, String orderDate, BigDecimal totalPrice) {
-        this(0, employee, customer, orderDate, totalPrice);
+    public Order(EmployeeModel employee, Customer customer, BigDecimal totalPrice) {
+        this(0, employee, customer, "", totalPrice);
     }
 
     public int getId() {

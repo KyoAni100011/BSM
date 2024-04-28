@@ -2,6 +2,9 @@ package com.bsm.bsm.employee.order;
 
 import com.bsm.bsm.book.Book;
 import com.bsm.bsm.book.BookService;
+import com.bsm.bsm.customer.Customer;
+import com.bsm.bsm.order.OrderService;
+import com.bsm.bsm.utils.AlertUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,13 +12,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,8 @@ public class CreateOrderController implements Initializable {
             return null;
         }
     };
-
+    private final ObservableList<String> bookNames = FXCollections.observableArrayList(); // Store filtered category items
+    private final OrderService orderService = new OrderService();
     @FXML
     public TextField handleNameField, handlePhoneField, MoneyTextField;
     @FXML
@@ -42,7 +44,6 @@ public class CreateOrderController implements Initializable {
     public Label subtotalLabel, discountLabel, totalLabel, totalQuantityItems, MoneyReturnLabel;
     @FXML
     public VBox pnItems = new VBox();
-    private final ObservableList<String> bookNames = FXCollections.observableArrayList(); // Store filtered category items
     private ObservableList<String> currentBookNamesData = FXCollections.observableArrayList(bookNames);
 
     @Override
@@ -55,15 +56,17 @@ public class CreateOrderController implements Initializable {
             List<Book> books = bookService.getAllBooks();
 
             for (var book : books) {
-                bookNames.add(book.getTitle());
+                if (book.isEnabled())
+                    bookNames.add(book.getTitle());
             }
 
             orderItemController = new ArrayList<>();
             currentBookNamesData = bookNames;
+            handleNameField.setText("Anonymous");
 
             MoneyTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-                if(newValue != null  && !newValue.isEmpty() ){
-                    MoneyReturnLabel.setText(String.valueOf(Integer.parseInt(newValue) - Integer.parseInt(totalLabel.getText().isEmpty() ? "0" : totalLabel.getText() )));
+                if (newValue != null && !newValue.isEmpty()) {
+                    MoneyReturnLabel.setText(String.valueOf(Integer.parseInt(newValue) - Integer.parseInt(totalLabel.getText().isEmpty() ? "0" : totalLabel.getText())));
                 } else {
                     MoneyReturnLabel.setText("0");
 
@@ -71,20 +74,19 @@ public class CreateOrderController implements Initializable {
             });
 
             handleNameField.textProperty().addListener((observable, oldValue, newValue) -> {
-                if((newValue != null && !newValue.isEmpty()) && (handlePhoneField.getText().length() == 11 || handlePhoneField.getText().length() == 10)){
-                    discountLabel.setText("(-30%)" +(int) (Integer.parseInt(subtotalLabel.getText()) * 0.3 ));
-                    totalLabel.setText(String.valueOf( (int)( Integer.parseInt(subtotalLabel.getText()) * 0.7)));
-                } else{
+                if ((newValue != null && !newValue.isEmpty()) && (handlePhoneField.getText().length() == 11 || handlePhoneField.getText().length() == 10)) {
+                    discountLabel.setText("(-30%)" + (int) (Integer.parseInt(subtotalLabel.getText()) * 0.05));
+                    totalLabel.setText(String.valueOf((int) (Integer.parseInt(subtotalLabel.getText()) * 0.95)));
+                } else {
                     discountLabel.setText("0%");
                 }
             });
 
             handlePhoneField.textProperty().addListener((observable, oldValue, newValue) -> {
-                if((newValue.length() == 11 || newValue.length() == 10 ) && !handleNameField.getText().isEmpty()){
-                    System.out.println("get in phone" +handleNameField.getText() );
-                    discountLabel.setText("(-30%)" + (int)(Integer.parseInt(subtotalLabel.getText()) * 0.3) );
-                    totalLabel.setText(String.valueOf((int) (Integer.parseInt(subtotalLabel.getText()) * 0.7)) );
-
+                if ((newValue.length() == 11 || newValue.length() == 10) && !handleNameField.getText().isEmpty()) {
+                    System.out.println("get in phone" + handleNameField.getText());
+                    discountLabel.setText("(-5%) " + (int) (Integer.parseInt(subtotalLabel.getText()) * 0.05));
+                    totalLabel.setText(String.valueOf((int) (Integer.parseInt(subtotalLabel.getText()) * 0.95)));
                 } else {
                     discountLabel.setText("0%");
                 }
@@ -109,10 +111,7 @@ public class CreateOrderController implements Initializable {
             handleCountSubtotalAndQuantity();
         } catch (Exception e) {
             System.out.println("handle" + e);
-
         }
-
-
     }
 
     public void handleAddBookButton() {
@@ -125,6 +124,10 @@ public class CreateOrderController implements Initializable {
             orderItemController.get(size).setIndex(this, size + 1);
             orderItemController.get(size).setListBook(bookNames);
             orderItemController.get(size).setListBook(currentBookNamesData);
+//            Book selectedBook = getBookByTitle(currentBookNamesData.get(0));
+            Book selectedBook = new Book("", null, "", "", true, 0, BigDecimal.valueOf(0), null, null);
+            System.out.println("selectedBook: " + selectedBook);
+            orderItemController.get(size).setBook(selectedBook);
 
         } catch (Exception e) {
             System.out.println("this" + e.getMessage());
@@ -137,14 +140,14 @@ public class CreateOrderController implements Initializable {
             currentBookNamesData = tempBookNames;
             for (OrderItemController controller : orderItemController) {
                 String selectedBookName = controller.getBookName();
-                if (!selectedBookName.isEmpty()) {
+                if (selectedBookName != null && !selectedBookName.isEmpty()) {
                     tempBookNames.remove(selectedBookName);
                 }
             }
             for (OrderItemController controller : orderItemController) {
                 ObservableList<String> tempEachBookNames = FXCollections.observableArrayList(tempBookNames);
                 String selectedBookName = controller.getBookName();
-                if (!selectedBookName.isEmpty()) {
+                if (selectedBookName != null && !selectedBookName.isEmpty()) {
                     tempEachBookNames.add(selectedBookName);
                 }
                 controller.setListBook(tempEachBookNames);
@@ -162,8 +165,8 @@ public class CreateOrderController implements Initializable {
         }
         subtotalLabel.setText(String.valueOf(Sub));
         if (!Objects.equals(discountLabel.getText(), "0%")) {
-            discountLabel.setText("(-30%)" + (int) (Integer.parseInt(subtotalLabel.getText()) * 0.3));
-            totalLabel.setText(String.valueOf((int) (Integer.parseInt(subtotalLabel.getText()) * 0.7)));
+            discountLabel.setText("(-5%) " + (int) (Integer.parseInt(subtotalLabel.getText()) * 0.05));
+            totalLabel.setText(String.valueOf((int) (Integer.parseInt(subtotalLabel.getText()) * 0.95)));
         } else {
             totalLabel.setText(String.valueOf(Sub));
         }
@@ -176,5 +179,54 @@ public class CreateOrderController implements Initializable {
     }
 
     public void handlePayActionButton(MouseEvent mouseEvent) {
+        List<String> selectedBooks = new ArrayList<>();
+        List<Integer> quantities = new ArrayList<>();
+        List<BigDecimal> salePrices = new ArrayList<>();
+
+        for (OrderItemController controller : orderItemController) {
+            String bookName = controller.getBookName();
+            int quantity = controller.getItemQuantity();
+            for (var book : bookNames) {
+                if (book.equalsIgnoreCase(bookName)) {
+                    Book selectedBook = getBookByTitle(book);
+                    salePrices.add(selectedBook.getSalePrice());
+                }
+            }
+            if (!bookName.isEmpty() && quantity > 0) {
+                selectedBooks.add(bookName);
+                quantities.add(quantity);
+            }
+        }
+
+        for (int i = 0; i < selectedBooks.size(); i++) {
+            System.out.println("Book: " + selectedBooks.get(i) + ", Quantity: " + quantities.get(i) + ", Sale Price: " + salePrices.get(i));
+        }
+
+        Customer customer = null;
+        if (handleNameField.equals("Anonymous") || (handleNameField.getText() != null && handlePhoneField != null)) {
+            //get customer information
+            boolean isMember = handleNameField.getText().equalsIgnoreCase("Anonymous");
+            customer = new Customer(handleNameField.getText(), handlePhoneField.getText(), isMember);
+            System.out.println(customer);
+
+            if(orderService.createOrder(selectedBooks, quantities, salePrices, customer)) {
+                AlertUtils.showAlert("Success", "Order created successfully", Alert.AlertType.CONFIRMATION);
+            } else {
+                AlertUtils.showAlert("Error", "Order creation failed", Alert.AlertType.ERROR);
+            }
+        } else {
+            System.out.println("Please fill in the customer information");
+        }
+    }
+
+    public Book getBookByTitle(String title) {
+        BookService bookService = new BookService();
+        List<Book> books = bookService.getAllBooks();
+        for (var book : books) {
+            if (book.getTitle().equals(title)) {
+                return book;
+            }
+        }
+        return null;
     }
 }
