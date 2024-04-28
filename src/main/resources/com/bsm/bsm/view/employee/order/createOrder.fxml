@@ -39,7 +39,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Button fx:id="handlePayButton" layoutX="40.0" layoutY="355.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="206.0" style="-fx-background-radius: 15;" styleClass="button-custom-employee" stylesheets="@../../../style/style.css" text="Pay" />
+            <Button fx:id="handlePayButton" onMouseClicked="#handlePayActionButton" layoutX="40.0" layoutY="355.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="206.0" style="-fx-background-radius: 15;" styleClass="button-custom-employee" stylesheets="@../../../style/style.css" text="Pay" />
             <TextField fx:id="handlePhoneField" layoutX="58.0" layoutY="133.0" prefHeight="26.0" prefWidth="206.0" />
             <Label alignment="TOP_LEFT" layoutX="15.0" layoutY="250.0" style="-fx-text-fill: gray;" text="Subtotal">
                <font>
