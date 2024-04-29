@@ -99,7 +99,7 @@ public class RevenueStatisticDAO {
 
     public List<ResultStatistic> getTop10CategoriesByWeeklyRevenue(int year, int week) throws SQLException {
         List<ResultStatistic> categoryRevenues = new ArrayList<>();
-        String query = "SELECT c.name AS title, SUM(od.quantity * od.salePrice) AS revenue FROM orderBooksDetails od JOIN bookBatch bb ON od.bookBatchID = bb.id JOIN book b ON bb.bookID = b.isbn JOIN bookCategory bc ON b.isbn = bc.bookID JOIN category c ON bc.categoryID = c.id JOIN orderSheet os ON od.orderID = os.id WHERE YEAR(os.orderDate) = ? AND DATEPART(WEEK, os.orderDate) = ? GROUP BY c.name ORDER BY revenue DESC LIMIT 10;";
+        String query = "SELECT c.name AS title, SUM(od.quantity * od.salePrice) AS revenue FROM orderBooksDetails od JOIN bookBatch bb ON od.bookBatchID = bb.id JOIN book b ON bb.bookID = b.isbn JOIN bookCategory bc ON b.isbn = bc.bookID JOIN category c ON bc.categoryID = c.id JOIN orderSheet os ON od.orderID = os.id WHERE YEAR(os.orderDate) = ? AND WEEK(os.orderDate) = ? GROUP BY c.name ORDER BY revenue DESC LIMIT 10;";
 
         DatabaseConnection.executeQuery(query, resultSet -> {
             while (resultSet.next()) {
@@ -159,7 +159,7 @@ public class RevenueStatisticDAO {
 
     public List<ResultStatistic> getTop10CustomerByWeeklyRevenue(int year, int week) throws SQLException {
         List<ResultStatistic> customerRevenues = new ArrayList<>();
-        String query = "SELECT cu.name AS title, SUM(odb.quantity * odb.salePrice) AS revenue FROM orderBooksDetails odb JOIN orderSheet os ON odb.orderID = os.id JOIN customer cu ON os.customerID = cu.id WHERE YEAR(os.orderDate) = ? AND DATEPART(WEEK, os.orderDate) = ? GROUP BY cu.name ORDER BY revenue DESC LIMIT 10;";
+        String query = "SELECT cu.name AS title, SUM(odb.quantity * odb.salePrice) AS revenue FROM orderBooksDetails odb JOIN orderSheet os ON odb.orderID = os.id JOIN customer cu ON os.customerID = cu.id WHERE YEAR(os.orderDate) = ? AND WEEK(os.orderDate) = ? GROUP BY cu.name ORDER BY revenue DESC LIMIT 10;";
 
         DatabaseConnection.executeQuery(query, resultSet -> {
             while (resultSet.next()) {
@@ -219,7 +219,7 @@ public class RevenueStatisticDAO {
 
     public List<ResultStatistic> getTop10EmployeeByWeeklyRevenue(int year, int week) throws SQLException {
         List<ResultStatistic> employeeRevenues = new ArrayList<>();
-        String query = "SELECT u.name AS title, SUM(od.quantity * od.salePrice) AS revenue FROM orderBooksDetails od JOIN orderSheet os ON od.orderID is.os.id JOIN employee e ON os.employeeID = e.id JOIN user u ON e.userID = u.id WHERE YEAR(os.orderDate) = ? AND DATEPART(WEEK, os.orderDate) = ? GROUP BY u.name ORDER BY revenue DESC LIMIT 10;";
+        String query = "SELECT u.name AS title, SUM(od.quantity * od.salePrice) AS revenue FROM orderBooksDetails od JOIN orderSheet os ON od.orderID = os.id JOIN employee e ON os.employeeID = e.id JOIN user u ON e.userID = u.id WHERE YEAR(os.orderDate) = ? AND WEEK(os.orderDate) = ? GROUP BY u.name ORDER BY revenue DESC LIMIT 10;";
 
         DatabaseConnection.executeQuery(query, resultSet -> {
             while (resultSet.next()) {
@@ -234,7 +234,7 @@ public class RevenueStatisticDAO {
 
     public List<ResultStatistic> getTop10EmployeesByRevenueDateToDate(String startDate, String endDate) throws SQLException {
         List<ResultStatistic> employeeRevenues = new ArrayList<>();
-        String query = "SELECT e.name AS title, SUM(od.quantity * od.salePrice) AS revenue FROM orderBooksDetails od JOIN orderSheet os ON od.orderID = os.id JOIN employee e ON os.employeeID = e.id JOIN user u ON e.userID = u.id WHERE os.orderDate BETWEEN ? AND ? GROUP BY u.name ORDER BY revenue DESC LIMIT 10;";
+        String query = "SELECT u.name AS title, SUM(od.quantity * od.salePrice) AS revenue FROM orderBooksDetails od JOIN orderSheet os ON od.orderID = os.id JOIN employee e ON os.employeeID = e.id JOIN user u ON e.userID = u.id WHERE os.orderDate BETWEEN ? AND ? GROUP BY u.name ORDER BY revenue DESC LIMIT 10;";
 
         DatabaseConnection.executeQuery(query, resultSet -> {
             while (resultSet.next()) {
