@@ -88,7 +88,7 @@ public class OrderController implements Initializable  {
                 }
                 else {
                     try {
-                        orders = Orderservice.search(inputSearchText);
+                        orders = Orderservice.search(inputSearchText, condition);
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }

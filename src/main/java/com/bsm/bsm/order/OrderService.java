@@ -30,8 +30,8 @@ public class OrderService {
         return orderDAO.getOrderInfo(condition);
     }
 
-    public List<Order> search(String keyword) throws SQLException {
-        List<Order> orders = getAllOrders("");
+    public List<Order> search(String keyword, String condition) throws SQLException {
+        List<Order> orders = getAllOrders(condition);
         String finalKeyword = keyword.toLowerCase();
         return orders.stream()
                 .filter(order ->
