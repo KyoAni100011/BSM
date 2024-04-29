@@ -4,10 +4,12 @@ import com.bsm.bsm.customer.Customer;
 import com.bsm.bsm.customer.CustomerDAO;
 import com.bsm.bsm.database.DatabaseConnection;
 import com.bsm.bsm.employee.EmployeeModel;
+import com.bsm.bsm.user.UserModel;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -62,6 +64,66 @@ public class OrderDAO {
         return true;
     }
 
+    public List<Order> getOrderInfo(String condition) {
+        String QUERY_GET_ORDER_INFO = "SELECT " +
+                "os.id AS order_id, " +
+                "os.orderDate, " +
+                "os.totalPrice AS order_total_price, " +
+                "e.id AS employee_id, " +
+                "u.id AS employee_user_id, " +
+                "u.name AS employee_name, " +
+                "u.email AS employee_email, " +
+                "u.dob AS employee_dob, " +
+                "u.telephone AS employee_telephone, " +
+                "u.address AS employee_address, " +
+                "u.password AS employee_password, " +
+                "u.isEnabled AS employee_is_enabled, " +
+                "u.lastLogin AS employee_last_login, " +
+                "c.id AS customer_id, " +
+                "c.name AS customer_name, " +
+                "c.phone AS customer_phone " +
+                "FROM " +
+                "orderSheet os " +
+                "JOIN " +
+                "employee e ON os.employeeID = e.id " +
+                "JOIN " +
+                "user u ON e.userID = u.id " +
+                "JOIN " +
+                "customer c ON os.customerID = c.id " +
+                condition; // Thêm điều kiện tùy chỉnh
+
+        List<Order> orderInfo = new ArrayList<>();
+        DatabaseConnection.executeQuery(QUERY_GET_ORDER_INFO, resultSet -> {
+            while (resultSet.next()) {
+                Order order = new Order();
+                order.setId(resultSet.getInt("order_id"));
+                order.setOrderDate(resultSet.getString("orderDate"));
+                order.setTotalPrice(resultSet.getBigDecimal("order_total_price"));
+
+                EmployeeModel employee = new EmployeeModel();
+                employee.setName(resultSet.getString("employee_name"));
+                employee.setEmail(resultSet.getString("employee_email"));
+                employee.setDob(resultSet.getString("employee_dob"));
+                employee.setPhone(resultSet.getString("employee_telephone"));
+                employee.setAddress(resultSet.getString("employee_address"));
+                employee.setPassword(resultSet.getString("employee_password"));
+                employee.setEnabled(resultSet.getBoolean("employee_is_enabled"));
+                employee.setLastLogin(resultSet.getString("employee_last_login"));
+
+                Customer customer = new Customer();
+                customer.setId(resultSet.getString("customer_id"));
+                customer.setName(resultSet.getString("customer_name"));
+                customer.setPhone(resultSet.getString("customer_phone"));
+
+                order.setEmployee(employee);
+                order.setCustomer(customer);
+
+                orderInfo.add(order);
+            }
+        });
+
+        return orderInfo;
+    }
     private String getEmployeeID(Connection connection, EmployeeModel employee) throws SQLException {
         String QUERY_GET_EMPLOYEEID = "select e.id from user u join employee e on u.id = e.userID where u.id = ?";
         AtomicReference<String> employeeID = new AtomicReference<>();
