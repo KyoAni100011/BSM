@@ -41,7 +41,7 @@ public class ImportSheetDetailController {
 
     @FXML
     public void initialize() {
-        new CategoryDetailController();
+        new ImportSheetDetailController();
         setImportSheetInfo();
         updateSheet();
     }

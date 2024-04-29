@@ -173,13 +173,7 @@ public class CreateOrderController implements Initializable {
             totalLabel.setText(String.valueOf(Sub));
         }
     }
-    private final UnaryOperator<TextFormatter.Change> integerFilter = change -> {
-        if (Pattern.matches("\\d*", change.getControlNewText())) {
-            return change;
-        } else {
-            return null;
-        }
-    };
+
 
     public void handlePayActionButton(MouseEvent mouseEvent) {
         List<String> selectedBooks = new ArrayList<>();
