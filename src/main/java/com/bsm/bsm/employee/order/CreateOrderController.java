@@ -75,7 +75,7 @@ public class CreateOrderController implements Initializable {
 
             handleNameField.textProperty().addListener((observable, oldValue, newValue) -> {
                 if ((newValue != null && !newValue.isEmpty()) && (handlePhoneField.getText().length() == 11 || handlePhoneField.getText().length() == 10)) {
-                    discountLabel.setText("(-30%)" + (int) (Integer.parseInt(subtotalLabel.getText()) * 0.05));
+                    discountLabel.setText("(-5%) " + (int) (Integer.parseInt(subtotalLabel.getText()) * 0.05));
                     totalLabel.setText(String.valueOf((int) (Integer.parseInt(subtotalLabel.getText()) * 0.95)));
                 } else {
                     discountLabel.setText("0%");
@@ -124,7 +124,6 @@ public class CreateOrderController implements Initializable {
             orderItemController.get(size).setIndex(this, size + 1);
             orderItemController.get(size).setListBook(bookNames);
             orderItemController.get(size).setListBook(currentBookNamesData);
-//            Book selectedBook = getBookByTitle(currentBookNamesData.get(0));
             Book selectedBook = new Book("", null, "", "", true, 0, BigDecimal.valueOf(0), null, null);
             System.out.println("selectedBook: " + selectedBook);
             orderItemController.get(size).setBook(selectedBook);
@@ -164,15 +163,15 @@ public class CreateOrderController implements Initializable {
             Quan += controller.getItemQuantity();
         }
         subtotalLabel.setText(String.valueOf(Sub));
+
+        totalQuantityItems.setText("Total: " + Quan + " items");
+
         if (!Objects.equals(discountLabel.getText(), "0%")) {
             discountLabel.setText("(-5%) " + (int) (Integer.parseInt(subtotalLabel.getText()) * 0.05));
             totalLabel.setText(String.valueOf((int) (Integer.parseInt(subtotalLabel.getText()) * 0.95)));
         } else {
             totalLabel.setText(String.valueOf(Sub));
         }
-
-        totalQuantityItems.setText("Total: " + Quan + " items");
-
     }
 
     public void handleRefreshButton(ActionEvent actionEvent) {
