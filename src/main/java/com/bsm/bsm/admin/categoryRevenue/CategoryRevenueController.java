@@ -1,4 +1,4 @@
-package com.bsm.bsm.admin.bookRevenue;
+package com.bsm.bsm.admin.categoryRevenue;
 
 import com.bsm.bsm.revenue.ResultStatistic;
 import com.bsm.bsm.revenue.RevenueStatisticService;
@@ -27,12 +27,12 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class BookRevenueController {
+public class CategoryRevenueController {
     private final RevenueStatisticService revenueStatisticService = new RevenueStatisticService();
     private final ExecutorService executorService = Executors.newCachedThreadPool();
     public AnchorPane AncBookBarChart;
     @FXML private Button btnByMonth, btnByWeek, btnByDate, btnFromDateToDate;
-    @FXML private BarChart<String, Number> bookBarChart;
+    @FXML private BarChart<String, Number> categoryBarChart;
     @FXML private DatePicker datePicker, datePicker1;
     @FXML private AnchorPane datePickerContainer;
 
@@ -82,8 +82,8 @@ public class BookRevenueController {
         LocalDate selectedDate = datePicker.getValue();
         executorService.submit(() -> {
             try {
-                List<ResultStatistic> bookMonthly = revenueStatisticService.getBookMonthlyRevenue(selectedDate.getYear(), selectedDate.getMonthValue());
-                Platform.runLater(() -> updateChartWithData(bookMonthly, "Top 10 Best Selling Books By Month"));
+                List<ResultStatistic> categoryMonthly = revenueStatisticService.getCategoryMonthlyRevenue(selectedDate.getYear(), selectedDate.getMonthValue());
+                Platform.runLater(() -> updateChartWithData(categoryMonthly, "Top 10 Best Selling Category By Month"));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -152,8 +152,8 @@ public class BookRevenueController {
         LocalDate selectedDate = datePicker.getValue();
         executorService.submit(() -> {
             try {
-                List<ResultStatistic> bookDaily = revenueStatisticService.getBookDailyRevenue(selectedDate.toString());
-                Platform.runLater(() -> updateChartWithData(bookDaily, "Top 10 Best Selling Books By Date"));
+                List<ResultStatistic> categoryDaily = revenueStatisticService.getCategoryDailyRevenue(selectedDate.toString());
+                Platform.runLater(() -> updateChartWithData(categoryDaily, "Top 10 Best Selling Category By Date"));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -173,15 +173,15 @@ public class BookRevenueController {
             LocalDate startDate = datePicker.getValue(), endDate = datePicker1.getValue();
             if (startDate != null && endDate != null && !startDate.isAfter(endDate)) {
                 try {
-                    List<ResultStatistic> booksFromTo = revenueStatisticService.getBookDateToDateRevenue(startDate.toString(), endDate.toString());
-                    Platform.runLater(() -> updateChartWithData(booksFromTo, "Top 10 Best Selling Books From " + startDate + " To " + endDate));
+                    List<ResultStatistic> CategoryFromTo = revenueStatisticService.getCategoryDateToDateRevenue(startDate.toString(), endDate.toString());
+                    Platform.runLater(() -> updateChartWithData(CategoryFromTo, "Top 10 Best Selling Category From " + startDate + " To " + endDate));
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
             } else {
                 Platform.runLater(() -> {
-                    bookBarChart.getData().clear();
-                    bookBarChart.setTitle("Invalid Date Range");
+                    categoryBarChart.getData().clear();
+                    categoryBarChart.setTitle("Invalid Date Range");
                 });
             }
         });
@@ -212,7 +212,7 @@ public class BookRevenueController {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
 
         // Tạo một chuỗi chuyển đổi để định dạng giá trị trục y
-        NumberAxis yAxis = (NumberAxis) bookBarChart.getYAxis();
+        NumberAxis yAxis = (NumberAxis) categoryBarChart.getYAxis();
         yAxis.setTickLabelFormatter(new StringConverter<Number>() {
             @Override
             public String toString(Number object) {
@@ -232,21 +232,21 @@ public class BookRevenueController {
         });
 
         // Tạo một biểu đồ mới
-        AncBookBarChart.getChildren().remove(bookBarChart);
-        bookBarChart = new BarChart<>(bookBarChart.getXAxis(), bookBarChart.getYAxis());
-        bookBarChart.setPrefWidth(AncBookBarChart.getWidth());
-        bookBarChart.setPrefHeight(AncBookBarChart.getHeight());
-        AncBookBarChart.getChildren().add(bookBarChart);
+        AncBookBarChart.getChildren().remove(categoryBarChart);
+        categoryBarChart = new BarChart<>(categoryBarChart.getXAxis(), categoryBarChart.getYAxis());
+        categoryBarChart.setPrefWidth(AncBookBarChart.getWidth());
+        categoryBarChart.setPrefHeight(AncBookBarChart.getHeight());
+        AncBookBarChart.getChildren().add(categoryBarChart);
 
         series.setData(chartData);
-        bookBarChart.getData().clear();
-        bookBarChart.setLegendVisible(false);
-        bookBarChart.setTitle(chartTitle);
-        bookBarChart.getData().add(series);
+        categoryBarChart.getData().clear();
+        categoryBarChart.setLegendVisible(false);
+        categoryBarChart.setTitle(chartTitle);
+        categoryBarChart.getData().add(series);
 
         applyTooltip(series);
 
-        bookBarChart.setAnimated(false);
+        categoryBarChart.setAnimated(false);
     }
 
 

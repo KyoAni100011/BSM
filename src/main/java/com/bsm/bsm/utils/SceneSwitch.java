@@ -48,42 +48,27 @@ public class SceneSwitch {
         currentAnchorPane.getChildren().clear();
         currentAnchorPane.getChildren().add(nextAnchorPane);
 
+        // Resize the scene and stage based on the content
+        resizeSceneAndStage(nextAnchorPane);
     }
 
     private void resizeSceneAndStage(AnchorPane anchorPane) {
-        // Set the resizable property for the stage
         Stage stage = (Stage) anchorPane.getScene().getWindow();
         if (stage != null) {
             stage.setResizable(true); // Ensure the stage is resizable
 
             // Calculate the center position of the screen
             Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-            double centerX = primaryScreenBounds.getMinX() + (primaryScreenBounds.getWidth() - anchorPane.getPrefWidth()) / 2;
-            double centerY = primaryScreenBounds.getMinY() + (primaryScreenBounds.getHeight() - anchorPane.getPrefHeight()) / 2;
+            double centerX = primaryScreenBounds.getMinX() + (primaryScreenBounds.getWidth() - stage.getWidth()) / 2;
+            double centerY = primaryScreenBounds.getMinY() + (primaryScreenBounds.getHeight() - stage.getHeight()) / 2;
 
             // Set the position of the stage
             stage.setX(centerX);
             stage.setY(centerY);
 
-            // Set preferred width and height based on the content
-            double prefWidth = anchorPane.getPrefWidth();
-            double prefHeight = anchorPane.getPrefHeight();
+            stage.setWidth(anchorPane.getPrefWidth());
+            stage.setHeight(anchorPane.getPrefHeight());
 
-            // Ensure the preferred width and height are not zero
-            if (prefWidth > 0 && prefHeight > 0) {
-                stage.setMinWidth(prefWidth);
-                stage.setMinHeight(prefHeight);
-                stage.setMaxWidth(prefWidth);
-                stage.setMaxHeight(prefHeight);
-            }
-
-            // Resize the scene and stage based on the content
-            Scene scene = anchorPane.getScene();
-            if (scene != null) {
-                scene.getWindow().sizeToScene();
-            }
-
-            stage.sizeToScene();
         }
     }
 }

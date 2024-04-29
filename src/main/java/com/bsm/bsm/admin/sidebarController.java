@@ -116,8 +116,7 @@ public class sidebarController {
 
     @FXML
     void SwitchRevenueByEmployee(ActionEvent event) throws IOException {
-//        loadPage("revenueByEmployee/revenueByEmployee");
-        loadPage("userAccount/passwordReset");
+   loadPage("revenueByEmployee/revenueByEmployee");
         revenueByEmployee.getStyleClass().add("sideBarItemActive");
         categoryRevenue.getStyleClass().remove("sideBarItemActive");
         revenueByCustomer.getStyleClass().remove("sideBarItemActive");

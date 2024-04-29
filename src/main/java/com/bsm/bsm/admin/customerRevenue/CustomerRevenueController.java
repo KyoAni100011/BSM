@@ -1,4 +1,4 @@
-package com.bsm.bsm.admin.bookRevenue;
+package com.bsm.bsm.admin.customerRevenue;
 
 import com.bsm.bsm.revenue.ResultStatistic;
 import com.bsm.bsm.revenue.RevenueStatisticService;
@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
@@ -14,6 +15,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
 
 import java.sql.SQLException;
 import java.time.DayOfWeek;
@@ -25,11 +27,12 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class BookBarChartController {
+public class CustomerRevenueController {
     private final RevenueStatisticService revenueStatisticService = new RevenueStatisticService();
     private final ExecutorService executorService = Executors.newCachedThreadPool();
+    public AnchorPane AncBookBarChart;
     @FXML private Button btnByMonth, btnByWeek, btnByDate, btnFromDateToDate;
-    @FXML private BarChart<String, Number> bookBarChart;
+    @FXML private BarChart<String, Number> customerBarChart;
     @FXML private DatePicker datePicker, datePicker1;
     @FXML private AnchorPane datePickerContainer;
 
@@ -79,8 +82,8 @@ public class BookBarChartController {
         LocalDate selectedDate = datePicker.getValue();
         executorService.submit(() -> {
             try {
-                List<ResultStatistic> bookMonthly = revenueStatisticService.getBookMonthlyRevenue(selectedDate.getYear(), selectedDate.getMonthValue());
-                Platform.runLater(() -> updateChartWithData(bookMonthly, "Top 10 Best Selling Books By Month"));
+                List<ResultStatistic> customerMonthly = revenueStatisticService.getCustomerMonthlyRevenue(selectedDate.getYear(), selectedDate.getMonthValue());
+                Platform.runLater(() -> updateChartWithData(customerMonthly, "Top 10 Best Selling By Month By Customer"));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -99,9 +102,8 @@ public class BookBarChartController {
         LocalDate selectedDate = datePicker.getValue();
         executorService.submit(() -> {
             try {
-                List<ResultStatistic> bookWeekly = revenueStatisticService.getBookWeeklyRevenue(selectedDate.getYear(), selectedDate.get(WeekFields.ISO.weekOfYear()));
-                System.out.println(bookWeekly);
-                Platform.runLater(() -> updateChartWithData(bookWeekly, "Top 10 Best Selling Books By Week"));
+                List<ResultStatistic> customerWeekly = revenueStatisticService.getCustomerWeeklyRevenue(selectedDate.getYear(), selectedDate.get(WeekFields.ISO.weekOfYear()));
+                Platform.runLater(() -> updateChartWithData(customerWeekly, "Top 10 Best Selling By Week By Customer"));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -149,8 +151,8 @@ public class BookBarChartController {
         LocalDate selectedDate = datePicker.getValue();
         executorService.submit(() -> {
             try {
-                List<ResultStatistic> bookDaily = revenueStatisticService.getBookDailyRevenue(selectedDate.toString());
-                Platform.runLater(() -> updateChartWithData(bookDaily, "Top 10 Best Selling Books By Date"));
+                List<ResultStatistic> customerDaily = revenueStatisticService.getCustomerDailyRevenue(selectedDate.toString());
+                Platform.runLater(() -> updateChartWithData(customerDaily, "Top 10 Best Selling By Date By Customer"));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -170,15 +172,15 @@ public class BookBarChartController {
             LocalDate startDate = datePicker.getValue(), endDate = datePicker1.getValue();
             if (startDate != null && endDate != null && !startDate.isAfter(endDate)) {
                 try {
-                    List<ResultStatistic> booksFromTo = revenueStatisticService.getBookDateToDateRevenue(startDate.toString(), endDate.toString());
-                    Platform.runLater(() -> updateChartWithData(booksFromTo, "Top 10 Best Selling Books From " + startDate + " To " + endDate));
+                    List<ResultStatistic> customerFromTo = revenueStatisticService.getCustomerDateToDateRevenue(startDate.toString(), endDate.toString());
+                    Platform.runLater(() -> updateChartWithData(customerFromTo, "Top 10 Best Selling Customer From " + startDate + " To " + endDate));
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
             } else {
                 Platform.runLater(() -> {
-                    bookBarChart.getData().clear();
-                    bookBarChart.setTitle("Invalid Date Range");
+                    customerBarChart.getData().clear();
+                    customerBarChart.setTitle("Invalid Date Range");
                 });
             }
         });
@@ -197,31 +199,53 @@ public class BookBarChartController {
     }
 
     private void updateChartWithData(List<ResultStatistic> data, String chartTitle) {
-        // Tạo một biểu đồ mới
-        BarChart<String, Number> newChart = new BarChart<>(bookBarChart.getXAxis(), bookBarChart.getYAxis());
-        newChart.setTitle(chartTitle);
-
         ObservableList<XYChart.Data<String, Number>> chartData = FXCollections.observableArrayList();
         if (data != null) {
-            data.forEach(rs -> chartData.add(new XYChart.Data<>(rs.getTitle(), rs.getStatisticValue())));
+            int count = 1;
+            for (ResultStatistic rs : data) {
+                chartData.add(new XYChart.Data<>(String.valueOf(count), rs.getStatisticValue()));
+                count++;
+            }
         }
-        XYChart.Series<String, Number> series = new XYChart.Series<>(chartData);
 
-        // Thêm dữ liệu vào biểu đồ mới
-        newChart.getData().add(series);
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+
+        // Tạo một chuỗi chuyển đổi để định dạng giá trị trục y
+        NumberAxis yAxis = (NumberAxis) customerBarChart.getYAxis();
+        yAxis.setTickLabelFormatter(new StringConverter<Number>() {
+            @Override
+            public String toString(Number object) {
+                if (object.intValue() < 1000000) {
+                    return String.format("%.0f", object);
+                } else if (object.intValue() < 1000000000) {
+                    return String.format("%.0fM", object.doubleValue() / 1000000);
+                } else {
+                    return String.format("%.0fB", object.doubleValue() / 1000000000);
+                }
+            }
+
+            @Override
+            public Number fromString(String string) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+
+        // Tạo một biểu đồ mới
+        AncBookBarChart.getChildren().remove(customerBarChart);
+        customerBarChart = new BarChart<>(customerBarChart.getXAxis(), customerBarChart.getYAxis());
+        customerBarChart.setPrefWidth(AncBookBarChart.getWidth());
+        customerBarChart.setPrefHeight(AncBookBarChart.getHeight());
+        AncBookBarChart.getChildren().add(customerBarChart);
+
+        series.setData(chartData);
+        customerBarChart.getData().clear();
+        customerBarChart.setLegendVisible(false);
+        customerBarChart.setTitle(chartTitle);
+        customerBarChart.getData().add(series);
+
         applyTooltip(series);
 
-        // Xác định kích thước của cha và thiết lập kích thước của biểu đồ mới bằng với cha
-        AnchorPane parentPane = (AnchorPane) bookBarChart.getParent();
-        double parentWidth = parentPane.getWidth();
-        double parentHeight = parentPane.getHeight();
-        newChart.setPrefWidth(parentWidth);
-        newChart.setPrefHeight(parentHeight);
-
-        // Xóa biểu đồ hiện tại và thêm biểu đồ mới vào cùng cha của nó
-        parentPane.getChildren().remove(bookBarChart);
-        parentPane.getChildren().add(newChart);
-        bookBarChart = newChart;
+        customerBarChart.setAnimated(false);
     }
 
 

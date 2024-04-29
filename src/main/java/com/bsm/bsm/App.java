@@ -1,4 +1,5 @@
 package com.bsm.bsm;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,13 +10,17 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class App extends Application {
+    private Stage primaryStage;
+
     @Override
-    public void start(Stage stage) throws IOException {
-        // Load FXML
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/bsm/bsm/view/login.fxml")));
-        if (root == null) {
-            throw new IOException("FXML file not found");
-        }
+    public void start(Stage primaryStage) throws IOException {
+        this.primaryStage = primaryStage;
+        loadFXML("login", "BSM Welcome");
+    }
+
+    public void loadFXML(String fxmlFile, String title) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/" + fxmlFile + ".fxml"));
+        Parent root = fxmlLoader.load();
 
         // Load CSS
         String cssPath = "/com/bsm/bsm/style/style.css";
@@ -25,12 +30,10 @@ public class App extends Application {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource(cssPath).toExternalForm());
 
-        // Set the position of the stage to the center of the screen
-        stage.centerOnScreen();
-
-        stage.setTitle("BSM Welcome");
-        stage.setScene(scene);
-        stage.show();
+        primaryStage.setTitle(title);
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(true); // Ensure the window is resizable
+        primaryStage.show();
     }
 
     public static void main(String[] args) {

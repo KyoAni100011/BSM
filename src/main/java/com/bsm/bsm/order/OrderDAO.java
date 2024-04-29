@@ -4,11 +4,14 @@ import com.bsm.bsm.customer.Customer;
 import com.bsm.bsm.customer.CustomerDAO;
 import com.bsm.bsm.database.DatabaseConnection;
 import com.bsm.bsm.employee.EmployeeModel;
+import com.bsm.bsm.user.UserModel;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class OrderDAO {
@@ -61,6 +64,66 @@ public class OrderDAO {
         return true;
     }
 
+    public List<Order> getOrderInfo(String condition) {
+        String QUERY_GET_ORDER_INFO = "SELECT " +
+                "os.id AS order_id, " +
+                "os.orderDate, " +
+                "os.totalPrice AS order_total_price, " +
+                "e.id AS employee_id, " +
+                "u.id AS employee_user_id, " +
+                "u.name AS employee_name, " +
+                "u.email AS employee_email, " +
+                "u.dob AS employee_dob, " +
+                "u.telephone AS employee_telephone, " +
+                "u.address AS employee_address, " +
+                "u.password AS employee_password, " +
+                "u.isEnabled AS employee_is_enabled, " +
+                "u.lastLogin AS employee_last_login, " +
+                "c.id AS customer_id, " +
+                "c.name AS customer_name, " +
+                "c.phone AS customer_phone " +
+                "FROM " +
+                "orderSheet os " +
+                "JOIN " +
+                "employee e ON os.employeeID = e.id " +
+                "JOIN " +
+                "user u ON e.userID = u.id " +
+                "JOIN " +
+                "customer c ON os.customerID = c.id " +
+                condition; // Thêm điều kiện tùy chỉnh
+
+        List<Order> orderInfo = new ArrayList<>();
+        DatabaseConnection.executeQuery(QUERY_GET_ORDER_INFO, resultSet -> {
+            while (resultSet.next()) {
+                Order order = new Order();
+                order.setId(resultSet.getInt("order_id"));
+                order.setOrderDate(resultSet.getString("orderDate"));
+                order.setTotalPrice(resultSet.getBigDecimal("order_total_price"));
+
+                EmployeeModel employee = new EmployeeModel();
+                employee.setName(resultSet.getString("employee_name"));
+                employee.setEmail(resultSet.getString("employee_email"));
+                employee.setDob(resultSet.getString("employee_dob"));
+                employee.setPhone(resultSet.getString("employee_telephone"));
+                employee.setAddress(resultSet.getString("employee_address"));
+                employee.setPassword(resultSet.getString("employee_password"));
+                employee.setEnabled(resultSet.getBoolean("employee_is_enabled"));
+                employee.setLastLogin(resultSet.getString("employee_last_login"));
+
+                Customer customer = new Customer();
+                customer.setId(resultSet.getString("customer_id"));
+                customer.setName(resultSet.getString("customer_name"));
+                customer.setPhone(resultSet.getString("customer_phone"));
+
+                order.setEmployee(employee);
+                order.setCustomer(customer);
+
+                orderInfo.add(order);
+            }
+        });
+
+        return orderInfo;
+    }
     private String getEmployeeID(Connection connection, EmployeeModel employee) throws SQLException {
         String QUERY_GET_EMPLOYEEID = "select e.id from user u join employee e on u.id = e.userID where u.id = ?";
         AtomicReference<String> employeeID = new AtomicReference<>();
@@ -104,31 +167,15 @@ public class OrderDAO {
     }
 
     private int insertOrderBooksDetails(Connection connection, String orderID, String bookName, int quantityInput, BigDecimal salePrice) throws SQLException {
-        String QUERY_GET_BOOK_ISBN = "select isbn from book where title = ?";
-        AtomicReference<String> isbn = new AtomicReference<>();
-        DatabaseConnection.executeQuery(connection, QUERY_GET_BOOK_ISBN, resultSet -> {
-            if (resultSet != null && resultSet.next()) {
-                isbn.set(resultSet.getString("isbn"));
-            }
-        }, bookName);
 
-        String QUERY_GET_ID_AND_QUANTITY_IN_BOOK_BATCH = """
-            select bb.id, bb.quantity
-            from bookBatch bb join importsheet i on bb.importSheetID = i.id
-            where bb.quantity > 0 and bookID = ?
-            order by importDate limit 1
-            """;
-        AtomicReference<Integer> bookBatchID = new AtomicReference<>();
-        AtomicReference<Integer> quantity = new AtomicReference<>();
-        DatabaseConnection.executeQuery(connection, QUERY_GET_ID_AND_QUANTITY_IN_BOOK_BATCH, resultSet -> {
-            if (resultSet != null && resultSet.next()) {
-                bookBatchID.set(resultSet.getInt("id"));
-                quantity.set(resultSet.getInt("quantity"));
-            }
-        }, isbn.get());
+        String bookISBN = getBookISBN(connection, bookName);
+
+        Map<Integer, Integer> bookBatchIDAndQuantity = getIDAndQuanitityInBookBatch(connection, bookISBN, bookName, quantityInput);
+        int bookBatchID = bookBatchIDAndQuantity.keySet().iterator().next();
+        var quantity = bookBatchIDAndQuantity.values().iterator().next();
 
         String QUERY_INSERT_ORDER_BOOK_DETAILS = "insert into orderBooksDetails (orderID, bookBatchID, quantity, salePrice) values (?, ?, ?, ?)";
-        int rowAffected = DatabaseConnection.executeUpdate(connection, QUERY_INSERT_ORDER_BOOK_DETAILS, orderID, bookBatchID.get(), quantityInput, salePrice);
+        int rowAffected = DatabaseConnection.executeUpdate(connection, QUERY_INSERT_ORDER_BOOK_DETAILS, orderID, bookBatchID, quantityInput, salePrice);
 
         if (checkRowAffected(connection, rowAffected)) {
             System.out.println("Insert orderBooksDetails success");
@@ -144,23 +191,56 @@ public class OrderDAO {
             if (resultSet != null && resultSet.next()) {
                 quantityInBook.set(resultSet.getInt("quantity"));
             }
-        }, isbn.get());
+        }, bookISBN);
 
         String QUERY_UPDATE_QUANTITY_IN_BOOK = "update book set quantity = ? where isbn = ?";
-        DatabaseConnection.executeUpdate(connection, QUERY_UPDATE_QUANTITY_IN_BOOK, quantityInBook.get() - quantityInput, isbn.get());
+        DatabaseConnection.executeUpdate(connection, QUERY_UPDATE_QUANTITY_IN_BOOK, quantityInBook.get() - quantityInput, bookISBN);
 
         String QUERY_UPDATE_TOTAL_PRICE_IN_ORDER = "update orderSheet set totalPrice = totalPrice + ? where id = ?";
         DatabaseConnection.executeUpdate(connection, QUERY_UPDATE_TOTAL_PRICE_IN_ORDER, salePrice.multiply(BigDecimal.valueOf(quantityInput)), orderID);
 
-        if (quantity.get() >= quantityInput) {
-            DatabaseConnection.executeUpdate(connection, QUERY_UPDATE_QUANTITY_IN_BOOK_BATCH, quantity.get() - quantityInput, bookBatchID.get());
+
+        if (quantity >= quantityInput) {
+            DatabaseConnection.executeUpdate(connection, QUERY_UPDATE_QUANTITY_IN_BOOK_BATCH, quantity - quantityInput, bookBatchID);
             quantityInput = 0;
         } else {
-            DatabaseConnection.executeUpdate(connection, QUERY_UPDATE_QUANTITY_IN_BOOK_BATCH, 0, bookBatchID.get());
-            quantityInput -= quantity.get();
+            DatabaseConnection.executeUpdate(connection, QUERY_UPDATE_QUANTITY_IN_BOOK_BATCH, 0, bookBatchID);
+            quantityInput -= quantity;
         }
 
         return quantityInput;
+    }
+
+    private String getBookISBN(Connection connection, String bookName) {
+        String QUERY_GET_BOOK_ID = "select isbn from book where title = ?";
+        AtomicReference<String> bookID = new AtomicReference<>();
+        DatabaseConnection.executeQuery(connection, QUERY_GET_BOOK_ID, resultSet -> {
+            if (resultSet != null && resultSet.next()) {
+                bookID.set(resultSet.getString("isbn"));
+            }
+        }, bookName);
+
+        return bookID.get();
+    }
+
+    private Map<Integer, Integer> getIDAndQuanitityInBookBatch(Connection connection, String isbn, String bookName, int quantityInput) {
+        String QUERY_GET_ID_AND_QUANTITY_IN_BOOK_BATCH = """
+            select bb.id, bb.quantity
+            from bookBatch bb join importsheet i on bb.importSheetID = i.id
+            where bb.quantity > 0 and bookID = ?
+            order by importDate limit 1
+            """;
+
+        AtomicReference<Integer> bookBatchID = new AtomicReference<>();
+        AtomicReference<Integer> quantity = new AtomicReference<>();
+        DatabaseConnection.executeQuery(connection, QUERY_GET_ID_AND_QUANTITY_IN_BOOK_BATCH, resultSet -> {
+            if (resultSet != null && resultSet.next()) {
+                bookBatchID.set(resultSet.getInt("id"));
+                quantity.set(resultSet.getInt("quantity"));
+            }
+        }, isbn);
+
+        return Map.of(bookBatchID.get(), quantity.get());
     }
 
     private void discountForCustomer(Connection connection, String orderID, Customer customer) throws SQLException {
