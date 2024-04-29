@@ -4,13 +4,20 @@ import com.bsm.bsm.book.Book;
 import com.bsm.bsm.book.BookBatch;
 import com.bsm.bsm.book.BookDAO;
 import com.bsm.bsm.database.DatabaseConnection;
+import com.bsm.bsm.employee.EmployeeModel;
+import com.bsm.bsm.user.UserDAO;
+import com.bsm.bsm.user.UserModel;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ImportSheetDAO {
+
+    private final UserDAO userDao = new UserDAO();
 
     public boolean createImportSheet(ImportSheet importSheet, List<BookBatch> bookBatches) throws SQLException {
         Connection connection = DatabaseConnection.getConnection();
@@ -34,6 +41,34 @@ public class ImportSheetDAO {
         int rowAffected = DatabaseConnection.executeUpdate(connection, QUERY_INSERT_BOOK_BATCH,
                 bookBatch.getQuantity(), bookBatch.getImportPrice(), importSheetID, bookBatch.getBook().getIsbn());
         if (!checkRowAffected(connection, rowAffected)) throw new SQLException("Insert bookBatch failed");
+    }
+
+    public List<BookSheetDetail> getISheetBookDetails(String idSheet) {
+        List<BookSheetDetail> bookSheetDetails = new ArrayList<>();
+        String query = "SELECT " +
+                "    b.title AS bookTitle, " +
+                "    bBatch.quantity AS quantity, " +
+                "    bBatch.importPrice as price " +
+                "FROM " +
+                "    importSheet isheet " +
+                "JOIN " +
+                "    bookBatch bBatch ON isheet.id = bBatch.importSheetID " +
+                "JOIN " +
+                "    book b ON bBatch.bookID = b.isbn " +
+                "WHERE " +
+                "    isheet.id = ?";
+
+        DatabaseConnection.executeQuery(query, resultSet -> {
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    String title = resultSet.getString("bookTitle");
+                    BigDecimal price = resultSet.getBigDecimal("price");
+                    int quantity = resultSet.getInt("quantity");
+                    bookSheetDetails.add(new BookSheetDetail(title, price, quantity));
+                }
+            }
+        }, idSheet);
+        return bookSheetDetails;
     }
 
 
@@ -70,6 +105,37 @@ public class ImportSheetDAO {
         if (!checkRowAffected(connection, rowAffected)) return null;
 
         return getImportSheetID(connection, employeeID, importSheet);
+    }
+
+    public List<ImportSheet> getAllImportSheets() throws SQLException {
+        List<ImportSheet> listImportSheets = new ArrayList<>();
+        String QUERY_ALL_IMPORT_SHEET = "select sheet.*, e.userID " +
+                "from importsheet sheet join employee e on sheet.employeeID = e.id";
+        List<String> listUserId = new ArrayList<>();
+        int indexListUserId = 0;
+        DatabaseConnection.executeQuery(QUERY_ALL_IMPORT_SHEET, resultSet -> {
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    String id = resultSet.getString("id");
+                    BigDecimal totalPrice = resultSet.getBigDecimal("totalPrice");
+                    int quantity = resultSet.getInt("quantity");
+                    String importDate = resultSet.getString("importDate");
+                    String userID = resultSet.getString("userID");
+                    listUserId.add(userID);
+                    listImportSheets.add(new ImportSheet(id,null, importDate, quantity, totalPrice));
+                }
+            }
+        });
+
+
+        for(ImportSheet sheet : listImportSheets)
+        {
+            EmployeeModel employee = (EmployeeModel) userDao.getUserInfo(listUserId.get(indexListUserId));
+            sheet.setEmployee(employee);
+            indexListUserId++;
+        }
+
+        return listImportSheets;
     }
 
     private String getImportSheetID(Connection connection, String employeeID, ImportSheet importSheet) throws SQLException {

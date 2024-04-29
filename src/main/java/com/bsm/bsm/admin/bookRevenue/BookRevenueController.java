@@ -7,7 +7,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
@@ -17,7 +16,6 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
-import javafx.geometry.Side;
 
 import java.sql.SQLException;
 import java.time.DayOfWeek;
@@ -29,9 +27,10 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-class BookBarChartController {
+public class BookRevenueController {
     private final RevenueStatisticService revenueStatisticService = new RevenueStatisticService();
     private final ExecutorService executorService = Executors.newCachedThreadPool();
+    public AnchorPane AncBookBarChart;
     @FXML private Button btnByMonth, btnByWeek, btnByDate, btnFromDateToDate;
     @FXML private BarChart<String, Number> bookBarChart;
     @FXML private DatePicker datePicker, datePicker1;
@@ -201,31 +200,53 @@ class BookBarChartController {
     }
 
     private void updateChartWithData(List<ResultStatistic> data, String chartTitle) {
-        // Tạo một biểu đồ mới
-        BarChart<String, Number> newChart = new BarChart<>(bookBarChart.getXAxis(), bookBarChart.getYAxis());
-        newChart.setTitle(chartTitle);
-
         ObservableList<XYChart.Data<String, Number>> chartData = FXCollections.observableArrayList();
         if (data != null) {
-            data.forEach(rs -> chartData.add(new XYChart.Data<>(rs.getTitle(), rs.getStatisticValue())));
+            int count = 1;
+            for (ResultStatistic rs : data) {
+                chartData.add(new XYChart.Data<>(String.valueOf(count), rs.getStatisticValue()));
+                count++;
+            }
         }
-        XYChart.Series<String, Number> series = new XYChart.Series<>(chartData);
 
-        // Thêm dữ liệu vào biểu đồ mới
-        newChart.getData().add(series);
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+
+        // Tạo một chuỗi chuyển đổi để định dạng giá trị trục y
+        NumberAxis yAxis = (NumberAxis) bookBarChart.getYAxis();
+        yAxis.setTickLabelFormatter(new StringConverter<Number>() {
+            @Override
+            public String toString(Number object) {
+                if (object.intValue() < 1000000) {
+                    return String.format("%.0f", object);
+                } else if (object.intValue() < 1000000000) {
+                    return String.format("%.0fM", object.doubleValue() / 1000000);
+                } else {
+                    return String.format("%.0fB", object.doubleValue() / 1000000000);
+                }
+            }
+
+            @Override
+            public Number fromString(String string) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+
+        // Tạo một biểu đồ mới
+        AncBookBarChart.getChildren().remove(bookBarChart);
+        bookBarChart = new BarChart<>(bookBarChart.getXAxis(), bookBarChart.getYAxis());
+        bookBarChart.setPrefWidth(AncBookBarChart.getWidth());
+        bookBarChart.setPrefHeight(AncBookBarChart.getHeight());
+        AncBookBarChart.getChildren().add(bookBarChart);
+
+        series.setData(chartData);
+        bookBarChart.getData().clear();
+        bookBarChart.setLegendVisible(false);
+        bookBarChart.setTitle(chartTitle);
+        bookBarChart.getData().add(series);
+
         applyTooltip(series);
 
-        // Xác định kích thước của cha và thiết lập kích thước của biểu đồ mới bằng với cha
-        AnchorPane parentPane = (AnchorPane) bookBarChart.getParent();
-        double parentWidth = parentPane.getWidth();
-        double parentHeight = parentPane.getHeight();
-        newChart.setPrefWidth(parentWidth);
-        newChart.setPrefHeight(parentHeight);
-
-        // Xóa biểu đồ hiện tại và thêm biểu đồ mới vào cùng cha của nó
-        parentPane.getChildren().remove(bookBarChart);
-        parentPane.getChildren().add(newChart);
-        bookBarChart = newChart;
+        bookBarChart.setAnimated(false);
     }
 
 

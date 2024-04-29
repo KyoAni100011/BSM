@@ -12,10 +12,14 @@ import java.util.Objects;
 public class FXMLLoaderHelper {
 
     public static void loadFXML(Stage currentStage, String fxmlPath) throws IOException {
-        loadFXML(currentStage, fxmlPath, "Welcome to FXML");
+        loadFXML(currentStage, fxmlPath, "Welcome to FXML", true); // Always resizable is true
     }
 
     public static void loadFXML(Stage currentStage, String fxmlPath, String title) throws IOException {
+        loadFXML(currentStage, fxmlPath, title, true); // Always resizable is true
+    }
+
+    public static void loadFXML(Stage currentStage, String fxmlPath, String title, boolean resizable) throws IOException {
         if (currentStage == null || fxmlPath == null) {
             throw new IllegalArgumentException("currentStage and fxmlPath cannot be null");
         }
@@ -27,6 +31,7 @@ public class FXMLLoaderHelper {
 
         currentStage.setTitle(title);
         currentStage.setScene(scene);
+        currentStage.setResizable(resizable); // Set resizable property
         currentStage.show();
     }
 }

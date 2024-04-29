@@ -189,7 +189,7 @@ public class bookController implements Initializable {
         try {
             if (isbn != null) {
                 UpdateBookController.handleTableItemSelection(isbn);
-                FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/updateBook", "Update Book");
+                FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/updateBook");
             } else {
                 AlertUtils.showAlert("Error", "Can't find book", Alert.AlertType.ERROR);
             }
@@ -201,7 +201,7 @@ public class bookController implements Initializable {
     @FXML
     private void handleAddUserButton(ActionEvent event) {
         try {
-            FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/addBook", "Add Book");
+            FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/addBook");
         } catch (IOException e) {
             AlertUtils.showAlert("Error", "Error loading addUser FXML", Alert.AlertType.ERROR);
         }
@@ -352,13 +352,13 @@ public class bookController implements Initializable {
         return count;
     }
 
-private boolean isNewBook(Book thisBook) {
-    LocalDate currentDate = LocalDate.now();
-    String publishingDate = thisBook.getPublishingDate();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    LocalDate publicationDate = LocalDate.parse(publishingDate, formatter);
-    return publicationDate.plusMonths(2).isAfter(currentDate);
-}
+    private boolean isNewBook(Book thisBook) {
+        LocalDate currentDate = LocalDate.now();
+        String publishingDate = thisBook.getPublishingDate();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate publicationDate = LocalDate.parse(publishingDate, formatter);
+        return publicationDate.plusMonths(2).isAfter(currentDate);
+    }
 
     private boolean isOutOfStockBook(Book thisBook){
         return !(thisBook.getQuantity() > 0);
