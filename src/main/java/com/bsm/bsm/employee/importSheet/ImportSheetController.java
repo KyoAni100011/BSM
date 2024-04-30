@@ -155,23 +155,20 @@ public class ImportSheetController {
             EmployeeModel employee = (EmployeeModel) UserSingleton.getInstance().getUser();
             String importDateConverted = DateUtils.formatDOB(importDate);
             ImportSheet importSheet = new ImportSheet(employee, importDateConverted, totalQuantity, new BigDecimal(totalCost));
-            if (importSheetService.createImportSheet(importSheet, bookBatches)) {
-                System.out.println("ok");
-            }
-            
-            Connection connection = DatabaseConnection.getConnection();
-            String id = importSheetService.getImportSheetID(connection, employee.getId(),importSheet);
-            AlertUtils.showAlert("Success", "Add import sheet successfully.", Alert.AlertType.INFORMATION);
-            System.out.println("ds" + id);
-            ImportSheetDetailController.handleTableItemSelection(id,importSheet );
-            FXMLLoaderHelper.loadFXML(new Stage(), "employee/importSheet/importSheetDetail");
 
-            // Clear inputs
-            clearInputs();
-            bookBatches = new ArrayList<>();
-            setupDatePicker();
-            importDatePicker.setValue(LocalDate.now());
-            updateBookList();
+            if (importSheetService.createImportSheet(importSheet, bookBatches)) {
+                String importSheetID = importSheetService.getImportSheetID(importSheet);
+                importSheet.setId(importSheetID);
+                System.out.println("importSheetID: " + importSheetID);
+                ImportSheetDetailController.handleTableItemSelection(importSheetID, importSheet);
+                FXMLLoaderHelper.loadFXML(new Stage(), "employee/importSheet/importSheetDetail");
+
+                clearInputs();
+                bookBatches = new ArrayList<>();
+                setupDatePicker();
+                importDatePicker.setValue(LocalDate.now());
+                updateBookList();
+            }
         }
         else {
             AlertUtils.showAlert("Error", "Import sheet failed.", Alert.AlertType.ERROR);

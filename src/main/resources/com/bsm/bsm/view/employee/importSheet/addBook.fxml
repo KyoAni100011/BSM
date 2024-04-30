@@ -36,8 +36,8 @@
         </font>
     </Label>
 
-    <TextField fx:id="fullNameField" layoutX="75.0" layoutY="129.0" prefHeight="40.0" prefWidth="450.0" promptText="Enter your full name" styleClass="input-field-add" />
-    <SearchableComboBox fx:id="publisherComboBox" layoutX="76.0" layoutY="373.0" prefHeight="40.0" prefWidth="217.0" promptText="Enter publisher name" />
+    <TextField fx:id="fullNameField" layoutX="75.0" layoutY="129.0" prefHeight="40.0" prefWidth="450.0" promptText="Enter book name" styleClass="input-field-add" />
+    <SearchableComboBox fx:id="publisherComboBox" layoutX="76.0" layoutY="373.0" prefHeight="40.0" prefWidth="217.0" />
     <DatePicker fx:id="releaseDatePicker" layoutX="317.0" layoutY="289.0" prefHeight="40.0" prefWidth="207.0" promptText="Select release date" styleClass="input-field-add" />
 
 
@@ -62,7 +62,7 @@
         </font>
     </Label>
     <TextField fx:id="bookQuantityField" layoutX="76.0" layoutY="460.0" prefHeight="40.0" prefWidth="217.0" promptText="Enter book quantity" styleClass="input-field-add-normal-disable" />
-    <TextField fx:id="bookPriceField" layoutX="317.0" layoutY="460.0" prefHeight="40.0" prefWidth="207.0" promptText="Enter book price" styleClass="input-field-add" />
+    <TextField fx:id="bookPriceField" layoutX="317.0" layoutY="460.0" prefHeight="40.0" prefWidth="207.0" promptText="Enter book import price" styleClass="input-field-add" />
     <Label layoutX="82.0" layoutY="269.0" styleClass="label-bold" text="Category">
         <font>
             <Font size="18.0" />

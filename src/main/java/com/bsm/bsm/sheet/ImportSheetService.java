@@ -3,6 +3,8 @@ package com.bsm.bsm.sheet;
 import com.bsm.bsm.author.Author;
 import com.bsm.bsm.book.Book;
 import com.bsm.bsm.book.BookBatch;
+import com.bsm.bsm.employee.EmployeeModel;
+import com.bsm.bsm.user.UserSingleton;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -75,8 +77,10 @@ public class ImportSheetService {
     {
         return importSheetDAO.getISheetBookDetails(id);
     }
-    public String getImportSheetID(Connection connection, String employeeID, ImportSheet importSheet) throws SQLException {
-        return importSheetDAO.getImportSheetID(connection, employeeID,importSheet );
+
+    public String getImportSheetID(ImportSheet importSheet) throws SQLException {
+        EmployeeModel employee = (EmployeeModel) UserSingleton.getInstance().getUser();
+        return importSheetDAO.getImportSheetID(employee,importSheet);
     }
 
 }
