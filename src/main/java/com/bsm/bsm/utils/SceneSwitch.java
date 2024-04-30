@@ -59,16 +59,14 @@ public class SceneSwitch {
 
             // Calculate the center position of the screen
             Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-            double centerX = primaryScreenBounds.getMinX() + (primaryScreenBounds.getWidth() - stage.getWidth()) / 2;
-            double centerY = primaryScreenBounds.getMinY() + (primaryScreenBounds.getHeight() - stage.getHeight()) / 2;
+            double centerX = primaryScreenBounds.getMinX() + (primaryScreenBounds.getWidth() - anchorPane.getPrefWidth()) / 2;
+            double centerY = primaryScreenBounds.getMinY() + (primaryScreenBounds.getHeight() - anchorPane.getPrefHeight()) / 2;
 
-            // Set the position of the stage
+            // Set the position and size of the stage
             stage.setX(centerX);
             stage.setY(centerY);
-
             stage.setWidth(anchorPane.getPrefWidth());
             stage.setHeight(anchorPane.getPrefHeight());
-
         }
     }
 }
