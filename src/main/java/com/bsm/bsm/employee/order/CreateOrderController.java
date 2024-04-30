@@ -174,8 +174,6 @@ public class CreateOrderController implements Initializable {
         }
     }
 
-    public void handleRefreshButton(ActionEvent actionEvent) {
-    }
 
     public void handlePayActionButton(MouseEvent mouseEvent) {
         List<String> selectedBooks = new ArrayList<>();

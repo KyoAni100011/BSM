@@ -41,6 +41,8 @@ public class sidebarController {
     public SVGPath svgAddOrder;
     public SVGPath svgOrder;
     public SVGPath svgViewSheet;
+    public SVGPath svgProfileSetting;
+    public SVGPath svgLogOut;
 
 
     @FXML
