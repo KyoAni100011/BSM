@@ -1,9 +1,6 @@
 package com.bsm.bsm.employee.importSheet;
 
 import com.bsm.bsm.book.Book;
-import com.bsm.bsm.category.Category;
-import com.bsm.bsm.employee.book.TableItemController;
-import com.bsm.bsm.employee.bookCategories.CategoryDetailController;
 import com.bsm.bsm.sheet.ImportSheet;
 import com.bsm.bsm.sheet.ImportSheetService;
 import javafx.fxml.FXML;
@@ -21,7 +18,7 @@ import java.util.List;
 public class ImportSheetDetailController {
 
     private static final ImportSheetService importSheetService = new ImportSheetService();
-    public static List<BookSheetDetail> listBook = null;
+    public static List<Book> listBook = null;
     private static String id = "1";
     private static ImportSheet importSheet;
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -41,6 +38,12 @@ public class ImportSheetDetailController {
         new ImportSheetDetailController();
         setImportSheetInfo();
         updateSheet();
+    }
+
+    static void handleTableItemSelection(String id, ImportSheet sheet) {
+        ImportSheetDetailController.id = id;
+        listBook = importSheetService.getISheetBookDetails(id);
+        importSheet = sheet;
     }
 
     private void setImportSheetInfo() {
@@ -64,5 +67,7 @@ public class ImportSheetDetailController {
             }
         }
     }
+
+
 
 }
