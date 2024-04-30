@@ -151,7 +151,6 @@ public class ImportSheetController {
                 return;
             }
 
-            bookBatches.forEach(System.out::println);
             EmployeeModel employee = (EmployeeModel) UserSingleton.getInstance().getUser();
             String importDateConverted = DateUtils.formatDOB(importDate);
             ImportSheet importSheet = new ImportSheet(employee, importDateConverted, totalQuantity, new BigDecimal(totalCost));
@@ -159,7 +158,6 @@ public class ImportSheetController {
             if (importSheetService.createImportSheet(importSheet, bookBatches)) {
                 String importSheetID = importSheetService.getImportSheetID(importSheet);
                 importSheet.setId(importSheetID);
-                System.out.println("importSheetID: " + importSheetID);
                 ImportSheetDetailController.handleTableItemSelection(importSheetID, importSheet);
                 FXMLLoaderHelper.loadFXML(new Stage(), "employee/importSheet/importSheetDetail");
 
