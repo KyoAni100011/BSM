@@ -34,7 +34,7 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
                 case "introduction" -> {
                     return Comparator.comparing(Author::getIntroduction).compare(author1, author2);
                 }
-                case "action" -> {
+                case "enable/disable" -> {
                     return Comparator.comparing(Author::isEnabled).compare(author1, author2);
                 }
                 default -> {

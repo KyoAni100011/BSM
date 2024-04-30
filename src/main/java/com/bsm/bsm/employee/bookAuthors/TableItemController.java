@@ -43,7 +43,6 @@ public class TableItemController {
 
     @FXML
     private void handleToggleSwitchClick() {
-//        isOn.setUserId(id); // Pass the idLabel data to ToggleSwitch
         BooleanProperty oldState = isOn.switchedProperty();
         String confirmationMessage = "Are you sure you want to " + (!oldState.get() ? "enable" : "disable") + " this author?";
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -56,19 +55,15 @@ public class TableItemController {
                         AlertUtils.showAlert("Error", "Failed to disable author", Alert.AlertType.ERROR);
                         return;
                     }
-                    isOn.setSwitchedProperty(false);
-                    authorModel.setEnabled(false);
-                    AlertUtils.showAlert("Success", "author disabled successfully", Alert.AlertType.INFORMATION);
                 } else {
                     if (!authorService.enableAuthor(id)) {
                         AlertUtils.showAlert("Error", "Failed to enable author", Alert.AlertType.ERROR);
                         return;
                     }
-                    isOn.setSwitchedProperty(false);
-                    authorModel.setEnabled(false);
-                    AlertUtils.showAlert("Success", "author enabled successfully", Alert.AlertType.INFORMATION);
                 }
-                //AlertUtils.showAlert("Success", "Author has been " + (!oldState.get() ? "enabled" : "disabled"), Alert.AlertType.INFORMATION);
+                isOn.setSwitchedProperty(!oldState.get());
+                authorModel.setEnabled(!oldState.get());
+                AlertUtils.showAlert("Success", "Author has been " + (oldState.get() ? "enabled" : "disabled"), Alert.AlertType.INFORMATION);
             } else {
                 oldState.setValue(!oldState.get());
             }

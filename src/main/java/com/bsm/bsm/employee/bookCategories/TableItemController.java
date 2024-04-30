@@ -3,8 +3,6 @@ package com.bsm.bsm.employee.bookCategories;
 import com.bsm.bsm.admin.userAccount.ToggleSwitch;
 import com.bsm.bsm.category.Category;
 import com.bsm.bsm.category.CategoryService;
-import com.bsm.bsm.employee.bookCategories.CategoriesController;
-import com.bsm.bsm.employee.bookCategories.CategoryDetailController;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
 import javafx.beans.property.BooleanProperty;
@@ -38,7 +36,6 @@ public class TableItemController {
             CategoriesController.handleTableItemSelection(null);
         } else {
             CategoriesController.handleTableItemSelection(id);
-            System.out.println("id: " + id);
         }
     }
 
@@ -64,7 +61,7 @@ public class TableItemController {
                 }
                 isOn.setSwitchedProperty(!oldState.get());
                 categoryModel.setEnabled(!oldState.get());
-                AlertUtils.showAlert("Success", "Category has been " + (!oldState.get() ? "enabled" : "disabled"), Alert.AlertType.INFORMATION);
+                AlertUtils.showAlert("Success", "Category has been " + (oldState.get() ? "enabled" : "disabled"), Alert.AlertType.INFORMATION);
             } else {
                 oldState.setValue(!oldState.get());
             }

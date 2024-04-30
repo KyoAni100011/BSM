@@ -46,7 +46,7 @@ public class CategoryService implements Activable, Searchable<Category>, Sortabl
                 case "description" -> {
                     return Comparator.comparing(Category::getDescription).compare(category1, category2);
                 }
-                case "action" -> {
+                case "enable/disable" -> {
                     return Comparator.comparing(Category::isEnabled).compare(category1, category2);
                 }
                 default -> {
