@@ -25,6 +25,19 @@ public class CustomerDAO {
         return customerID.get();
     }
 
+    public static String getCustomerID(Customer customer) throws SQLException {
+        String QUERY_GET_CUSTOMERID = "select id from customer where name = ? and phone = ?";
+        AtomicReference<String> customerID = new AtomicReference<>();
+
+        DatabaseConnection.executeQuery(QUERY_GET_CUSTOMERID, resultSet -> {
+            if (resultSet != null && resultSet.next()) {
+                customerID.set(resultSet.getString("id"));
+            }
+        }, customer.getName(), customer.getPhone());
+
+        return customerID.get();
+    }
+
     private static String createCustomer(Connection connection, Customer customer) throws SQLException {
         String QUERY_CREATE_CUSTOMER = "insert into customer(name, phone) values (?, ?)";
 

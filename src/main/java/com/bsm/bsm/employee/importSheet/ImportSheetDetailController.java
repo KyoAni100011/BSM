@@ -1,9 +1,5 @@
 package com.bsm.bsm.employee.importSheet;
 
-import com.bsm.bsm.book.Book;
-import com.bsm.bsm.category.Category;
-import com.bsm.bsm.employee.book.TableItemController;
-import com.bsm.bsm.employee.bookCategories.CategoryDetailController;
 import com.bsm.bsm.sheet.BookSheetDetail;
 import com.bsm.bsm.sheet.ImportSheet;
 import com.bsm.bsm.sheet.ImportSheetService;
@@ -21,6 +17,11 @@ import java.util.List;
 
 public class ImportSheetDetailController {
 
+    private static final ImportSheetService importSheetService = new ImportSheetService();
+    public static List<BookSheetDetail> listBook = null;
+    private static String id = "1";
+    private static ImportSheet importSheet;
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     @FXML
     public TextField employeeNameField;
     @FXML
@@ -31,13 +32,12 @@ public class ImportSheetDetailController {
     public TextField idField;
     @FXML
     public VBox bookItem;
-    private static String id ="1";
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    private static ImportSheet importSheet ;
-
-    public static List<BookSheetDetail> listBook = null;
-    private static final ImportSheetService importSheetService =  new ImportSheetService();
+    static void handleTableItemSelection(String myId, ImportSheet sheet) {
+        id = myId;
+        listBook = importSheetService.getISheetBookDetails(id);
+        importSheet = sheet;
+    }
 
     @FXML
     public void initialize() {
@@ -45,18 +45,15 @@ public class ImportSheetDetailController {
         setImportSheetInfo();
         updateSheet();
     }
-    static void handleTableItemSelection(String myId, ImportSheet sheet) {
-        id = myId;
-        listBook = importSheetService.getISheetBookDetails(id);
-        importSheet = sheet;
-    }
+
     private void setImportSheetInfo() {
         idField.setText(importSheet.getId());
         employeeNameField.setText(importSheet.getEmployee().getName());
         totalPricefield.setText(String.valueOf(importSheet.getTotalPrice()));
         importDatePicker.setValue(LocalDate.parse(importSheet.getImportDate(), dateFormatter));
     }
-    private void updateSheet(){
+
+    private void updateSheet() {
         bookItem.getChildren().clear();
         for (BookSheetDetail b : listBook) {
             try {

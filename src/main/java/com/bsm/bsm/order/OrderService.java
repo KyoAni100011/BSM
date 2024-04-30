@@ -75,4 +75,13 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
+    public Order getOrderByCustomer(Customer customer) throws SQLException {
+        EmployeeModel employee = (EmployeeModel) UserSingleton.getInstance().getUser();
+        return orderDAO.getOrderByCustomer(employee, customer);
+    }
+
+    public List<OrderBooksDetails> getOrderBookDetails(int orderID) {
+        return orderDAO.getOrderBookDetails(orderID);
+    }
+
 }

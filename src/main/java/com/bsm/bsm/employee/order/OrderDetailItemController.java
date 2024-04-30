@@ -7,9 +7,10 @@ public class OrderDetailItemController {
     public TextField titleField;
     public TextField quantityField;
     public TextField priceField;
-    public void setItem(OrderBooksDetails order) {
-        titleField.setText(order.getOrderID());
-        quantityField.setText(String.valueOf(order.getQuantity()) );
-        priceField.setText(String.valueOf(order.getSalePrice()) );
+
+    public void setItem(OrderBooksDetails orderBooksDetails) {
+        titleField.setText(String.valueOf(orderBooksDetails.getBookBatch().getBook().getTitle()));
+        quantityField.setText(String.valueOf(orderBooksDetails.getQuantity()));
+        priceField.setText(String.valueOf(orderBooksDetails.getSalePrice()));
     }
 }

@@ -3,11 +3,12 @@ package com.bsm.bsm.employee.order;
 import com.bsm.bsm.book.Book;
 import com.bsm.bsm.book.BookService;
 import com.bsm.bsm.customer.Customer;
+import com.bsm.bsm.order.Order;
+import com.bsm.bsm.order.OrderBooksDetails;
 import com.bsm.bsm.order.OrderService;
 import com.bsm.bsm.utils.AlertUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -15,9 +16,11 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -69,7 +72,6 @@ public class CreateOrderController implements Initializable {
                     MoneyReturnLabel.setText(String.valueOf(Integer.parseInt(newValue) - Integer.parseInt(totalLabel.getText().isEmpty() ? "0" : totalLabel.getText())));
                 } else {
                     MoneyReturnLabel.setText("0");
-
                 }
             });
 
@@ -206,8 +208,16 @@ public class CreateOrderController implements Initializable {
             customer = new Customer(handleNameField.getText(), handlePhoneField.getText(), isMember);
             System.out.println(customer);
 
-            if(orderService.createOrder(selectedBooks, quantities, salePrices, customer)) {
+            if (orderService.createOrder(selectedBooks, quantities, salePrices, customer)) {
                 AlertUtils.showAlert("Success", "Order created successfully", Alert.AlertType.CONFIRMATION);
+                try {
+                    Order order = orderService.getOrderByCustomer(customer);
+                    List<OrderBooksDetails> orderBooksDetails = orderService.getOrderBookDetails(order.getId());
+                    // call screen order detail here with order and orderBooksDetails params
+
+                } catch (SQLException e) {
+                    System.out.println("get order info: " + e);
+                }
             } else {
                 AlertUtils.showAlert("Error", "Order creation failed", Alert.AlertType.ERROR);
             }
@@ -226,4 +236,11 @@ public class CreateOrderController implements Initializable {
         }
         return null;
     }
+
+    private void closeWindow(MouseEvent event) {
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
+    }
+
 }
