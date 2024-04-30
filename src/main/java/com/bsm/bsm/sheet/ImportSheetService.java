@@ -4,6 +4,7 @@ import com.bsm.bsm.author.Author;
 import com.bsm.bsm.book.Book;
 import com.bsm.bsm.book.BookBatch;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -74,4 +75,8 @@ public class ImportSheetService {
     {
         return importSheetDAO.getISheetBookDetails(id);
     }
+    public String getImportSheetID(Connection connection, String employeeID, ImportSheet importSheet) throws SQLException {
+        return importSheetDAO.getImportSheetID(connection, employeeID,importSheet );
+    }
+
 }

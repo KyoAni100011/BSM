@@ -1,6 +1,7 @@
 package com.bsm.bsm.employee.importSheet;
 
 import com.bsm.bsm.book.BookBatch;
+import com.bsm.bsm.database.DatabaseConnection;
 import com.bsm.bsm.employee.EmployeeModel;
 import com.bsm.bsm.sheet.ImportSheet;
 import com.bsm.bsm.sheet.ImportSheetService;
@@ -21,6 +22,7 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -156,8 +158,13 @@ public class ImportSheetController {
             if (importSheetService.createImportSheet(importSheet, bookBatches)) {
                 System.out.println("ok");
             }
-
-            AlertUtils.showAlert("Success", "Import sheet successfully.", Alert.AlertType.INFORMATION);
+            
+            Connection connection = DatabaseConnection.getConnection();
+            String id = importSheetService.getImportSheetID(connection, employee.getId(),importSheet);
+            AlertUtils.showAlert("Success", "Add import sheet successfully.", Alert.AlertType.INFORMATION);
+            System.out.println("ds" + id);
+            ImportSheetDetailController.handleTableItemSelection(id,importSheet );
+            FXMLLoaderHelper.loadFXML(new Stage(), "employee/importSheet/importSheetDetail");
 
             // Clear inputs
             clearInputs();

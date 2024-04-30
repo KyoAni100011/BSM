@@ -138,7 +138,7 @@ public class ImportSheetDAO {
         return listImportSheets;
     }
 
-    private String getImportSheetID(Connection connection, String employeeID, ImportSheet importSheet) throws SQLException {
+    public String getImportSheetID(Connection connection, String employeeID, ImportSheet importSheet) throws SQLException {
         String QUERY_GET_IMPORT_SHEET_ID = """
             select max(id) as id
             from importSheet
