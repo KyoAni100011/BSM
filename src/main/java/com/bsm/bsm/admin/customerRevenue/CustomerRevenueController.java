@@ -51,6 +51,8 @@ public class CustomerRevenueController {
         datePicker1.setVisible(false);
         handleByMonth();
 
+        setupDatePicker();
+
         datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 if(isMonthActive) {
@@ -115,6 +117,30 @@ public class CustomerRevenueController {
             }
         });
         updateButtonStyle(btnByWeek);
+    }
+
+    private void setupDatePicker() {
+        // Set prompt text
+        String promptText = "dd/MM/yyyy";
+
+        // Set prompt text and create a StringConverter for datePicker
+        datePicker.setPromptText(promptText);
+        StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
+            final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(promptText);
+
+            @Override
+            public String toString(LocalDate date) {
+                return date != null ? dateFormatter.format(date) : "";
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                return string != null && !string.isEmpty() ? LocalDate.parse(string, dateFormatter) : null;
+            }
+        };
+        datePicker.setConverter(converter);
+        datePicker1.setPromptText(promptText);
+        datePicker1.setConverter(converter);
     }
 
 
@@ -275,14 +301,16 @@ public class CustomerRevenueController {
     }
 
     private void updateButtonStyle(Button selectedButton) {
-        Arrays.asList(btnByMonth, btnByWeek, btnByDate, btnFromDateToDate).forEach(button -> {
-            if (button == selectedButton) {
-                button.getStyleClass().removeAll("chartActionButton-admin");
-                button.getStyleClass().add("chartActionButton-admin-selected");
-            } else {
-                button.getStyleClass().remove("chartActionButton-admin-selected");
-                button.getStyleClass().add("chartActionButton-admin");
-            }
+        Platform.runLater(() -> {
+            Arrays.asList(btnByMonth, btnByWeek, btnByDate, btnFromDateToDate).forEach(button -> {
+                if (button == selectedButton) {
+                    button.getStyleClass().removeAll("chartActionButton-admin");
+                    button.getStyleClass().add("chartActionButton-admin-selected");
+                } else {
+                    button.getStyleClass().remove("chartActionButton-admin-selected");
+                    button.getStyleClass().add("chartActionButton-admin");
+                }
+            });
         });
     }
 }
