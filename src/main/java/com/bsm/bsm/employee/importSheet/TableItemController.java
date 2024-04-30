@@ -14,6 +14,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 public class TableItemController {
@@ -43,11 +45,17 @@ public class TableItemController {
         }
     }
 
+    private static String getFormattedDate(String dateString) {
+        LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return date.format(formatter);
+    }
+
     public void setSheetModel(ImportSheet sheet) {
         sheetModel = sheet;
         id = sheet.getId();
         idLabel.setText(sheet.getId());
-        dateImportLabel.setText(sheet.getImportDate());
+        dateImportLabel.setText(getFormattedDate(sheet.getImportDate()));
         employeeLabel.setText(sheet.getEmployee().getName());
         quantityLabel.setText(String.valueOf(sheet.getQuantity()));
         totalPriceLabel.setText(sheet.getTotalPrice().toString());

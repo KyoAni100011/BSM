@@ -114,7 +114,7 @@ public class RevenueStatisticDAO {
 
     public List<ResultStatistic> getTop10CategoriesByRevenueDateToDate(String startDate, String endDate) throws SQLException {
         List<ResultStatistic> categoryRevenues = new ArrayList<>();
-        String query = "SELECT c.name AS title, SUM(od.quantity * od.salePrice) AS revenue FROM orderBooksDetails od JOIN bookBatch bb ON od.bookBatchID = bb.id JOIN book b ON bb.bookID = b.isbn JOIN bookCategory bc ON b.isbn = bc.bookID JOIN category c ON bc.categoryID = c.id JOIN orderSheet os ON od.orderID is.id WHERE os.orderDate BETWEEN ? AND ? GROUP BY c.name ORDER BY revenue DESC LIMIT 10;";
+        String query = "SELECT c.name AS title, SUM(od.quantity * od.salePrice) AS revenue FROM orderBooksDetails od JOIN bookBatch bb ON od.bookBatchID = bb.id JOIN book b ON bb.bookID = b.isbn JOIN bookCategory bc ON b.isbn = bc.bookID JOIN category c ON bc.categoryID = c.id JOIN orderSheet os ON od.orderID = os.id WHERE os.orderDate BETWEEN ? AND ? GROUP BY c.name ORDER BY revenue DESC LIMIT 10;";
 
         DatabaseConnection.executeQuery(query, resultSet -> {
             while (resultSet.next()) {
