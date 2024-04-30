@@ -7,6 +7,7 @@ import com.bsm.bsm.order.Order;
 import com.bsm.bsm.order.OrderBooksDetails;
 import com.bsm.bsm.order.OrderService;
 import com.bsm.bsm.utils.AlertUtils;
+import com.bsm.bsm.utils.FXMLLoaderHelper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,7 +19,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -48,7 +51,6 @@ public class CreateOrderController implements Initializable {
     @FXML
     public VBox pnItems = new VBox();
     private ObservableList<String> currentBookNamesData = FXCollections.observableArrayList(bookNames);
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -65,11 +67,14 @@ public class CreateOrderController implements Initializable {
 
             orderItemController = new ArrayList<>();
             currentBookNamesData = bookNames;
-            handleNameField.setText("Anonymous");
+            handleNameField.setText("");
 
             MoneyTextField.textProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue != null && !newValue.isEmpty()) {
-                    MoneyReturnLabel.setText(String.valueOf(Integer.parseInt(newValue) - Integer.parseInt(totalLabel.getText().isEmpty() ? "0" : totalLabel.getText())));
+                    BigDecimal moneyInput = new BigDecimal(newValue);
+                    BigDecimal totalLabelValue = totalLabel.getText().isEmpty() ? BigDecimal.ZERO : new BigDecimal(totalLabel.getText());
+                    BigDecimal moneyReturn = moneyInput.subtract(totalLabelValue);
+                    MoneyReturnLabel.setText(moneyReturn.toString());
                 } else {
                     MoneyReturnLabel.setText("0");
                 }
@@ -77,22 +82,31 @@ public class CreateOrderController implements Initializable {
 
             handleNameField.textProperty().addListener((observable, oldValue, newValue) -> {
                 if ((newValue != null && !newValue.isEmpty()) && (handlePhoneField.getText().length() == 11 || handlePhoneField.getText().length() == 10)) {
-                    discountLabel.setText("(-5%) " + (int) (Integer.parseInt(subtotalLabel.getText()) * 0.05));
-                    totalLabel.setText(String.valueOf((int) (Integer.parseInt(subtotalLabel.getText()) * 0.95)));
+                    BigDecimal subtotal = new BigDecimal(subtotalLabel.getText());
+                    BigDecimal discount = subtotal.multiply(BigDecimal.valueOf(0.05));
+                    BigDecimal total = subtotal.multiply(BigDecimal.valueOf(0.95));
+
+                    discountLabel.setText("(-5%) " + discount.toString());
+                    totalLabel.setText(total.toString());
                 } else {
                     discountLabel.setText("0%");
                 }
             });
 
+
             handlePhoneField.textProperty().addListener((observable, oldValue, newValue) -> {
                 if ((newValue.length() == 11 || newValue.length() == 10) && !handleNameField.getText().isEmpty()) {
-                    System.out.println("get in phone" + handleNameField.getText());
-                    discountLabel.setText("(-5%) " + (int) (Integer.parseInt(subtotalLabel.getText()) * 0.05));
-                    totalLabel.setText(String.valueOf((int) (Integer.parseInt(subtotalLabel.getText()) * 0.95)));
+                    BigDecimal subtotal = new BigDecimal(subtotalLabel.getText());
+                    BigDecimal discount = subtotal.multiply(BigDecimal.valueOf(0.05));
+                    BigDecimal total = subtotal.subtract(discount);
+
+                    discountLabel.setText("(-5%) " + discount);
+                    totalLabel.setText(String.valueOf(total));
                 } else {
                     discountLabel.setText("0%");
                 }
             });
+
         } catch (Exception e) {
             System.out.println("ini" + e);
         }
@@ -126,9 +140,6 @@ public class CreateOrderController implements Initializable {
             orderItemController.get(size).setIndex(this, size + 1);
             orderItemController.get(size).setListBook(bookNames);
             orderItemController.get(size).setListBook(currentBookNamesData);
-            Book selectedBook = new Book("", null, "", "", true, 0, BigDecimal.valueOf(0), null, null);
-            System.out.println("selectedBook: " + selectedBook);
-            orderItemController.get(size).setBook(selectedBook);
 
         } catch (Exception e) {
             System.out.println("this" + e.getMessage());
@@ -159,29 +170,38 @@ public class CreateOrderController implements Initializable {
     }
 
     public void handleCountSubtotalAndQuantity() {
-        int Sub = 0, Quan = 0;
+        BigDecimal subtotal = BigDecimal.ZERO;
+        int totalQuantity = 0;
+
         for (OrderItemController controller : orderItemController) {
-            Sub += controller.getSubtotal();
-            Quan += controller.getItemQuantity();
+            subtotal = subtotal.add(controller.getSubtotal());
+            totalQuantity += controller.getItemQuantity();
         }
-        subtotalLabel.setText(String.valueOf(Sub));
 
-        totalQuantityItems.setText("Total: " + Quan + " items");
+        subtotalLabel.setText(subtotal.toString());
 
-        if (!Objects.equals(discountLabel.getText(), "0%")) {
-            discountLabel.setText("(-5%) " + (int) (Integer.parseInt(subtotalLabel.getText()) * 0.05));
-            totalLabel.setText(String.valueOf((int) (Integer.parseInt(subtotalLabel.getText()) * 0.95)));
+        totalQuantityItems.setText("Total: " + totalQuantity + " items");
+
+        if (!discountLabel.getText().equals("0%")) {
+            BigDecimal discountAmount = subtotal.multiply(BigDecimal.valueOf(0.05));
+            discountLabel.setText("(-5%) " + discountAmount);
+            BigDecimal discountedTotal = subtotal.subtract(discountAmount);
+            totalLabel.setText(discountedTotal.toString());
         } else {
-            totalLabel.setText(String.valueOf(Sub));
+            totalLabel.setText(subtotal.toString());
         }
     }
+
 
 
     public void handlePayActionButton(MouseEvent mouseEvent) {
         List<String> selectedBooks = new ArrayList<>();
         List<Integer> quantities = new ArrayList<>();
         List<BigDecimal> salePrices = new ArrayList<>();
-
+        if(Objects.equals(totalLabel.getText(), "0")){
+            AlertUtils.showAlert("Error", "Please choose book to create order", Alert.AlertType.CONFIRMATION);
+            return;
+        }
         for (OrderItemController controller : orderItemController) {
             String bookName = controller.getBookName();
             int quantity = controller.getItemQuantity();
@@ -202,27 +222,37 @@ public class CreateOrderController implements Initializable {
         }
 
         Customer customer = null;
-        if (handleNameField.equals("Anonymous") || (handleNameField.getText() != null && handlePhoneField != null)) {
+        if ((!handleNameField.getText().isEmpty() && (handlePhoneField.getText().length() == 11 || handlePhoneField.getText().length() == 10) || (handleNameField.getText().isEmpty() && handlePhoneField.getText().isEmpty() )) && !MoneyTextField.getText().isEmpty()) {
             //get customer information
-            boolean isMember = handleNameField.getText().equalsIgnoreCase("Anonymous");
+
+            boolean isMember = !handleNameField.getText().isEmpty();
             customer = new Customer(handleNameField.getText(), handlePhoneField.getText(), isMember);
             System.out.println(customer);
 
             if (orderService.createOrder(selectedBooks, quantities, salePrices, customer)) {
                 AlertUtils.showAlert("Success", "Order created successfully", Alert.AlertType.CONFIRMATION);
                 try {
+
                     Order order = orderService.getOrderByCustomer(customer);
-                    List<OrderBooksDetails> orderBooksDetails = orderService.getOrderBookDetails(order.getId());
+                    OrderDetailController.handleTableItemSelection(order.getId(),order);
                     // call screen order detail here with order and orderBooksDetails params
+                    FXMLLoaderHelper.loadFXML(new Stage(), "employee/order/orderDetail");
+                    cleanData();
 
                 } catch (SQLException e) {
                     System.out.println("get order info: " + e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             } else {
                 AlertUtils.showAlert("Error", "Order creation failed", Alert.AlertType.ERROR);
             }
-        } else {
-            System.out.println("Please fill in the customer information");
+        } else if(MoneyTextField.getText().isEmpty()){
+            AlertUtils.showAlert("Error", "Please fill in the money received field", Alert.AlertType.CONFIRMATION);
+
+        } else{
+            AlertUtils.showAlert("Error", "Please fill in the user's information completely", Alert.AlertType.CONFIRMATION);
+
         }
     }
 
@@ -237,10 +267,18 @@ public class CreateOrderController implements Initializable {
         return null;
     }
 
-    private void closeWindow(MouseEvent event) {
-        Node source = (Node) event.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
+    private void cleanData() {
+        currentBookNamesData = FXCollections.observableArrayList(bookNames);
+        handleNameField.setText("");
+        handlePhoneField.setText("");
+        subtotalLabel.setText("0");
+        discountLabel.setText("0%");
+        totalLabel.setText("0");
+        MoneyTextField.setText("");
+        MoneyReturnLabel.setText("");
+        totalQuantityItems.setText("Total: 0 items");
+        orderItemController = new ArrayList<>();
+        pnItems.getChildren().clear();
     }
 
 }
