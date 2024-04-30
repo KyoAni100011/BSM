@@ -23,7 +23,7 @@ public class OrderDetailController {
     public static List<OrderBooksDetails> listBook = new ArrayList<>();
     private static int id = 1;
     private static Order order;
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyy");
     @FXML
     public TextField employeeNameField, totalPricefield, idField, customerNameField;
     @FXML
@@ -52,15 +52,7 @@ public class OrderDetailController {
         totalPricefield.setText(String.valueOf(order.getTotalPrice()));
 
         // pass data from table to detail and create to detail have dif day format
-        System.out.println("here" + order.getOrderDate());
         importDatePicker.setValue(LocalDate.parse(order.getOrderDate(), dateFormatter));
-//        if (isValidDateFormat(order.getOrderDate(), "dd/MM/yyyy")) {
-//            // Parse the date with "dd/MM/yyyy" format
-//            importDatePicker.setValue(LocalDate.parse(order.getOrderDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-//        } else {
-//            // Parse the date with "yyyy-MM-dd" format
-//            importDatePicker.setValue(LocalDate.parse(order.getOrderDate(), dateFormatter));
-//        }
     }
 
     private void updateSheet() {

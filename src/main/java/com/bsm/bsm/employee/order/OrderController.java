@@ -203,7 +203,6 @@ public class OrderController implements Initializable  {
         LocalDate fromDate = fromDateField.getValue();
         LocalDate toDate = toDateField.getValue();
         if (fromDate.compareTo(toDate) > 0) {
-            System.out.println("Somthing wrong");
             return;
         }
         condition = "WHERE os.orderDate BETWEEN '" + fromDate + "' AND '" + toDate + "'";
@@ -322,7 +321,6 @@ public class OrderController implements Initializable  {
         try {
             orders = Orderservice.sort(orders, isAscending, column);
             updateOrdersList();
-            System.out.println("-".repeat(30));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

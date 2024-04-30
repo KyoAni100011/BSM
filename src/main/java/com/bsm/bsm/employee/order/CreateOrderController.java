@@ -215,9 +215,6 @@ public class CreateOrderController implements Initializable {
             }
         }
 
-        for (int i = 0; i < selectedBooks.size(); i++) {
-            System.out.println("Book: " + selectedBooks.get(i) + ", Quantity: " + quantities.get(i) + ", Sale Price: " + salePrices.get(i));
-        }
 
         Customer customer = null;
         if ((!handleNameField.getText().isEmpty() && (handlePhoneField.getText().length() == 11 || handlePhoneField.getText().length() == 10) || (handleNameField.getText().isEmpty() && handlePhoneField.getText().isEmpty())) && !MoneyTextField.getText().isEmpty()) {
@@ -225,7 +222,6 @@ public class CreateOrderController implements Initializable {
 
             boolean isMember = !handleNameField.getText().isEmpty();
             customer = new Customer(handleNameField.getText(), handlePhoneField.getText(), isMember);
-            System.out.println(customer);
 
             if (orderService.createOrder(selectedBooks, quantities, salePrices, customer)) {
                 try {
