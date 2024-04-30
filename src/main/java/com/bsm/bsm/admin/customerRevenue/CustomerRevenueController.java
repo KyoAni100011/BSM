@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
@@ -73,6 +74,7 @@ public class CustomerRevenueController {
         });
     }
 
+
     @FXML
     private void handleByMonth() {
         datePicker.setShowWeekNumbers(false);
@@ -115,17 +117,20 @@ public class CustomerRevenueController {
         updateButtonStyle(btnByWeek);
     }
 
+
     private String getChartTitle(String tagType, LocalDate selectedDate) {
         String month = selectedDate.getMonth().toString();
         String year = String.valueOf(selectedDate.getYear());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         if (tagType.equals("Month")) {
-            return "Top 10 Best Selling Customers In " + month + " " + year;
+            return "Top 10 Best Selling Books In " + month + " " + year;
         } else if (tagType.equals("Week")) {
-            return "Top 10 Best Selling Customers In Week " + selectedDate.get(WeekFields.ISO.weekOfYear()) + ", " + year;
+            return "Top 10 Best Selling Books In Week " + selectedDate.get(WeekFields.ISO.weekOfYear()) + ", " + year;
         } else if (tagType.equals("Date")) {
-            return "Top 10 Best Selling Customers On " + selectedDate;
+            return "Top 10 Best Selling Books On " + selectedDate.format(formatter);
         } else if (tagType.equals("DateRange")) {
-            return "Top 10 Best Selling Customers From " + datePicker.getValue() + " To " + datePicker1.getValue();
+            // Assuming datePicker and datePicker1 are DatePicker controls
+            return "Top 10 Best Selling Books From " + datePicker.getValue().format(formatter) + " To " + datePicker1.getValue().format(formatter);
         } else {
             return "";
         }
@@ -181,6 +186,11 @@ public class CustomerRevenueController {
         updateButtonStyle(btnByDate);
     }
 
+    private String getFormattedDate(LocalDate date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return date.format(formatter);
+    }
+
     @FXML
     private void handleFromDateToDate() {
         datePicker.setShowWeekNumbers(false);
@@ -192,8 +202,7 @@ public class CustomerRevenueController {
         executorService.submit(() -> {
             LocalDate startDate = datePicker.getValue(), endDate = datePicker1.getValue();
             if (startDate != null && endDate != null && !startDate.isAfter(endDate)) {
-                String chartTitle = "Top 10 Best Selling Customers From " + startDate + " To " + endDate;
-                try {
+                String chartTitle = "Top 10 Best Selling Customers From " + getFormattedDate(startDate) + " To " + getFormattedDate(endDate);                try {
                     List<ResultStatistic> customerFromTo = revenueStatisticService.getCustomerDateToDateRevenue(startDate.toString(), endDate.toString());
                     Platform.runLater(() -> updateChartWithData(customerFromTo, chartTitle));
                 } catch (SQLException e) {

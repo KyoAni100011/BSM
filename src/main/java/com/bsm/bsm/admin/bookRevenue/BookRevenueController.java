@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
@@ -118,14 +119,16 @@ public class BookRevenueController {
     private String getChartTitle(String tagType, LocalDate selectedDate) {
         String month = selectedDate.getMonth().toString();
         String year = String.valueOf(selectedDate.getYear());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         if (tagType.equals("Month")) {
             return "Top 10 Best Selling Books In " + month + " " + year;
         } else if (tagType.equals("Week")) {
             return "Top 10 Best Selling Books In Week " + selectedDate.get(WeekFields.ISO.weekOfYear()) + ", " + year;
         } else if (tagType.equals("Date")) {
-            return "Top 10 Best Selling Books On " + selectedDate;
+            return "Top 10 Best Selling Books On " + selectedDate.format(formatter);
         } else if (tagType.equals("DateRange")) {
-            return "Top 10 Best Selling Books From " + datePicker.getValue() + " To " + datePicker1.getValue();
+            // Assuming datePicker and datePicker1 are DatePicker controls
+            return "Top 10 Best Selling Books From " + datePicker.getValue().format(formatter) + " To " + datePicker1.getValue().format(formatter);
         } else {
             return "";
         }
@@ -181,6 +184,11 @@ public class BookRevenueController {
         updateButtonStyle(btnByDate);
     }
 
+    private String getFormattedDate(LocalDate date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return date.format(formatter);
+    }
+
     @FXML
     private void handleFromDateToDate() {
         datePicker.setShowWeekNumbers(false);
@@ -192,7 +200,7 @@ public class BookRevenueController {
         executorService.submit(() -> {
             LocalDate startDate = datePicker.getValue(), endDate = datePicker1.getValue();
             if (startDate != null && endDate != null && !startDate.isAfter(endDate)) {
-                String chartTitle = "Top 10 Best Selling Books From " + startDate + " To " + endDate;
+                String chartTitle = "Top 10 Best Selling Books From " + getFormattedDate(startDate) + " To " + getFormattedDate(endDate);
                 try {
                     List<ResultStatistic> booksFromTo = revenueStatisticService.getBookDateToDateRevenue(startDate.toString(), endDate.toString());
                     Platform.runLater(() -> updateChartWithData(booksFromTo, chartTitle));
