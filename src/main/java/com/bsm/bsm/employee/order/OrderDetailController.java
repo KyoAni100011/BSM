@@ -23,8 +23,7 @@ public class OrderDetailController {
     public static List<OrderBooksDetails> listBook = new ArrayList<>();
     private static int id = 1;
     private static Order order;
-    private static final Order orderDetail = null;
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     @FXML
     public TextField employeeNameField, totalPricefield, idField, customerNameField;
     @FXML
@@ -51,24 +50,19 @@ public class OrderDetailController {
         employeeNameField.setText(order.getEmployee().getName());
         customerNameField.setText(order.getCustomer().getName());
         totalPricefield.setText(String.valueOf(order.getTotalPrice()));
+
         // pass data from table to detail and create to detail have dif day format
-        if (isValidDateFormat(order.getOrderDate(), "dd/MM/yyyy")) {
-            // Parse the date with "dd/MM/yyyy" format
-            importDatePicker.setValue(LocalDate.parse(order.getOrderDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-        } else {
-            // Parse the date with "yyyy-MM-dd" format
-            importDatePicker.setValue(LocalDate.parse(order.getOrderDate(), dateFormatter));
-        }
+        System.out.println("here" + order.getOrderDate());
+        importDatePicker.setValue(LocalDate.parse(order.getOrderDate(), dateFormatter));
+//        if (isValidDateFormat(order.getOrderDate(), "dd/MM/yyyy")) {
+//            // Parse the date with "dd/MM/yyyy" format
+//            importDatePicker.setValue(LocalDate.parse(order.getOrderDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+//        } else {
+//            // Parse the date with "yyyy-MM-dd" format
+//            importDatePicker.setValue(LocalDate.parse(order.getOrderDate(), dateFormatter));
+//        }
     }
-    private boolean isValidDateFormat(String date, String format) {
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-            LocalDate.parse(date, formatter);
-            return true;
-        } catch (DateTimeParseException e) {
-            return false;
-        }
-    }
+
     private void updateSheet() {
         bookItem.getChildren().clear();
 
