@@ -63,7 +63,7 @@ public class TableItemController {
                 categoryModel.setEnabled(!oldState.get());
                 AlertUtils.showAlert("Success", "Category has been " + (oldState.get() ? "enabled" : "disabled"), Alert.AlertType.INFORMATION);
             } else {
-                oldState.setValue(!oldState.get());
+                isOn.setSwitchedProperty(oldState.get());
             }
         });
     }

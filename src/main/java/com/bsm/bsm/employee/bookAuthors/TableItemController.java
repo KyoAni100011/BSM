@@ -65,7 +65,7 @@ public class TableItemController {
                 authorModel.setEnabled(!oldState.get());
                 AlertUtils.showAlert("Success", "Author has been " + (oldState.get() ? "enabled" : "disabled"), Alert.AlertType.INFORMATION);
             } else {
-                oldState.setValue(!oldState.get());
+                isOn.setSwitchedProperty(oldState.get());
             }
         });
     }
