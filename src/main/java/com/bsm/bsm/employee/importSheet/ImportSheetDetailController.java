@@ -36,6 +36,7 @@ public class ImportSheetDetailController {
     @FXML
     public void initialize() {
         new ImportSheetDetailController();
+        importDatePicker.getEditor().setOpacity(1);
         setImportSheetInfo();
         updateSheet();
     }

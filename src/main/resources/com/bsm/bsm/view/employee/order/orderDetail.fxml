@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="670.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.order.OrderDetailController">
+<AnchorPane prefHeight="623.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.order.OrderDetailController">
     <Label layoutX="78.0" layoutY="168.0" styleClass="label-bold" text="Employee">
         <font>
             <Font size="18.0" />
@@ -44,9 +44,9 @@
             <Font size="18.0" />
         </font>
     </Label>
-    <ScrollPane layoutX="82.0" layoutY="436.0" prefHeight="200.0" prefWidth="453.0">
+    <ScrollPane layoutX="82.0" layoutY="436.0" prefHeight="130.0" prefWidth="453.0">
         <content>
-            <VBox fx:id="bookItem" prefHeight="200.0" prefWidth="437.0" />
+            <VBox fx:id="bookItem" prefHeight="128.0" prefWidth="437.0" />
         </content>
     </ScrollPane>
    <Label layoutX="79.0" layoutY="249.0" styleClass="label-bold" text="Customer">
