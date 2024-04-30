@@ -49,6 +49,7 @@ public class EmployeeRevenueController {
         datePicker.setValue(currentDate);
         datePicker1.setValue(currentDate);
         datePicker1.setVisible(false);
+        setupDatePicker();
         handleByMonth();
 
         datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -94,6 +95,31 @@ public class EmployeeRevenueController {
         });
         updateButtonStyle(btnByMonth);
     }
+
+    private void setupDatePicker() {
+        // Set prompt text
+        String promptText = "dd/MM/yyyy";
+
+        // Set prompt text and create a StringConverter for datePicker
+        datePicker.setPromptText(promptText);
+        StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
+            final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(promptText);
+
+            @Override
+            public String toString(LocalDate date) {
+                return date != null ? dateFormatter.format(date) : "";
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                return string != null && !string.isEmpty() ? LocalDate.parse(string, dateFormatter) : null;
+            }
+        };
+        datePicker.setConverter(converter);
+        datePicker1.setPromptText(promptText);
+        datePicker1.setConverter(converter);
+    }
+
 
     @FXML
     private void handleByWeek() {

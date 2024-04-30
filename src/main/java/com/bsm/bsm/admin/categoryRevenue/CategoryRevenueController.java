@@ -51,6 +51,8 @@ public class CategoryRevenueController {
         datePicker1.setVisible(false);
         handleByMonth();
 
+        setupDatePicker();
+
         datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 if(isMonthActive) {
@@ -163,6 +165,31 @@ public class CategoryRevenueController {
             });
         }
     }
+
+    private void setupDatePicker() {
+        // Set prompt text
+        String promptText = "dd/MM/yyyy";
+
+        // Set prompt text and create a StringConverter for datePicker
+        datePicker.setPromptText(promptText);
+        StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
+            final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(promptText);
+
+            @Override
+            public String toString(LocalDate date) {
+                return date != null ? dateFormatter.format(date) : "";
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                return string != null && !string.isEmpty() ? LocalDate.parse(string, dateFormatter) : null;
+            }
+        };
+        datePicker.setConverter(converter);
+        datePicker1.setPromptText(promptText);
+        datePicker1.setConverter(converter);
+    }
+
 
     @FXML
     private void handleByDate() {
