@@ -16,6 +16,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class TableItemController {
     public Label idLabel, customerNameLabel, EmployeeNameLabel, OrderDateLabel,PriceLabel;
@@ -50,15 +52,18 @@ public class TableItemController {
         }
     }
 
+    private static String getFormattedDate(String dateString) {
+        LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return date.format(formatter);
+    }
     public void setOrder(Order thisOrder) {
         order = thisOrder;
         isbn = String.valueOf(thisOrder.getId());
-
         idLabel.setText(String.valueOf(thisOrder.getId()));
-
         customerNameLabel.setText(String.valueOf(thisOrder.getCustomer().getName()));
         EmployeeNameLabel.setText(String.valueOf(thisOrder.getEmployee().getName()));
-        OrderDateLabel.setText(String.valueOf(thisOrder.getOrderDate()));
+        OrderDateLabel.setText(String.valueOf(getFormattedDate(thisOrder.getOrderDate())));
         PriceLabel.setText(String.valueOf(thisOrder.getTotalPrice()));
     }
 }
