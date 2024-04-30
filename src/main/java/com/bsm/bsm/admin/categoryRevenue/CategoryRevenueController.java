@@ -1,8 +1,7 @@
-package com.bsm.bsm.admin.bookRevenue;
+package com.bsm.bsm.admin.categoryRevenue;
 
 import com.bsm.bsm.revenue.ResultStatistic;
 import com.bsm.bsm.revenue.RevenueStatisticService;
-import com.bsm.bsm.utils.NumericValidationUtils;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Tooltip;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
@@ -32,12 +30,12 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class BookRevenueController {
+public class CategoryRevenueController {
     private final RevenueStatisticService revenueStatisticService = new RevenueStatisticService();
     private final ExecutorService executorService = Executors.newCachedThreadPool();
     public AnchorPane AncBookBarChart;
     @FXML private Button btnByMonth, btnByWeek, btnByDate, btnFromDateToDate;
-    @FXML private BarChart<String, Number> bookBarChart;
+    @FXML private BarChart<String, Number> categoryBarChart;
     @FXML private DatePicker datePicker, datePicker1;
     @FXML private AnchorPane datePickerContainer;
 
@@ -52,6 +50,7 @@ public class BookRevenueController {
         datePicker1.setValue(currentDate);
         datePicker1.setVisible(false);
         handleByMonth();
+
         setupDatePicker();
 
         datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -77,31 +76,6 @@ public class BookRevenueController {
         });
     }
 
-    private void setupDatePicker() {
-        // Set prompt text
-        String promptText = "dd/MM/yyyy";
-
-        // Set prompt text and create a StringConverter for datePicker
-        datePicker.setPromptText(promptText);
-        StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
-            final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(promptText);
-
-            @Override
-            public String toString(LocalDate date) {
-                return date != null ? dateFormatter.format(date) : "";
-            }
-
-            @Override
-            public LocalDate fromString(String string) {
-                return string != null && !string.isEmpty() ? LocalDate.parse(string, dateFormatter) : null;
-            }
-        };
-        datePicker.setConverter(converter);
-        datePicker1.setPromptText(promptText);
-        datePicker1.setConverter(converter);
-    }
-
-
     @FXML
     private void handleByMonth() {
         datePicker.setShowWeekNumbers(false);
@@ -114,8 +88,8 @@ public class BookRevenueController {
         String chartTitle = getChartTitle("Month", selectedDate);
         executorService.submit(() -> {
             try {
-                List<ResultStatistic> bookMonthly = revenueStatisticService.getBookMonthlyRevenue(selectedDate.getYear(), selectedDate.getMonthValue());
-                Platform.runLater(() -> updateChartWithData(bookMonthly, chartTitle));
+                List<ResultStatistic> categoryMonthly = revenueStatisticService.getCategoryMonthlyRevenue(selectedDate.getYear(), selectedDate.getMonthValue());
+                Platform.runLater(() -> updateChartWithData(categoryMonthly, chartTitle));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -135,14 +109,15 @@ public class BookRevenueController {
         String chartTitle = getChartTitle("Week", selectedDate);
         executorService.submit(() -> {
             try {
-                List<ResultStatistic> bookWeekly = revenueStatisticService.getBookWeeklyRevenue(selectedDate.getYear(), selectedDate.get(WeekFields.ISO.weekOfYear()));
-                Platform.runLater(() -> updateChartWithData(bookWeekly, chartTitle));
+                List<ResultStatistic> categoryWeekly = revenueStatisticService.getCategoryWeeklyRevenue(selectedDate.getYear(), selectedDate.get(WeekFields.ISO.weekOfYear()));
+                Platform.runLater(() -> updateChartWithData(categoryWeekly, chartTitle));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         });
         updateButtonStyle(btnByWeek);
     }
+
 
     private String getChartTitle(String tagType, LocalDate selectedDate) {
         String month = selectedDate.getMonth().toString();
@@ -191,6 +166,31 @@ public class BookRevenueController {
         }
     }
 
+    private void setupDatePicker() {
+        // Set prompt text
+        String promptText = "dd/MM/yyyy";
+
+        // Set prompt text and create a StringConverter for datePicker
+        datePicker.setPromptText(promptText);
+        StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
+            final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(promptText);
+
+            @Override
+            public String toString(LocalDate date) {
+                return date != null ? dateFormatter.format(date) : "";
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                return string != null && !string.isEmpty() ? LocalDate.parse(string, dateFormatter) : null;
+            }
+        };
+        datePicker.setConverter(converter);
+        datePicker1.setPromptText(promptText);
+        datePicker1.setConverter(converter);
+    }
+
+
     @FXML
     private void handleByDate() {
         isDailyActive = true;
@@ -203,8 +203,8 @@ public class BookRevenueController {
         String chartTitle = getChartTitle("Date", selectedDate);
         executorService.submit(() -> {
             try {
-                List<ResultStatistic> bookDaily = revenueStatisticService.getBookDailyRevenue(selectedDate.toString());
-                Platform.runLater(() -> updateChartWithData(bookDaily, chartTitle));
+                List<ResultStatistic> categoryDaily = revenueStatisticService.getCategoryDailyRevenue(selectedDate.toString());
+                Platform.runLater(() -> updateChartWithData(categoryDaily, chartTitle));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -228,17 +228,17 @@ public class BookRevenueController {
         executorService.submit(() -> {
             LocalDate startDate = datePicker.getValue(), endDate = datePicker1.getValue();
             if (startDate != null && endDate != null && !startDate.isAfter(endDate)) {
-                String chartTitle = "Top 10 Best Selling Books From " + getFormattedDate(startDate) + " To " + getFormattedDate(endDate);
+                String chartTitle = "Top 10 Best Selling Categories From " + getFormattedDate(startDate) + " To " + getFormattedDate(endDate);
                 try {
-                    List<ResultStatistic> booksFromTo = revenueStatisticService.getBookDateToDateRevenue(startDate.toString(), endDate.toString());
-                    Platform.runLater(() -> updateChartWithData(booksFromTo, chartTitle));
+                    List<ResultStatistic> CategoryFromTo = revenueStatisticService.getCategoryDateToDateRevenue(startDate.toString(), endDate.toString());
+                    Platform.runLater(() -> updateChartWithData(CategoryFromTo, chartTitle));
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
             } else {
                 Platform.runLater(() -> {
-                    bookBarChart.getData().clear();
-                    bookBarChart.setTitle("Invalid Date Range");
+                    categoryBarChart.getData().clear();
+                    categoryBarChart.setTitle("Invalid Date Range");
                 });
             }
         });
@@ -258,13 +258,13 @@ public class BookRevenueController {
 
     private void updateChartWithData(List<ResultStatistic> data, String chartTitle) {
         ObservableList<XYChart.Data<String, Number>> chartData = FXCollections.observableArrayList();
-        List<String> dataNames = new ArrayList<>(); 
+        List<String> dataNames = new ArrayList<>();
 
         if (data != null) {
             int count = 1;
             for (ResultStatistic rs : data) {
                 chartData.add(new XYChart.Data<>(String.valueOf(count), rs.getStatisticValue()));
-                dataNames.add(rs.getTitle()); 
+                dataNames.add(rs.getTitle());
                 count++;
             }
         }
@@ -272,38 +272,34 @@ public class BookRevenueController {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
 
         // Tạo một biểu đồ mới
-        AncBookBarChart.getChildren().remove(bookBarChart);
-        bookBarChart = new BarChart<>(bookBarChart.getXAxis(), bookBarChart.getYAxis());
-        bookBarChart.setPrefWidth(AncBookBarChart.getWidth());
-        bookBarChart.setPrefHeight(AncBookBarChart.getHeight());
-        AncBookBarChart.getChildren().add(bookBarChart);
+        AncBookBarChart.getChildren().remove(categoryBarChart);
+        categoryBarChart = new BarChart<>(categoryBarChart.getXAxis(), categoryBarChart.getYAxis());
+        categoryBarChart.setPrefWidth(AncBookBarChart.getWidth());
+        categoryBarChart.setPrefHeight(AncBookBarChart.getHeight());
+        AncBookBarChart.getChildren().add(categoryBarChart);
 
         series.setData(chartData);
-        bookBarChart.getData().clear();
-        bookBarChart.setLegendVisible(false);
-        bookBarChart.setTitle(chartTitle);
-        bookBarChart.getData().add(series);
+        categoryBarChart.getData().clear();
+        categoryBarChart.setLegendVisible(false);
+        categoryBarChart.setTitle(chartTitle);
+        categoryBarChart.getData().add(series);
 
         applyTooltip(series, dataNames);
 
-        bookBarChart.setAnimated(false);
+        categoryBarChart.setAnimated(false);
     }
 
     private void applyTooltip(XYChart.Series<String, Number> series, List<String> dataNames) {
         DecimalFormat formatter = new DecimalFormat("#,###");
 
         series.getData().forEach(data -> {
-            int index = series.getData().indexOf(data); // Lấy chỉ số của data
             String formattedValue = formatter.format(data.getYValue());
-            String dataName = dataNames.get(index);
-            Tooltip tooltip = new Tooltip("Book: " + dataName + "\nRevenue: " + formattedValue);
+            String dataName = dataNames.get(series.getData().indexOf(data));
+            Tooltip tooltip = new Tooltip("Category: " + dataName + "\nRevenue: " + formattedValue);
             tooltip.setShowDelay(Duration.ZERO);
             Tooltip.install(data.getNode(), tooltip);
         });
     }
-
-
-
     private void updateButtonStyle(Button selectedButton) {
         Platform.runLater(() -> {
             Arrays.asList(btnByMonth, btnByWeek, btnByDate, btnFromDateToDate).forEach(button -> {

@@ -344,6 +344,7 @@ public class AddBookBatchController {
         if (quantityError != null) {
             quantityErrorLabel.setText(quantityError);
         }
+
         if (releaseError != null) {
             releaseErrorLabel.setText(releaseError);
         }

@@ -27,6 +27,10 @@ public class BookBatch {
         this(null, quantity, importPrice, null, book);
     }
 
+    public BookBatch(Book book) {
+        this(null, 0, null, null, book);
+    }
+
     // Getters and setters
     public String getId() {
         return id;

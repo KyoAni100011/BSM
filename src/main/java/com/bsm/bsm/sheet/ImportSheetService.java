@@ -3,7 +3,10 @@ package com.bsm.bsm.sheet;
 import com.bsm.bsm.author.Author;
 import com.bsm.bsm.book.Book;
 import com.bsm.bsm.book.BookBatch;
+import com.bsm.bsm.employee.EmployeeModel;
+import com.bsm.bsm.user.UserSingleton;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -70,8 +73,14 @@ public class ImportSheetService {
         return sortedImportSheet.stream().sorted(comparator).collect(Collectors.toList());
     }
 
-    public List<BookSheetDetail> getISheetBookDetails(String id)
+    public List<Book> getISheetBookDetails(String id)
     {
         return importSheetDAO.getISheetBookDetails(id);
     }
+
+    public String getImportSheetID(ImportSheet importSheet) throws SQLException {
+        EmployeeModel employee = (EmployeeModel) UserSingleton.getInstance().getUser();
+        return importSheetDAO.getImportSheetID(employee,importSheet);
+    }
+
 }

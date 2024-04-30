@@ -65,9 +65,9 @@ public class TableItemController {
                 }
                 isOn.setSwitchedProperty(!oldState.get());
                 publisherModel.setEnabled(!oldState.get());
-                AlertUtils.showAlert("Success", "Publisher has been " + (!oldState.get() ? "enabled" : "disabled"), Alert.AlertType.INFORMATION);
+                AlertUtils.showAlert("Success", "Publisher has been " + (oldState.get() ? "enabled" : "disabled"), Alert.AlertType.INFORMATION);
             } else {
-                oldState.setValue(!oldState.get());
+                isOn.setSwitchedProperty(oldState.get());
             }
         });
     }

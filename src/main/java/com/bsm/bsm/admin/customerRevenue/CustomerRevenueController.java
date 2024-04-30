@@ -1,8 +1,7 @@
-package com.bsm.bsm.admin.bookRevenue;
+package com.bsm.bsm.admin.customerRevenue;
 
 import com.bsm.bsm.revenue.ResultStatistic;
 import com.bsm.bsm.revenue.RevenueStatisticService;
-import com.bsm.bsm.utils.NumericValidationUtils;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Tooltip;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
@@ -32,12 +30,12 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class BookRevenueController {
+public class CustomerRevenueController {
     private final RevenueStatisticService revenueStatisticService = new RevenueStatisticService();
     private final ExecutorService executorService = Executors.newCachedThreadPool();
     public AnchorPane AncBookBarChart;
     @FXML private Button btnByMonth, btnByWeek, btnByDate, btnFromDateToDate;
-    @FXML private BarChart<String, Number> bookBarChart;
+    @FXML private BarChart<String, Number> customerBarChart;
     @FXML private DatePicker datePicker, datePicker1;
     @FXML private AnchorPane datePickerContainer;
 
@@ -52,6 +50,7 @@ public class BookRevenueController {
         datePicker1.setValue(currentDate);
         datePicker1.setVisible(false);
         handleByMonth();
+
         setupDatePicker();
 
         datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -75,6 +74,49 @@ public class BookRevenueController {
                 }
             });
         });
+    }
+
+
+    @FXML
+    private void handleByMonth() {
+        datePicker.setShowWeekNumbers(false);
+        isMonthActive = true;
+        isDailyActive = false;
+        isWeekActive = false;
+        updateDatePickerCellStyle();  // Update the cell style
+        setVisibility(false);
+        LocalDate selectedDate = datePicker.getValue();
+        String chartTitle = getChartTitle("Month", selectedDate);
+        executorService.submit(() -> {
+            try {
+                List<ResultStatistic> customerMonthly = revenueStatisticService.getCustomerMonthlyRevenue(selectedDate.getYear(), selectedDate.getMonthValue());
+                Platform.runLater(() -> updateChartWithData(customerMonthly, chartTitle));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+        updateButtonStyle(btnByMonth);
+    }
+
+    @FXML
+    private void handleByWeek() {
+        datePicker.setShowWeekNumbers(true);
+        isMonthActive = false;
+        isDailyActive = false;
+        isWeekActive = true;
+        updateDatePickerCellStyle();  // Update the cell style for week view
+        setVisibility(false);
+        LocalDate selectedDate = datePicker.getValue();
+        String chartTitle = getChartTitle("Week", selectedDate);
+        executorService.submit(() -> {
+            try {
+                List<ResultStatistic> customerWeekly = revenueStatisticService.getCustomerWeeklyRevenue(selectedDate.getYear(), selectedDate.get(WeekFields.ISO.weekOfYear()));
+                Platform.runLater(() -> updateChartWithData(customerWeekly, chartTitle));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+        updateButtonStyle(btnByWeek);
     }
 
     private void setupDatePicker() {
@@ -101,48 +143,6 @@ public class BookRevenueController {
         datePicker1.setConverter(converter);
     }
 
-
-    @FXML
-    private void handleByMonth() {
-        datePicker.setShowWeekNumbers(false);
-        isMonthActive = true;
-        isDailyActive = false;
-        isWeekActive = false;
-        updateDatePickerCellStyle();  // Update the cell style
-        setVisibility(false);
-        LocalDate selectedDate = datePicker.getValue();
-        String chartTitle = getChartTitle("Month", selectedDate);
-        executorService.submit(() -> {
-            try {
-                List<ResultStatistic> bookMonthly = revenueStatisticService.getBookMonthlyRevenue(selectedDate.getYear(), selectedDate.getMonthValue());
-                Platform.runLater(() -> updateChartWithData(bookMonthly, chartTitle));
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
-        updateButtonStyle(btnByMonth);
-    }
-
-    @FXML
-    private void handleByWeek() {
-        datePicker.setShowWeekNumbers(true);
-        isMonthActive = false;
-        isDailyActive = false;
-        isWeekActive = true;
-        updateDatePickerCellStyle();  // Update the cell style for week view
-        setVisibility(false);
-        LocalDate selectedDate = datePicker.getValue();
-        String chartTitle = getChartTitle("Week", selectedDate);
-        executorService.submit(() -> {
-            try {
-                List<ResultStatistic> bookWeekly = revenueStatisticService.getBookWeeklyRevenue(selectedDate.getYear(), selectedDate.get(WeekFields.ISO.weekOfYear()));
-                Platform.runLater(() -> updateChartWithData(bookWeekly, chartTitle));
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
-        updateButtonStyle(btnByWeek);
-    }
 
     private String getChartTitle(String tagType, LocalDate selectedDate) {
         String month = selectedDate.getMonth().toString();
@@ -203,8 +203,8 @@ public class BookRevenueController {
         String chartTitle = getChartTitle("Date", selectedDate);
         executorService.submit(() -> {
             try {
-                List<ResultStatistic> bookDaily = revenueStatisticService.getBookDailyRevenue(selectedDate.toString());
-                Platform.runLater(() -> updateChartWithData(bookDaily, chartTitle));
+                List<ResultStatistic> customerDaily = revenueStatisticService.getCustomerDailyRevenue(selectedDate.toString());
+                Platform.runLater(() -> updateChartWithData(customerDaily, chartTitle));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -228,17 +228,16 @@ public class BookRevenueController {
         executorService.submit(() -> {
             LocalDate startDate = datePicker.getValue(), endDate = datePicker1.getValue();
             if (startDate != null && endDate != null && !startDate.isAfter(endDate)) {
-                String chartTitle = "Top 10 Best Selling Books From " + getFormattedDate(startDate) + " To " + getFormattedDate(endDate);
-                try {
-                    List<ResultStatistic> booksFromTo = revenueStatisticService.getBookDateToDateRevenue(startDate.toString(), endDate.toString());
-                    Platform.runLater(() -> updateChartWithData(booksFromTo, chartTitle));
+                String chartTitle = "Top 10 Best Selling Customers From " + getFormattedDate(startDate) + " To " + getFormattedDate(endDate);                try {
+                    List<ResultStatistic> customerFromTo = revenueStatisticService.getCustomerDateToDateRevenue(startDate.toString(), endDate.toString());
+                    Platform.runLater(() -> updateChartWithData(customerFromTo, chartTitle));
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
             } else {
                 Platform.runLater(() -> {
-                    bookBarChart.getData().clear();
-                    bookBarChart.setTitle("Invalid Date Range");
+                    customerBarChart.getData().clear();
+                    customerBarChart.setTitle("Invalid Date Range");
                 });
             }
         });
@@ -258,13 +257,13 @@ public class BookRevenueController {
 
     private void updateChartWithData(List<ResultStatistic> data, String chartTitle) {
         ObservableList<XYChart.Data<String, Number>> chartData = FXCollections.observableArrayList();
-        List<String> dataNames = new ArrayList<>(); 
+        List<String> dataNames = new ArrayList<>();
 
         if (data != null) {
             int count = 1;
             for (ResultStatistic rs : data) {
                 chartData.add(new XYChart.Data<>(String.valueOf(count), rs.getStatisticValue()));
-                dataNames.add(rs.getTitle()); 
+                dataNames.add(rs.getTitle());
                 count++;
             }
         }
@@ -272,37 +271,34 @@ public class BookRevenueController {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
 
         // Tạo một biểu đồ mới
-        AncBookBarChart.getChildren().remove(bookBarChart);
-        bookBarChart = new BarChart<>(bookBarChart.getXAxis(), bookBarChart.getYAxis());
-        bookBarChart.setPrefWidth(AncBookBarChart.getWidth());
-        bookBarChart.setPrefHeight(AncBookBarChart.getHeight());
-        AncBookBarChart.getChildren().add(bookBarChart);
+        AncBookBarChart.getChildren().remove(customerBarChart);
+        customerBarChart = new BarChart<>(customerBarChart.getXAxis(), customerBarChart.getYAxis());
+        customerBarChart.setPrefWidth(AncBookBarChart.getWidth());
+        customerBarChart.setPrefHeight(AncBookBarChart.getHeight());
+        AncBookBarChart.getChildren().add(customerBarChart);
 
         series.setData(chartData);
-        bookBarChart.getData().clear();
-        bookBarChart.setLegendVisible(false);
-        bookBarChart.setTitle(chartTitle);
-        bookBarChart.getData().add(series);
+        customerBarChart.getData().clear();
+        customerBarChart.setLegendVisible(false);
+        customerBarChart.setTitle(chartTitle);
+        customerBarChart.getData().add(series);
 
         applyTooltip(series, dataNames);
 
-        bookBarChart.setAnimated(false);
+        customerBarChart.setAnimated(false);
     }
 
     private void applyTooltip(XYChart.Series<String, Number> series, List<String> dataNames) {
         DecimalFormat formatter = new DecimalFormat("#,###");
 
         series.getData().forEach(data -> {
-            int index = series.getData().indexOf(data); // Lấy chỉ số của data
             String formattedValue = formatter.format(data.getYValue());
-            String dataName = dataNames.get(index);
-            Tooltip tooltip = new Tooltip("Book: " + dataName + "\nRevenue: " + formattedValue);
+            String dataName = dataNames.get(series.getData().indexOf(data));
+            Tooltip tooltip = new Tooltip("Customer: " + dataName + "\nRevenue: " + formattedValue);
             tooltip.setShowDelay(Duration.ZERO);
             Tooltip.install(data.getNode(), tooltip);
         });
     }
-
-
 
     private void updateButtonStyle(Button selectedButton) {
         Platform.runLater(() -> {

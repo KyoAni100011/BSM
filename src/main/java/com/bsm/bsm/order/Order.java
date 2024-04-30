@@ -4,11 +4,9 @@ import com.bsm.bsm.customer.Customer;
 import com.bsm.bsm.employee.EmployeeModel;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.UUID;
 
 public class Order {
-    private String id;
+    private int id;
     private EmployeeModel employee;
     private Customer customer;
     private String orderDate;
@@ -18,7 +16,7 @@ public class Order {
         // Default constructor
     }
 
-    public Order(String id, EmployeeModel employee, Customer customer, String orderDate, BigDecimal totalPrice) {
+    public Order(int id, EmployeeModel employee, Customer customer, String orderDate, BigDecimal totalPrice) {
         this.id = id;
         this.employee = employee;
         this.customer = customer;
@@ -26,12 +24,15 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-    // Getters and setters
-    public String getId() {
+    public Order(EmployeeModel employee, Customer customer, BigDecimal totalPrice) {
+        this(0, employee, customer, "", totalPrice);
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -39,7 +40,7 @@ public class Order {
         return employee;
     }
 
-    public void setEmployeeID(EmployeeModel employee) {
+    public void setEmployee(EmployeeModel employee) {
         this.employee = employee;
     }
 
@@ -47,7 +48,7 @@ public class Order {
         return customer;
     }
 
-    public void setCustomerID(Customer customer) {
+    public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
@@ -69,11 +70,11 @@ public class Order {
 
     @Override
     public String toString() {
-        return "OrderSheet{" +
+        return "Order{" +
                 "id=" + id +
                 ", employee=" + employee +
-                ", customerID=" + customer +
-                ", orderDate=" + orderDate +
+                ", customer=" + customer +
+                ", orderDate='" + orderDate + '\'' +
                 ", totalPrice=" + totalPrice +
                 '}';
     }

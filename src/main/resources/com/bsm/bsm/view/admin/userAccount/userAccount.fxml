@@ -129,7 +129,7 @@
                         </AnchorPane>
                         <AnchorPane prefHeight="43.0" prefWidth="82.0">
                            <children>
-                              <Button fx:id="lastLoginLabel" layoutX="-1.0" layoutY="9.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Last login">
+                              <Button fx:id="lastLoginLabel" layoutX="-8.0" layoutY="9.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Last login">
                                  <graphic>
                                     <Group>
                                        <children>
@@ -142,7 +142,7 @@
                         </AnchorPane>
                         <AnchorPane prefHeight="43.0" prefWidth="87.0">
                            <children>
-                              <Button fx:id="actionLabel" layoutX="-1.0" layoutY="9.0" mnemonicParsing="false" prefWidth="100.0" style="-fx-background-color: transparent;" text="Action">
+                              <Button fx:id="actionLabel" layoutX="4.0" layoutY="9.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="120.0" style="-fx-background-color: transparent;" text="Enable/Disable">
                                  <graphic>
                                     <Group>
                                        <children>

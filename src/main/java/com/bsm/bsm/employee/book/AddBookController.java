@@ -102,10 +102,13 @@ public class AddBookController {
         categorySearch.setVisible(false);
         authorSearch.setVisible(false);
 
+        //if show combobox, search is show too.
         categoryCheckCombo.addEventHandler(ComboBox.ON_SHOWN, event -> {
             categorySearch.setVisible(true);
 
         });
+
+        //if people focus on search field, open search, else close search.
         categoryCheckCombo.addEventHandler(ComboBox.ON_HIDDEN, event -> {
             categorySearch.focusedProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue) {
@@ -121,18 +124,18 @@ public class AddBookController {
                 }
             });
         });
+        //if people type search field, filter the list data to choose.
 
         categorySearch.textProperty().addListener((observable, oldValue, newValue) -> {
             categoryCheckCombo.show();
             try {
                 updateFilteredCategories(newValue.toLowerCase());
             } catch (IndexOutOfBoundsException e) {
-
                 System.err.println("IndexOutOfBoundsException caught: " + e.getMessage());
             }
-
-
         });
+
+        //if clicking outside, close the search field
         categorySearch.getParent().addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
             // Check if the mouse event target is outside the categorySearch field
             if (!categorySearch.getBoundsInParent().contains(event.getX(), event.getY())) {
@@ -142,8 +145,11 @@ public class AddBookController {
                 categoryCheckCombo.hide();
             }
         });
+
+        // handle check, uncheck field
         categoryCheckCombo.getCheckModel().getCheckedItems().addListener((ListChangeListener<String>) c -> {
             while (c.next()) {
+
                 if (c.wasAdded()) {
                     for (String item : c.getAddedSubList()) {
                         if (!selectedCategories.contains(item) && item != null) {
@@ -158,11 +164,14 @@ public class AddBookController {
                 }
             }
         });
-//this
 
+
+        //if show combobox, search is show too.
         authorNameCheckCombo.addEventHandler(ComboBox.ON_SHOWN, event -> {
             authorSearch.setVisible(true);
         });
+
+        //if people focus on search field, open search, else close search.
         authorNameCheckCombo.addEventHandler(ComboBox.ON_HIDDEN, event -> {
             authorSearch.focusedProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue) {
@@ -179,15 +188,18 @@ public class AddBookController {
             });
         });
 
+        //if people type search field, filter the list data to choose.
         authorSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println("first");
             authorNameCheckCombo.show();
             try {
                 updateFilteredAuthor(newValue.toLowerCase());
             } catch (IndexOutOfBoundsException e) {
-
                 System.err.println("IndexOutOfBoundsException caught: " + e.getMessage());
             }
         });
+
+        //if clicking outside, close the search field
         authorSearch.getParent().addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
             // Check if the mouse event target is outside the authorSearch field
             if (!authorSearch.getBoundsInParent().contains(event.getX(), event.getY())) {
@@ -196,8 +208,12 @@ public class AddBookController {
                 authorSearch.setVisible(false); // Hide the authorSearch field
                 authorNameCheckCombo.hide();
             }
+
         });
+
+        // handle check, uncheck field
         authorNameCheckCombo.getCheckModel().getCheckedItems().addListener((ListChangeListener<String>) c -> {
+
             while (c.next()) {
                 if (c.wasAdded()) {
                     for (String item : c.getAddedSubList()) {
@@ -218,73 +234,71 @@ public class AddBookController {
     }
 
     private void updateFilteredCategories(String searchQuery) {
-        filteredCategoriesItems.clear();
 
+        filteredCategoriesItems.clear();
+        // if search not thing, show all data in list
         if (searchQuery.isEmpty()) {
             filteredCategoriesItems.addAll(categoriesItems);
         } else {
+            // get data match search query , add all selected category first
             filteredCategoriesItems.addAll(selectedCategories);
             for (String category : categoriesItems) {
-                if (category.toLowerCase().contains(searchQuery)) {
-                    if (!selectedCategories.contains(category)) {
-                        filteredCategoriesItems.add(category);
-                    }
+                // add data contain search query and not the selected category
+                if (category.toLowerCase().contains(searchQuery) && !selectedCategories.contains(category)) {
+                    filteredCategoriesItems.add(category);
                 }
             }
 
         }
 
+        // clear data and put data again
+        ObservableList<String> checkedCate =  FXCollections.observableArrayList(categoryCheckCombo.getCheckModel().getCheckedItems());
+        categoryCheckCombo.getCheckModel().clearChecks();
+        selectedCategories.setAll(checkedCate);
+        categoryCheckCombo.getItems().clear();
         categoryCheckCombo.getItems().setAll(filteredCategoriesItems);
 
+
+        // check again all the previous check item
         Set<String> previouslySelectedCategories = new HashSet<>(selectedCategories);
-
-        try {
-            categoryCheckCombo.getCheckModel().clearChecks();
-        } catch (IndexOutOfBoundsException e) {
-            System.err.println("IndexOutOfBoundsException caught: " + e.getMessage());
-        }
-
-        for (String filteredCategory : filteredCategoriesItems) {
-            if (previouslySelectedCategories.contains(filteredCategory)) {
-                categoryCheckCombo.getCheckModel().check(filteredCategory);
-                System.out.println("checked" + filteredCategory);
+        for (String checkCategory : filteredCategoriesItems) {
+            if (previouslySelectedCategories.contains(checkCategory)) {
+                categoryCheckCombo.getCheckModel().check(checkCategory);
             }
         }
     }
 
     private void updateFilteredAuthor(String searchQuery) {
-        filteredAuthorItems.clear();
 
+        filteredAuthorItems.clear();
+        // if search not thing, show all data in list
         if (searchQuery.isEmpty()) {
             filteredAuthorItems.addAll(authorItems);
+
         } else {
+            // get data match search query , add all selected category first
             filteredAuthorItems.addAll(selectedAuthors);
             for (String author : authorItems) {
-                if (author.toLowerCase().contains(searchQuery)) {
-                    if (!selectedAuthors.contains(author)) {
-                        filteredAuthorItems.add(author);
-                    }
+                // add data contain search query and not the selected category
+                if (author.toLowerCase().contains(searchQuery) && !selectedAuthors.contains(author)) {
+                    filteredAuthorItems.add(author);
                 }
             }
-
         }
-
+        ObservableList<String> checkedAuthors =  FXCollections.observableArrayList(authorNameCheckCombo.getCheckModel().getCheckedItems());
+        authorNameCheckCombo.getCheckModel().clearChecks();
+        selectedAuthors.setAll(checkedAuthors);
+        authorNameCheckCombo.getItems().clear();
         authorNameCheckCombo.getItems().setAll(filteredAuthorItems);
-
         Set<String> previouslySelectedAuthor = new HashSet<>(selectedAuthors);
 
-        try {
-            authorNameCheckCombo.getCheckModel().clearChecks();
-        } catch (IndexOutOfBoundsException e) {
-            System.err.println("IndexOutOfBoundsException caught: " + e.getMessage());
-        }
 
-        for (String filtererAuthor : filteredAuthorItems) {
-            if (previouslySelectedAuthor.contains(filtererAuthor)) {
-                authorNameCheckCombo.getCheckModel().check(filtererAuthor);
-                System.out.println("checked" + filtererAuthor);
+        for (String checkedAuthor : filteredAuthorItems) {
+            if (previouslySelectedAuthor.contains(checkedAuthor)) {
+                authorNameCheckCombo.getCheckModel().check(checkedAuthor);
             }
         }
+
     }
 
     private boolean isPopupOpen(CheckComboBox<?> checkComboBox) {

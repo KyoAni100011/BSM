@@ -7,6 +7,7 @@ import com.bsm.bsm.database.DatabaseConnection;
 import com.bsm.bsm.employee.EmployeeModel;
 import com.bsm.bsm.user.UserDAO;
 import com.bsm.bsm.user.UserModel;
+import com.bsm.bsm.user.UserSingleton;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -43,8 +44,8 @@ public class ImportSheetDAO {
         if (!checkRowAffected(connection, rowAffected)) throw new SQLException("Insert bookBatch failed");
     }
 
-    public List<BookSheetDetail> getISheetBookDetails(String idSheet) {
-        List<BookSheetDetail> bookSheetDetails = new ArrayList<>();
+    public List<Book> getISheetBookDetails(String idSheet) {
+        List<Book> bookDetails = new ArrayList<>();
         String query = "SELECT " +
                 "    b.title AS bookTitle, " +
                 "    bBatch.quantity AS quantity, " +
@@ -64,11 +65,11 @@ public class ImportSheetDAO {
                     String title = resultSet.getString("bookTitle");
                     BigDecimal price = resultSet.getBigDecimal("price");
                     int quantity = resultSet.getInt("quantity");
-                    bookSheetDetails.add(new BookSheetDetail(title, price, quantity));
+                    bookDetails.add(new Book(title, quantity ,price));
                 }
             }
         }, idSheet);
-        return bookSheetDetails;
+        return bookDetails;
     }
 
 
@@ -155,11 +156,44 @@ public class ImportSheetDAO {
         return importSheetID.get();
     }
 
+    public String getImportSheetID (EmployeeModel employee,ImportSheet importSheet) throws SQLException {
+
+        String employeeID = getEmployeeId(employee.getId());
+
+        String QUERY_GET_IMPORT_SHEET_ID = """
+            select max(id) as id
+            from importSheet
+            where employeeID = ? and importDate = ? and quantity = ? and totalPrice = ?
+            """;
+        AtomicReference<String> importSheetID = new AtomicReference<>();
+
+        DatabaseConnection.executeQuery(QUERY_GET_IMPORT_SHEET_ID, resultSet -> {
+            if (resultSet != null && resultSet.next()) {
+                importSheetID.set(resultSet.getString("id"));
+            }
+        }, employeeID, importSheet.getImportDate(), importSheet.getQuantity(), importSheet.getTotalPrice());
+
+        return importSheetID.get();
+    }
+
     private String getEmployeeId(Connection connection, String userID) throws SQLException {
         String QUERY_GET_EMPLOYEEID = "select e.id from user u join employee e on u.id = e.userID where u.id = ?";
         AtomicReference<String> employeeID = new AtomicReference<>();
 
         DatabaseConnection.executeQuery(connection, QUERY_GET_EMPLOYEEID, resultSet -> {
+            if (resultSet != null && resultSet.next()) {
+                employeeID.set(resultSet.getString("id"));
+            }
+        }, userID);
+
+        return employeeID.get();
+    }
+
+    private String getEmployeeId(String userID) throws SQLException {
+        String QUERY_GET_EMPLOYEEID = "select e.id from user u join employee e on u.id = e.userID where u.id = ?";
+        AtomicReference<String> employeeID = new AtomicReference<>();
+
+        DatabaseConnection.executeQuery(QUERY_GET_EMPLOYEEID, resultSet -> {
             if (resultSet != null && resultSet.next()) {
                 employeeID.set(resultSet.getString("id"));
             }

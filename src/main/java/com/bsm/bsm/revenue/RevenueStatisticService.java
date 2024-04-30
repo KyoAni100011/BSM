@@ -29,7 +29,7 @@ public class RevenueStatisticService {
     }
 
     public List<ResultStatistic> getCategoryDailyRevenue(String date) throws SQLException {
-        return revenueStatisticDAO.getTop10BooksByDailyRevenue(date);
+        return revenueStatisticDAO.getTop10CategoriesByDailyRevenue(date);
     }
 
     public List<ResultStatistic> getCategoryMonthlyRevenue(int year, int month) throws SQLException {
@@ -37,7 +37,7 @@ public class RevenueStatisticService {
     }
 
     public List<ResultStatistic> getCategoryWeeklyRevenue(int year, int week) throws SQLException {
-        return revenueStatisticDAO.getTop10BooksByWeeklyRevenue(year, week);
+        return revenueStatisticDAO.getTop10CategoriesByWeeklyRevenue(year, week);
     }
 
     public List<ResultStatistic> getCategoryDateToDateRevenue(String startDate, String endDate) throws SQLException {
@@ -49,7 +49,7 @@ public class RevenueStatisticService {
     }
 
     public List<ResultStatistic> getCustomerMonthlyRevenue(int year, int month) throws SQLException {
-        return revenueStatisticDAO.getTop10CustomerByMonthlyRevenue(year, month);
+        return revenueStatisticDAO.getTop10CustomerByMonthlyRevenue(month, year);
     }
 
     public List<ResultStatistic> getCustomerWeeklyRevenue(int year, int week) throws SQLException {

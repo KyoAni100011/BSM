@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 public class BookSheetDetail {
     private String title;
 
-
     private BigDecimal price;
     private int quantity;
 

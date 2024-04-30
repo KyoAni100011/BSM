@@ -1,11 +1,12 @@
 package com.bsm.bsm.order;
 
+import com.bsm.bsm.book.BookBatch;
+
 import java.math.BigDecimal;
 
 public class OrderBooksDetails {
-    private String orderID;
-    private String bookID;
-    private String importSheetID;
+    private int orderID;
+    private BookBatch bookBatch;
     private int quantity;
     private BigDecimal salePrice;
 
@@ -13,37 +14,27 @@ public class OrderBooksDetails {
         // Default constructor
     }
 
-    public OrderBooksDetails(String orderID, String bookID, String importSheetID, int quantity, BigDecimal salePrice) {
+    public OrderBooksDetails(int orderID, BookBatch bookBatch, int quantity, BigDecimal salePrice) {
         this.orderID = orderID;
-        this.bookID = bookID;
-        this.importSheetID = importSheetID;
+        this.bookBatch = bookBatch;
         this.quantity = quantity;
         this.salePrice = salePrice;
     }
 
-    // Getters and setters
-    public String getOrderID() {
+    public int getOrderID() {
         return orderID;
     }
 
-    public void setOrderID(String orderID) {
+    public void setOrderID(int orderID) {
         this.orderID = orderID;
     }
 
-    public String getBookID() {
-        return bookID;
+    public BookBatch getBookBatch() {
+        return bookBatch;
     }
 
-    public void setBookID(String bookID) {
-        this.bookID = bookID;
-    }
-
-    public String getImportSheetID() {
-        return importSheetID;
-    }
-
-    public void setImportSheetID(String importSheetID) {
-        this.importSheetID = importSheetID;
+    public void setBookBatch(BookBatch bookBatch) {
+        this.bookBatch = bookBatch;
     }
 
     public int getQuantity() {
@@ -66,8 +57,7 @@ public class OrderBooksDetails {
     public String toString() {
         return "OrderBooksDetails{" +
                 "orderID=" + orderID +
-                ", bookID='" + bookID + '\'' +
-                ", importSheetID=" + importSheetID +
+                ", bookBatch=" + bookBatch +
                 ", quantity=" + quantity +
                 ", salePrice=" + salePrice +
                 '}';

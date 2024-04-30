@@ -2,6 +2,7 @@ package com.bsm.bsm.employee.order;
 
 import com.bsm.bsm.order.Order;
 import com.bsm.bsm.employee.EmployeeModel;
+import com.bsm.bsm.order.OrderService;
 import com.bsm.bsm.user.UserSingleton;
 
 import com.bsm.bsm.utils.NumericValidationUtils;
@@ -24,6 +25,7 @@ import javafx.util.StringConverter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -31,7 +33,9 @@ import java.util.*;
 public class OrderController implements Initializable  {
     private static String id;
     private final ToggleGroup toggleGroup = new ToggleGroup();
-//    private final Orderservice Orderservice = new Orderservice();
+    private final OrderService Orderservice = new OrderService();
+    private boolean isSearch = false;
+    private String condition = "";
     @FXML
     public Button customerLabel,employeeLabel,orderLabel,priceLabel,idLabel;
     @FXML
@@ -64,7 +68,7 @@ public class OrderController implements Initializable  {
     public void initialize(URL location, ResourceBundle resources) {
         initializeButtonsAndLabels();
         try {
-            loadAllOrders();
+            loadAllOrders(condition);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -73,8 +77,22 @@ public class OrderController implements Initializable  {
         inputSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                isSearch = !newValue.isEmpty();
                 inputSearchText = newValue;
-//                orders = Orderservice.search(inputSearchText);
+                if(!isSearch) {
+                    try {
+                        loadAllOrders(condition);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                else {
+                    try {
+                        orders = Orderservice.search(inputSearchText, condition);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
                 try {
                     updateOrdersList();
                 } catch (IOException e) {
@@ -83,7 +101,7 @@ public class OrderController implements Initializable  {
             }
         });
     }
-//    public DatePicker fromDateField, toDateField;
+
     private void setupDatePicker() {
         fromDateField.setPromptText("dd/mm/yyyy");
         toDateField.setPromptText("dd/mm/yyyy");
@@ -115,16 +133,15 @@ public class OrderController implements Initializable  {
         toDateField.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
     }
 
-    private void loadAllOrders() throws IOException {
-        orders = new ArrayList<>();
-        //orders.add(new Order(UUID.randomUUID(),324,UUID.randomUUID(),LocalDate.of(2024, 4, 11),new BigDecimal("100.00")));
+    private void loadAllOrders(String condition) throws IOException {
+        orders = Orderservice.getAllOrders(condition);
+        orders = Orderservice.sort(orders, true, "id");
         updateOrdersList();
-        //        orders = Orderservice.getAllOrders();
-//        try {
-//            updateOrdersList();
-//        } catch (IOException e) {
-//            System.out.println(e.getMessage());
-//        }
+        try {
+            updateOrdersList();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void initializeButtonsAndLabels() {
@@ -155,49 +172,43 @@ public class OrderController implements Initializable  {
     }
 
     @FXML
-    void handleFromDayButton(ActionEvent event) {
+    void handleFromDayButton(ActionEvent event) throws IOException {
         toDateField.setDayCellFactory(param -> new DateCell() {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
-                setDisable(empty || date.compareTo(fromDateField.getValue()) < 0 );
+                setDisable(empty || date.compareTo(fromDateField.getValue()) < 0);
             }
         });
-        if(fromDateField.getValue() != null && toDateField.getValue() != null  ){
-            System.out.println("get in");
-            // Sort calendar her
+        if (fromDateField.getValue() != null && toDateField.getValue() != null) {
+            handleQuery();
         }
-//        try {
-//            FXMLLoaderHelper.loadFXML(new Stage(), "order/bookOrders/addOrder");
-//            //update orders list after adding new Order
-//            orders = Orderservice.getAllOrders();
-//            updateOrdersList();
-//        } catch (IOException e) {
-//            System.out.println(e.getMessage());
-//        }
     }
+
     @FXML
-    void handleToDayButton(ActionEvent event) {
+    void handleToDayButton(ActionEvent event) throws IOException {
         fromDateField.setDayCellFactory(param -> new DateCell() {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
-                setDisable(empty || date.compareTo(toDateField.getValue()) > 0 );
+                setDisable(empty || date.compareTo(toDateField.getValue()) > 0);
             }
         });
-        if(fromDateField.getValue() != null && toDateField.getValue() != null  ){
-            System.out.println("get in");
-            // Sort calendar her
+        if (fromDateField.getValue() != null && toDateField.getValue() != null) {
+            handleQuery();
         }
-//        try {
-//            FXMLLoaderHelper.loadFXML(new Stage(), "order/bookOrders/addOrder");
-//            //update orders list after adding new Order
-//            orders = Orderservice.getAllOrders();
-//            updateOrdersList();
-//        } catch (IOException e) {
-//            System.out.println(e.getMessage());
-//        }
     }
+
+    private void handleQuery() throws IOException {
+        LocalDate fromDate = fromDateField.getValue();
+        LocalDate toDate = toDateField.getValue();
+        if (fromDate.compareTo(toDate) > 0) {
+            return;
+        }
+        condition = "WHERE os.orderDate BETWEEN '" + fromDate + "' AND '" + toDate + "'";
+        loadAllOrders(condition);
+    }
+
 
 
 
@@ -270,7 +281,7 @@ public class OrderController implements Initializable  {
     private void updateOrdersList() throws IOException {
         pnItems.getChildren().clear();
         int itemsPerPage = 10;
-        int startIndex = (currentPage - 1) * itemsPerPage;
+        int startIndex = isSearch ? 0 : (currentPage - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, orders.size());
 
         for (int i = startIndex; i < endIndex; i++) {
@@ -279,7 +290,7 @@ public class OrderController implements Initializable  {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/order/tableItem.fxml"));
                 Node item = fxmlLoader.load();
                 TableItemController tableItemController = fxmlLoader.getController();
-//                tableItemController.setOrder(order);
+                tableItemController.setOrder(order);
                 pnItems.getChildren().add(item);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -299,6 +310,8 @@ public class OrderController implements Initializable  {
         } else {
             sortOrder = "ASC";
         }
+        var isAscending = sortOrder.equals("ASC");
+
         column = columnName;
         idSortLabel.setContent(column.equals("ID") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
         CustomerSortLabel.setContent(column.equals("Customer") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
@@ -306,10 +319,8 @@ public class OrderController implements Initializable  {
         employeeSortLabel.setContent(column.equals("Employee") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
         priceSortLabel.setContent(column.equals("Total Price") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
         try {
-//            orders = Orderservice.sort(orders, isAscending, column);
-//            updateOrdersList();
-//            orders.forEach(System.out::println);
-            System.out.println("-".repeat(30));
+            orders = Orderservice.sort(orders, isAscending, column);
+            updateOrdersList();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

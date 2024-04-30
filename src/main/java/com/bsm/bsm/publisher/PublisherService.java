@@ -46,7 +46,7 @@ public class PublisherService implements Activable, Searchable<Publisher>, Sorta
                 case "address" -> {
                     return Comparator.comparing(Publisher::getAddress).compare(publisher1, publisher2);
                 }
-                case "action" -> {
+                case "enable/disable" -> {
                     return Comparator.comparing(Publisher::isEnabled).compare(publisher1, publisher2);
                 }
                 default -> {

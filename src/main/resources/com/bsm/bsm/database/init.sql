@@ -105,7 +105,7 @@ create table bookBatch (
 create table customer (
     id int auto_increment primary key,
     name varchar(255) not null default 'Anonymous',
-    phone varchar(12) not null default '0000000000'
+    phone varchar(11) not null default '0000000000'
 );
 
 create table orderSheet (
