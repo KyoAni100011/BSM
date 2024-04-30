@@ -45,6 +45,13 @@ public class Book {
        this(null, title, null, null, null, true, 0, null, null, null);
     }
 
+    public Book(String title, int quantity, BigDecimal salePrice)
+    {
+        this.title = title;
+        this.quantity = quantity;
+        this.salePrice = salePrice;
+    }
+
     public String getIsbn() {
         return isbn;
     }

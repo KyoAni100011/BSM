@@ -144,7 +144,8 @@ public class RevenueStatisticDAO {
 
     public List<ResultStatistic> getTop10CustomerByMonthlyRevenue(int month, int year) throws SQLException {
         List<ResultStatistic> customerRevenues = new ArrayList<>();
-        String query = "SELECT cu.name AS title, SUM(odb.quantity * odb.salePrice) AS revenue FROM orderBooksDetails odb JOIN orderSheet os ON odb.orderID = os.id JOIN customer cu ON os.customerID = cu.id WHERE YEAR(os.orderDate) = ? AND MONTH(os.orderDate) = ? GROUP BY cu.name ORDER BY revenue DESC LIMIT 10;\n";
+
+        String query = "SELECT cu.name AS title, SUM(odb.quantity * odb.salePrice) AS revenue FROM orderBooksDetails odb JOIN orderSheet os ON odb.orderID = os.id JOIN customer cu ON os.customerID = cu.id WHERE YEAR(os.orderDate) = ? AND MONTH(os.orderDate) = ? GROUP BY cu.name ORDER BY revenue DESC LIMIT 10;";
 
         DatabaseConnection.executeQuery(query, resultSet -> {
             while (resultSet.next()) {
@@ -153,6 +154,8 @@ public class RevenueStatisticDAO {
                 customerRevenues.add(new ResultStatistic(customerName, totalRevenue));
             }
         }, year, month);
+
+        System.out.println(customerRevenues);
 
         return customerRevenues;
     }

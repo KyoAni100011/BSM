@@ -43,8 +43,8 @@ public class ImportSheetDAO {
         if (!checkRowAffected(connection, rowAffected)) throw new SQLException("Insert bookBatch failed");
     }
 
-    public List<BookSheetDetail> getISheetBookDetails(String idSheet) {
-        List<BookSheetDetail> bookSheetDetails = new ArrayList<>();
+    public List<Book> getISheetBookDetails(String idSheet) {
+        List<Book> bookDetails = new ArrayList<>();
         String query = "SELECT " +
                 "    b.title AS bookTitle, " +
                 "    bBatch.quantity AS quantity, " +
@@ -64,11 +64,11 @@ public class ImportSheetDAO {
                     String title = resultSet.getString("bookTitle");
                     BigDecimal price = resultSet.getBigDecimal("price");
                     int quantity = resultSet.getInt("quantity");
-                    bookSheetDetails.add(new BookSheetDetail(title, price, quantity));
+                    bookDetails.add(new Book(title, quantity ,price));
                 }
             }
         }, idSheet);
-        return bookSheetDetails;
+        return bookDetails;
     }
 
 

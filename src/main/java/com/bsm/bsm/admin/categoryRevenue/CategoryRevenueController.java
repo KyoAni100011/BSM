@@ -18,10 +18,12 @@ import javafx.util.Duration;
 import javafx.util.StringConverter;
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -80,10 +82,11 @@ public class CategoryRevenueController {
         updateDatePickerCellStyle();  // Update the cell style
         setVisibility(false);
         LocalDate selectedDate = datePicker.getValue();
+        String chartTitle = getChartTitle("Month", selectedDate);
         executorService.submit(() -> {
             try {
                 List<ResultStatistic> categoryMonthly = revenueStatisticService.getCategoryMonthlyRevenue(selectedDate.getYear(), selectedDate.getMonthValue());
-                Platform.runLater(() -> updateChartWithData(categoryMonthly, "Top 10 Best Selling Category By Month"));
+                Platform.runLater(() -> updateChartWithData(categoryMonthly, chartTitle));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -100,16 +103,32 @@ public class CategoryRevenueController {
         updateDatePickerCellStyle();  // Update the cell style for week view
         setVisibility(false);
         LocalDate selectedDate = datePicker.getValue();
+        String chartTitle = getChartTitle("Week", selectedDate);
         executorService.submit(() -> {
             try {
-                List<ResultStatistic> bookWeekly = revenueStatisticService.getBookWeeklyRevenue(selectedDate.getYear(), selectedDate.get(WeekFields.ISO.weekOfYear()));
-                System.out.println(bookWeekly);
-                Platform.runLater(() -> updateChartWithData(bookWeekly, "Top 10 Best Selling Books By Week"));
+                List<ResultStatistic> categoryWeekly = revenueStatisticService.getCategoryWeeklyRevenue(selectedDate.getYear(), selectedDate.get(WeekFields.ISO.weekOfYear()));
+                Platform.runLater(() -> updateChartWithData(categoryWeekly, chartTitle));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         });
         updateButtonStyle(btnByWeek);
+    }
+
+    private String getChartTitle(String tagType, LocalDate selectedDate) {
+        String month = selectedDate.getMonth().toString();
+        String year = String.valueOf(selectedDate.getYear());
+        if (tagType.equals("Month")) {
+            return "Top 10 Best Selling Categories In " + month + " " + year;
+        } else if (tagType.equals("Week")) {
+            return "Top 10 Best Selling Categories In Week " + selectedDate.get(WeekFields.ISO.weekOfYear()) + ", " + year;
+        } else if (tagType.equals("Date")) {
+            return "Top 10 Best Selling Categories On " + selectedDate;
+        } else if (tagType.equals("DateRange")) {
+            return "Top 10 Best Selling Categories From " + datePicker.getValue() + " To " + datePicker1.getValue();
+        } else {
+            return "";
+        }
     }
 
     private void updateDatePickerCellStyle() {
@@ -150,10 +169,11 @@ public class CategoryRevenueController {
         datePicker.setShowWeekNumbers(false);
         setVisibility(false);
         LocalDate selectedDate = datePicker.getValue();
+        String chartTitle = getChartTitle("Date", selectedDate);
         executorService.submit(() -> {
             try {
                 List<ResultStatistic> categoryDaily = revenueStatisticService.getCategoryDailyRevenue(selectedDate.toString());
-                Platform.runLater(() -> updateChartWithData(categoryDaily, "Top 10 Best Selling Category By Date"));
+                Platform.runLater(() -> updateChartWithData(categoryDaily, chartTitle));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -172,9 +192,10 @@ public class CategoryRevenueController {
         executorService.submit(() -> {
             LocalDate startDate = datePicker.getValue(), endDate = datePicker1.getValue();
             if (startDate != null && endDate != null && !startDate.isAfter(endDate)) {
+                String chartTitle = "Top 10 Best Selling Categories From " + startDate + " To " + endDate;
                 try {
                     List<ResultStatistic> CategoryFromTo = revenueStatisticService.getCategoryDateToDateRevenue(startDate.toString(), endDate.toString());
-                    Platform.runLater(() -> updateChartWithData(CategoryFromTo, "Top 10 Best Selling Category From " + startDate + " To " + endDate));
+                    Platform.runLater(() -> updateChartWithData(CategoryFromTo, chartTitle));
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -201,35 +222,18 @@ public class CategoryRevenueController {
 
     private void updateChartWithData(List<ResultStatistic> data, String chartTitle) {
         ObservableList<XYChart.Data<String, Number>> chartData = FXCollections.observableArrayList();
+        List<String> dataNames = new ArrayList<>();
+
         if (data != null) {
             int count = 1;
             for (ResultStatistic rs : data) {
                 chartData.add(new XYChart.Data<>(String.valueOf(count), rs.getStatisticValue()));
+                dataNames.add(rs.getTitle());
                 count++;
             }
         }
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
-
-        // Tạo một chuỗi chuyển đổi để định dạng giá trị trục y
-        NumberAxis yAxis = (NumberAxis) categoryBarChart.getYAxis();
-        yAxis.setTickLabelFormatter(new StringConverter<Number>() {
-            @Override
-            public String toString(Number object) {
-                if (object.intValue() < 1000000) {
-                    return String.format("%.0f", object);
-                } else if (object.intValue() < 1000000000) {
-                    return String.format("%.0fM", object.doubleValue() / 1000000);
-                } else {
-                    return String.format("%.0fB", object.doubleValue() / 1000000000);
-                }
-            }
-
-            @Override
-            public Number fromString(String string) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-        });
 
         // Tạo một biểu đồ mới
         AncBookBarChart.getChildren().remove(categoryBarChart);
@@ -244,21 +248,22 @@ public class CategoryRevenueController {
         categoryBarChart.setTitle(chartTitle);
         categoryBarChart.getData().add(series);
 
-        applyTooltip(series);
+        applyTooltip(series, dataNames);
 
         categoryBarChart.setAnimated(false);
     }
 
+    private void applyTooltip(XYChart.Series<String, Number> series, List<String> dataNames) {
+        DecimalFormat formatter = new DecimalFormat("#,###");
 
-
-    private void applyTooltip(XYChart.Series<String, Number> series) {
         series.getData().forEach(data -> {
-            Tooltip tooltip = new Tooltip("Category: " + data.getXValue() + "\nValue: " + data.getYValue());
+            String formattedValue = formatter.format(data.getYValue());
+            String dataName = dataNames.get(series.getData().indexOf(data));
+            Tooltip tooltip = new Tooltip("Category: " + dataName + "\nRevenue: " + formattedValue);
             tooltip.setShowDelay(Duration.ZERO);
             Tooltip.install(data.getNode(), tooltip);
         });
     }
-
     private void updateButtonStyle(Button selectedButton) {
         Arrays.asList(btnByMonth, btnByWeek, btnByDate, btnFromDateToDate).forEach(button -> {
             if (button == selectedButton) {

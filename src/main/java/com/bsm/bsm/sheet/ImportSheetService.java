@@ -70,7 +70,7 @@ public class ImportSheetService {
         return sortedImportSheet.stream().sorted(comparator).collect(Collectors.toList());
     }
 
-    public List<BookSheetDetail> getISheetBookDetails(String id)
+    public List<Book> getISheetBookDetails(String id)
     {
         return importSheetDAO.getISheetBookDetails(id);
     }

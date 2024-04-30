@@ -1,6 +1,9 @@
 package com.bsm.bsm.employee.importSheet;
 
-import com.bsm.bsm.sheet.BookSheetDetail;
+import com.bsm.bsm.book.Book;
+import com.bsm.bsm.category.Category;
+import com.bsm.bsm.employee.book.TableItemController;
+import com.bsm.bsm.employee.bookCategories.CategoryDetailController;
 import com.bsm.bsm.sheet.ImportSheet;
 import com.bsm.bsm.sheet.ImportSheetService;
 import javafx.fxml.FXML;
@@ -33,12 +36,6 @@ public class ImportSheetDetailController {
     @FXML
     public VBox bookItem;
 
-    static void handleTableItemSelection(String myId, ImportSheet sheet) {
-        id = myId;
-        listBook = importSheetService.getISheetBookDetails(id);
-        importSheet = sheet;
-    }
-
     @FXML
     public void initialize() {
         new ImportSheetDetailController();
@@ -55,7 +52,7 @@ public class ImportSheetDetailController {
 
     private void updateSheet() {
         bookItem.getChildren().clear();
-        for (BookSheetDetail b : listBook) {
+        for (Book b : listBook) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/importSheet/importSheetDetailItem.fxml"));
                 Node item = fxmlLoader.load();
