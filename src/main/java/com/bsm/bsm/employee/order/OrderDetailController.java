@@ -23,7 +23,7 @@ public class OrderDetailController {
     private static int id = 1;
     private static Order order;
     private static final Order orderDetail = null;
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     @FXML
     public TextField employeeNameField, totalPricefield, idField, customerNameField;
     @FXML
