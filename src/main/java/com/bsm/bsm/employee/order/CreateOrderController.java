@@ -4,7 +4,6 @@ import com.bsm.bsm.book.Book;
 import com.bsm.bsm.book.BookService;
 import com.bsm.bsm.customer.Customer;
 import com.bsm.bsm.order.Order;
-import com.bsm.bsm.order.OrderBooksDetails;
 import com.bsm.bsm.order.OrderService;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
@@ -21,7 +20,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -51,6 +49,7 @@ public class CreateOrderController implements Initializable {
     @FXML
     public VBox pnItems = new VBox();
     private ObservableList<String> currentBookNamesData = FXCollections.observableArrayList(bookNames);
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -86,7 +85,7 @@ public class CreateOrderController implements Initializable {
                     BigDecimal discount = subtotal.multiply(BigDecimal.valueOf(0.05));
                     BigDecimal total = subtotal.multiply(BigDecimal.valueOf(0.95));
 
-                    discountLabel.setText("(-5%) " + discount.toString());
+                    discountLabel.setText("(-5%) " + discount);
                     totalLabel.setText(total.toString());
                 } else {
                     discountLabel.setText("0%");
@@ -193,12 +192,11 @@ public class CreateOrderController implements Initializable {
     }
 
 
-
     public void handlePayActionButton(MouseEvent mouseEvent) {
         List<String> selectedBooks = new ArrayList<>();
         List<Integer> quantities = new ArrayList<>();
         List<BigDecimal> salePrices = new ArrayList<>();
-        if(Objects.equals(totalLabel.getText(), "0")){
+        if (Objects.equals(totalLabel.getText(), "0")) {
             AlertUtils.showAlert("Error", "Please choose book to create order", Alert.AlertType.CONFIRMATION);
             return;
         }
@@ -222,7 +220,7 @@ public class CreateOrderController implements Initializable {
         }
 
         Customer customer = null;
-        if ((!handleNameField.getText().isEmpty() && (handlePhoneField.getText().length() == 11 || handlePhoneField.getText().length() == 10) || (handleNameField.getText().isEmpty() && handlePhoneField.getText().isEmpty() )) && !MoneyTextField.getText().isEmpty()) {
+        if ((!handleNameField.getText().isEmpty() && (handlePhoneField.getText().length() == 11 || handlePhoneField.getText().length() == 10) || (handleNameField.getText().isEmpty() && handlePhoneField.getText().isEmpty())) && !MoneyTextField.getText().isEmpty()) {
             //get customer information
 
             boolean isMember = !handleNameField.getText().isEmpty();
@@ -230,11 +228,9 @@ public class CreateOrderController implements Initializable {
             System.out.println(customer);
 
             if (orderService.createOrder(selectedBooks, quantities, salePrices, customer)) {
-                AlertUtils.showAlert("Success", "Order created successfully", Alert.AlertType.CONFIRMATION);
                 try {
-
                     Order order = orderService.getOrderByCustomer(customer);
-                    OrderDetailController.handleTableItemSelection(order.getId(),order);
+                    OrderDetailController.handleTableItemSelection(order.getId(), order);
                     // call screen order detail here with order and orderBooksDetails params
                     FXMLLoaderHelper.loadFXML(new Stage(), "employee/order/orderDetail");
                     cleanData();
@@ -247,10 +243,9 @@ public class CreateOrderController implements Initializable {
             } else {
                 AlertUtils.showAlert("Error", "Order creation failed", Alert.AlertType.ERROR);
             }
-        } else if(MoneyTextField.getText().isEmpty()){
+        } else if (MoneyTextField.getText().isEmpty()) {
             AlertUtils.showAlert("Error", "Please fill in the money received field", Alert.AlertType.CONFIRMATION);
-
-        } else{
+        } else {
             AlertUtils.showAlert("Error", "Please fill in the user's information completely", Alert.AlertType.CONFIRMATION);
 
         }
