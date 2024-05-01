@@ -55,7 +55,7 @@ public class UserAccountController implements Initializable {
     private String inputSearchText = "";
     private static final String EMPLOYEE_ROLE = ".employee@bms.com";
     private static final String ADMIN_ROLE = ".admin@bms.com";
-    private static final int ITEMS_PER_PAGE = 9;
+    private static final int ITEMS_PER_PAGE = 8;
 
 
 
@@ -279,13 +279,12 @@ public class UserAccountController implements Initializable {
 
     private void updateUsersList(String role) throws IOException {
         pnItems.getChildren().clear();
-        int itemsPerPage = 9;
+        int itemsPerPage = ITEMS_PER_PAGE;
         int startIndex = (currentPage - 1) * itemsPerPage;
         int totalUserCountForRole = getTotalUserCountForRole(role);
-        int endIndex = Math.min(startIndex + itemsPerPage, totalUserCountForRole);
         int totalCount = 0;
 
-        for (int i = startIndex; i < users.size() && totalCount < endIndex; i++) {
+        for (int i = startIndex; i < users.size() && totalCount < itemsPerPage; i++) {
             UserModel user = users.get(i);
             if ((user instanceof EmployeeModel && role.equals(".employee@bms.com")) ||
                     (user instanceof AdminModel && role.equals(".admin@bms.com"))) {
@@ -335,7 +334,6 @@ public class UserAccountController implements Initializable {
         lastLoginSortLabel.setContent(column.equals("last login") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
         actionSortLabel.setContent(column.equals("enable/disable") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
 
-        users = accountService.getAllUsersBySortInfo(adminInfo.getId(), sortOrder, column);
         loadAllUsers(getRoleFromButton());
     }
 }

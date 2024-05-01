@@ -1,89 +1,67 @@
 package com.bsm.bsm.employee;
 
-import java.io.IOException;
-import java.util.Objects;
-
+import com.bsm.bsm.admin.AdminModel;
 import com.bsm.bsm.user.UserController;
 import com.bsm.bsm.user.UserService;
-import com.bsm.bsm.utils.FXMLLoaderHelper;
 import com.bsm.bsm.utils.SceneSwitch;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
-import javafx.stage.Stage;
 import com.bsm.bsm.user.UserModel;
 import com.bsm.bsm.user.UserSingleton;
 import javafx.scene.control.MenuItem;
-import com.bsm.bsm.utils.FXMLLoaderHelper;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.Objects;
-import java.util.Scanner;
 
 
 public class sidebarController {
     private final SceneSwitch sceneSwitch = new SceneSwitch();
-    public UserModel employeeInfo = UserSingleton.getInstance().getUser();
+    private final UserModel employeeInfo = UserSingleton.getInstance().getUser();
+    private final UserController userController = new UserService();
+
+    @FXML
     public MenuItem buttonProfileSetting, buttonLogOut;
+    @FXML
+    public SVGPath svgAddSheet, svgAddOrder, svgOrder, svgViewSheet, svgProfileSetting, svgLogOut;
+    @FXML
+    public MenuButton menuButton;
+    @FXML
+    public Button addOrder, viewSheet, book, bookAuthors, bookCategories, bookPublishers, importSheet, order;
+    @FXML
     public VBox bp;
-    public Button addOrder;
-    public Button viewSheet;
-    public SVGPath svgAddSheet;
-    public SVGPath svgAddOrder;
-    public SVGPath svgOrder;
-    public SVGPath svgViewSheet;
-    public SVGPath svgProfileSetting;
-    public SVGPath svgLogOut;
-
-
+    @FXML
+    private Text roleText, nameText;
     @FXML
     private AnchorPane AnchorPaneEmployee;
 
-    @FXML
-    private Button book;
+    private static String  userName;
 
-    @FXML
-    private Button bookAuthors;
-
-    @FXML
-    private Button bookCategories;
-
-    @FXML
-    private Button bookPublishers;
-
-
-    @FXML
-    private Button importSheet;
-    @FXML
-    private Text roleText;
-
-    @FXML
-    private Text nameText;
-
-    @FXML
-    private Button order;
-
-    private UserController userController = null;
-
-    public sidebarController()
+    public static void setUserName(String name)
     {
-        userController = new UserService();
+        userName = name;
     }
 
     public void initialize()
     {
-        new sidebarController();
-        String[] name = employeeInfo.getName().split(" ");
-        nameText.setText(name[name.length - 1]);
+        menuButton.setVisible(true);
+        updateNameText();
+        updateRoleText();
+    }
+
+    private void updateNameText() {
+        String name = userName != null ? userName.split(" ")[userName.split(" ").length - 1] : employeeInfo.getName().split(" ")[employeeInfo.getName().split(" ").length - 1];
+        nameText.setText(name);
+    }
+
+    private void updateRoleText() {
         if (employeeInfo instanceof EmployeeModel) {
             roleText.setText("Employee");
         }
@@ -91,6 +69,7 @@ public class sidebarController {
 
     @FXML
     void SwitchBook(ActionEvent event) throws IOException {
+        initialize();
         loadPage("book/book");
         book.getStyleClass().add("sideBarItemEmployeeActive");
         bookAuthors.getStyleClass().remove("sideBarItemEmployeeActive");
@@ -109,6 +88,7 @@ public class sidebarController {
 
     @FXML
     void SwitchBookAuthors(ActionEvent event) throws IOException {
+        initialize();
         loadPage("bookAuthors/bookAuthors");
         bookAuthors.getStyleClass().add("sideBarItemEmployeeActive");
         book.getStyleClass().remove("sideBarItemEmployeeActive");
@@ -125,6 +105,7 @@ public class sidebarController {
     }
     @FXML
     void SwitchAddOrder(ActionEvent event) throws IOException {
+        initialize();
         loadPage("order/createOrder");
         addOrder.getStyleClass().add("sideBarItemEmployeeActive");
         bookAuthors.getStyleClass().remove("sideBarItemEmployeeActive");
@@ -142,6 +123,7 @@ public class sidebarController {
 
     @FXML
     void SwitchBookCategories(ActionEvent event) throws IOException {
+        initialize();
         loadPage("bookCategories/bookCategories");
         bookCategories.getStyleClass().add("sideBarItemEmployeeActive");
         bookAuthors.getStyleClass().remove("sideBarItemEmployeeActive");
@@ -159,6 +141,7 @@ public class sidebarController {
 
     @FXML
     void SwitchBookPublishers(ActionEvent event) throws IOException {
+        initialize();
         loadPage("bookPublishers/bookPublishers");
         bookPublishers.getStyleClass().add("sideBarItemEmployeeActive");
         bookAuthors.getStyleClass().remove("sideBarItemEmployeeActive");
@@ -176,6 +159,7 @@ public class sidebarController {
 
     @FXML
     void SwitchImportSheet(ActionEvent event) throws IOException {
+        initialize();
         loadPage("importSheet/importSheet");
         importSheet.getStyleClass().add("sideBarItemEmployeeActive");
         bookAuthors.getStyleClass().remove("sideBarItemEmployeeActive");
@@ -193,6 +177,7 @@ public class sidebarController {
 
     @FXML
     void SwitchViewSheet(ActionEvent event) throws  IOException {
+        initialize();
         loadPage("importSheet/viewSheet");
         viewSheet.getStyleClass().add("sideBarItemEmployeeActive");
         bookAuthors.getStyleClass().remove("sideBarItemEmployeeActive");
@@ -210,6 +195,7 @@ public class sidebarController {
 
     @FXML
     void SwitchOrder(ActionEvent event) throws IOException {
+        initialize();
         loadPage("order/order");
         order.getStyleClass().add("sideBarItemEmployeeActive");
         bookAuthors.getStyleClass().remove("sideBarItemEmployeeActive");
@@ -234,6 +220,7 @@ public class sidebarController {
     @FXML
     void handleProfileSetting(ActionEvent event) throws IOException {
         loadPage("profileSetting/profileSetting");
+        menuButton.setVisible(false);
     }
 
     private void loadPage(String page) throws IOException {

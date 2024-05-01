@@ -1,5 +1,6 @@
 package com.bsm.bsm.admin.profileSetting;
 
+import com.bsm.bsm.admin.sidebarController;
 import com.bsm.bsm.user.UserController;
 import com.bsm.bsm.user.UserModel;
 import com.bsm.bsm.user.UserService;
@@ -100,6 +101,7 @@ public class EditProfileController {
 
         if (validateInputs(fullName, dob, phone, address)) {
             if (userController.editProfile(id, fullName, phone, dob, address)) {
+                sidebarController.setUserName(fullName);
                 AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
                 clearInputs();
                 updateUserInformation(fullName, phone, dob, address);
