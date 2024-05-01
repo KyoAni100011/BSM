@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -137,6 +138,7 @@ public class UserAccountController implements Initializable {
     @FXML
     private void handleEmployeeButton(ActionEvent event) {
         currentPage = 1;
+        defaultSort();
         loadAllUsers(EMPLOYEE_ROLE);
         updateButtonStyle(employeeButton);
     }
@@ -144,6 +146,7 @@ public class UserAccountController implements Initializable {
     @FXML
     private void handleAdminButton(ActionEvent event) {
         currentPage = 1;
+        defaultSort();
         loadAllUsers(ADMIN_ROLE);
         updateButtonStyle(adminButton);
     }
@@ -280,15 +283,27 @@ public class UserAccountController implements Initializable {
     private void updateUsersList(String role) throws IOException {
         pnItems.getChildren().clear();
         int itemsPerPage = ITEMS_PER_PAGE;
-        int startIndex = (currentPage - 1) * itemsPerPage;
         int totalUserCountForRole = getTotalUserCountForRole(role);
-        int totalCount = 0;
 
-        for (int i = startIndex; i < users.size() && totalCount < itemsPerPage; i++) {
-            UserModel user = users.get(i);
+        int totalPages = (int) Math.ceil((double) totalUserCountForRole / itemsPerPage);
+
+        int startIndex = (currentPage - 1) * itemsPerPage;
+
+        List<UserModel> userForRole = new ArrayList<>();
+
+        for (UserModel user : users) {
             if ((user instanceof EmployeeModel && role.equals(".employee@bms.com")) ||
                     (user instanceof AdminModel && role.equals(".admin@bms.com"))) {
-                totalCount++;
+                userForRole.add(user);
+            }
+        }
+
+        for (int i = startIndex, totalCount = 0; i < userForRole.size(); i++) {
+
+            if (totalCount >= itemsPerPage) {
+                break;
+            }
+            UserModel user = userForRole.get(i);
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/admin/userAccount/tableItem.fxml"));
                     Node item = fxmlLoader.load();
@@ -300,10 +315,10 @@ public class UserAccountController implements Initializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
+
+            totalCount++;
         }
 
-        int totalPages = (int) Math.ceil((double) totalUserCountForRole / itemsPerPage);
         updatePaginationButtons(totalPages);
     }
 
@@ -335,5 +350,19 @@ public class UserAccountController implements Initializable {
         actionSortLabel.setContent(column.equals("enable/disable") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
 
         loadAllUsers(getRoleFromButton());
+    }
+
+    private void clearSortLabels() {
+        idSortLabel.setContent("");
+        nameSortLabel.setContent("");
+        emailSortLabel.setContent("");
+        lastLoginSortLabel.setContent("");
+        actionSortLabel.setContent("");
+    }
+
+    private void defaultSort() {
+        sortOrder = "ASC";
+        column = "id";
+        clearSortLabels();
     }
 }
