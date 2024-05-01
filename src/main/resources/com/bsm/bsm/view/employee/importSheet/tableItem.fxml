@@ -4,24 +4,26 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleTableItemDoubleClick" prefHeight="45.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: #F3F3F3;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.importSheet.TableItemController">
-    <children>
-        <Label fx:id="idLabel" alignment="CENTER" prefWidth="70.0" text="1">
-            <HBox.margin>
-                <Insets left="30.0" />
-            </HBox.margin>
-        </Label>
-        <Label fx:id="dateImportLabel" alignment="CENTER" prefWidth="164.0" text="10/10/2023">
-            <HBox.margin>
-                <Insets />
-            </HBox.margin>
-        </Label>
-        <Label fx:id="employeeLabel" alignment="CENTER" prefHeight="18.0" prefWidth="130.0" text="Nguyen Van A">
-            <HBox.margin>
-                <Insets right="20.0" />
-            </HBox.margin>
-        </Label>
-      <Label fx:id="quantityLabel" alignment="CENTER" prefHeight="18.0" prefWidth="130.0" text="2" />
-      <Label fx:id="totalPriceLabel" alignment="CENTER" prefHeight="18.0" prefWidth="158.0" text="1230100" />
-    </children>
+<HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      onMouseClicked="#handleTableItemDoubleClick" prefHeight="45.0" prefWidth="700.0"
+      style="-fx-background-color: white; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: #F3F3F3;"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.bsm.bsm.employee.importSheet.TableItemController">
+    <Label fx:id="idLabel" alignment="CENTER" prefWidth="70.0" text="1">
+        <HBox.margin>
+            <Insets left="30.0"/>
+        </HBox.margin>
+    </Label>
+    <Label fx:id="dateImportLabel" alignment="CENTER" prefWidth="164.0" text="10/10/2023">
+        <HBox.margin>
+            <Insets/>
+        </HBox.margin>
+    </Label>
+    <Label fx:id="employeeLabel" alignment="CENTER" prefHeight="18.0" prefWidth="130.0" text="Nguyen Van A">
+        <HBox.margin>
+            <Insets right="20.0"/>
+        </HBox.margin>
+    </Label>
+    <Label fx:id="quantityLabel" alignment="CENTER" prefHeight="18.0" prefWidth="130.0" text="2"/>
+    <Label fx:id="totalPriceLabel" alignment="CENTER" prefHeight="18.0" prefWidth="158.0" text="1230100"/>
 </HBox>

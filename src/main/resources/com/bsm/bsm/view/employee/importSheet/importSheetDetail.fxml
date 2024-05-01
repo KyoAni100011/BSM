@@ -44,9 +44,7 @@
          <Font size="18.0" />
       </font>
    </Label>
-   <ScrollPane layoutX="86.0" layoutY="309.0" prefHeight="200.0" prefWidth="453.0">
-      <content>
-         <VBox fx:id="bookItem" prefHeight="200.0" prefWidth="437.0" />
-      </content>
-   </ScrollPane>
+    <ScrollPane layoutX="86.0" layoutY="309.0" prefHeight="200.0" prefWidth="453.0">
+        <VBox fx:id="bookItem" prefHeight="200.0" prefWidth="437.0"/>
+    </ScrollPane>
 </AnchorPane>
