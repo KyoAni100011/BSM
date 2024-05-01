@@ -43,6 +43,7 @@ public class bookController implements Initializable {
     private TextField inputSearch;
     @FXML
     private VBox pnItems;
+
     @FXML
     public SVGPath quantitySortLabel,actionSortLabel ,bookNameSortLabel, idSortLabel,priceSortLabel;
     @FXML
@@ -61,6 +62,10 @@ public class bookController implements Initializable {
     private int currentPage = 1;
     private String inputSearchText = "";
 
+
+    static void handleTableItemSelection(String bookIsbn) {
+        isbn = bookIsbn; // Store the selected book
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
