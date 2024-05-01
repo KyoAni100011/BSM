@@ -117,5 +117,9 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
     public List<Book> getAllBooks() {
         return bookDAO.getAllBooks();
     }
+
+    public boolean checkIfBookCanBeEnabled(String isbn) {
+        return bookDAO.checkIfBookCanBeEnabled(isbn);
+    }
 }
 

@@ -54,9 +54,14 @@ public class TableItemController {
         confirmationAlert.setHeaderText(confirmationMessage);
         confirmationAlert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                if (oldState.get()) {
+                if (!oldState.get()) {
                     //check if author/publisher/category disable, book can't be enabled
-
+                    System.out.println("enabled");
+//                    if (!bookService.checkIfBookCanBeEnabled(isbn)) {
+//                        AlertUtils.showAlert("Error", "Can't enable book, because author/publisher/category is disabled", Alert.AlertType.ERROR);
+//                        isOn.setSwitchedProperty(oldState.get());
+//                        return;
+//                    }
                 }
                 if (bookService.setEnable(isbn, !oldState.get())) {
                     isOn.setSwitchedProperty(!oldState.get());

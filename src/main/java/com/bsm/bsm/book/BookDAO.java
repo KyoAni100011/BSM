@@ -270,4 +270,8 @@ public class BookDAO {
         int rowAffected = DatabaseConnection.executeUpdate(QUERY_SET_ENABLE, state, id);
         return rowAffected > 0;
     }
+
+    public boolean checkIfBookCanBeEnabled(String isbn) {
+        return true;
+    }
 }
