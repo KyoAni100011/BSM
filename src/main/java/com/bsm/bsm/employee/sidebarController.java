@@ -19,8 +19,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
-
 
 public class sidebarController {
     private final SceneSwitch sceneSwitch = new SceneSwitch();
@@ -71,18 +72,8 @@ public class sidebarController {
     void SwitchBook(ActionEvent event) throws IOException {
         initialize();
         loadPage("book/book");
-        book.getStyleClass().add("sideBarItemEmployeeActive");
-        bookAuthors.getStyleClass().remove("sideBarItemEmployeeActive");
-        addOrder.getStyleClass().remove("sideBarItemEmployeeActive");
-        bookCategories.getStyleClass().remove("sideBarItemEmployeeActive");
-        bookPublishers.getStyleClass().remove("sideBarItemEmployeeActive");
-        importSheet.getStyleClass().remove("sideBarItemEmployeeActive");
-        viewSheet.getStyleClass().remove("sideBarItemEmployeeActive");
-        order.getStyleClass().remove("sideBarItemEmployeeActive");
-        svgViewSheet.getStyleClass().remove("sideBarIconEmployeeActive");
-        svgAddSheet.getStyleClass().remove("sideBarIconEmployeeActive");
-        svgAddOrder.getStyleClass().remove("sideBarIconEmployeeActive");
-        svgOrder.getStyleClass().remove("sideBarIconEmployeeActive");
+        applyActiveStyles(book);
+
 
     }
 
@@ -90,125 +81,53 @@ public class sidebarController {
     void SwitchBookAuthors(ActionEvent event) throws IOException {
         initialize();
         loadPage("bookAuthors/bookAuthors");
-        bookAuthors.getStyleClass().add("sideBarItemEmployeeActive");
-        book.getStyleClass().remove("sideBarItemEmployeeActive");
-        addOrder.getStyleClass().remove("sideBarItemEmployeeActive");
-        bookCategories.getStyleClass().remove("sideBarItemEmployeeActive");
-        bookPublishers.getStyleClass().remove("sideBarItemEmployeeActive");
-        importSheet.getStyleClass().remove("sideBarItemEmployeeActive");
-        viewSheet.getStyleClass().remove("sideBarItemEmployeeActive");
-        order.getStyleClass().remove("sideBarItemEmployeeActive");
-        svgViewSheet.getStyleClass().remove("sideBarIconEmployeeActive");
-        svgAddSheet.getStyleClass().remove("sideBarIconEmployeeActive");
-        svgAddOrder.getStyleClass().remove("sideBarIconEmployeeActive");
-        svgOrder.getStyleClass().remove("sideBarIconEmployeeActive");
+        applyActiveStyles(bookAuthors);
     }
     @FXML
     void SwitchAddOrder(ActionEvent event) throws IOException {
         initialize();
         loadPage("order/createOrder");
-        addOrder.getStyleClass().add("sideBarItemEmployeeActive");
-        bookAuthors.getStyleClass().remove("sideBarItemEmployeeActive");
-        book.getStyleClass().remove("sideBarItemEmployeeActive");
-        bookCategories.getStyleClass().remove("sideBarItemEmployeeActive");
-        bookPublishers.getStyleClass().remove("sideBarItemEmployeeActive");
-        importSheet.getStyleClass().remove("sideBarItemEmployeeActive");
-        viewSheet.getStyleClass().remove("sideBarItemEmployeeActive");
-        order.getStyleClass().remove("sideBarItemEmployeeActive");
-        svgViewSheet.getStyleClass().remove("sideBarIconEmployeeActive");
-        svgAddSheet.getStyleClass().remove("sideBarIconEmployeeActive");
-        svgAddOrder.getStyleClass().add("sideBarIconEmployeeActive");
-        svgOrder.getStyleClass().remove("sideBarIconEmployeeActive");
+        applyActiveStyles(addOrder);
     }
 
     @FXML
     void SwitchBookCategories(ActionEvent event) throws IOException {
         initialize();
         loadPage("bookCategories/bookCategories");
-        bookCategories.getStyleClass().add("sideBarItemEmployeeActive");
-        bookAuthors.getStyleClass().remove("sideBarItemEmployeeActive");
-        book.getStyleClass().remove("sideBarItemEmployeeActive");
-        addOrder.getStyleClass().remove("sideBarItemEmployeeActive");
-        bookPublishers.getStyleClass().remove("sideBarItemEmployeeActive");
-        importSheet.getStyleClass().remove("sideBarItemEmployeeActive");
-        viewSheet.getStyleClass().remove("sideBarItemEmployeeActive");
-        order.getStyleClass().remove("sideBarItemEmployeeActive");
-        svgViewSheet.getStyleClass().remove("sideBarIconEmployeeActive");
-        svgAddSheet.getStyleClass().remove("sideBarIconEmployeeActive");
-        svgAddOrder.getStyleClass().remove("sideBarIconEmployeeActive");
-        svgOrder.getStyleClass().remove("sideBarIconEmployeeActive");
+        applyActiveStyles(bookCategories);
+
     }
 
     @FXML
     void SwitchBookPublishers(ActionEvent event) throws IOException {
         initialize();
         loadPage("bookPublishers/bookPublishers");
-        bookPublishers.getStyleClass().add("sideBarItemEmployeeActive");
-        bookAuthors.getStyleClass().remove("sideBarItemEmployeeActive");
-        book.getStyleClass().remove("sideBarItemEmployeeActive");
-        addOrder.getStyleClass().remove("sideBarItemEmployeeActive");
-        bookCategories.getStyleClass().remove("sideBarItemEmployeeActive");
-        importSheet.getStyleClass().remove("sideBarItemEmployeeActive");
-        viewSheet.getStyleClass().remove("sideBarItemEmployeeActive");
-        order.getStyleClass().remove("sideBarItemEmployeeActive");
-        svgViewSheet.getStyleClass().remove("sideBarIconEmployeeActive");
-        svgAddSheet.getStyleClass().remove("sideBarIconEmployeeActive");
-        svgAddOrder.getStyleClass().remove("sideBarIconEmployeeActive");
-        svgOrder.getStyleClass().remove("sideBarIconEmployeeActive");
+        applyActiveStyles(bookPublishers);
+
     }
 
     @FXML
     void SwitchImportSheet(ActionEvent event) throws IOException {
         initialize();
         loadPage("importSheet/importSheet");
-        importSheet.getStyleClass().add("sideBarItemEmployeeActive");
-        bookAuthors.getStyleClass().remove("sideBarItemEmployeeActive");
-        book.getStyleClass().remove("sideBarItemEmployeeActive");
-        addOrder.getStyleClass().remove("sideBarItemEmployeeActive");
-        bookCategories.getStyleClass().remove("sideBarItemEmployeeActive");
-        bookPublishers.getStyleClass().remove("sideBarItemEmployeeActive");
-        viewSheet.getStyleClass().remove("sideBarItemEmployeeActive");
-        order.getStyleClass().remove("sideBarItemEmployeeActive");
-        svgViewSheet.getStyleClass().remove("sideBarIconEmployeeActive");
-        svgAddSheet.getStyleClass().add("sideBarIconEmployeeActive");
-        svgAddOrder.getStyleClass().remove("sideBarIconEmployeeActive");
-        svgOrder.getStyleClass().remove("sideBarIconEmployeeActive");
+        applyActiveStyles(importSheet);
+
     }
 
     @FXML
     void SwitchViewSheet(ActionEvent event) throws  IOException {
         initialize();
         loadPage("importSheet/viewSheet");
-        viewSheet.getStyleClass().add("sideBarItemEmployeeActive");
-        bookAuthors.getStyleClass().remove("sideBarItemEmployeeActive");
-        book.getStyleClass().remove("sideBarItemEmployeeActive");
-        addOrder.getStyleClass().remove("sideBarItemEmployeeActive");
-        bookCategories.getStyleClass().remove("sideBarItemEmployeeActive");
-        bookPublishers.getStyleClass().remove("sideBarItemEmployeeActive");
-        importSheet.getStyleClass().remove("sideBarItemEmployeeActive");
-        order.getStyleClass().remove("sideBarItemEmployeeActive");
-        svgViewSheet.getStyleClass().add("sideBarIconEmployeeActive");
-        svgAddSheet.getStyleClass().remove("sideBarIconEmployeeActive");
-        svgAddOrder.getStyleClass().remove("sideBarIconEmployeeActive");
-        svgOrder.getStyleClass().remove("sideBarIconEmployeeActive");
+        applyActiveStyles(viewSheet);
+
     }
 
     @FXML
     void SwitchOrder(ActionEvent event) throws IOException {
         initialize();
         loadPage("order/order");
-        order.getStyleClass().add("sideBarItemEmployeeActive");
-        bookAuthors.getStyleClass().remove("sideBarItemEmployeeActive");
-        book.getStyleClass().remove("sideBarItemEmployeeActive");
-        addOrder.getStyleClass().remove("sideBarItemEmployeeActive");
-        bookCategories.getStyleClass().remove("sideBarItemEmployeeActive");
-        bookPublishers.getStyleClass().remove("sideBarItemEmployeeActive");
-        importSheet.getStyleClass().remove("sideBarItemEmployeeActive");
-        viewSheet.getStyleClass().remove("sideBarItemEmployeeActive");
-        svgViewSheet.getStyleClass().remove("sideBarIconEmployeeActive");
-        svgAddSheet.getStyleClass().remove("sideBarIconEmployeeActive");
-        svgAddOrder.getStyleClass().remove("sideBarIconEmployeeActive");
-        svgOrder.getStyleClass().add("sideBarIconEmployeeActive");
+        applyActiveStyles(order);
+
     }
 
     @FXML
@@ -228,4 +147,22 @@ public class sidebarController {
         bp.getChildren().clear();
         bp.getChildren().add(root);
     }
+
+    private void applyActiveStyles(Button activeButton) {
+        List<Button> buttons = Arrays.asList(addOrder, viewSheet, book, bookAuthors, bookCategories, bookPublishers, importSheet, order);
+        List<SVGPath> svgPaths = Arrays.asList(svgAddSheet, svgAddOrder, svgOrder, svgViewSheet);
+
+        for (Button button : buttons) {
+            if (button == activeButton) {
+                button.getStyleClass().add("sideBarItemEmployeeActive");
+            } else {
+                button.getStyleClass().remove("sideBarItemEmployeeActive");
+            }
+        }
+        for (SVGPath svgPath : svgPaths) {
+            svgPath.getStyleClass().remove("sideBarIconEmployeeActive");
+
+        }
+    }
+    
 }
