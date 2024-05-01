@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Group?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.shape.SVGPath?>
-<?import javafx.scene.text.Text?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="AnchorPaneEmployee" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="718.0" prefWidth="1066.0" style="-fx-background-color: #F3F3F3;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.sidebarController">
+<AnchorPane fx:id="AnchorPaneEmployee" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="718.0" prefWidth="1066.0" style="-fx-background-color: #F3F3F3;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.sidebarController">
    <BorderPane layoutY="-2.0" prefHeight="718.0" prefWidth="1066.0" AnchorPane.bottomAnchor="1.2000000000000455" AnchorPane.leftAnchor="0.3999999999998636" AnchorPane.rightAnchor="-0.40000000000009095" AnchorPane.topAnchor="-2.0">
       <left>
          <AnchorPane prefHeight="645.0" prefWidth="259.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
-            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="20.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../../images/logo.png" />
-            </ImageView>
+            <Button fx:id="logoButton" layoutX="20.0" layoutY="42.0" mnemonicParsing="false" onAction="#SwitchAddOrder" style="-fx-background-color: transparent;">
+               <graphic>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <Image url="@../../images/logo.png" />
+                  </ImageView>
+               </graphic>
+            </Button>
             <VBox layoutY="147.0" prefHeight="477.0" prefWidth="259.0" style="-fx-background-color: #FFFFFF; -fx-border-radius: 0;" AnchorPane.bottomAnchor="129.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="147.0">
                <children>
                   <Label prefHeight="49.0" prefWidth="257.0" style="-fx-label-padding: 10px;" styleClass="sideBarTitle" text="Order" />
@@ -127,7 +123,7 @@
       </center>
    </BorderPane>
    <AnchorPane layoutX="239.0" prefHeight="48.0" prefWidth="827.0">
-      <MenuButton layoutX="612.0" layoutY="10.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="162.0" style="-fx-background-color: white;">
+      <MenuButton fx:id="menuButton" layoutX="612.0" layoutY="10.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="162.0" style="-fx-background-color: white;">
          <items>
             <MenuItem fx:id="buttonProfileSetting" mnemonicParsing="false" onAction="#handleProfileSetting" style="-fx-padding: 8px;" styleClass="text-menu" text="Profile setting">
                <graphic>

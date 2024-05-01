@@ -38,7 +38,7 @@
    <HBox alignment="CENTER">
 
       <HBox.margin>
-         <Insets left="35.0"/>
+         <Insets left="30.0"/>
       </HBox.margin>
       <ToggleSwitch fx:id="isOn" alignment="CENTER" onMouseClicked="#handleToggleSwitchClick"/>
       <!-- Adjust margin here if necessary -->
