@@ -43,10 +43,7 @@ public class bookController implements Initializable {
     private TextField inputSearch;
     @FXML
     private VBox pnItems;
-    @FXML
-    private TextField inputSearch;
-    @FXML
-    private VBox pnItems;
+
     @FXML
     public SVGPath quantitySortLabel,actionSortLabel ,bookNameSortLabel, idSortLabel,priceSortLabel;
     @FXML
@@ -59,16 +56,12 @@ public class bookController implements Initializable {
     private Book bookInfo ;
 
     private List<Book> books = null;
-    private List<Book> books = null;
     private String sortOrder = "ASC";
     private String column = "isbn";
     private String type = "book";
     private int currentPage = 1;
     private String inputSearchText = "";
 
-    static void handleTableItemSelection(String bookIsbn) {
-        isbn = bookIsbn; // Store the selected book
-    }
 
     static void handleTableItemSelection(String bookIsbn) {
         isbn = bookIsbn; // Store the selected book
@@ -196,7 +189,6 @@ public class bookController implements Initializable {
     @FXML
     private void handleUpdateUserButton(ActionEvent event) {
         try {
-            if (isbn != null) {
             if (isbn != null) {
                 UpdateBookController.handleTableItemSelection(isbn);
                 FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/updateBook");
