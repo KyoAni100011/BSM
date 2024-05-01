@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.layout.HBox?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.order.CreateOrderController">
    <children>
       <AnchorPane layoutX="393.0" layoutY="70.0" prefHeight="483.0" prefWidth="295.0" style="-fx-background-color: white; -fx-background-radius: 10;">
@@ -46,12 +52,12 @@
                </font>
             </Label>
             <Line endX="181.0" layoutX="105.0" layoutY="191.0" startX="-100.0" stroke="#d3d3d3" />
-            <Label alignment="TOP_LEFT" layoutX="16.0" layoutY="289.0" text="Total">
+            <Label alignment="TOP_LEFT" layoutX="16.0" layoutY="321.0" text="Total">
                <font>
                   <Font name="Arial Bold" size="16.0" />
                </font>
             </Label>
-            <Label alignment="TOP_LEFT" layoutX="16.0" layoutY="254.0" style="-fx-text-fill: gray;" text="Discount">
+            <Label alignment="TOP_LEFT" layoutX="16.0" layoutY="286.0" style="-fx-text-fill: gray;" text="Discount">
                <font>
                   <Font name="Arial" size="13.0" />
                </font>
@@ -74,19 +80,39 @@
             </HBox>
             <Label alignment="TOP_LEFT" layoutX="79.0" layoutY="205.0" text="Payment detail">
                <font>
-                  <Font name="Arial" size="14.0" />
+                  <Font name="Arial Bold" size="18.0" />
                </font>
             </Label>
-            <Label alignment="TOP_RIGHT" contentDisplay="RIGHT" layoutX="173.0" layoutY="254.0" style="-fx-text-fill: gray;" text="(-30%) 30.000">
+            <Label alignment="TOP_LEFT" layoutX="21.0" layoutY="419.0" style="-fx-text-fill: gray;" text="Money received">
                <font>
-                  <Font name="Arial" size="14.0" />
+                  <Font name="Arial" size="13.0" />
                </font>
             </Label>
-            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="204.0" layoutY="289.0" text="500.000">
+            <Label alignment="TOP_LEFT" layoutX="21.0" layoutY="450.0" style="-fx-text-fill: gray;" text="Money return">
                <font>
-                  <Font name="Arial Bold" size="16.0" />
+                  <Font name="Arial" size="13.0" />
                </font>
             </Label>
+            <Line endX="181.0" layoutX="107.0" layoutY="401.0" startX="-100.0" stroke="#d3d3d3" />
+            <TextField fx:id="MoneyTextField" layoutX="130.0" layoutY="415.0" prefHeight="25.0" prefWidth="135.0" />
+            <HBox alignment="CENTER_LEFT" layoutX="165.0" layoutY="246.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="21.0" prefWidth="97.0" spacing="15.0" style="-fx-background-color: white;">
+               <children>
+                  <Label fx:id="subtotalLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="204.0" layoutY="321.0" text="0">
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="164.0" layoutY="452.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="21.0" prefWidth="97.0" spacing="15.0" style="-fx-background-color: white;">
+               <children>
+                  <Label fx:id="MoneyReturnLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="204.0" layoutY="321.0" text="0">
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
          </children>
       </AnchorPane>
       <Label layoutX="21.0" layoutY="23.0" text="ADD ORDERS">
@@ -101,26 +127,49 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <AnchorPane layoutX="16.0" layoutY="73.0" prefHeight="58.0" prefWidth="335.0" style="-fx-border-color: #C8BBBE; -fx-border-radius: 5;">
-               <children>
-                  <Label layoutX="17.0" layoutY="9.0" text="ID: 66661111" />
-                  <Label layoutX="129.0" layoutY="9.0" text="Doremon - Tap 1" />
-                  <Label layoutX="129.0" layoutY="35.0" text="22.000" />
-                  <Label layoutX="17.0" layoutY="35.0" text="qty" />
-                  <Button layoutX="266.0" layoutY="20.0" mnemonicParsing="false" text="delete" />
-               </children>
-            </AnchorPane>
             <Label alignment="TOP_LEFT" layoutX="130.0" layoutY="14.0" text="Order details">
                <font>
                   <Font name="Arial Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="16.0" layoutY="47.0" text="6 items in order">
-               <font>
-                  <Font name="System Bold" size="16.0" />
-               </font>
-            </Label>
-            <Button layoutX="16.0" layoutY="148.0" mnemonicParsing="false" text="Add" />
+            <HBox alignment="CENTER_LEFT" layoutX="-1.0" layoutY="435.0" prefHeight="50.0" prefWidth="368.0" spacing="15.0" style="-fx-background-color: white;">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <HBox alignment="CENTER_LEFT" layoutX="-1.0" layoutY="435.0" prefHeight="50.0" prefWidth="368.0" spacing="15.0" style="-fx-background-color: white;">
+                  <Button fx:id="addBookButton" mnemonicParsing="false" onAction="#handleAddBookButton" style="-fx-background-color: transparent; -fx-text-fill: #F5A11C;" text=" Add book">
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                     <graphic>
+                        <Group>
+                           <children>
+                              <SVGPath content="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" scaleX="0.03" scaleY="0.03" style="-fx-fill: #F5A11C;" />
+                           </children>
+                        </Group>
+                     </graphic>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label fx:id="totalQuantityItems" text="Total: 0 items">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Arial Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </HBox>
+
+
+            </HBox>
+            <ScrollPane fx:id="scrollPanel" layoutX="1.0" layoutY="56.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="373.0" prefWidth="368.0" style="-fx-background-color: transparent;">
+               <content>
+                  <VBox fx:id="pnItems" prefHeight="372.0" prefWidth="349.0" style="-fx-background-color: white; -fx-background-radius: 0px 0px 10px 10px;" />
+               </content>
+            </ScrollPane>
          </children>
       </AnchorPane>
    </children>
