@@ -27,7 +27,7 @@
 
     <TextField fx:id="employeeNameField" disable="true" layoutX="77.0" layoutY="196.0" prefHeight="40.0" prefWidth="453.0" styleClass="input-field-add" />
     <TextField fx:id="totalPricefield" disable="true" layoutX="77.0" layoutY="353.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add" />
-    <DatePicker fx:id="importDatePicker" disable="true" layoutX="317.0" layoutY="354.0" prefHeight="40.0" prefWidth="217.0" style="-fx-control-inner-background: none;" styleClass="input-field-add" />
+    <DatePicker fx:id="importDatePicker" disable="true" layoutX="317.0" layoutY="354.0" prefHeight="40.0" prefWidth="217.0" style="-fx-control-inner-background: #F4F4F4;" styleClass="input-field-add" />
     <Label layoutX="227.0" layoutY="48.0" text="ORDER DETAIL">
         <font>
             <Font size="25.0" />
