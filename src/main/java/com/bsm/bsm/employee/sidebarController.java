@@ -35,7 +35,7 @@ public class sidebarController {
     @FXML
     public MenuButton menuButton;
     @FXML
-    public Button addOrder, viewSheet, book, bookAuthors, bookCategories, bookPublishers, importSheet, order;
+    public Button addOrder, viewSheet, book, bookAuthors, bookCategories, bookPublishers, addSheet, order;
     @FXML
     public VBox bp;
     @FXML
@@ -110,7 +110,7 @@ public class sidebarController {
     void SwitchImportSheet(ActionEvent event) throws IOException {
         initialize();
         loadPage("importSheet/importSheet");
-        applyActiveStyles(importSheet);
+        applyActiveStyles(addSheet);
 
     }
 
@@ -149,7 +149,7 @@ public class sidebarController {
     }
 
     private void applyActiveStyles(Button activeButton) {
-        List<Button> buttons = Arrays.asList(addOrder, viewSheet, book, bookAuthors, bookCategories, bookPublishers, importSheet, order);
+        List<Button> buttons = Arrays.asList(addOrder, viewSheet, book, bookAuthors, bookCategories, bookPublishers, addSheet, order);
         List<SVGPath> svgPaths = Arrays.asList(svgAddSheet, svgAddOrder, svgOrder, svgViewSheet);
 
         for (Button button : buttons) {
@@ -159,9 +159,14 @@ public class sidebarController {
                 button.getStyleClass().remove("sideBarItemEmployeeActive");
             }
         }
-        for (SVGPath svgPath : svgPaths) {
-            svgPath.getStyleClass().remove("sideBarIconEmployeeActive");
 
+        for (SVGPath svgPath : svgPaths) {
+            String svgId = svgPath.getId().toLowerCase();
+            if (svgId.contains(activeButton.getId().toLowerCase()) && svgId.length() == activeButton.getId().length() + 3 ) {
+                svgPath.getStyleClass().add("sideBarIconEmployeeActive");
+            } else {
+                svgPath.getStyleClass().remove("sideBarIconEmployeeActive");
+            }
         }
     }
     
