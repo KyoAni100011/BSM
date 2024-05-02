@@ -22,8 +22,6 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;

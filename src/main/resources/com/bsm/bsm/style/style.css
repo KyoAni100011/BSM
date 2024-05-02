@@ -1,74 +1,74 @@
 @font-face {
-  src: url("../fonts/RobotoBold.ttf");
+    src: url("../fonts/RobotoBold.ttf");
 }
 
 @font-face {
-  src: url("../fonts/RobotoBlack.ttf");
+    src: url("../fonts/RobotoBlack.ttf");
 }
 
 @font-face {
-  src: url("../fonts/RobotoRegular.ttf");
+    src: url("../fonts/RobotoRegular.ttf");
 }
 
 @font-face {
-  src: url("../fonts/RobotoLight.ttf");
+    src: url("../fonts/RobotoLight.ttf");
 }
 
 @font-face {
-  src: url("../fonts/RobotoMedium.ttf");
+    src: url("../fonts/RobotoMedium.ttf");
 }
 
 @font-face {
-  src: url("../fonts/RobotoThin.ttf");
+    src: url("../fonts/RobotoThin.ttf");
 }
 
 .text {
-  -fx-text-fill: #ff0000;
+    -fx-text-fill: #ff0000;
 }
 
 .sideBarItem {
-  -fx-font-size: 16px;
-  -fx-font-family: "Roboto Bold";
-  -fx-background-color: none;
+    -fx-font-size: 16px;
+    -fx-font-family: "Roboto Bold";
+    -fx-background-color: none;
 }
 .sideBarItemActive {
-   -fx-background-color: #f7e4db !important;
+    -fx-background-color: #f7e4db !important;
     -fx-text-fill: #914d2a;
 }
 
 .sideBarItemActive .graphic {
-  -fx-fill: #914d2a;
+    -fx-fill: #914d2a;
 }
 .sideBarIconActive {
-  -fx-fill: #914d2a !important;
+    -fx-fill: #914d2a !important;
 }
 .sideBarItem:hover {
-  -fx-background-color: #FDF5F2 !important;
+    -fx-background-color: #FDF5F2 !important;
 }
 
 
 
 .sideBarItemEmployee {
-  -fx-font-size: 16px;
-  -fx-font-family: "Roboto Bold";
-  -fx-background-color: none;
+    -fx-font-size: 16px;
+    -fx-font-family: "Roboto Bold";
+    -fx-background-color: none;
 }
 
 
 
 .sideBarItemEmployeeActive {
-  -fx-background-color: #F4E7D3 !important;
-  -fx-text-fill: #F5A11C !important;
+    -fx-background-color: #F4E7D3 !important;
+    -fx-text-fill: #F5A11C !important;
 }
 .sideBarItemEmployeeActive .graphic{
-  -fx-fill: #F5A11C!important;
+    -fx-fill: #F5A11C!important;
 }
 
 .sideBarIconEmployeeActive {
-  -fx-fill: #F5A11C !important;
+    -fx-fill: #F5A11C !important;
 }
 .sideBarItemEmployee:hover {
-  -fx-background-color: #F6F1E8 !important;
+    -fx-background-color: #F6F1E8 !important;
 }
 
 
@@ -76,170 +76,191 @@
 
 
 .sideBarTitle {
-  -fx-font-size: 20px;
-  -fx-font-family: "Roboto Black";
+    -fx-font-size: 20px;
+    -fx-font-family: "Roboto Black";
 }
 
 .profile-setting-button {
-  -fx-font-family: "Roboto Bold";
-  -fx-border-width: 0px 0px 2px 0px;
-  -fx-font-size: 16px;
+    -fx-font-family: "Roboto Bold";
+    -fx-border-width: 0px 0px 2px 0px;
+    -fx-font-size: 16px;
 }
 
 .profile-setting-button-employee {
-  -fx-text-fill: #f5a11c;
-  -fx-border-color: #f5a11c;
+    -fx-text-fill: #f5a11c;
+    -fx-border-color: #f5a11c;
 }
 
 .profile-setting-button-admin {
-  -fx-text-fill: #914d2a;
-  -fx-border-color: #914d2a;
+    -fx-text-fill: #914d2a;
+    -fx-border-color: #914d2a;
 }
 
 .error-label {
-  -fx-text-fill: #ff0000;
+    -fx-text-fill: #ff0000;
 }
 
 .label-bold {
-  -fx-font-size: 14px;
-  -fx-font-family: "Roboto Bold";
+    -fx-font-size: 14px;
+    -fx-font-family: "Roboto Bold";
 }
 
 .title-form {
-  -fx-font-size: 24px;
-  -fx-font-family: "Roboto Bold";
+    -fx-font-size: 24px;
+    -fx-font-family: "Roboto Bold";
 }
 
 .password-field-add {
-  -fx-background-color: transparent;
-  -fx-border-width: 1px 0px 1px 1px;
-  -fx-border-color: black;
-  -fx-border-radius: 5px 0px 0px 5px;
+    -fx-background-color: transparent;
+    -fx-border-width: 1px 0px 1px 1px;
+    -fx-border-color: black;
+    -fx-border-radius: 5px 0px 0px 5px;
 }
 
 .input-field-add {
-  -fx-background-color: transparent;
-  -fx-border-width: 1px;
-  -fx-border-color: black;
-  -fx-border-radius: 5px;
+    -fx-background-color: transparent;
+    -fx-border-width: 1px;
+    -fx-border-color: black;
+    -fx-border-radius: 5px;
 }
 .input-field-add:disabled {
-  -fx-opacity: 1  ;
+    -fx-opacity: 1  ;
 }
 .combo-box-popup .list-cell:disabled  {
     -fx-opacity: 0.4 ;
 }
 .input-field-add-normal-disable {
-  -fx-background-color: transparent;
-  -fx-border-width: 1px;
-  -fx-border-color: black;
-  -fx-border-radius: 5px;
+    -fx-background-color: transparent;
+    -fx-border-width: 1px;
+    -fx-border-color: black;
+    -fx-border-radius: 5px;
 }
 
 .button-custom-admin {
-  -fx-font-family: "Roboto Bold";
-  -fx-padding: 1px;
-  -fx-font-size: 16px;
-  -fx-text-fill: white;
-  -fx-background-color: #914d2a;
+    -fx-font-family: "Roboto Bold";
+    -fx-padding: 1px;
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-background-color: #914d2a;
 }
 
 .button-custom-admin:hover {
-  -fx-background-color: #6a381e;
+    -fx-background-color: #6a381e;
 }
 
 .button-custom-employee {
-  -fx-font-family: "Roboto Bold";
-  -fx-padding: 1px;
-  -fx-font-size: 16px;
-  -fx-text-fill: white;
-  -fx-background-color: #f5a11c;
+    -fx-font-family: "Roboto Bold";
+    -fx-padding: 1px;
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-background-color: #f5a11c;
 }
 
 .button-custom-employee:hover {
-  -fx-background-color: #d68c19;
+    -fx-background-color: #d68c19;
 }
 
 .button-eye {
-  -fx-background-color: transparent;
-  -fx-border-width: 1px 1px 1px 0px;
-  -fx-border-color: black;
-  -fx-border-radius: 0px 5px 5px 0px;
+    -fx-background-color: transparent;
+    -fx-border-width: 1px 1px 1px 0px;
+    -fx-border-color: black;
+    -fx-border-radius: 0px 5px 5px 0px;
 }
 
 .anchor-pane {
-  -fx-padding: 5px;
+    -fx-padding: 5px;
 }
 
 .text-menu {
-  -fx-font-family: "Roboto Bold";
-  -fx-font-size: 16px;
+    -fx-font-family: "Roboto Bold";
+    -fx-font-size: 16px;
 }
 
 
 .text-menu:focused #svgProfileSetting {
-  -fx-fill: white !important;
+    -fx-fill: white !important;
 
 }
 
 .text-menu:focused #svgLogOut {
-  -fx-fill: white !important;
+    -fx-fill: white !important;
 
 }
 
 .text-menu:focused  {
-  -fx-background-color: #F5A11C;
+    -fx-background-color: #F5A11C;
 }
 
+.text-menu-admin {
+    -fx-font-family: "Roboto Bold";
+    -fx-font-size: 16px;
+}
+
+
+.text-menu-admin:focused #svgProfileSetting {
+    -fx-fill: white !important;
+
+}
+
+.text-menu-admin:focused #svgLogOut {
+    -fx-fill: white !important;
+
+}
+
+.text-menu-admin:focused  {
+    -fx-background-color: #914d2a;
+}
+
+
 .text-menu-item-1 {
-  -fx-font-family: "Roboto Black";
-  -fx-font-size: 16px;
+    -fx-font-family: "Roboto Black";
+    -fx-font-size: 16px;
 }
 
 .text-menu-item-2 {
-  -fx-font-family: "Roboto Thin";
-  -fx-font-size: 16px;
+    -fx-font-family: "Roboto Thin";
+    -fx-font-size: 16px;
 }
 
 .text-menu-item-3 {
-  -fx-font-family: "Roboto Light";
-  -fx-font-size: 16px;
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 16px;
 }
 
 .text-menu-item-4 {
-  -fx-font-family: "Roboto Regular";
-  -fx-font-size: 16px;
+    -fx-font-family: "Roboto Regular";
+    -fx-font-size: 16px;
 }
 
 .text-menu-item-5 {
-  -fx-font-family: "Roboto Medium";
-  -fx-font-size: 16px;
+    -fx-font-family: "Roboto Medium";
+    -fx-font-size: 16px;
 }
 
 .text-menu-item-6 {
-  -fx-font-family: "Roboto Bold";
-  -fx-font-size: 16px;
+    -fx-font-family: "Roboto Bold";
+    -fx-font-size: 16px;
 }
 
 .text-menu-button {
-  -fx-font-size: 16px;
+    -fx-font-size: 16px;
 }
 .enable-button {
-  -fx-background-radius: 20px;
-  -fx-background-color: #CDEACC;
-  -fx-text-fill: #779879;
-  -fx-border-radius: 20px;
-  -fx-font-family: "Roboto Medium";
-   -fx-font-size: 12px;
+    -fx-background-radius: 20px;
+    -fx-background-color: #CDEACC;
+    -fx-text-fill: #779879;
+    -fx-border-radius: 20px;
+    -fx-font-family: "Roboto Medium";
+    -fx-font-size: 12px;
 }
 
 .disable-button{
-  -fx-background-radius: 20px;
-  -fx-background-color: #FEF5D6;
-  -fx-text-fill: #C1AA3D;
-  -fx-border-radius: 20px;
-  -fx-font-family: "Roboto Medium";
-  -fx-font-size: 12px;
+    -fx-background-radius: 20px;
+    -fx-background-color: #FEF5D6;
+    -fx-text-fill: #C1AA3D;
+    -fx-border-radius: 20px;
+    -fx-font-family: "Roboto Medium";
+    -fx-font-size: 12px;
 }
 
 .pagination-button-admin {
@@ -265,15 +286,15 @@
 }
 
 .chartActionButton {
-  -fx-background-color: transparent;
-  -fx-font-family: "Roboto Bold";
-  -fx-border-width: 0px 0px 2px 0px;
-  -fx-font-size: 14px;
+    -fx-background-color: transparent;
+    -fx-font-family: "Roboto Bold";
+    -fx-border-width: 0px 0px 2px 0px;
+    -fx-font-size: 14px;
 }
 
 .chartActionButton-admin-selected {
-  -fx-text-fill: #914d2a;
-  -fx-border-color: #914d2a;
+    -fx-text-fill: #914d2a;
+    -fx-border-color: #914d2a;
 }
 
 .axis-label {
@@ -305,5 +326,3 @@
     -fx-background-position: center;
     -fx-background-size: 70% 70%; /* Adjust the size of the icon */
 }
-
-

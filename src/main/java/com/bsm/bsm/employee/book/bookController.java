@@ -313,32 +313,36 @@ public class bookController implements Initializable {
 
     private void updateBooksList() throws IOException {
         pnItems.getChildren().clear();
-        int itemsPerPage = 9;
-        int startIndex = isSearch ? 0 : (currentPage - 1) * itemsPerPage;
+        int itemsPerPage = 8;
         int totalUserCountForRole = getTotalBookCountForRole(type);
-        int endIndex = Math.min(startIndex + itemsPerPage, totalUserCountForRole);
-        int totalCount = 0;
-
-        for (int i = startIndex; i < books.size() && totalCount < endIndex; i++) {
-            Book b = books.get(i);
-            if ((isNormalBook(b) && type.equals("book")) || ( isNewBook(b) && type.equals("newBook") )|| ( isOutOfStockBook(b) && type.equals("outOfStockBook"))){
-                totalCount++;
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/book/tableItem.fxml"));
-                    Node item = fxmlLoader.load();
-                    TableItemController tableItemController = fxmlLoader.getController();
-                    tableItemController.setToggleGroup(toggleGroup);
-                    tableItemController.setBook(b);
-                    pnItems.getChildren().add(item);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        System.out.println("\n\n");
 
         int totalPages = (int) Math.ceil((double) totalUserCountForRole / itemsPerPage);
+
+
+        int startIndex = (currentPage - 1) * itemsPerPage;
+        List<Book> bookForType = new ArrayList<>();
+
+        for (var book: books) {
+            if ((isNormalBook(book) && type.equals("book")) || ( isNewBook(book) && type.equals("newBook") )|| ( isOutOfStockBook(book) && type.equals("outOfStockBook"))){
+                bookForType.add(book);
+            }
+        }
+
+        int endIndex = Math.min(startIndex + itemsPerPage, bookForType.size());
+        for (int i = startIndex; i < endIndex; i++) {
+            Book book = bookForType.get(i);
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/book/tableItem.fxml"));
+                Node item = fxmlLoader.load();
+                TableItemController tableItemController = fxmlLoader.getController();
+                tableItemController.setToggleGroup(toggleGroup);
+                tableItemController.setBook(book);
+                System.out.println(book);
+                pnItems.getChildren().add(item);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
         updatePaginationButtons(totalPages);
     }
 

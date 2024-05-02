@@ -389,11 +389,8 @@ public class AddBookController {
                 authors.add(authorService.getAuthorByName(item));
             }
 
-//            categories.forEach(System.out::println);
-//            authors.forEach(System.out::println);
 
             if (bookService.add(new Book(fullName, publisers, releaseDate, selectedLanguage, authors, categories))) {
-                AlertUtils.showAlert("Success", "Book added successfully.", Alert.AlertType.INFORMATION);
                 clearInputs();
                 Book a = bookService.getBookByName(fullName);
                 BookDetailController.handleTableItemSelection(a.getIsbn());

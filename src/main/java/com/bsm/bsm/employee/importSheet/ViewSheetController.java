@@ -18,10 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -123,7 +120,7 @@ public class ViewSheetController {
 
     private void updateSheetsList() throws IOException {
         pnItems.getChildren().clear();
-        int itemsPerPage = 10;
+        int itemsPerPage = 9;
         int startIndex = isSearch ? 0 : (currentPage - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, sheets.size());
 
