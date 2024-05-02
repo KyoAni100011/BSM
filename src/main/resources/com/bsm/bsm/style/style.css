@@ -117,19 +117,19 @@
     -fx-border-radius: 5px 0px 0px 5px;
 }
 
-.input-field-add {
+.input-field-add-special-disable {
     -fx-background-color: transparent;
     -fx-border-width: 1px;
     -fx-border-color: black;
     -fx-border-radius: 5px;
 }
-.input-field-add:disabled {
+.input-field-add-special-disable:disabled {
     -fx-opacity: 1  ;
 }
 .combo-box-popup .list-cell:disabled  {
     -fx-opacity: 0.4 ;
 }
-.input-field-add-normal-disable {
+.input-field-add {
     -fx-background-color: transparent;
     -fx-border-width: 1px;
     -fx-border-color: black;

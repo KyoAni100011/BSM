@@ -61,8 +61,8 @@
             <Font size="18.0" />
         </font>
     </Label>
-    <TextField fx:id="bookQuantityField" disable="true" layoutX="76.0" layoutY="460.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add-normal-disable" text="0" />
-    <TextField fx:id="bookPriceField" disable="true" layoutX="317.0" layoutY="460.0" prefHeight="40.0" prefWidth="207.0" styleClass="input-field-add-normal-disable" text="0" />
+    <TextField fx:id="bookQuantityField" disable="true" layoutX="76.0" layoutY="460.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add" text="0" />
+    <TextField fx:id="bookPriceField" disable="true" layoutX="317.0" layoutY="460.0" prefHeight="40.0" prefWidth="207.0" styleClass="input-field-add" text="0" />
     <Label layoutX="82.0" layoutY="269.0" styleClass="label-bold" text="Category">
         <font>
             <Font size="18.0" />
