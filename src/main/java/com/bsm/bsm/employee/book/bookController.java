@@ -76,11 +76,14 @@ public class bookController implements Initializable {
         inputSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//               //print value in inputSearch
+                System.out.println(newValue);
                 isSearch = !newValue.isEmpty();
                 inputSearchText = newValue;
                 if(!isSearch) loadAllBooks();
                 else  books = bookService.search(inputSearchText);
                 try {
+
                     updateBooksList();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -318,8 +321,7 @@ public class bookController implements Initializable {
 
         int totalPages = (int) Math.ceil((double) totalUserCountForRole / itemsPerPage);
 
-
-        int startIndex = (currentPage - 1) * itemsPerPage;
+        int startIndex =  isSearch ? 0 : (currentPage - 1) * itemsPerPage;
         List<Book> bookForType = new ArrayList<>();
 
         for (var book: books) {

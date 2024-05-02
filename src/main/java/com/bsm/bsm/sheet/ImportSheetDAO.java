@@ -108,7 +108,7 @@ public class ImportSheetDAO {
         return getImportSheetID(connection, employeeID, importSheet);
     }
 
-    public List<ImportSheet> getAllImportSheets() throws SQLException {
+    public List<ImportSheet> getAllImportSheets() {
         List<ImportSheet> listImportSheets = new ArrayList<>();
         String QUERY_ALL_IMPORT_SHEET = "select sheet.*, e.userID " +
                 "from importsheet sheet join employee e on sheet.employeeID = e.id";

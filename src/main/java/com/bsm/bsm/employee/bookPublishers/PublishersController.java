@@ -81,7 +81,9 @@ public class PublishersController implements Initializable {
                 isSearch = !newValue.isEmpty();
                 inputSearchText = newValue;
                 if(!isSearch) loadAllPublishers();
-                else   publishers = publisherService.search(inputSearchText);
+                else publishers = publisherService.search(inputSearchText);
+
+                publishers = publisherService.sort(publishers, sortOrder.equals("ASC"), column);
                 try {
                     updatePublishersList();
                 } catch (IOException e) {
@@ -271,7 +273,11 @@ public class PublishersController implements Initializable {
 
 
         try {
-            publishers = publisherService.getAllPublishers();
+            if (isSearch) {
+                publishers = publisherService.search(inputSearchText);
+            } else {
+                publishers = publisherService.getAllPublishers();
+            }
             publishers = publisherService.sort(publishers, isAscending, column);
             updatePublishersList();
         } catch (IOException e) {

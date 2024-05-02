@@ -30,11 +30,11 @@ public class ImportSheetService {
         }
     }
 
-    public List<ImportSheet> getAllSheets() throws SQLException {
+    public List<ImportSheet> getAllSheets() {
         return importSheetDAO.getAllImportSheets();
     }
 
-    public List<ImportSheet> search(String keyword) throws SQLException {
+    public List<ImportSheet> search(String keyword) {
         List<ImportSheet> sheets = getAllSheets();
         String finalKeyword = keyword.toLowerCase();
         return sheets.stream()
