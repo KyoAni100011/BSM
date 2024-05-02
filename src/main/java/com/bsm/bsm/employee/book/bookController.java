@@ -76,14 +76,12 @@ public class bookController implements Initializable {
         inputSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-//               //print value in inputSearch
-                System.out.println(newValue);
                 isSearch = !newValue.isEmpty();
                 inputSearchText = newValue;
                 if(!isSearch) loadAllBooks();
                 else  books = bookService.search(inputSearchText);
-                try {
 
+                try {
                     updateBooksList();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -397,7 +395,11 @@ public class bookController implements Initializable {
         priceSortLabel.setContent(column.equals("price") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
 
         try {
-            books = bookService.getAllBooks();
+            if (isSearch) {
+                books = bookService.search(inputSearchText);
+            } else {
+                books = bookService.getAllBooks();
+            }
             books = bookService.sort(books, isAscending, column);
             updateBooksList();
         } catch (IOException e) {
