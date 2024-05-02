@@ -30,11 +30,11 @@ public class ImportSheetService {
         }
     }
 
-    public List<ImportSheet> getAllSheets() throws SQLException {
+    public List<ImportSheet> getAllSheets() {
         return importSheetDAO.getAllImportSheets();
     }
 
-    public List<ImportSheet> search(String keyword) throws SQLException {
+    public List<ImportSheet> search(String keyword) {
         List<ImportSheet> sheets = getAllSheets();
         String finalKeyword = keyword.toLowerCase();
         return sheets.stream()
@@ -49,7 +49,9 @@ public class ImportSheetService {
         Comparator<ImportSheet> comparator = (importSheet1,importSheet2) -> {
             switch (column) {
                 case "id" -> {
-                    return Comparator.comparing(ImportSheet::getId).compare(importSheet1, importSheet2);
+                    int importSheetID1 = Integer.parseInt(importSheet1.getId());
+                    int importSheetID2 = Integer.parseInt(importSheet2.getId());
+                    return Integer.compare(importSheetID1, importSheetID2);
                 }
                 case "date import" -> {
                     return Comparator.comparing(ImportSheet::getImportDate).compare(importSheet1, importSheet2);

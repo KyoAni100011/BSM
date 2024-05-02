@@ -26,7 +26,9 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
         Comparator<Author> comparator = (author1, author2) -> {
             switch(column) {
                 case "id" -> {
-                    return Comparator.comparing(Author::getId).compare(author1, author2);
+                    int authorID1 = Integer.parseInt(author1.getId());
+                    int authorID2 = Integer.parseInt(author2.getId());
+                    return Integer.compare(authorID1, authorID2);
                 }
                 case "name" -> {
                     return Comparator.comparing(Author::getName).compare(author1, author2);

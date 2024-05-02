@@ -386,7 +386,6 @@ public class AddBookController {
             }
 
 
-
             if (bookService.add(new Book(fullName, publisers, releaseDate, selectedLanguage, authors, categories))) {
                 clearInputs();
                 Book a = bookService.getBookByName(fullName);

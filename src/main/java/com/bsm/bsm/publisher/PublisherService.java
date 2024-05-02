@@ -38,7 +38,9 @@ public class PublisherService implements Activable, Searchable<Publisher>, Sorta
         Comparator<Publisher> comparator = (publisher1, publisher2) -> {
             switch(toLowerColumn) {
                 case "id" -> {
-                    return Comparator.comparing(Publisher::getId).compare(publisher1, publisher2);
+                    int publisherID1 = Integer.parseInt(publisher1.getId());
+                    int publisherID2 = Integer.parseInt(publisher2.getId());
+                    return Integer.compare(publisherID1, publisherID2);
                 }
                 case "name" -> {
                     return Comparator.comparing(Publisher::getName).compare(publisher1, publisher2);

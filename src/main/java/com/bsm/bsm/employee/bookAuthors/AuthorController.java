@@ -75,6 +75,8 @@ public class AuthorController implements Initializable {
                 inputSearchText = newValue;
                 if(!isSearch) loadAllAuthors();
                 else  authors = authorService.search(inputSearchText);
+
+                authors = authorService.sort(authors, sortOrder.equals("ASC"), column);
                 try {
                     updateAuthorsList();
                 } catch (IOException e) {
@@ -261,7 +263,11 @@ public class AuthorController implements Initializable {
         actionSortLabel.setContent(column.equals("enable/disable") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
 
         try {
-            authors = authorService.getAllAuthors();
+            if (isSearch) {
+                authors = authorService.search(inputSearchText);
+            } else {
+                authors = authorService.getAllAuthors();
+            }
             authors = authorService.sort(authors, isAscending, column);
             updateAuthorsList();
         } catch (Exception e) {

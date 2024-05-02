@@ -77,6 +77,8 @@ public class CategoriesController implements Initializable {
                 inputSearchText = newValue;
                 if(!isSearch) loadAllCategory();
                 else categories = categoryService.search(inputSearchText);
+
+                categories = categoryService.sort(categories, sortOrder.equals("ASC"), column);
                 try {
                     updateCategoryList();
                 } catch (IOException e) {
@@ -250,8 +252,6 @@ public class CategoriesController implements Initializable {
         column = column.equals("category") ? "name" : column;
         columnName = columnName.equals("category") ? "name" : columnName;
 
-        System.out.println(sortOrder);
-
         if (columnName.equals(column)) {
             sortOrder = sortOrder.equals("ASC") ? "DESC" : "ASC";
         } else {
@@ -267,7 +267,11 @@ public class CategoriesController implements Initializable {
 
 
         try {
-            categories = categoryService.getAllCategories();
+            if (isSearch) {
+                categories = categoryService.search(inputSearchText);
+            } else {
+                categories = categoryService.getAllCategories();
+            }
             categories = categoryService.sort(categories, isAscending, column);
             updateCategoryList();
         } catch (Exception e) {

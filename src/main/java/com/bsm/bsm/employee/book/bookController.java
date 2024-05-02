@@ -80,6 +80,7 @@ public class bookController implements Initializable {
                 inputSearchText = newValue;
                 if(!isSearch) loadAllBooks();
                 else  books = bookService.search(inputSearchText);
+
                 try {
                     updateBooksList();
                 } catch (IOException e) {
@@ -313,32 +314,35 @@ public class bookController implements Initializable {
 
     private void updateBooksList() throws IOException {
         pnItems.getChildren().clear();
-        int itemsPerPage = 9;
-        int startIndex = isSearch ? 0 : (currentPage - 1) * itemsPerPage;
+        int itemsPerPage = 8;
         int totalUserCountForRole = getTotalBookCountForRole(type);
-        int endIndex = Math.min(startIndex + itemsPerPage, totalUserCountForRole);
-        int totalCount = 0;
-
-        for (int i = startIndex; i < books.size() && totalCount < endIndex; i++) {
-            Book b = books.get(i);
-            if ((isNormalBook(b) && type.equals("book")) || ( isNewBook(b) && type.equals("newBook") )|| ( isOutOfStockBook(b) && type.equals("outOfStockBook"))){
-                totalCount++;
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/book/tableItem.fxml"));
-                    Node item = fxmlLoader.load();
-                    TableItemController tableItemController = fxmlLoader.getController();
-                    tableItemController.setToggleGroup(toggleGroup);
-                    tableItemController.setBook(b);
-                    pnItems.getChildren().add(item);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        System.out.println("\n\n");
 
         int totalPages = (int) Math.ceil((double) totalUserCountForRole / itemsPerPage);
+
+        int startIndex =  isSearch ? 0 : (currentPage - 1) * itemsPerPage;
+        List<Book> bookForType = new ArrayList<>();
+
+        for (var book: books) {
+            if ((isNormalBook(book) && type.equals("book")) || ( isNewBook(book) && type.equals("newBook") )|| ( isOutOfStockBook(book) && type.equals("outOfStockBook"))){
+                bookForType.add(book);
+            }
+        }
+
+        int endIndex = Math.min(startIndex + itemsPerPage, bookForType.size());
+        for (int i = startIndex; i < endIndex; i++) {
+            Book book = bookForType.get(i);
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/book/tableItem.fxml"));
+                Node item = fxmlLoader.load();
+                TableItemController tableItemController = fxmlLoader.getController();
+                tableItemController.setToggleGroup(toggleGroup);
+                tableItemController.setBook(book);
+                System.out.println(book);
+                pnItems.getChildren().add(item);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
         updatePaginationButtons(totalPages);
     }
 
@@ -391,7 +395,11 @@ public class bookController implements Initializable {
         priceSortLabel.setContent(column.equals("price") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
 
         try {
-            books = bookService.getAllBooks();
+            if (isSearch) {
+                books = bookService.search(inputSearchText);
+            } else {
+                books = bookService.getAllBooks();
+            }
             books = bookService.sort(books, isAscending, column);
             updateBooksList();
         } catch (IOException e) {
