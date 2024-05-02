@@ -68,7 +68,8 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
         return books.stream()
                 .filter(book ->
                         book.getTitle().toLowerCase().contains(finalKeyword) ||
-                                book.getIsbn().contains(finalKeyword))
+                                book.getIsbn().contains(finalKeyword)
+                            )
                 .toList();
     }
 
