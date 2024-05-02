@@ -21,8 +21,8 @@
             </font>
         </Label>
 
-        <TextField disable="true" fx:id="nameField" layoutX="309.0" layoutY="135.0" prefHeight="40.0" prefWidth="215.0" styleClass="input-field-add-special-disable" />
-        <TextArea disable="true" fx:id="descriptionField" layoutX="75.0" layoutY="225.0" prefHeight="147.0" prefWidth="450.0" styleClass="input-field-add-special-disable" wrapText="true" />
+        <TextField fx:id="nameField" disable="true" layoutX="309.0" layoutY="135.0" prefHeight="40.0" prefWidth="215.0" styleClass="input-field-add-special-disable" />
+        <TextArea fx:id="descriptionField" disable="true" layoutX="75.0" layoutY="225.0" prefHeight="147.0" prefWidth="450.0" style="-fx-control-inner-background: #F4F4F4;" styleClass="input-field-add-special-disable" wrapText="true" />
 
 
         <Label layoutX="196.0" layoutY="46.0" text="CATEGORY DETAIL">
