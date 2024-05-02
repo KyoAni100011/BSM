@@ -34,7 +34,7 @@
         <TextField fx:id="fullNameField" disable="true" layoutX="308.0" layoutY="150.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add" />
         <TextField fx:id="phoneTextField" disable="true" layoutX="76.0" layoutY="305.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add" />
         <TextField fx:id="addressTextField" disable="true" layoutX="75.0" layoutY="385.0" prefHeight="40.0" prefWidth="450.0" styleClass="input-field-add" />
-        <DatePicker fx:id="dobPicker" disable="true" layoutX="309.0" layoutY="305.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add" />
+        <DatePicker fx:id="dobPicker" disable="true" layoutX="309.0" layoutY="305.0" prefHeight="40.0" prefWidth="217.0" style="-fx-control-inner-background: none;" styleClass="input-field-add" />
 
         <Label layoutX="228.0" layoutY="53.0" text="USER DETAIL">
             <font>
