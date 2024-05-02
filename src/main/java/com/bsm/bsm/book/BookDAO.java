@@ -272,6 +272,76 @@ public class BookDAO {
     }
 
     public boolean checkIfBookCanBeEnabled(String isbn) {
-        return true;
+        var checkAuthor = checkIfBookCanBeEnabledFromAuthors(isbn);
+        var checkCategory = checkIfBookCanBeEnabledFromCategories(isbn);
+        var checkPublisher = checkIfBookCanBeEnabledFromPublisher(isbn);
+        return checkAuthor && checkCategory && checkPublisher;
+    }
+
+    private boolean checkIfBookCanBeEnabledFromAuthors(String isbn) {
+        String QUERY_CHECK_AUTHOR = """
+                select a.isEnabled as enabledAuthor from author a join bookAuthor ba on a.id = ba.authorID
+                where ba.bookID = ?
+                """;
+
+        AtomicReference<Boolean> canEnable = new AtomicReference<>();
+
+        DatabaseConnection.executeQuery(QUERY_CHECK_AUTHOR, resultSet -> {
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    if (!resultSet.getBoolean("enabledAuthor")) {
+                        canEnable.set(false);
+                        return;
+                    }
+                }
+            }
+            canEnable.set(true);
+        }, isbn);
+
+        return canEnable.get();
+    }
+
+    private boolean checkIfBookCanBeEnabledFromCategories(String isbn) {
+        String QUERY_CHECK_CATEGORY = """
+                select c.isEnabled as enabledCategory from category c join bookCategory bc on c.id = bc.categoryID
+                where bc.bookID = ?
+                """;
+
+        AtomicReference<Boolean> canEnable = new AtomicReference<>();
+
+        DatabaseConnection.executeQuery(QUERY_CHECK_CATEGORY, resultSet -> {
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    if (!resultSet.getBoolean("enabledCategory")) {
+                        canEnable.set(false);
+                        return;
+                    }
+                }
+            }
+            canEnable.set(true);
+        }, isbn);
+
+        return canEnable.get();
+    }
+
+    private boolean checkIfBookCanBeEnabledFromPublisher(String isbn) {
+        String QUERY_CHECK_PUBLISHER = """
+                select p.isEnabled as enabledPublisher from Publisher p join Book b on p.id = b.publisherID
+                where b.isbn = ?
+                """;
+
+        AtomicReference<Boolean> canEnable = new AtomicReference<>();
+
+        DatabaseConnection.executeQuery(QUERY_CHECK_PUBLISHER, resultSet -> {
+            if (resultSet != null && resultSet.next()) {
+                if (!resultSet.getBoolean("enabledPublisher")) {
+                    canEnable.set(false);
+                    return;
+                }
+            }
+            canEnable.set(true);
+        }, isbn);
+
+        return canEnable.get();
     }
 }
