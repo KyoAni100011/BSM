@@ -191,6 +191,27 @@
   -fx-background-color: #F5A11C;
 }
 
+.text-menu-admin {
+  -fx-font-family: "Roboto Bold";
+  -fx-font-size: 16px;
+}
+
+
+.text-menu-admin:focused #svgProfileSetting {
+  -fx-fill: white !important;
+
+}
+
+.text-menu-admin:focused #svgLogOut {
+  -fx-fill: white !important;
+
+}
+
+.text-menu-admin:focused  {
+  -fx-background-color: #914d2a;
+}
+
+
 .text-menu-item-1 {
   -fx-font-family: "Roboto Black";
   -fx-font-size: 16px;
