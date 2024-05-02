@@ -21,6 +21,10 @@ public class Category {
         this(id, name, "", isEnabled);
     }
 
+    public Category(String name) {
+        this("", name, "", true);
+    }
+
     // Getters and setters
     public String getId() {
         return id;

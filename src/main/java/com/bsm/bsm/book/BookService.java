@@ -6,10 +6,7 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Collectors;
 
 public class BookService implements Activable, Searchable<Book>, Sortable<Book>, Updatable<Book>, Addable<Book> {
@@ -91,11 +88,21 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
     }
 
     public Book getBookByISBN(String isbn) {
-        return bookDAO.getBookByISBN(isbn);
+        try {
+            return bookDAO.getBookByKeyword(isbn);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     public Book getBookByName(String name) {
-        return bookDAO.getBookByName(name);
+        try {
+            return bookDAO.getBookByKeyword(name);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     // use this for check update book name
@@ -117,7 +124,11 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
     }
 
     public List<Book> getAllBooks() {
-        return bookDAO.getAllBooks();
+        try {
+            return bookDAO.getAllBooks();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean checkIfBookCanBeEnabled(String isbn) {

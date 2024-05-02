@@ -18,23 +18,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class OrderDAO {
 
-//    public static void main(String[] args) throws SQLException {
-//        OrderDAO orderDAO = new OrderDAO();
-//        Customer customer = new Customer("1", "Phuong", "0917527783", true);
-//        EmployeeModel employee = new EmployeeModel("22220002", "", "", "", "", "", true, "");
-//
-//        Order order = new Order(
-//                employee,
-//                customer,
-//                null
-//        );
-//        List<String> selectedBooks = new ArrayList<>(List.of("Toi thay hoa vang tren co xanh"));
-//        List<Integer> quantities = new ArrayList<>(List.of(100));
-//        List<BigDecimal> salePrices = new ArrayList<>(List.of(BigDecimal.valueOf(84000)));
-//
-//        orderDAO.createOrder(employee, selectedBooks, quantities, salePrices, customer);
-//    }
-
     public boolean createOrder(EmployeeModel employee, List<String> selectedBooks, List<Integer> quantities, List<BigDecimal> salePrices, Customer customer) throws SQLException {
 
         Connection connection = DatabaseConnection.getConnection();

@@ -70,6 +70,7 @@ public class bookController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeButtonsAndLabels();
+        type = "book";
         loadAllBooks();
         initializePaginationButtons();
 
@@ -92,7 +93,11 @@ public class bookController implements Initializable {
 
     @FXML
     void handleRefreshButton(ActionEvent event) {
-        idSortLabel.setContent("");
+        column = "isbn";
+        sortOrder = "ASC";
+        currentPage = 1;
+        inputSearch.setText("");
+        idSortLabel.setContent("M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z");
         quantitySortLabel.setContent("");
         bookNameSortLabel.setContent("");
         actionSortLabel.setContent("");
@@ -105,12 +110,13 @@ public class bookController implements Initializable {
         books = bookService.sort(books, true, "isbn");
         employeeInfo.setBooks(books);
         try {
-            type = "book";
+//            type = "book";
             updateBooksList();
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
+
     private void initializeButtonsAndLabels() {
         bookButton.getStyleClass().add("profile-setting-button");
         updateButtonStyle(bookButton);
@@ -148,44 +154,24 @@ public class bookController implements Initializable {
 
     @FXML
     private void handleBookButton(ActionEvent event) {
-        try {
-            type = "book";
-            currentPage = 1;
-            updateBooksList();
-            updateButtonStyle(bookButton);
-        } catch (IOException e) {
-            e.printStackTrace();
-            AlertUtils.showAlert("Error", "Error loading book", Alert.AlertType.ERROR);
-        }
+        type = "book";
+        handleRefreshButton(event);
+        updateButtonStyle(bookButton);
     }
 
     @FXML
     private void handleNewBookButton(ActionEvent event) {
-        try {
-            type = "newBook";
-            currentPage = 1;
-            updateBooksList();
-            updateButtonStyle(newBookButton);
-        } catch (IOException e) {
-            e.printStackTrace();
-            AlertUtils.showAlert("Error", "Error loading new book", Alert.AlertType.ERROR);
-        }
+        type = "newBook";
+        handleRefreshButton(event);
+        updateButtonStyle(newBookButton);
     }
 
     @FXML
     private void handleOutOfStockBookButton(ActionEvent event) {
-        try {
-            type = "outOfStockBook";
-            currentPage = 1;
-            updateBooksList();
-            updateButtonStyle(outOfStockBookButton);
-        } catch (IOException e) {
-            e.printStackTrace();
-            AlertUtils.showAlert("Error", "Error loading out of stock book", Alert.AlertType.ERROR);
-        }
+        type = "outOfStockBook";
+        handleRefreshButton(event);
+        updateButtonStyle(outOfStockBookButton);
     }
-
-
 
     @FXML
     private void handleUpdateUserButton(ActionEvent event) {
@@ -315,9 +301,9 @@ public class bookController implements Initializable {
     private void updateBooksList() throws IOException {
         pnItems.getChildren().clear();
         int itemsPerPage = 8;
-        int totalUserCountForRole = getTotalBookCountForRole(type);
+        int totalBooksCountForRole = getTotalBookCountForRole(type);
 
-        int totalPages = (int) Math.ceil((double) totalUserCountForRole / itemsPerPage);
+        int totalPages = (int) Math.ceil((double) totalBooksCountForRole / itemsPerPage);
 
         int startIndex =  isSearch ? 0 : (currentPage - 1) * itemsPerPage;
         List<Book> bookForType = new ArrayList<>();
@@ -337,7 +323,6 @@ public class bookController implements Initializable {
                 TableItemController tableItemController = fxmlLoader.getController();
                 tableItemController.setToggleGroup(toggleGroup);
                 tableItemController.setBook(book);
-                System.out.println(book);
                 pnItems.getChildren().add(item);
             } catch (IOException e) {
                 System.out.println(e.getMessage());
@@ -354,7 +339,6 @@ public class bookController implements Initializable {
                 count++;
             }
         }
-        System.out.println("type = " + type + "quality: " + count);
         return count;
     }
 

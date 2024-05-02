@@ -114,6 +114,7 @@ public class ImportSheetDAO {
                 "from importsheet sheet join employee e on sheet.employeeID = e.id";
         List<String> listUserId = new ArrayList<>();
         int indexListUserId = 0;
+
         DatabaseConnection.executeQuery(QUERY_ALL_IMPORT_SHEET, resultSet -> {
             if (resultSet != null) {
                 while (resultSet.next()) {
@@ -127,7 +128,6 @@ public class ImportSheetDAO {
                 }
             }
         });
-
 
         for(ImportSheet sheet : listImportSheets)
         {

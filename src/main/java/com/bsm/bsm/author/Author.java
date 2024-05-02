@@ -25,6 +25,10 @@ public class Author {
         this(id, name, "", isEnabled);
     }
 
+    public Author(String name) {
+        this("", name, "", true);
+    }
+
     public String getId() {
         return id;
     }
