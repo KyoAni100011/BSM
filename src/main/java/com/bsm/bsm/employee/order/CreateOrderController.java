@@ -200,6 +200,7 @@ public class CreateOrderController implements Initializable {
             AlertUtils.showAlert("Error", "Please choose book to create order", Alert.AlertType.CONFIRMATION);
             return;
         }
+
         for (OrderItemController controller : orderItemController) {
             String bookName = controller.getBookName();
             int quantity = controller.getItemQuantity();
@@ -215,13 +216,13 @@ public class CreateOrderController implements Initializable {
             }
         }
 
-
         Customer customer = null;
         if ((!handleNameField.getText().isEmpty() && (handlePhoneField.getText().length() == 11 || handlePhoneField.getText().length() == 10) || (handleNameField.getText().isEmpty() && handlePhoneField.getText().isEmpty())) && !MoneyTextField.getText().isEmpty()) {
             //get customer information
 
             boolean isMember = !handleNameField.getText().isEmpty();
             customer = new Customer(handleNameField.getText(), handlePhoneField.getText(), isMember);
+            if (!isMember) customer.setName("Anonymous");
 
             if (orderService.createOrder(selectedBooks, quantities, salePrices, customer)) {
                 try {
