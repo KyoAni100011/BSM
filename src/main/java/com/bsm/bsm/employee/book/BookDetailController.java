@@ -47,6 +47,7 @@ public class BookDetailController {
     public static void handleTableItemSelection(String myId) {
         id = myId;
         bookDetail = bookService.getBookByISBN(id);
+        System.out.println("book" + bookDetail);
     }
 //    private VBox pnAuthor,pnCate;
     

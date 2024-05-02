@@ -207,11 +207,6 @@ public class bookController implements Initializable {
         } catch (IOException e) {
             AlertUtils.showAlert("Error", "Error loading addUser FXML", Alert.AlertType.ERROR);
         }
-        try {
-            FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/addBook");
-        } catch (IOException e) {
-            AlertUtils.showAlert("Error", "Error loading addUser FXML", Alert.AlertType.ERROR);
-        }
     }
 
     @FXML

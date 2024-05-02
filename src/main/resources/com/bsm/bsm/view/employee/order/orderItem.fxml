@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.shape.SVGPath?>
+<?import org.controlsfx.control.SearchableComboBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="88.0" prefWidth="349.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.order.OrderItemController">
+   <children>
+      <AnchorPane layoutX="12.0" layoutY="7.0" prefHeight="73.0" prefWidth="322.0" style="-fx-border-color: #C8BBBE; -fx-border-radius: 5;">
+            <HBox alignment="CENTER" layoutX="123.0" layoutY="45.0">
+               <children>
+                  <Label fx:id="pricePerItemLabel" layoutX="125.0" layoutY="35.0" text="0" />
+               </children>
+            </HBox>
+            <Button layoutX="287.0" layoutY="20.0" mnemonicParsing="false" prefWidth="17.0" style="-fx-background-color: transparent;" />
+            <Button fx:id="minusButton" layoutX="43.0" layoutY="44.0" mnemonicParsing="false" onAction="#handleMinusButton" prefHeight="20.0" prefWidth="20.0" style="-fx-background-radius: 0px; -fx-background-color: transparent; -fx-border-color: #D9D9D9; -fx-border-width: 1; -fx-min-width: 0px; -fx-min-height: 0px;">
+               <graphic>
+                  <Group>
+                     <children>
+                        <SVGPath content="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z" scaleX="0.015" scaleY="0.015" />
+                     </children>
+                  </Group>
+               </graphic>
+            </Button>
+            <Button fx:id="addButton" layoutX="95.0" layoutY="44.0" mnemonicParsing="false" onAction="#handleAddButton" prefHeight="20.0" prefWidth="20.0" style="-fx-background-radius: 0px; -fx-background-color: transparent; -fx-min-height: 0px; -fx-min-width: 0px; -fx-border-width: 1px; -fx-border-color: #D9D9D9;">
+               <graphic>
+                  <Group>
+                     <children>
+                        <SVGPath content="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" scaleX="0.015" scaleY="0.015" />
+                     </children>
+                  </Group>
+               </graphic>
+            </Button>
+            <TextField fx:id="QuantityField" alignment="CENTER" layoutX="61.0" layoutY="44.0" prefHeight="20.0" prefWidth="35.0" style="-fx-background-radius: 0px; -fx-min-width: 0px; -fx-min-height: 0px;" text="1" />
+            <Label fx:id="indexLabel" layoutX="19.0" layoutY="27.0" text="1" />
+            <HBox alignment="CENTER" layoutX="197.0" layoutY="45.0">
+               <children>
+                  <Label fx:id="totalPriceLabel" layoutX="199.0" layoutY="35.0" text="0" />
+               </children>
+            </HBox>
+            <Button layoutX="280.0" layoutY="21.0" mnemonicParsing="false" onAction="#handleRemoveButtonClick" prefWidth="17.0" style="-fx-background-color: transparent;">
+               <graphic>
+                  <Group>
+                     <children>
+                        <SVGPath content="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z" layoutX="-4.0" scaleX="0.03" scaleY="0.03" style="-fx-fill: #ff0000;" />
+                     </children>
+                  </Group>
+               </graphic>
+            </Button>
+            <SearchableComboBox fx:id="bookNameComboBox" layoutX="43.0" layoutY="9.0" prefHeight="25.0" prefWidth="204.0" />
+      </AnchorPane>
+   </children>
+</AnchorPane>
