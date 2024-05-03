@@ -46,7 +46,7 @@ public class ImportSheetDetailController {
     @FXML
     public void initialize() {
         new ImportSheetDetailController();
-//
+
 
         importDatePicker.getEditor().setOpacity(1);
         setupDatePicker();
@@ -84,9 +84,6 @@ public class ImportSheetDetailController {
 
         idField.setText(importSheet.getId());
         employeeNameField.setText(importSheet.getEmployee().getName());
-
-
-
         totalPricefield.setText(String.valueOf(importSheet.getTotalPrice()));
         String date = convertDOBFormat(importSheet.getImportDate());
         importDatePicker.setValue(LocalDate.parse(date, dateFormatter));

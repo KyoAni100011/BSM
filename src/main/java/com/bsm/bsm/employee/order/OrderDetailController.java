@@ -35,6 +35,7 @@ public class OrderDetailController {
     public DatePicker importDatePicker;
     @FXML
     public VBox bookItem;
+    public TextField customerPhoneField;
 
     static void handleTableItemSelection(int myId, Order thisorder) {
         id = myId;
@@ -75,6 +76,7 @@ public class OrderDetailController {
         totalPricefield.setText(String.valueOf(order.getTotalPrice()));
         String date = convertDOBFormat(order.getOrderDate());
         importDatePicker.setValue(LocalDate.parse(date, dateFormatter));
+        customerPhoneField.setText(order.getCustomer().getPhone());
     }
 
     private void updateSheet() {

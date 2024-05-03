@@ -128,16 +128,6 @@
 }
 
 
-.input-field-add-special-disable-item {
-    -fx-background-color: transparent;
-    -fx-border-width: 1px;
-    -fx-border-color: #CECECE;
-    -fx-border-radius: 5px;
-}
-.input-field-add-special-disable-item:disabled {
-    -fx-opacity: 1  ;
-}
-
 .combo-box-popup .list-cell:disabled  {
     -fx-opacity: 0.4 ;
 }

@@ -8,51 +8,55 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="623.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.order.OrderDetailController">
-    <Label layoutX="78.0" layoutY="168.0" styleClass="label-bold" text="Employee">
+<AnchorPane prefHeight="536.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.order.OrderDetailController">
+    <Label layoutX="318.0" layoutY="90.0" styleClass="label-bold" text="Employee">
         <font>
             <Font size="18.0" />
         </font>
     </Label>
-    <Label layoutX="77.0" layoutY="325.0" styleClass="label-bold" text="Total Price">
+    <Label layoutX="80.0" layoutY="250.0" styleClass="label-bold" text="Total price">
         <font>
             <Font size="18.0" />
         </font>
     </Label>
-    <Label layoutX="318.0" layoutY="328.0" styleClass="label-bold" text="Import Date">
+    <Label layoutX="321.0" layoutY="253.0" styleClass="label-bold" text="Order date">
         <font>
             <Font size="18.0" />
         </font>
     </Label>
 
-    <TextField fx:id="employeeNameField" disable="true" layoutX="77.0" layoutY="196.0" prefHeight="40.0" prefWidth="453.0" styleClass="input-field-add-special-disable" />
-    <TextField fx:id="totalPricefield" disable="true" layoutX="77.0" layoutY="353.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add-special-disable" />
-    <DatePicker fx:id="importDatePicker" disable="true" layoutX="317.0" layoutY="354.0" prefHeight="40.0" prefWidth="217.0" style="-fx-control-inner-background: #F4F4F4;" styleClass="input-field-add-special-disable" />
-    <Label layoutX="227.0" layoutY="48.0" text="ORDER DETAIL">
+    <TextField fx:id="employeeNameField" disable="true" layoutX="317.0" layoutY="118.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add-special-disable" />
+    <TextField fx:id="totalPricefield" disable="true" layoutX="80.0" layoutY="278.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add-special-disable" />
+    <DatePicker fx:id="importDatePicker" disable="true" layoutX="320.0" layoutY="279.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add-special-disable" />
+    <Label layoutX="224.0" layoutY="33.0" text="ORDER DETAIL">
         <font>
             <Font size="25.0" />
         </font>
     </Label>
-    <TextField fx:id="idField" disable="true" layoutX="77.0" layoutY="118.0" prefHeight="40.0" prefWidth="453.0" styleClass="input-field-add-special-disable" />
+    <TextField fx:id="idField" disable="true" layoutX="77.0" layoutY="118.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add-special-disable" />
     <Label layoutX="79.0" layoutY="90.0" styleClass="label-bold" text="ID">
         <font>
             <Font size="18.0" />
         </font>
     </Label>
-    <Label layoutX="82.0" layoutY="403.0" styleClass="label-bold" text="Book">
+    <Label layoutX="82.0" layoutY="334.0" styleClass="label-bold" text="Book">
         <font>
             <Font size="18.0" />
         </font>
     </Label>
-    <ScrollPane layoutX="82.0" layoutY="436.0" prefHeight="130.0" prefWidth="453.0">
-        <content>
-            <VBox fx:id="bookItem" prefHeight="128.0" prefWidth="437.0" />
-        </content>
+    <ScrollPane layoutX="82.0" layoutY="367.0" prefHeight="130.0" prefWidth="453.0" styleClass="input-field-add-special-disable">
+        <VBox fx:id="bookItem" prefHeight="128.0" prefWidth="433.0" style="-fx-background-color: white;" />
     </ScrollPane>
-   <Label layoutX="79.0" layoutY="249.0" styleClass="label-bold" text="Customer">
+   <Label layoutX="82.0" layoutY="174.0" styleClass="label-bold" text="Customer name">
       <font>
          <Font size="18.0" />
       </font>
    </Label>
-   <TextField fx:id="customerNameField" disable="true" layoutX="78.0" layoutY="277.0" prefHeight="40.0" prefWidth="453.0" styleClass="input-field-add-special-disable" />
+   <TextField fx:id="customerNameField" disable="true" layoutX="81.0" layoutY="202.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add-special-disable" />
+   <Label layoutX="321.0" layoutY="172.0" styleClass="label-bold" text="Customer phone">
+      <font>
+         <Font size="18.0" />
+      </font>
+   </Label>
+   <TextField fx:id="customerPhoneField" disable="true" layoutX="320.0" layoutY="200.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add-special-disable" />
 </AnchorPane>
