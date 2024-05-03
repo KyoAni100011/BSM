@@ -19,6 +19,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.bsm.bsm.utils.DateUtils.convertDOBFormat;
+
 
 public class OrderDetailController {
     private static final OrderService importSheetService = new OrderService();
@@ -71,9 +73,8 @@ public class OrderDetailController {
         employeeNameField.setText(order.getEmployee().getName());
         customerNameField.setText(order.getCustomer().getName());
         totalPricefield.setText(String.valueOf(order.getTotalPrice()));
-        System.out.println("date" + order.getOrderDate() );
-
-        importDatePicker.setValue(LocalDate.parse(order.getOrderDate(), dateFormatter));
+        String date = convertDOBFormat(order.getOrderDate());
+        importDatePicker.setValue(LocalDate.parse(date, dateFormatter));
     }
 
     private void updateSheet() {
