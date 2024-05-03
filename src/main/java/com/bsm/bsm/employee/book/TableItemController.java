@@ -83,6 +83,10 @@ public class TableItemController {
     private void handleTableItemDoubleClick(MouseEvent event) throws IOException {
         if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
             if (isbn != null) {
+                if (!bookService.isEnable(isbn)) {
+                    AlertUtils.showAlert("Error", "Need to enable book to view details", Alert.AlertType.ERROR);
+                    return;
+                }
                 BookDetailController.handleTableItemSelection(isbn);
                 FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/bookDetail", "Book Detail");
             } else {

@@ -155,6 +155,10 @@ public class PublishersController implements Initializable {
     void handleUpdatePublisherButton(ActionEvent event) {
         try {
             if (id != null) {
+                if (!publisherService.isEnabled(id)) {
+                    AlertUtils.showAlert("Error", "Need to enable publisher to update", Alert.AlertType.ERROR);
+                    return;
+                }
                 UpdatePublisherController.handleTableItemSelection(id);
                 FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookPublishers/updatePublisher", "Update Publisher");
             } else {

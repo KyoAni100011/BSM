@@ -151,5 +151,9 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
             throw new RuntimeException(e);
         }
     }
+
+    public boolean isEnable(String isbn) {
+        return getBookByISBN(isbn).isEnabled();
+    }
 }
 

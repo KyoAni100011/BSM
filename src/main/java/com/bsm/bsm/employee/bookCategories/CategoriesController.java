@@ -140,6 +140,10 @@ public class CategoriesController implements Initializable {
     void handleUpdateCategoryButton(ActionEvent event) {
         try {
             if (id != null) {
+                if (!categoryService.isEnabled(id)) {
+                    AlertUtils.showAlert("Error", "Need to enable category to update", Alert.AlertType.ERROR);
+                    return;
+                }
                 UpdateCategoryController.handleTableItemSelection(id);
                 FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookCategories/updateCategory", "Update Category");
             } else {

@@ -97,8 +97,16 @@ public class bookController implements Initializable {
         sortOrder = "ASC";
         currentPage = 1;
         inputSearch.setText("");
-        idSortLabel.setContent("");
+        resetSortLabels();
         loadAllBooks();
+    }
+
+    void resetSortLabels() {
+        idSortLabel.setContent("");
+        quantitySortLabel.setContent("");
+        bookNameSortLabel.setContent("");
+        actionSortLabel.setContent("");
+        priceSortLabel.setContent("");
     }
 
     private void loadAllBooks() {
@@ -172,23 +180,12 @@ public class bookController implements Initializable {
     private void handleUpdateUserButton(ActionEvent event) {
         try {
             if (isbn != null) {
-                boolean checkFindBook = false;
-                
-                for (var book: books) {
-                    if (book.getIsbn().equals(isbn)){
-                        if (book.isEnabled()) {
-                            checkFindBook = true;
-                            UpdateBookController.handleTableItemSelection(isbn);
-                            FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/updateBook", "Update Book");
-                        }
-                        break;
-                    }
-                }
-
-                if (!checkFindBook) {
+                if (bookService.checkIfBookCanBeEnabled(isbn)) {
+                    UpdateBookController.handleTableItemSelection(isbn);
+                    FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/updateBook", "Update Book");
+                } else {
                     AlertUtils.showAlert("Error", "Need to enable book to update", Alert.AlertType.ERROR);
                 }
-
             } else {
                 AlertUtils.showAlert("Error", "Can't find book", Alert.AlertType.ERROR);
             }

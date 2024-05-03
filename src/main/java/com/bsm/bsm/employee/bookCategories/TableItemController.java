@@ -76,6 +76,10 @@ public class TableItemController {
     void handleTableItemDoubleClick(MouseEvent event) throws IOException {
         if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
             if (id != null) {
+                if (!categoryService.isEnabled(id)) {
+                    AlertUtils.showAlert("Error", "Need to enable category to view details", Alert.AlertType.ERROR);
+                    return;
+                }
                 CategoryDetailController.handleTableItemSelection(id);
                 FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookCategories/categoryDetail", "Category Detail");
             } else {
