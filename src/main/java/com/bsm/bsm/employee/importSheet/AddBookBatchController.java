@@ -196,8 +196,8 @@ public class AddBookBatchController {
 
                 publisherComboBox.setValue(publishers);
                 languageComboBox.setValue(language);
-                bookQuantityField.setText(String.valueOf(quanity));
-                bookPriceField.setText(String.valueOf(salePrice));
+//                bookQuantityField.setText(String.valueOf(quanity));
+//                bookPriceField.setText(String.valueOf(salePrice));
                 releaseDatePicker.setValue(LocalDate.parse(releaseDate, dateFormatter));
 
             }

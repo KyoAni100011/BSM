@@ -7,19 +7,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.importSheet.UpdatePriceController">
-   <Label layoutX="189.0" layoutY="22.0" styleClass="title-form" text="Update Selling Price">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="700.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.importSheet.UpdatePriceController">
+   <Label layoutX="239.0" layoutY="25.0" styleClass="title-form" text="Update Selling Price">
       <font>
          <Font size="25.0" />
       </font>
    </Label>
-   <ScrollPane layoutY="100.0" prefHeight="458.0" prefWidth="600.0">
-      <VBox fx:id="pnItems" prefHeight="458.0" prefWidth="584.0" style="-fx-border-color: #CECECE; -fx-border-width: 1 0 0 0; -fx-background-color: white;" />
+   <ScrollPane layoutY="100.0" prefHeight="458.0" prefWidth="700.0">
+      <VBox fx:id="pnItems" prefHeight="458.0" prefWidth="684.0" style="-fx-border-color: #CECECE; -fx-border-width: 1 0 0 0; -fx-background-color: white;" />
    </ScrollPane>
-   <Button layoutX="409.0" layoutY="582.0" minHeight="40.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefWidth="150.0" styleClass="button-custom-employee" text="Save">
+   <Button layoutX="534.0" layoutY="582.0" minHeight="40.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefWidth="150.0" styleClass="button-custom-employee" text="Save">
       <font>
          <Font size="18.0" />
       </font>
    </Button>
-   <Label layoutX="165.0" layoutY="61.0" style="-fx-text-fill: #F5A11C;" styleClass="text-bold" text="Selling price must be 10% higher than import price" />
+   <Label layoutX="215.0" layoutY="61.0" style="-fx-text-fill: #F5A11C;" styleClass="text-bold" text="Selling price must be 10% higher than import price" />
 </AnchorPane>

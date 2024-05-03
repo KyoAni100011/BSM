@@ -44,7 +44,7 @@
             </AnchorPane>
          </VBox>
          <HBox alignment="CENTER_RIGHT" layoutY="422.0" prefHeight="44.0" prefWidth="700.0" spacing="15.0" style="-fx-background-color: white; -fx-border-width: 2px 0px 0px 0px; -fx-border-color: #F3F3F3; -fx-background-radius: 0px 0px 10px 10px;">
-            <Button fx:id="addBookButton" mnemonicParsing="false" onAction="#handleAddBookButton" style="-fx-background-color: transparent; -fx-text-fill: #F5A11C;" text=" Add book">
+            <Button fx:id="addBookButton" focusTraversable="false" mnemonicParsing="false" onAction="#handleAddBookButton" style="-fx-background-color: transparent; -fx-text-fill: #F5A11C;" styleClass="text-bold" text=" Add book batch">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
@@ -119,7 +119,7 @@
          <TextField fx:id="totalCostTextField" disable="true" layoutX="1.0" layoutY="18.0" prefHeight="26.0" prefWidth="78.0" promptText="123.456.789" />
          <Label fx:id="totalCostErrorLabel" layoutX="2.0" layoutY="43.0" prefHeight="18.0" prefWidth="78.0" styleClass="error-label" />
       </AnchorPane>
-      <Button fx:id="btnAddSheet" mnemonicParsing="false" onAction="#handleAddSheetButton" prefHeight="32.0" prefWidth="82.0" style="-fx-background-color: #F5A11C;" text="Add sheet">
+      <Button fx:id="btnAddSheet" mnemonicParsing="false" onAction="#handleAddSheetButton" prefHeight="32.0" prefWidth="82.0" style="-fx-background-color: #F5A11C;" styleClass="text-bold" text="Add sheet">
          <HBox.margin>
             <Insets left="30.0" />
          </HBox.margin>
