@@ -27,6 +27,10 @@ public class Publisher {
         this(id, name, "", isEnabled);
     }
 
+    public Publisher(String name) {
+        this("", name, "", true);
+    }
+
     // Getters and setters
     public String getId() {
         return id;

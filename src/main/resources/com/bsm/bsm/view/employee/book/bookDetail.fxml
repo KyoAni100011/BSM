@@ -32,9 +32,9 @@
         </font>
     </Label>
 
-    <TextField fx:id="fullNameField" disable="true" layoutX="311.0" layoutY="129.0" prefHeight="40.0" prefWidth="218.0" styleClass="input-field-add" />
-    <TextField fx:id="publisherField" disable="true" layoutX="77.0" layoutY="319.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add" />
-    <DatePicker fx:id="releaseDatePicker" disable="true" layoutX="75.0" layoutY="473.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add" />
+    <TextField fx:id="fullNameField" disable="true" layoutX="311.0" layoutY="129.0" prefHeight="40.0" prefWidth="218.0" styleClass="input-field-add-special-disable" />
+    <TextField fx:id="publisherField" disable="true" layoutX="77.0" layoutY="319.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add-special-disable" />
+    <DatePicker fx:id="releaseDatePicker" disable="true" layoutX="75.0" layoutY="473.0" prefHeight="40.0" prefWidth="217.0" style="-fx-control-inner-background: #F4F4F4;" styleClass="input-field-add-special-disable" />
     <Label layoutX="217.0" layoutY="45.0" text="BOOK DETAIL">
         <font>
             <Font size="25.0" />
@@ -50,8 +50,8 @@
             <Font size="18.0" />
         </font>
     </Label>
-    <TextField fx:id="bookQuantityField" disable="true" layoutX="76.0" layoutY="395.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add" text="0" />
-    <TextField fx:id="bookPriceField" disable="true" layoutX="317.0" layoutY="395.0" prefHeight="40.0" prefWidth="207.0" styleClass="input-field-add" text="0" />
+    <TextField fx:id="bookQuantityField" disable="true" layoutX="76.0" layoutY="395.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add-special-disable" text="0" />
+    <TextField fx:id="bookPriceField" disable="true" layoutX="317.0" layoutY="395.0" prefHeight="40.0" prefWidth="207.0" styleClass="input-field-add-special-disable" text="0" />
     <Label layoutX="316.0" layoutY="182.0" styleClass="label-bold" text="Category">
         <font>
             <Font size="18.0" />
@@ -63,8 +63,8 @@
             <Font size="18.0" />
         </font>
     </Label>
-    <TextField fx:id="languageField" disable="true" layoutX="317.0" layoutY="319.0" prefHeight="40.0" prefWidth="207.0" styleClass="input-field-add" />
-   <Button fx:id="isEnabledLabel" alignment="CENTER" disable="true" layoutX="374.0" layoutY="475.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="81.0" styleClass="text-menu-item-5 input-field-add" text="Disable">
+    <TextField fx:id="languageField" disable="true" layoutX="317.0" layoutY="319.0" prefHeight="40.0" prefWidth="207.0" styleClass="input-field-add-special-disable" />
+   <Button fx:id="isEnabledLabel" alignment="CENTER" disable="true" layoutX="374.0" layoutY="475.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="81.0" styleClass="text-menu-item-5 input-field-add-special-disable" text="Disable">
       <padding>
          <Insets bottom="3.0" left="15.0" right="15.0" top="3.0" />
       </padding>
@@ -74,17 +74,17 @@
          <Font size="18.0" />
       </font>
    </Label>
-   <ScrollPane layoutX="78.0" layoutY="211.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="69.0" prefWidth="217.0" styleClass="input-field-add">
+   <ScrollPane layoutX="78.0" layoutY="211.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="69.0" prefWidth="217.0" styleClass="input-field-add-special-disable">
       <content>
          <VBox fx:id="pnAuthor" prefHeight="69.0" prefWidth="199.0" />
       </content>
    </ScrollPane>
-   <ScrollPane layoutX="317.0" layoutY="211.0" prefHeight="69.0" prefWidth="207.0" styleClass="input-field-add">
+   <ScrollPane layoutX="317.0" layoutY="211.0" prefHeight="69.0" prefWidth="207.0" styleClass="input-field-add-special-disable">
       <content>
          <VBox fx:id="pnCate" prefHeight="70.0" prefWidth="187.0" />
       </content>
    </ScrollPane>
-   <TextField fx:id="idField" disable="true" layoutX="77.0" layoutY="129.0" prefHeight="40.0" prefWidth="218.0" styleClass="input-field-add" />
+   <TextField fx:id="idField" disable="true" layoutX="77.0" layoutY="129.0" prefHeight="40.0" prefWidth="218.0" styleClass="input-field-add-special-disable" />
    <Label layoutX="79.0" layoutY="101.0" styleClass="label-bold" text="ID">
       <font>
          <Font size="18.0" />

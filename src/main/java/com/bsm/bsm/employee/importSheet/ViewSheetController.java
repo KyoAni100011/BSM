@@ -18,10 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,6 +39,7 @@ public class ViewSheetController {
     @FXML
     private Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
     private boolean isSearch = false;
+    private boolean isSearchAndPagination = false;
     private List<ImportSheet> sheets;
     private String sortOrder = "ASC";
     private String column = "id";
@@ -63,20 +61,10 @@ public class ViewSheetController {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 isSearch = !newValue.isEmpty();
                 inputSearchText = newValue;
-                if(!isSearch) {
-                    try {
-                        loadAllSheets();
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                else {
-                    try {
-                        sheets = importSheetService.search(inputSearchText);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
+                if(!isSearch) loadAllSheets();
+                else sheets = importSheetService.search(inputSearchText);
+
+                sheets = importSheetService.sort(sheets, sortOrder.equals("ASC"), column);
                 try {
                     updateSheetsList();
                 } catch (IOException e) {
@@ -86,7 +74,7 @@ public class ViewSheetController {
         });
     }
 
-    private void loadAllSheets() throws SQLException {
+    private void loadAllSheets() {
         sheets = importSheetService.getAllSheets();
         sheets = importSheetService.sort(sheets, true, "id");
         employeeInfo.setImportSlips(sheets);
@@ -123,10 +111,9 @@ public class ViewSheetController {
 
     private void updateSheetsList() throws IOException {
         pnItems.getChildren().clear();
-        int itemsPerPage = 10;
-        int startIndex = isSearch ? 0 : (currentPage - 1) * itemsPerPage;
+        int itemsPerPage = 9;
+        int startIndex = isSearchAndPagination ? ((currentPage - 1) * itemsPerPage) : (isSearch ? 0 : (currentPage - 1) * itemsPerPage);
         int endIndex = Math.min(startIndex + itemsPerPage, sheets.size());
-
         for (int i = startIndex; i < endIndex; i++) {
             ImportSheet sheet = sheets.get(i);
 
@@ -146,6 +133,7 @@ public class ViewSheetController {
 
     @FXML
     private void handlePaginationButton(ActionEvent event) {
+        if(isSearch) isSearchAndPagination = true;
         Button buttonClicked = (Button) event.getSource();
         if (buttonClicked == previousPaginationButton) {
             currentPage--;
@@ -229,7 +217,11 @@ public class ViewSheetController {
         totalPriceSortLabel.setContent(column.equals("total price") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
 
         try {
-            sheets = importSheetService.getAllSheets();
+            if (isSearch) {
+                sheets = importSheetService.search(inputSearchText);
+            } else {
+                sheets = importSheetService.getAllSheets();
+            }
             sheets = importSheetService.sort(sheets, isAscending, column);
             updateSheetsList();
         } catch (Exception e) {

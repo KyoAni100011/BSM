@@ -6,7 +6,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Group;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -39,8 +38,6 @@ public class EmployeeRevenueController {
     @FXML private BarChart<String, Number> employeeBarChart;
     @FXML private DatePicker datePicker, datePicker1;
     @FXML private AnchorPane datePickerContainer;
-    @FXML
-    private Group arrowDate;
 
     private LocalDate currentDate;
     private boolean isDailyActive = false;
@@ -52,7 +49,6 @@ public class EmployeeRevenueController {
         datePicker.setValue(currentDate);
         datePicker1.setValue(currentDate);
         datePicker1.setVisible(false);
-        arrowDate.setVisible(false);
         setupDatePicker();
         handleByMonth();
 
@@ -249,7 +245,6 @@ public class EmployeeRevenueController {
 
     private void setVisibility(boolean fromDateToDateActive) {
         datePicker1.setVisible(fromDateToDateActive);
-        arrowDate.setVisible(fromDateToDateActive);
         if (fromDateToDateActive) {
             datePicker.prefWidthProperty().unbind();
             datePicker.setPrefWidth(datePickerContainer.getWidth() / 2);

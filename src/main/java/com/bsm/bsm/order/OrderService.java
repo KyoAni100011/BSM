@@ -47,23 +47,14 @@ public class OrderService {
         Comparator<Order> comparator = null;
 
         switch (column.toLowerCase()) {
-            case "id":
-                comparator = Comparator.comparing(Order::getId);
-                break;
-            case "customer":
-                comparator = Comparator.comparing(o -> o.getCustomer().getName());
-                break;
-            case "order date":
-                comparator = Comparator.comparing(Order::getOrderDate);
-                break;
-            case "employee":
-                comparator = Comparator.comparing(o -> o.getEmployee().getName());
-                break;
-            case "total price":
-                comparator = Comparator.comparing(Order::getTotalPrice);
-                break;
-            default:
+            case "id" -> comparator = Comparator.comparing(Order::getId);
+            case "customer" -> comparator = Comparator.comparing(o -> o.getCustomer().getName());
+            case "order date" -> comparator = Comparator.comparing(Order::getOrderDate);
+            case "employee" -> comparator = Comparator.comparing(o -> o.getEmployee().getName());
+            case "total price" -> comparator = Comparator.comparing(Order::getTotalPrice);
+            default -> {
                 return sortedOrders;
+            }
         }
 
         if (!isAscending) {
@@ -73,6 +64,15 @@ public class OrderService {
         return sortedOrders.stream()
                 .sorted(comparator)
                 .collect(Collectors.toList());
+    }
+
+    public Order getOrderByCustomer(Customer customer) throws SQLException {
+        EmployeeModel employee = (EmployeeModel) UserSingleton.getInstance().getUser();
+        return orderDAO.getOrderByCustomer(employee, customer);
+    }
+
+    public List<OrderBooksDetails> getOrderBookDetails(int orderID) {
+        return orderDAO.getOrderBookDetails(orderID);
     }
 
 }

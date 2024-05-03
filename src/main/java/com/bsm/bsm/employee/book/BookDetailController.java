@@ -2,17 +2,18 @@ package com.bsm.bsm.employee.book;
 
 import com.bsm.bsm.admin.userAccount.UserDetailController;
 import com.bsm.bsm.author.Author;
-import com.bsm.bsm.author.AuthorService;
 import com.bsm.bsm.book.Book;
 import com.bsm.bsm.book.BookService;
 import com.bsm.bsm.category.Category;
+import com.bsm.bsm.utils.NumericValidationUtils;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -38,6 +39,7 @@ public class BookDetailController {
     @FXML
     public void initialize() {
         new UserDetailController();
+        setupDatePicker();
         setBookInfo();
         releaseDatePicker.getEditor().setOpacity(1);
         isEnabledLabel.setOpacity(1);
@@ -45,9 +47,10 @@ public class BookDetailController {
     public static void handleTableItemSelection(String myId) {
         id = myId;
         bookDetail = bookService.getBookByISBN(id);
+        System.out.println("book" + bookDetail);
     }
 //    private VBox pnAuthor,pnCate;
-
+    
     private void setBookInfo() {
         List<Author> au = bookDetail.getAuthors();
 
@@ -88,5 +91,22 @@ public class BookDetailController {
         } else {
             isEnabledLabel.getStyleClass().add("disable-button");
         }
+    }
+    private void setupDatePicker() {
+        releaseDatePicker.setPromptText("dd/mm/yyyy");
+
+        releaseDatePicker.setConverter(new StringConverter<LocalDate>() {
+            @Override
+            public String toString(LocalDate date) {
+                return date != null ? dateFormatter.format(date) : "";
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                return string != null && !string.isEmpty() ? LocalDate.parse(string, dateFormatter) : null;
+            }
+        });
+
+        releaseDatePicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
     }
 }

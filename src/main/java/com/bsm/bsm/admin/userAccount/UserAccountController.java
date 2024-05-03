@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -55,8 +56,8 @@ public class UserAccountController implements Initializable {
     private String inputSearchText = "";
     private static final String EMPLOYEE_ROLE = ".employee@bms.com";
     private static final String ADMIN_ROLE = ".admin@bms.com";
-    private static final int ITEMS_PER_PAGE = 9;
-
+    private static final int ITEMS_PER_PAGE = 8;
+    private boolean isSearch = false;
 
 
     static void handleTableItemSelection(String userEmail) {
@@ -72,10 +73,14 @@ public class UserAccountController implements Initializable {
         inputSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                isSearch = !newValue.isEmpty();
                 inputSearchText = newValue;
-                users = accountService.search(inputSearchText, adminInfo.getId());
+                if (!isSearch) loadAllUsers(getRoleFromButton());
+                else users = accountService.search(inputSearchText, adminInfo.getId());
+
+                users = accountService.sort(users, sortOrder.equals("ASC"), column);
                 try {
-                    updateUsersList(EMPLOYEE_ROLE);
+                    updateUsersList(getRoleFromButton());
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -137,6 +142,8 @@ public class UserAccountController implements Initializable {
     @FXML
     private void handleEmployeeButton(ActionEvent event) {
         currentPage = 1;
+        defaultSort();
+        inputSearch.clear();
         loadAllUsers(EMPLOYEE_ROLE);
         updateButtonStyle(employeeButton);
     }
@@ -144,6 +151,8 @@ public class UserAccountController implements Initializable {
     @FXML
     private void handleAdminButton(ActionEvent event) {
         currentPage = 1;
+        defaultSort();
+        inputSearch.clear();
         loadAllUsers(ADMIN_ROLE);
         updateButtonStyle(adminButton);
     }
@@ -277,25 +286,30 @@ public class UserAccountController implements Initializable {
         }
     }
 
-//    void updateListAfterChanging() throws IOException {
-//        users = accountService.view(adminInfo.getId());
-//        String role = employeeButton.getStyleClass().contains("profile-setting-button-admin") ? ".employee@bms.com" : ".admin@bms.com";
-//        updateUsersList(role);
-//    }
-
     private void updateUsersList(String role) throws IOException {
         pnItems.getChildren().clear();
-        int itemsPerPage = 9;
-        int startIndex = (currentPage - 1) * itemsPerPage;
+        int itemsPerPage = ITEMS_PER_PAGE;
         int totalUserCountForRole = getTotalUserCountForRole(role);
-        int endIndex = Math.min(startIndex + itemsPerPage, totalUserCountForRole);
-        int totalCount = 0;
 
-        for (int i = startIndex; i < users.size() && totalCount < endIndex; i++) {
-            UserModel user = users.get(i);
+        int totalPages = (int) Math.ceil((double) totalUserCountForRole / itemsPerPage);
+
+        int startIndex = (currentPage - 1) * itemsPerPage;
+
+        List<UserModel> userForRole = new ArrayList<>();
+
+        for (UserModel user : users) {
             if ((user instanceof EmployeeModel && role.equals(".employee@bms.com")) ||
                     (user instanceof AdminModel && role.equals(".admin@bms.com"))) {
-                totalCount++;
+                userForRole.add(user);
+            }
+        }
+
+        for (int i = startIndex, totalCount = 0; i < userForRole.size(); i++) {
+
+            if (totalCount >= itemsPerPage) {
+                break;
+            }
+            UserModel user = userForRole.get(i);
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/admin/userAccount/tableItem.fxml"));
                     Node item = fxmlLoader.load();
@@ -307,10 +321,10 @@ public class UserAccountController implements Initializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
+
+            totalCount++;
         }
 
-        int totalPages = (int) Math.ceil((double) totalUserCountForRole / itemsPerPage);
         updatePaginationButtons(totalPages);
     }
 
@@ -328,20 +342,45 @@ public class UserAccountController implements Initializable {
     @FXML
     private void handleLabelClick(MouseEvent event) {
         Button clickedLabel = (Button) event.getSource();
-        String columnName = clickedLabel.getText();
+        String columnName = clickedLabel.getText().trim().toLowerCase();
         if (columnName.equals(column)) {
             sortOrder = sortOrder.equals("ASC") ? "DESC" : "ASC";
         } else {
             sortOrder = "ASC";
         }
         column = columnName;
-        idSortLabel.setContent(column.equals("ID") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
-        nameSortLabel.setContent(column.equals("Name") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
-        emailSortLabel.setContent(column.equals("Email") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
-        lastLoginSortLabel.setContent(column.equals("Last login") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
-        actionSortLabel.setContent(column.equals("Action") ? (sortOrder.equals("ASC") ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
 
-        users = accountService.getAllUsersBySortInfo(adminInfo.getId(), sortOrder, column);
-        loadAllUsers(getRoleFromButton());
+        var isAscending = sortOrder.equals("ASC");
+        idSortLabel.setContent(column.equals("id") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        nameSortLabel.setContent(column.equals("name") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        emailSortLabel.setContent(column.equals("email") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        lastLoginSortLabel.setContent(column.equals("last login") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+        actionSortLabel.setContent(column.equals("enable/disable") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
+
+        if (isSearch) {
+            users = accountService.search(inputSearchText, adminInfo.getId());
+        } else {
+            users = accountService.getAllUsersBySortInfo(adminInfo.getId(), sortOrder, column);
+        }
+        users = accountService.sort(users, isAscending, column);
+        try {
+            updateUsersList(getRoleFromButton());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void clearSortLabels() {
+        idSortLabel.setContent("");
+        nameSortLabel.setContent("");
+        emailSortLabel.setContent("");
+        lastLoginSortLabel.setContent("");
+        actionSortLabel.setContent("");
+    }
+
+    private void defaultSort() {
+        sortOrder = "ASC";
+        column = "id";
+        clearSortLabels();
     }
 }

@@ -1,6 +1,7 @@
 package com.bsm.bsm.employee.importSheet;
 
 import com.bsm.bsm.book.BookBatch;
+import com.bsm.bsm.database.DatabaseConnection;
 import com.bsm.bsm.employee.EmployeeModel;
 import com.bsm.bsm.sheet.ImportSheet;
 import com.bsm.bsm.sheet.ImportSheetService;
@@ -21,7 +22,6 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -149,22 +149,22 @@ public class ImportSheetController {
                 return;
             }
 
-            bookBatches.forEach(System.out::println);
             EmployeeModel employee = (EmployeeModel) UserSingleton.getInstance().getUser();
             String importDateConverted = DateUtils.formatDOB(importDate);
             ImportSheet importSheet = new ImportSheet(employee, importDateConverted, totalQuantity, new BigDecimal(totalCost));
+
             if (importSheetService.createImportSheet(importSheet, bookBatches)) {
-                System.out.println("ok");
+                String importSheetID = importSheetService.getImportSheetID(importSheet);
+                importSheet.setId(importSheetID);
+                ImportSheetDetailController.handleTableItemSelection(importSheetID, importSheet);
+                FXMLLoaderHelper.loadFXML(new Stage(), "employee/importSheet/importSheetDetail");
+
+                clearInputs();
+                bookBatches = new ArrayList<>();
+                setupDatePicker();
+                importDatePicker.setValue(LocalDate.now());
+                updateBookList();
             }
-
-            AlertUtils.showAlert("Success", "Import sheet successfully.", Alert.AlertType.INFORMATION);
-
-            // Clear inputs
-            clearInputs();
-            bookBatches = new ArrayList<>();
-            setupDatePicker();
-            importDatePicker.setValue(LocalDate.now());
-            updateBookList();
         }
         else {
             AlertUtils.showAlert("Error", "Import sheet failed.", Alert.AlertType.ERROR);

@@ -1,6 +1,5 @@
 package com.bsm.bsm.employee.book;
 
-import com.bsm.bsm.admin.userAccount.UserDetailController;
 import com.bsm.bsm.author.Author;
 import com.bsm.bsm.author.AuthorService;
 import com.bsm.bsm.book.Book;
@@ -28,7 +27,6 @@ import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.SearchableComboBox;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -55,19 +53,18 @@ public class AddBookController {
     private TextField categorySearch, authorSearch;
 
     Book book;
-    private BookService bookService = new BookService();
-    private CategoryService categoryService = new CategoryService();
-    private AuthorService authorService = new AuthorService();
-    private PublisherService publisherService = new PublisherService();
-    private Set<String> selectedLanguages = new HashSet<>();
-    private ObservableList<String> selectedAuthors = FXCollections.observableArrayList();
-    private ObservableList<String> selectedCategories = FXCollections.observableArrayList();
+    private final BookService bookService = new BookService();
+    private final CategoryService categoryService = new CategoryService();
+    private final AuthorService authorService = new AuthorService();
+    private final PublisherService publisherService = new PublisherService();
+    private final ObservableList<String> selectedAuthors = FXCollections.observableArrayList();
+    private final ObservableList<String> selectedCategories = FXCollections.observableArrayList();
     ObservableList<String> authorItems = FXCollections.observableArrayList();
     ObservableList<String> categoriesItems = FXCollections.observableArrayList();
     ObservableList<String> publisherItems = FXCollections.observableArrayList();
 
-    private ObservableList<String> filteredCategoriesItems = FXCollections.observableArrayList(); // Store filtered category items
-    private ObservableList<String> filteredAuthorItems = FXCollections.observableArrayList(); // Store filtered category items
+    private final ObservableList<String> filteredCategoriesItems = FXCollections.observableArrayList(); // Store filtered category items
+    private final ObservableList<String> filteredAuthorItems = FXCollections.observableArrayList(); // Store filtered category items
 
     @FXML
     public void initialize() {
@@ -190,7 +187,6 @@ public class AddBookController {
 
         //if people type search field, filter the list data to choose.
         authorSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("first");
             authorNameCheckCombo.show();
             try {
                 updateFilteredAuthor(newValue.toLowerCase());
@@ -389,11 +385,8 @@ public class AddBookController {
                 authors.add(authorService.getAuthorByName(item));
             }
 
-//            categories.forEach(System.out::println);
-//            authors.forEach(System.out::println);
 
             if (bookService.add(new Book(fullName, publisers, releaseDate, selectedLanguage, authors, categories))) {
-                AlertUtils.showAlert("Success", "Book added successfully.", Alert.AlertType.INFORMATION);
                 clearInputs();
                 Book a = bookService.getBookByName(fullName);
                 BookDetailController.handleTableItemSelection(a.getIsbn());

@@ -11,6 +11,7 @@ import com.bsm.bsm.category.CategoryService;
 import com.bsm.bsm.publisher.Publisher;
 import com.bsm.bsm.publisher.PublisherService;
 import com.bsm.bsm.utils.DateUtils;
+import com.bsm.bsm.utils.FXMLLoaderHelper;
 import com.bsm.bsm.utils.NumericValidationUtils;
 import com.bsm.bsm.utils.ValidationUtils;
 import javafx.collections.FXCollections;
@@ -343,6 +344,7 @@ public class AddBookBatchController {
         if (quantityError != null) {
             quantityErrorLabel.setText(quantityError);
         }
+
         if (releaseError != null) {
             releaseErrorLabel.setText(releaseError);
         }
@@ -391,11 +393,31 @@ public class AddBookBatchController {
             }
 
             var publishingDateConverted = DateUtils.formatDOB(releaseDate);
+
             Book book = new Book(title, publisher, publishingDateConverted, selectedLanguage, authors, categories);
             BookBatch bookBatch = new BookBatch(Integer.parseInt(quantity), new BigDecimal(importPrice), book);
             ImportSheetController.addBookBatchToSheet(bookBatch);
+
+            // Update price
+            if (bookService.isNameExist(title)) {
+                try {
+                    // Load the FXML file for updating sell price
+                    UpdatePriceController.setBookName(title);
+                    FXMLLoaderHelper.loadFXML(new Stage(),"employee/importSheet/updatePrice", "Update Sell Price");
+                    // Set the book name in the UpdatePriceController
+
+                    System.out.println("Successfully loaded Update Price window.");
+                } catch (Exception e) {
+                    System.out.println("Error loading Update Price window: " + e.getMessage());
+                }
+            } else {
+                System.out.println("Book with title " + title + " does not exist.");
+            }
+
+// Close the current stage
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.close();
+
         }
     }
 

@@ -37,12 +37,13 @@ public class bookController implements Initializable {
     private final EmployeeModel employeeInfo = (EmployeeModel) UserSingleton.getInstance().getUser();
 
     private boolean isSearch = false;
-
+    private boolean isSearchAndPagination = false;
 
     @FXML
     private TextField inputSearch;
     @FXML
     private VBox pnItems;
+
     @FXML
     public SVGPath quantitySortLabel,actionSortLabel ,bookNameSortLabel, idSortLabel,priceSortLabel;
     @FXML
@@ -61,6 +62,7 @@ public class bookController implements Initializable {
     private int currentPage = 1;
     private String inputSearchText = "";
 
+
     static void handleTableItemSelection(String bookIsbn) {
         isbn = bookIsbn; // Store the selected book
     }
@@ -68,6 +70,7 @@ public class bookController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeButtonsAndLabels();
+        type = "book";
         loadAllBooks();
         initializePaginationButtons();
 
@@ -78,8 +81,8 @@ public class bookController implements Initializable {
                 inputSearchText = newValue;
                 if(!isSearch) loadAllBooks();
                 else  books = bookService.search(inputSearchText);
+
                 try {
-                    System.out.println("Search: " + books);
                     updateBooksList();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -90,7 +93,11 @@ public class bookController implements Initializable {
 
     @FXML
     void handleRefreshButton(ActionEvent event) {
-        idSortLabel.setContent("");
+        column = "isbn";
+        sortOrder = "ASC";
+        currentPage = 1;
+        inputSearch.setText("");
+        idSortLabel.setContent("M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z");
         quantitySortLabel.setContent("");
         bookNameSortLabel.setContent("");
         actionSortLabel.setContent("");
@@ -103,12 +110,13 @@ public class bookController implements Initializable {
         books = bookService.sort(books, true, "isbn");
         employeeInfo.setBooks(books);
         try {
-            type = "book";
+//            type = "book";
             updateBooksList();
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
+
     private void initializeButtonsAndLabels() {
         bookButton.getStyleClass().add("profile-setting-button");
         updateButtonStyle(bookButton);
@@ -146,44 +154,24 @@ public class bookController implements Initializable {
 
     @FXML
     private void handleBookButton(ActionEvent event) {
-        try {
-            type = "book";
-            currentPage = 1;
-            updateBooksList();
-            updateButtonStyle(bookButton);
-        } catch (IOException e) {
-            e.printStackTrace();
-            AlertUtils.showAlert("Error", "Error loading book", Alert.AlertType.ERROR);
-        }
+        type = "book";
+        handleRefreshButton(event);
+        updateButtonStyle(bookButton);
     }
 
     @FXML
     private void handleNewBookButton(ActionEvent event) {
-        try {
-            type = "newBook";
-            currentPage = 1;
-            updateBooksList();
-            updateButtonStyle(newBookButton);
-        } catch (IOException e) {
-            e.printStackTrace();
-            AlertUtils.showAlert("Error", "Error loading new book", Alert.AlertType.ERROR);
-        }
+        type = "newBook";
+        handleRefreshButton(event);
+        updateButtonStyle(newBookButton);
     }
 
     @FXML
     private void handleOutOfStockBookButton(ActionEvent event) {
-        try {
-            type = "outOfStockBook";
-            currentPage = 1;
-            updateBooksList();
-            updateButtonStyle(outOfStockBookButton);
-        } catch (IOException e) {
-            e.printStackTrace();
-            AlertUtils.showAlert("Error", "Error loading out of stock book", Alert.AlertType.ERROR);
-        }
+        type = "outOfStockBook";
+        handleRefreshButton(event);
+        updateButtonStyle(outOfStockBookButton);
     }
-
-
 
     @FXML
     private void handleUpdateUserButton(ActionEvent event) {
@@ -210,6 +198,7 @@ public class bookController implements Initializable {
 
     @FXML
     private void handlePaginationButton(ActionEvent event) {
+        if(isSearch) isSearchAndPagination = true;
         Button buttonClicked = (Button) event.getSource();
         if (buttonClicked == previousPaginationButton) {
             currentPage--;
@@ -312,33 +301,34 @@ public class bookController implements Initializable {
 
     private void updateBooksList() throws IOException {
         pnItems.getChildren().clear();
-        int itemsPerPage = 9;
-        int startIndex = isSearch ? 0 : (currentPage - 1) * itemsPerPage;
-        int totalUserCountForRole = getTotalBookCountForRole(type);
-        int endIndex = Math.min(startIndex + itemsPerPage, totalUserCountForRole);
-        int totalCount = 0;
+        int itemsPerPage = 8;
+        int totalBooksCountForRole = getTotalBookCountForRole(type);
 
+        int totalPages = (int) Math.ceil((double) totalBooksCountForRole / itemsPerPage);
 
-        for (int i = startIndex; i < books.size() && totalCount < endIndex; i++) {
-            Book b = books.get(i);
-            if ((isNormalBook(b) && type.equals("book")) || ( isNewBook(b) && type.equals("newBook") )|| ( isOutOfStockBook(b) && type.equals("outOfStockBook"))){
-                totalCount++;
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/book/tableItem.fxml"));
-                    Node item = fxmlLoader.load();
-                    TableItemController tableItemController = fxmlLoader.getController();
-                    tableItemController.setToggleGroup(toggleGroup);
-                    tableItemController.setBook(b);
-                    pnItems.getChildren().add(item);
+        int startIndex = isSearchAndPagination ? ((currentPage - 1) * itemsPerPage) : (isSearch ? 0 : (currentPage - 1) * itemsPerPage);
+        List<Book> bookForType = new ArrayList<>();
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        for (var book: books) {
+            if ((isNormalBook(book) && type.equals("book")) || ( isNewBook(book) && type.equals("newBook") )|| ( isOutOfStockBook(book) && type.equals("outOfStockBook"))){
+                bookForType.add(book);
             }
         }
-        System.out.println("\n\n");
 
-        int totalPages = (int) Math.ceil((double) totalUserCountForRole / itemsPerPage);
+        int endIndex = Math.min(startIndex + itemsPerPage, bookForType.size());
+        for (int i = startIndex; i < endIndex; i++) {
+            Book book = bookForType.get(i);
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/book/tableItem.fxml"));
+                Node item = fxmlLoader.load();
+                TableItemController tableItemController = fxmlLoader.getController();
+                tableItemController.setToggleGroup(toggleGroup);
+                tableItemController.setBook(book);
+                pnItems.getChildren().add(item);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
         updatePaginationButtons(totalPages);
     }
 
@@ -350,7 +340,6 @@ public class bookController implements Initializable {
                 count++;
             }
         }
-        System.out.println("type = " + type + "quality: " + count);
         return count;
     }
 
@@ -391,7 +380,11 @@ public class bookController implements Initializable {
         priceSortLabel.setContent(column.equals("price") ? (isAscending ? "M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" : "M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z") : "");
 
         try {
-            books = bookService.getAllBooks();
+            if (isSearch) {
+                books = bookService.search(inputSearchText);
+            } else {
+                books = bookService.getAllBooks();
+            }
             books = bookService.sort(books, isAscending, column);
             updateBooksList();
         } catch (IOException e) {

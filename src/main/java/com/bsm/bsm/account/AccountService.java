@@ -61,8 +61,8 @@ public class AccountService implements AccountController{
 
     public List<UserModel> getAllUsersBySortInfo(String excludedUserId, String sortOrder, String column) {
         column = switch(column) {
-            case "Last login" -> "lastLogin";
-            case "Action" -> "isEnabled";
+            case "last login" -> "lastLogin";
+            case "enable/disable" -> "isEnabled";
             default -> column;
         };
 

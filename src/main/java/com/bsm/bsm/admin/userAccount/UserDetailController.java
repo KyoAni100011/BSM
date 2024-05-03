@@ -42,6 +42,7 @@ public class UserDetailController {
     @FXML
     public void initialize() {
         new UserDetailController();
+        dobPicker.getEditor().setOpacity(1);
         userInfoDetail = userDetailController.getUserByEmail(email);
         // Set the prompt text for the DatePicker
         setupDatePicker();

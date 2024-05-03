@@ -23,7 +23,7 @@
     </Label>
 
     <TextField fx:id="nameField" layoutX="75.0" layoutY="138.0" prefHeight="40.0" prefWidth="450.0" promptText="Enter name book category" styleClass="input-field-add" />
-    <TextArea fx:id="descriptionField" layoutX="75.0" layoutY="225.0" prefHeight="147.0" prefWidth="450.0" promptText="Enter category description" styleClass="input-field-add" wrapText="true" />
+    <TextArea fx:id="descriptionField" layoutX="75.0" layoutY="225.0" prefHeight="147.0" prefWidth="450.0" promptText="Enter category description" style="-fx-control-inner-background: #F4F4F4;" styleClass="input-field-add" wrapText="true" />
 
 
     <Button layoutX="371.0" layoutY="415.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="40.0" prefWidth="153.0" styleClass="button-custom-employee" text="Save" textFill="WHITE">

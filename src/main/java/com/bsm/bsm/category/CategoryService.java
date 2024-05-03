@@ -38,7 +38,9 @@ public class CategoryService implements Activable, Searchable<Category>, Sortabl
         Comparator<Category> comparator = (category1, category2) -> {
             switch (finalColumn) {
                 case "id" -> {
-                    return Comparator.comparing(Category::getId).compare(category1, category2);
+                    int categoryId1 = Integer.parseInt(category1.getId());
+                    int categoryId2 = Integer.parseInt(category2.getId());
+                    return Integer.compare(categoryId1, categoryId2);
                 }
                 case "name" -> {
                     return Comparator.comparing(Category::getName).compare(category1, category2);
@@ -46,7 +48,7 @@ public class CategoryService implements Activable, Searchable<Category>, Sortabl
                 case "description" -> {
                     return Comparator.comparing(Category::getDescription).compare(category1, category2);
                 }
-                case "action" -> {
+                case "enable/disable" -> {
                     return Comparator.comparing(Category::isEnabled).compare(category1, category2);
                 }
                 default -> {

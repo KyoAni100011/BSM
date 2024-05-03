@@ -12,6 +12,8 @@ import javafx.util.StringConverter;
 import org.controlsfx.control.SearchableComboBox;
 
 import java.math.BigDecimal;
+import java.nio.file.SecureDirectoryStream;
+import java.util.Objects;
 
 public class OrderItemController {
     CreateOrderController thisParentController;
@@ -25,7 +27,7 @@ public class OrderItemController {
     private SearchableComboBox bookNameComboBox;
     @FXML
     private TextField QuantityField;
-    private int subtotal = 0;
+    private BigDecimal subtotal = BigDecimal.ZERO;
     private int itemQuan = 0;
     private String bookName = "";
     private Book thisBook;
@@ -35,7 +37,7 @@ public class OrderItemController {
         return bookName;
     }
 
-    public int getSubtotal() {
+    public BigDecimal getSubtotal() {
         return subtotal;
     }
 
@@ -50,22 +52,39 @@ public class OrderItemController {
         addButton.setDisable(true);
         QuantityField.setDisable(true);
         QuantityField.textProperty().addListener((observable, oldValue, newValue) -> {
-            int quantity = Integer.parseInt(QuantityField.getText());
-            itemQuan = Integer.parseInt(QuantityField.getText());
-            String totalPrice = String.valueOf(thisBook.getSalePrice().multiply(BigDecimal.valueOf(quantity)));
-            totalPriceLabel.setText(totalPrice);
-            subtotal = Integer.parseInt(totalPrice);
-            thisParentController.handleCountSubtotalAndQuantity();
+            if(newValue.equals("0")){
+                QuantityField.setText(String.valueOf(1));
+            }
+            else if(!newValue.equals("")){
+                try {
+                    if (Integer.parseInt(newValue) > quantity) {
+                        AlertUtils.showAlert("Error", "There are only " + quantity + " book left", Alert.AlertType.ERROR);
+                        QuantityField.setText(String.valueOf(1));
+                    }
+
+                    itemQuan = Integer.parseInt(QuantityField.getText());
+
+                    String totalPrice = thisBook.getSalePrice().multiply(BigDecimal.valueOf(itemQuan)).toString();
+                    totalPriceLabel.setText(totalPrice);
+                    subtotal = new BigDecimal(totalPrice);
+                    thisParentController.handleCountSubtotalAndQuantity();
+                } catch (NumberFormatException e) {
+
+                    return;
+                }
+            }
         });
 
         bookNameComboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
             try {
                 if (newValue != null) {
-                    quantity = thisBook.getQuantity();
-
                     // get detail data here
                     Book book = thisParentController.getBookByTitle(String.valueOf(newValue));
+                    thisBook = book;
+                    quantity = thisBook.getQuantity();
                     setBook(book);
+                    thisParentController.handleCountSubtotalAndQuantity();
+
                     // Your other code here
                     System.out.println("Book here: " + book.getTitle() + " " + book.getQuantity() + " " + book.getSalePrice());
                 }
@@ -73,6 +92,7 @@ public class OrderItemController {
                 System.out.println("listener " + e);
             }
         });
+
 
     }
 
@@ -114,7 +134,6 @@ public class OrderItemController {
 
     public void setBook(Book book) {
         try {
-            thisBook = book;
             if (thisBook != null) {
                 bookName = thisBook.getTitle();
                 pricePerItemLabel.setText(String.valueOf(thisBook.getSalePrice()));
@@ -124,6 +143,7 @@ public class OrderItemController {
                 addButton.setDisable(false);
                 QuantityField.setDisable(false);
                 bookName = (String) bookNameComboBox.getValue();
+                subtotal = new BigDecimal(String.valueOf(thisBook.getSalePrice()));
                 thisParentController.setAlreadyClick();
             } else {
                 System.out.println("That book is not available");
@@ -169,7 +189,7 @@ public class OrderItemController {
     }
 
     private void setupQuantityField() {
-        // Create a TextFormatter with a filter that allows only numeric input
+        // Create a TextFormatter with a filter that allows only numeric input or an empty string
         TextFormatter<Integer> formatter = new TextFormatter<>(new StringConverter<Integer>() {
             @Override
             public String toString(Integer object) {
@@ -178,12 +198,12 @@ public class OrderItemController {
 
             @Override
             public Integer fromString(String string) {
-                // Parse the string into an Integer, or return null if parsing fails
-                try {
-                    return Integer.parseInt(string);
-                } catch (NumberFormatException e) {
+                // Return null if the string is non-numeric, otherwise parse the string into an Integer
+                if (!string.matches("\\d*")) {
                     return null;
                 }
+                // Return 0 for empty strings, otherwise parse the string into an Integer
+                return string.isEmpty() ? 0 : Integer.parseInt(string);
             }
         }, null, change -> {
             // Filter out non-numeric characters
@@ -198,4 +218,6 @@ public class OrderItemController {
         // Apply the TextFormatter to your TextField for quantity
         QuantityField.setTextFormatter(formatter);
     }
+
+
 }

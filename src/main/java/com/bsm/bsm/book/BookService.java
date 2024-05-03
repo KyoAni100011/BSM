@@ -32,7 +32,9 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
         Comparator<Book> comparator = (book1, book2) -> {
             switch (column) {
                 case "isbn" -> {
-                    return Comparator.comparing(Book::getIsbn).compare(book1, book2);
+                    int bookID1 = Integer.parseInt(book1.getIsbn());
+                    int bookID2 = Integer.parseInt(book2.getIsbn());
+                    return Integer.compare(bookID1, bookID2);
                 }
                 case "book name" -> {
                     return Comparator.comparing(Book::getTitle).compare(book1, book2);
@@ -66,7 +68,8 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
         return books.stream()
                 .filter(book ->
                         book.getTitle().toLowerCase().contains(finalKeyword) ||
-                                book.getIsbn().contains(finalKeyword))
+                                book.getIsbn().contains(finalKeyword)
+                            )
                 .toList();
     }
 
@@ -86,11 +89,21 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
     }
 
     public Book getBookByISBN(String isbn) {
-        return bookDAO.getBookByISBN(isbn);
+        try {
+            return bookDAO.getBookByKeyword(isbn);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     public Book getBookByName(String name) {
-        return bookDAO.getBookByName(name);
+        try {
+            return bookDAO.getBookByKeyword(name);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     // use this for check update book name
@@ -112,7 +125,15 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
     }
 
     public List<Book> getAllBooks() {
-        return bookDAO.getAllBooks();
+        try {
+            return bookDAO.getAllBooks();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean checkIfBookCanBeEnabled(String isbn) {
+        return bookDAO.checkIfBookCanBeEnabled(isbn);
     }
 }
 

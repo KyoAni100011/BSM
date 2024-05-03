@@ -25,15 +25,15 @@
         </font>
     </Label>
 
-    <TextField fx:id="employeeNameField" disable="true" layoutX="80.0" layoutY="220.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add" />
-    <TextField fx:id="totalPricefield" disable="true" layoutX="320.0" layoutY="220.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add" />
-    <DatePicker fx:id="importDatePicker" disable="true" layoutX="320.0" layoutY="129.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add" />
+    <TextField fx:id="employeeNameField" disable="true" layoutX="80.0" layoutY="220.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add-special-disable" />
+    <TextField fx:id="totalPricefield" disable="true" layoutX="320.0" layoutY="220.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add-special-disable" />
+    <DatePicker fx:id="importDatePicker" disable="true" layoutX="320.0" layoutY="129.0" prefHeight="40.0" prefWidth="217.0" style="-fx-control-inner-background: #F4F4F4;" styleClass="input-field-add-special-disable" />
     <Label layoutX="174.0" layoutY="43.0" text="IMPORT SHEET DETAIL">
         <font>
             <Font size="25.0" />
         </font>
     </Label>
-    <TextField fx:id="idField" disable="true" layoutX="77.0" layoutY="129.0" prefHeight="40.0" prefWidth="218.0" styleClass="input-field-add" />
+    <TextField fx:id="idField" disable="true" layoutX="77.0" layoutY="129.0" prefHeight="40.0" prefWidth="218.0" styleClass="input-field-add-special-disable" />
     <Label layoutX="79.0" layoutY="101.0" styleClass="label-bold" text="ID">
         <font>
             <Font size="18.0" />

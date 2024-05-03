@@ -5,7 +5,6 @@ import com.bsm.bsm.user.UserSingleton;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.PasswordUtils;
 import com.bsm.bsm.utils.SceneSwitch;
-
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -13,35 +12,27 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
 
 import java.io.IOException;
 
 public class AuthController {
+    private static final String EMPLOYEE_ROLE = "employee";
+    private static final String ADMIN_ROLE = "admin";
     private final AuthService authService = new AuthService();
+    private final SceneSwitch sceneSwitch = new SceneSwitch();
     public TextField currentPasswordTextField;
     public Button showHideCurrentPasswordButton;
     public FontAwesomeIcon eyeIcon1;
-
     @FXML
     private AnchorPane AnchorPaneLogin;
-
     @FXML
     private Button btnLoginAsAdmin;
-
     @FXML
     private Button btnLoginAsEmployee;
-
     @FXML
     private TextField idTextField;
-
     @FXML
     private PasswordField passwordField;
-
-    private static final String EMPLOYEE_ROLE = "employee";
-    private static final String ADMIN_ROLE = "admin";
-
-    private final SceneSwitch sceneSwitch = new SceneSwitch();
 
     @FXML
     public void initialize() {
@@ -72,7 +63,7 @@ public class AuthController {
 
         if (ADMIN_ROLE.equals(role)) {
             if (!authService.isAdmin(id)) {
-                if(!checkWrongField){
+                if (!checkWrongField) {
                     AlertUtils.showAlert("Error", "Invalid username or password.", Alert.AlertType.ERROR);
                 }
                 return;
@@ -80,7 +71,7 @@ public class AuthController {
             fxmlPath = "/com/bsm/bsm/view/admin/adminMainScreen.fxml";
         } else if (EMPLOYEE_ROLE.equals(role)) {
             if (!authService.isEmployee(id)) {
-                if(!checkWrongField){
+                if (!checkWrongField) {
                     AlertUtils.showAlert("Error", "Invalid username or password.", Alert.AlertType.ERROR);
                 }
                 System.out.println("Invalid username or password.");
@@ -88,7 +79,7 @@ public class AuthController {
             }
             fxmlPath = "/com/bsm/bsm/view/employee/employeeMainScreen.fxml";
         } else {
-            if(!checkWrongField){
+            if (!checkWrongField) {
                 AlertUtils.showAlert("Error", "Invalid username or password.", Alert.AlertType.ERROR);
             }
             return;
@@ -96,7 +87,7 @@ public class AuthController {
 
         UserModel userInfo = authService.authenticateUser(id, password);
         if (userInfo == null) {
-            if(!checkWrongField){
+            if (!checkWrongField) {
                 AlertUtils.showAlert("Error", "Invalid username or password.", Alert.AlertType.ERROR);
             }
             return;
@@ -104,8 +95,7 @@ public class AuthController {
 
         System.out.println(userInfo.isEnabled());
 
-        if(!userInfo.isEnabled())
-        {
+        if (!userInfo.isEnabled()) {
             AlertUtils.showAlert("Error", "Your account is disable.", Alert.AlertType.ERROR);
             return;
         }

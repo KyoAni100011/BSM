@@ -34,24 +34,15 @@ public class Book {
     }
 
     public Book(String title, Publisher publisher, String publishingDate, String languages, boolean isEnabled, int quantity, BigDecimal salePrice, List<Author> authors, List<Category> categories) {
-        this.title = title;
-        this.publisher = publisher;
-        this.publishingDate = publishingDate;
-        this.languages = languages;
-        this.isEnabled = isEnabled;
-        this.quantity = quantity;
-        this.salePrice = salePrice;
-        this.authors = authors;
-        this.categories = categories;
+        this(null, title, publisher, publishingDate, languages, isEnabled, quantity, salePrice, authors, categories);
     }
 
     public Book(String title, Publisher publisher, String publishingDate, String languages, List<Author> authors, List<Category> categories) {
-        this.title = title;
-        this.publisher = publisher;
-        this.publishingDate = publishingDate;
-        this.languages = languages;
-        this.authors = authors;
-        this.categories = categories;
+        this(null, title, publisher, publishingDate, languages, true, 0, null, authors, categories);
+    }
+
+    public Book(String title) {
+       this(null, title, null, null, null, true, 0, null, null, null);
     }
 
     public Book(String title, int quantity, BigDecimal salePrice)

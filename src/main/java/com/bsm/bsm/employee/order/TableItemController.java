@@ -1,13 +1,11 @@
 package com.bsm.bsm.employee.order;
 
 import com.bsm.bsm.order.Order;
+import com.bsm.bsm.order.OrderService;
 import com.bsm.bsm.order.ToggleSwitch;
-import com.bsm.bsm.employee.order.OrderController;
-import com.bsm.bsm.utils.AlertUtils;
+import com.bsm.bsm.utils.DateUtils;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -20,15 +18,14 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class TableItemController {
-    public Label idLabel, customerNameLabel, EmployeeNameLabel, OrderDateLabel,PriceLabel;
-
-//    private final OrderService orderService = new OrderService();
+    private final OrderService orderService = new OrderService();
+    public Label idLabel, customerNameLabel, EmployeeNameLabel, OrderDateLabel, PriceLabel;
     @FXML
     public ToggleButton toogleButton;
     @FXML
     public ToggleSwitch isOn;
     @FXML
-    private String isbn;
+    private int id;
     private ToggleGroup toggle;
     @FXML
     private Order order;
@@ -42,13 +39,10 @@ public class TableItemController {
     @FXML
     private void handleTableItemDoubleClick(MouseEvent event) throws IOException {
         if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
-            if (isbn != null) {
-                OrderDetailController.handleTableItemSelection(isbn,order);
-                FXMLLoaderHelper.loadFXML(new Stage(), "employee/order/orderDetail");
-            } else {
-                AlertUtils.showAlert("Error", "Can't find order", Alert.AlertType.ERROR);
-
-            }
+            order.setOrderDate(DateUtils.convertDOBFormat(order.getOrderDate()));
+            OrderDetailController.handleTableItemSelection(id, order);
+            System.out.println("id " + id + "order" + order);
+            FXMLLoaderHelper.loadFXML(new Stage(), "employee/order/orderDetail");
         }
     }
 
@@ -59,7 +53,8 @@ public class TableItemController {
     }
     public void setOrder(Order thisOrder) {
         order = thisOrder;
-        isbn = String.valueOf(thisOrder.getId());
+        id = thisOrder.getId();
+
         idLabel.setText(String.valueOf(thisOrder.getId()));
         customerNameLabel.setText(String.valueOf(thisOrder.getCustomer().getName()));
         EmployeeNameLabel.setText(String.valueOf(thisOrder.getEmployee().getName()));
