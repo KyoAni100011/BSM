@@ -1,5 +1,6 @@
 package com.bsm.bsm.order;
 
+import com.bsm.bsm.commonInterface.*;
 import com.bsm.bsm.customer.Customer;
 import com.bsm.bsm.employee.EmployeeModel;
 import com.bsm.bsm.user.UserSingleton;
@@ -11,27 +12,28 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class OrderService {
+public class OrderService implements SearchableOrder, Sortable<Order>, DisplayableOrder {
 
     public OrderDAO orderDAO = new OrderDAO();
 
-    public boolean createOrder(List<String> selectedBooks, List<Integer> quantities, List<BigDecimal> salePrices, Customer customer) {
-
-        EmployeeModel employee = (EmployeeModel) UserSingleton.getInstance().getUser();
-        try {
-            return orderDAO.createOrder(employee, selectedBooks, quantities, salePrices, customer);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
+    @Override
+    public List<Order> display() {
+        return display("");
     }
 
-    public List<Order> getAllOrders(String condition) {
-        return orderDAO.getOrderInfo(condition);
+    @Override
+    public List<Order> display(String condition) {
+         return orderDAO.getOrderInfo(condition);
     }
 
+    @Override
+    public List<Order> search(String keyword) {
+        return search(keyword, "");
+    }
+
+    @Override
     public List<Order> search(String keyword, String condition) {
-        List<Order> orders = getAllOrders(condition);
+        List<Order> orders = display(condition);
         String finalKeyword = keyword.toLowerCase();
         return orders.stream()
                 .filter(order ->
@@ -43,6 +45,7 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public List<Order> sort(List<Order> orders, boolean isAscending, String column) {
         List<Order> sortedOrders = new ArrayList<>(orders);
 
@@ -68,6 +71,17 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
+    public boolean createOrder(List<String> selectedBooks, List<Integer> quantities, List<BigDecimal> salePrices, Customer customer) {
+
+        EmployeeModel employee = (EmployeeModel) UserSingleton.getInstance().getUser();
+        try {
+            return orderDAO.createOrder(employee, selectedBooks, quantities, salePrices, customer);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
     public Order getOrderByCustomer(Customer customer) throws SQLException {
         EmployeeModel employee = (EmployeeModel) UserSingleton.getInstance().getUser();
         return orderDAO.getOrderByCustomer(employee, customer);
@@ -76,5 +90,4 @@ public class OrderService {
     public List<OrderBooksDetails> getOrderBookDetails(int orderID) {
         return orderDAO.getOrderBookDetails(orderID);
     }
-
 }

@@ -7,27 +7,16 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CategoryService implements Activable, Searchable<Category>, Sortable<Category>, Addable<Category> {
-    private CategoryDAO categoryDAO = null;
+public class CategoryService implements Activable, Searchable<Category>, Sortable<Category>, Addable<Category>, Displayable<Category>, Updatable<Category> {
+    private final CategoryDAO categoryDAO;
 
     public CategoryService() {
         this.categoryDAO = new CategoryDAO();
     }
-
-    public boolean update(String id, String name, String description) {
-        return categoryDAO.updateCategory(id, name, description);
-    }
-
-    public Category getCategory(String id) {
-        return categoryDAO.getCategoryById(id);
-    }
-
-    public Category getCategoryByName(String name) {
-        return categoryDAO.getCategoryByName(name);
-    }
-
-    public boolean isEnabled(String id) {
-        return getCategory(id).isEnabled();
+    
+    @Override
+    public List<Category> display() {
+        return categoryDAO.getAllCatogories();
     }
 
     @Override
@@ -65,9 +54,14 @@ public class CategoryService implements Activable, Searchable<Category>, Sortabl
     }
 
     @Override
+    public boolean update(Category item) {
+        return categoryDAO.updateCategory(item.getId(), item.getName(), item.getDescription());
+    }
+
+    @Override
     public List<Category> search(String keyword) {
         String finalKeyword = keyword.toLowerCase();
-        List<Category> categories = getAllCategories();
+        List<Category> categories = display();
 
         return categories.stream()
                 .filter(category ->
@@ -79,14 +73,12 @@ public class CategoryService implements Activable, Searchable<Category>, Sortabl
 
     @Override
     public boolean add(Category item) {
-        // Implement add logic
-        return true;
+        return categoryDAO.addCategory(item.getName(), item.getDescription());
     }
 
     @Override
     public boolean setEnable(String id, boolean state) {
-
-        return state;
+        return categoryDAO.setEnable(id, state);
     }
 
     public Category getCategoryById(String id) {
@@ -101,25 +93,17 @@ public class CategoryService implements Activable, Searchable<Category>, Sortabl
         return checkCategoryExists(name, "");
     }
 
-    public boolean addCategory(String name, String description) {
-        return categoryDAO.addCategory(name, description);
+
+    public Category getCategory(String id) {
+        return categoryDAO.getCategoryById(id);
     }
 
-    public List<Category> getAllCategories() {
-        return categoryDAO.getAllCatogories();
+    public Category getCategoryByName(String name) {
+        return categoryDAO.getCategoryByName(name);
     }
-    public boolean disableCategory(String categoryId) {
-        try {
-            return categoryDAO.disableCategory(categoryId);
-        } catch (Exception e) {
-            return false;
-        }
+
+    public boolean isEnabled(String id) {
+        return getCategory(id).isEnabled();
     }
-    public boolean enableCategory(String categoryId) {
-        try {
-            return categoryDAO.enableCategory(categoryId);
-        } catch (Exception e) {
-            return false;
-        }
-    }
+
 }

@@ -1,8 +1,10 @@
 package com.bsm.bsm.sheet;
 
+import com.bsm.bsm.book.BookBatch;
 import com.bsm.bsm.employee.EmployeeModel;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 public class ImportSheet {
     private String id;
@@ -10,17 +12,23 @@ public class ImportSheet {
     private String importDate;
     private int quantity;
     private BigDecimal totalPrice;
+    private Map<BookBatch, Integer> importBooks;
 
-    public ImportSheet(String id, EmployeeModel employee, String importDate, int quantity, BigDecimal totalPrice) {
+    public ImportSheet(String id, EmployeeModel employee, String importDate, int quantity, BigDecimal totalPrice, Map<BookBatch, Integer> importBooks) {
         this.id = id;
         this.employee = employee;
         this.importDate = importDate;
         this.quantity = quantity;
         this.totalPrice = totalPrice;
+        this.importBooks = importBooks;
+    }
+
+    public ImportSheet(String id, EmployeeModel employee, String importDate, int quantity, BigDecimal totalPrice) {
+       this(id, employee, importDate, quantity, totalPrice, null);
     }
 
     public ImportSheet(EmployeeModel employee, String importDate, int quantity, BigDecimal totalPrice) {
-        this(null, employee, importDate, quantity,totalPrice);
+        this(null, employee, importDate, quantity,totalPrice, null);
     }
 
     public String getId() {
@@ -63,6 +71,14 @@ public class ImportSheet {
         this.totalPrice = totalPrice;
     }
 
+    public Map<BookBatch, Integer> getImportBooks() {
+        return importBooks;
+    }
+
+    public void setImportBooks(Map<BookBatch, Integer> importBooks) {
+        this.importBooks = importBooks;
+    }
+
     @Override
     public String toString() {
         return "ImportSheet{" +
@@ -71,6 +87,7 @@ public class ImportSheet {
                 ", importDate='" + importDate + '\'' +
                 ", quantity=" + quantity +
                 ", totalPrice=" + totalPrice +
+                ", importBooks=" + importBooks +
                 '}';
     }
 }

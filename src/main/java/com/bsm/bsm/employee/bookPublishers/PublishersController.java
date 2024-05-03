@@ -94,7 +94,7 @@ public class PublishersController implements Initializable {
     }
 
     private void loadAllPublishers() {
-        publishers = publisherService.getAllPublishers();
+        publishers = publisherService.display();
         employeeInfo.setPublishers(publishers);
         try {
             updatePublishersList();
@@ -143,7 +143,7 @@ public class PublishersController implements Initializable {
         try {
             FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookPublishers/addPublisher", "Add Publisher");
 
-            publishers = publisherService.getAllPublishers();
+            publishers = publisherService.display();
             updatePublishersList();
         } catch (IOException e) {
             e.printStackTrace();
@@ -286,7 +286,7 @@ public class PublishersController implements Initializable {
             if (isSearch) {
                 publishers = publisherService.search(inputSearchText);
             } else {
-                publishers = publisherService.getAllPublishers();
+                publishers = publisherService.display();
             }
             publishers = publisherService.sort(publishers, isAscending, column);
             updatePublishersList();

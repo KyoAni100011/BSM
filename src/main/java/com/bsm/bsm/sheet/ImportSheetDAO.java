@@ -35,9 +35,14 @@ public class ImportSheetDAO {
         return true;
     };
 
-    public boolean createImportSheet(ImportSheet importSheet, List<BookBatch> bookBatches) throws SQLException {
+    public boolean createImportSheet(ImportSheet importSheet) throws SQLException {
         Connection connection = DatabaseConnection.getConnection();
         connection.setAutoCommit(false);
+
+        List<BookBatch> bookBatches = new ArrayList<>();
+        for (var entry: importSheet.getImportBooks().entrySet()) {
+            bookBatches.add(entry.getKey());
+        }
 
         String employeeId = getEmployeeId(connection, importSheet.getEmployee().getId());
         String importSheetID = createImportSheet(connection, employeeId, importSheet);
@@ -124,7 +129,7 @@ public class ImportSheetDAO {
         List<ImportSheet> listImportSheets = new ArrayList<>();
         String QUERY_ALL_IMPORT_SHEET = """
             select sheet.*,  u.name as userName
-            from importsheet sheet join employee e on sheet.employeeID = e.id
+            from importSheet sheet join employee e on sheet.employeeID = e.id
             join user u on e.userID = u.id
             """;
 

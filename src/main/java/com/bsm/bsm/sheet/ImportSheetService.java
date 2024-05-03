@@ -12,7 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ImportSheetService implements Searchable<ImportSheet>, Sortable<ImportSheet>{
+public class ImportSheetService implements Searchable<ImportSheet>, Sortable<ImportSheet>, Displayable<ImportSheet>{
 
     private final ImportSheetDAO importSheetDAO;
 
@@ -20,31 +20,23 @@ public class ImportSheetService implements Searchable<ImportSheet>, Sortable<Imp
         importSheetDAO = new ImportSheetDAO();
     }
 
-    public boolean updateSalePrice(List<BookBatch> bookBatches) {
-        try {
-            return importSheetDAO.updateSalePrice(bookBatches);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
-
-    public boolean createImportSheet(ImportSheet importSheet, List<BookBatch> bookBatches) {
-        try {
-            return importSheetDAO.createImportSheet(importSheet, bookBatches);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
-
-    public List<ImportSheet> getAllSheets() {
+    @Override
+    public List<ImportSheet> display() {
         return importSheetDAO.getAllImportSheets();
+    }
+
+    public boolean createImportSheet(ImportSheet importSheet) {
+        try {
+            return importSheetDAO.createImportSheet(importSheet);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 
     @Override
     public List<ImportSheet> search(String keyword) {
-        List<ImportSheet> sheets = getAllSheets();
+        List<ImportSheet> sheets = display();
         String finalKeyword = keyword.toLowerCase();
         return sheets.stream()
                 .filter(sheet ->
@@ -92,6 +84,15 @@ public class ImportSheetService implements Searchable<ImportSheet>, Sortable<Imp
         }
 
         return sortedImportSheet.stream().sorted(comparator).collect(Collectors.toList());
+    }
+
+    public boolean updateSalePrice(List<BookBatch> bookBatches) {
+        try {
+            return importSheetDAO.updateSalePrice(bookBatches);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 
     public List<Book> getISheetBookDetails(String id)

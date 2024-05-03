@@ -16,6 +16,7 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
         this.bookDAO = new BookDAO();
     }
 
+
     @Override
     public List<Book> display() {
         try {
@@ -143,6 +144,14 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
             }
         }
         return booksForViewList;
+    }
+
+    public List<Book> getAllBooks() {
+        try {
+            return bookDAO.getAllBooks();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean checkIfBookCanBeEnabled(String isbn) {

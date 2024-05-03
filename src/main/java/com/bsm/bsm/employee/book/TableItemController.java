@@ -40,7 +40,6 @@ public class TableItemController {
             bookController.handleTableItemSelection(null);
         } else {
             bookController.handleTableItemSelection(isbn);
-            System.out.println("state: " + book.isEnabled());
         }
     }
 
@@ -56,7 +55,6 @@ public class TableItemController {
             if (response == ButtonType.OK) {
                 if (!oldState.get()) {
                     //check if author/publisher/category disable, book can't be enabled
-                    System.out.println("enabled");
                     if (!bookService.checkIfBookCanBeEnabled(isbn)) {
                         AlertUtils.showAlert("Error", "Can't enable book, because author/publisher/category is disabled", Alert.AlertType.ERROR);
                         isOn.setSwitchedProperty(oldState.get());
