@@ -228,7 +228,7 @@ BEGIN
         -- Generate or specify different data for each call
         set @title = CONCAT('Detective Conan Chap ', i);
         set @publisherID = '44441112';
-        set @publishingDate = DATE_ADD('2024-01-01', INTERVAL i DAY);
+        set @publishingDate = DATE_ADD('2024-03-01', INTERVAL i DAY);
         set @language = (select name from language where name = 'Vietnamese');
 
 insert into book (title, publisherD, publishingDate, language)
