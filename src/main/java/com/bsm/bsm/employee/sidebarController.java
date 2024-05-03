@@ -154,6 +154,7 @@ public class sidebarController {
 
         for (Button button : buttons) {
             if (button == activeButton) {
+                button.getStyleClass().remove("sideBarItemEmployeeActive");
                 button.getStyleClass().add("sideBarItemEmployeeActive");
             } else {
                 button.getStyleClass().remove("sideBarItemEmployeeActive");
@@ -163,11 +164,13 @@ public class sidebarController {
         for (SVGPath svgPath : svgPaths) {
             String svgId = svgPath.getId().toLowerCase();
             if (svgId.contains(activeButton.getId().toLowerCase()) && svgId.length() == activeButton.getId().length() + 3 ) {
+                svgPath.getStyleClass().remove("sideBarIconEmployeeActive");
                 svgPath.getStyleClass().add("sideBarIconEmployeeActive");
             } else {
                 svgPath.getStyleClass().remove("sideBarIconEmployeeActive");
             }
         }
+
     }
     
 }
