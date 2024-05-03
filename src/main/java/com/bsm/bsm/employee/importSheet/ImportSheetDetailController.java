@@ -84,11 +84,11 @@ public class ImportSheetDetailController {
 
         idField.setText(importSheet.getId());
         employeeNameField.setText(importSheet.getEmployee().getName());
-
-
-
         totalPricefield.setText(String.valueOf(importSheet.getTotalPrice()));
+        System.out.println("1" + importSheet.getImportDate());
         String date = convertDOBFormat(importSheet.getImportDate());
+        System.out.println("2" + date);
+
         importDatePicker.setValue(LocalDate.parse(date, dateFormatter));
 
     }

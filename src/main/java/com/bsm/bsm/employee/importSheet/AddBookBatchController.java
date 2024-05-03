@@ -21,6 +21,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -40,44 +41,6 @@ import java.util.regex.Pattern;
 
 public class AddBookBatchController {
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    @FXML
-    public Label bookNameErrorLabel,languageErrorLabel,categoryErrorLabel,authorErrorLabel,quantityErrorLabel,publisherErrorLabel,priceErrorLabel,releaseErrorLabel;
-    @FXML
-    public TextField  bookQuantityField, bookPriceField;
-    @FXML
-    public CheckComboBox<String> authorNameCheckCombo , categoryCheckCombo;
-    @FXML
-    public SearchableComboBox languageComboBox, publisherComboBox,  fullNameField;
-    @FXML
-    public Button saveChangesButton;
-    @FXML
-    private DatePicker releaseDatePicker;
-    @FXML
-    private TextField categorySearch, authorSearch;
-
-
-    BookBatch bookBatch;
-    private BookService bookService = new BookService();
-    private CategoryService categoryService = new CategoryService();
-    private AuthorService authorService = new AuthorService();
-    private PublisherService publisherService = new PublisherService();
-    private BookBatchService bookBatchService = new BookBatchService();
-
-    private Set<String> selectedLanguages = new HashSet<>();
-    private ObservableList<String> selectedAuthors = FXCollections.observableArrayList();
-    private ObservableList<String> selectedCategories = FXCollections.observableArrayList();
-    private ObservableList<String> selectedBooks = FXCollections.observableArrayList();
-    ObservableList<String> authorItems = FXCollections.observableArrayList();
-    ObservableList<String> categoriesItems = FXCollections.observableArrayList();
-    ObservableList<String> publisherItems = FXCollections.observableArrayList();
-    ObservableList<String> bookItems = FXCollections.observableArrayList();
-
-    private Book bookDetails = null;
-
-    private ObservableList<String> filteredCategoriesItems = FXCollections.observableArrayList(); // Store filtered category items
-    private ObservableList<String> filteredAuthorItems = FXCollections.observableArrayList(); // Store filtered category items
-    private ObservableList<String> filteredBookItems = FXCollections.observableArrayList();
-
     // Khai báo biến kiểm tra số nguyên
     private final UnaryOperator<TextFormatter.Change> integerFilter = change -> {
         // Kiểm tra nếu chuỗi mới chứa chỉ chứa các ký tự số hoặc là chuỗi rỗng
@@ -87,27 +50,62 @@ public class AddBookBatchController {
             return null; // Nếu không phải là số, chặn việc nhập
         }
     };
+    @FXML
+    public Label bookNameErrorLabel, languageErrorLabel, categoryErrorLabel, authorErrorLabel, quantityErrorLabel, publisherErrorLabel, priceErrorLabel, releaseErrorLabel;
+    @FXML
+    public TextField bookQuantityField, bookPriceField;
+    @FXML
+    public CheckComboBox<String> authorNameCheckCombo, categoryCheckCombo;
+    @FXML
+    public SearchableComboBox languageComboBox, publisherComboBox, fullNameField;
+    @FXML
+    public Button saveChangesButton;
+
+    private boolean isTypeSearch = false;
+    BookBatch bookBatch;
+    ObservableList<String> authorItems = FXCollections.observableArrayList();
+    ObservableList<String> categoriesItems = FXCollections.observableArrayList();
+    ObservableList<String> publisherItems = FXCollections.observableArrayList();
+    ObservableList<String> bookItems = FXCollections.observableArrayList();
+    @FXML
+    private DatePicker releaseDatePicker;
+    @FXML
+    private TextField categorySearch, authorSearch;
+    private final BookService bookService = new BookService();
+    private final CategoryService categoryService = new CategoryService();
+    private final AuthorService authorService = new AuthorService();
+    private final PublisherService publisherService = new PublisherService();
+    private final BookBatchService bookBatchService = new BookBatchService();
+    private String enteredText = "";
+    private final Set<String> selectedLanguages = new HashSet<>();
+    private final ObservableList<String> selectedAuthors = FXCollections.observableArrayList();
+    private final ObservableList<String> selectedCategories = FXCollections.observableArrayList();
+    private final ObservableList<String> selectedBooks = FXCollections.observableArrayList();
+    private Book bookDetails = null;
+    private final ObservableList<String> filteredCategoriesItems = FXCollections.observableArrayList(); // Store filtered category items
+    private final ObservableList<String> filteredAuthorItems = FXCollections.observableArrayList(); // Store filtered category items
+    private final ObservableList<String> filteredBookItems = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
         bookQuantityField.setTextFormatter(new TextFormatter<>(integerFilter));
         bookPriceField.setTextFormatter(new TextFormatter<>(integerFilter));
-        for (var category: categoryService.getAllCategories()) {
+        for (var category : categoryService.getAllCategories()) {
             if (category.isEnabled())
                 categoriesItems.add(category.getName());
         }
 
-        for (var author: authorService.getAllAuthors()) {
+        for (var author : authorService.getAllAuthors()) {
             if (author.isEnabled())
                 authorItems.add(author.getName());
         }
 
-        for (var publisher: publisherService.getAllPublishers()) {
+        for (var publisher : publisherService.getAllPublishers()) {
             if (publisher.isEnabled())
                 publisherItems.add(publisher.getName());
         }
 
-        for (var book: bookService.getAllBooks()) {
+        for (var book : bookService.getAllBooks()) {
             if (book.isEnabled())
                 bookItems.add(book.getTitle());
         }
@@ -163,43 +161,114 @@ public class AddBookBatchController {
             }
         });
 
+        fullNameField.setOnKeyReleased(event -> {
+            if (event.getCode() == KeyCode.BACK_SPACE || event.getCode() == KeyCode.DELETE) {
+                if (enteredText.length() > 0) {
+                    enteredText = enteredText.substring(0, enteredText.length() - 1);
+                }
+                System.out.println(enteredText);
+                if (enteredText.isEmpty()) {
+                    isTypeSearch = false;
+                }
+            } else {
+                enteredText += event.getText();
+            }
+
+            if (event.getCode() == KeyCode.ENTER) {
+                if (!enteredText.isEmpty()) {
+                    if (!fullNameField.getItems().contains(enteredText)) {
+                        fullNameField.getItems().add(enteredText);
+                        fullNameField.getSelectionModel().select(enteredText);
+                        publisherComboBox.setValue("");
+                        languageComboBox.setValue("");
+                        releaseDatePicker.setValue(null);
+                        authorNameCheckCombo.getCheckModel().clearChecks();
+                        categoryCheckCombo.getCheckModel().clearChecks();
+                    } else {
+                        if (bookDetails != null) {
+                            enteredText = "";
+                            bookDetails = bookService.getBookByName(enteredText);
+
+                            List<Author> authors = bookDetails.getAuthors();
+                            List<Category> categories = bookDetails.getCategories();
+                            String publishers = bookDetails.getPublisher().getName();
+                            String language = bookDetails.getLanguages();
+                            String releaseDate = bookDetails.getPublishingDate();
+
+                            authorNameCheckCombo.getCheckModel().clearChecks();
+                            categoryCheckCombo.getCheckModel().clearChecks();
+
+                            for (Author author : authors) {
+                                if (authorNameCheckCombo.getItems().contains(author.getName())) {
+                                    authorNameCheckCombo.getCheckModel().check(author.getName());
+                                }
+                            }
+
+                            for (Category category : categories) {
+                                if (categoryCheckCombo.getItems().contains(category.getName())) {
+                                    categoryCheckCombo.getCheckModel().check(category.getName());
+                                }
+                            }
+
+                            publisherComboBox.setValue(publishers);
+                            languageComboBox.setValue(language);
+                            releaseDatePicker.setValue(LocalDate.parse(releaseDate, dateFormatter));
+                        }
+                    }
+                }
+            }
+        });
+
+
+
+
         fullNameField.setOnAction(event -> {
             Object selectedItem = fullNameField.getSelectionModel().getSelectedItem();
             if (selectedItem != null) {
                 String selectedBookName = (String) selectedItem;
+                if (fullNameField.getItems().contains(selectedBookName)) {
+                    isTypeSearch = false;
+                    if (!isTypeSearch) {
+                        enteredText = "";
+                        bookDetails = bookService.getBookByName(selectedBookName);
+                        if(bookDetails != null) {
 
-                bookDetails = bookService.getBookByName(selectedBookName);
+                            List<Author> authors = bookDetails.getAuthors();
+                            List<Category> categories = bookDetails.getCategories();
+                            String publishers = bookDetails.getPublisher().getName();
+                            String language = bookDetails.getLanguages();
+                            String releaseDate = bookDetails.getPublishingDate();
 
-                List<Author> authors = bookDetails.getAuthors();
-                List<Category> categories = bookDetails.getCategories();
-                String publishers = bookDetails.getPublisher().getName();
-                String language = bookDetails.getLanguages();
-                int quanity = bookDetails.getQuantity();
-                BigDecimal salePrice = bookDetails.getSalePrice();
-                String releaseDate = bookDetails.getPublishingDate();
+                            authorNameCheckCombo.getCheckModel().clearChecks();
+                            categoryCheckCombo.getCheckModel().clearChecks();
 
-                authorNameCheckCombo.getCheckModel().clearChecks();
-                categoryCheckCombo.getCheckModel().clearChecks();
+                            for (Author author : authors) {
+                                if (authorNameCheckCombo.getItems().contains(author.getName())) {
+                                    authorNameCheckCombo.getCheckModel().check(author.getName());
+                                }
+                            }
 
+                            for (Category category : categories) {
+                                if (categoryCheckCombo.getItems().contains(category.getName())) {
+                                    categoryCheckCombo.getCheckModel().check(category.getName());
+                                }
+                            }
 
-                for (Author author : authors) {
-                    if (authorNameCheckCombo.getItems().contains(author.getName())) {
-                        authorNameCheckCombo.getCheckModel().check(author.getName());
+                            publisherComboBox.setValue(publishers);
+                            languageComboBox.setValue(language);
+                            releaseDatePicker.setValue(LocalDate.parse(releaseDate, dateFormatter));
+                        }
+                        else
+                        {
+                            publisherComboBox.setValue("");
+                            languageComboBox.setValue("");
+                            releaseDatePicker.setValue(null);
+                            authorNameCheckCombo.getCheckModel().clearChecks();
+                            categoryCheckCombo.getCheckModel().clearChecks();
+                            System.out.println("No book");
+                        }
                     }
                 }
-
-                for (Category category : categories) {
-                    if (categoryCheckCombo.getItems().contains(category.getName())) {
-                        categoryCheckCombo.getCheckModel().check(category.getName());
-                    }
-                }
-
-                publisherComboBox.setValue(publishers);
-                languageComboBox.setValue(language);
-                bookQuantityField.setText(String.valueOf(quanity));
-                bookPriceField.setText(String.valueOf(salePrice));
-                releaseDatePicker.setValue(LocalDate.parse(releaseDate, dateFormatter));
-
             }
         });
 
@@ -424,7 +493,7 @@ public class AddBookBatchController {
 
         String title = (String) fullNameField.getValue();
         String releaseDate = releaseDatePicker.getEditor().getText();
-        String publisherName = (String)publisherComboBox.getValue();
+        String publisherName = (String) publisherComboBox.getValue();
         String quantity = bookQuantityField.getText();
         String importPrice = bookPriceField.getText();
         var selectedAuthor = authorNameCheckCombo.getCheckModel().getCheckedItems();
@@ -434,12 +503,12 @@ public class AddBookBatchController {
         if (validateInputs(title, releaseDate, importPrice, publisherName, selectedLanguage, selectedCategory, selectedAuthor, quantity)) {
             Publisher publisher = publisherService.getPublisherByName(publisherName);
             List<Category> categories = new ArrayList<>();
-            for (var category: selectedCategory) {
+            for (var category : selectedCategory) {
                 categories.add(categoryService.getCategoryByName(category));
             }
 
             List<Author> authors = new ArrayList<>();
-            for (var author: selectedAuthor) {
+            for (var author : selectedAuthor) {
                 authors.add(authorService.getAuthorByName(author));
             }
 
@@ -454,7 +523,7 @@ public class AddBookBatchController {
                 try {
                     // Load the FXML file for updating sell price
                     UpdatePriceController.setBookName(title);
-                    FXMLLoaderHelper.loadFXML(new Stage(),"employee/importSheet/updatePrice", "Update Sell Price");
+                    FXMLLoaderHelper.loadFXML(new Stage(), "employee/importSheet/updatePrice", "Update Sell Price");
                     // Set the book name in the UpdatePriceController
 
                     System.out.println("Successfully loaded Update Price window.");
