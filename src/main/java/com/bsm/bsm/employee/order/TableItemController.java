@@ -3,7 +3,6 @@ package com.bsm.bsm.employee.order;
 import com.bsm.bsm.order.Order;
 import com.bsm.bsm.order.OrderService;
 import com.bsm.bsm.order.ToggleSwitch;
-import com.bsm.bsm.utils.DateUtils;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -39,9 +38,7 @@ public class TableItemController {
     @FXML
     private void handleTableItemDoubleClick(MouseEvent event) throws IOException {
         if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
-            order.setOrderDate(DateUtils.convertDOBFormat(order.getOrderDate()));
             OrderDetailController.handleTableItemSelection(id, order);
-            System.out.println("id " + id + "order" + order);
             FXMLLoaderHelper.loadFXML(new Stage(), "employee/order/orderDetail");
         }
     }

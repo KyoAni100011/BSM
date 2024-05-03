@@ -7,10 +7,7 @@ import com.bsm.bsm.book.BookService;
 import com.bsm.bsm.category.Category;
 import com.bsm.bsm.utils.NumericValidationUtils;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
@@ -20,6 +17,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class BookDetailController {
+    public ScrollPane scrollPanelAuthor;
+    public ScrollPane scrollPanelCategory;
     @FXML
     private TextField fullNameField,bookPriceField,bookQuantityField,publisherField,languageField;
     @FXML
@@ -43,6 +42,7 @@ public class BookDetailController {
         setBookInfo();
         releaseDatePicker.getEditor().setOpacity(1);
         isEnabledLabel.setOpacity(1);
+
     }
     public static void handleTableItemSelection(String myId) {
         id = myId;
