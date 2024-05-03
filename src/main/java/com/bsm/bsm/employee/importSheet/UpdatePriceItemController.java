@@ -1,5 +1,6 @@
 package com.bsm.bsm.employee.importSheet;
 
+import com.bsm.bsm.book.BookService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -11,19 +12,21 @@ import java.math.BigDecimal;
 public class UpdatePriceItemController {
     BigDecimal correctSellPrice = BigDecimal.ZERO;
 
+    private final BookService bookService = new BookService();
+
     @FXML
     public TextField sellPriceField;
     @FXML
-    public Label sellPriceLabel;
+    public Label sellPriceLabel, title;
     @FXML
-    public Text id, title, importPrice, currentSellPrice;
+    public Text id, importPrice, currentSellPrice;
 
     BigDecimal getSellPriceValue() {
         BigDecimal sellPriceValue = BigDecimal.ZERO;
         try {
             sellPriceValue = new BigDecimal(sellPriceField.getText());
             if (sellPriceValue.compareTo(correctSellPrice.multiply(BigDecimal.valueOf(1.1))) <= 0) {
-                sellPriceLabel.setText("At least >= 10% import price");
+                sellPriceLabel.setText("At least 10% more than import price");
             } else {
                 sellPriceLabel.setText("");
             }
@@ -50,12 +53,14 @@ public class UpdatePriceItemController {
 
         correctSellPrice = bookBatch.getImportPrice().multiply(BigDecimal.valueOf(1.1));
 
-        if (bookBatch.getBook().getSalePrice() != null) {
-            currentSellPrice.setText(String.valueOf(bookBatch.getBook().getSalePrice()));
+        System.out.println("bookBatch = " + bookBatch.getBook().getSalePrice());
+        BigDecimal currentSellPriceString = bookService.getBookByName(bookBatch.getBook().getTitle()).getSalePrice();
+        if (currentSellPriceString != null){
+            currentSellPrice.setText(currentSellPriceString.toString());
         }
         else {
             currentSellPrice.setText("Not set");
         }
-        sellPriceField.setPromptText("Should be: " + correctSellPrice.toString());
+        sellPriceField.setPromptText("Import sell price * 1.1 = " + correctSellPrice.toString());
     }
 }
