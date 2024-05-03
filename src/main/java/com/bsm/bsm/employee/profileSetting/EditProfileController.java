@@ -124,13 +124,13 @@ public class EditProfileController {
             dobErrorLabel.setText(dobError);
         }
 
-        if (phoneError != null && !phoneError.equalsIgnoreCase("Please enter your phone number.")) {
+        if (phoneError != null) {
             phoneErrorLabel.setText(phoneError);
         } else {
             phoneError = null;
         }
 
-        if (addressError != null && !addressError.equalsIgnoreCase("Please enter your address.")) {
+        if (addressError != null) {
             addressErrorLabel.setText(addressError);
         } else {
             addressError = null;

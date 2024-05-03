@@ -74,7 +74,10 @@ public class OrderDetailController {
         employeeNameField.setText(order.getEmployee().getName());
         customerNameField.setText(order.getCustomer().getName());
         totalPricefield.setText(String.valueOf(order.getTotalPrice()));
-        String date = convertDOBFormat(order.getOrderDate());
+        String date = order.getOrderDate();
+        if (date.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            date = convertDOBFormat(date);
+        }
         importDatePicker.setValue(LocalDate.parse(date, dateFormatter));
         customerPhoneField.setText(order.getCustomer().getPhone());
     }

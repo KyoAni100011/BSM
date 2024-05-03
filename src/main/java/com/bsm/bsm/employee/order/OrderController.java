@@ -1,9 +1,7 @@
 package com.bsm.bsm.employee.order;
 
 import com.bsm.bsm.order.Order;
-import com.bsm.bsm.employee.EmployeeModel;
 import com.bsm.bsm.order.OrderService;
-import com.bsm.bsm.user.UserSingleton;
 
 import com.bsm.bsm.utils.NumericValidationUtils;
 import javafx.beans.value.ChangeListener;
@@ -19,11 +17,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
-import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
