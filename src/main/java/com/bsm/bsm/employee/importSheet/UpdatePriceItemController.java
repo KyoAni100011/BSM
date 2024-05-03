@@ -25,12 +25,11 @@ public class UpdatePriceItemController {
         BigDecimal sellPriceValue = BigDecimal.ZERO;
         try {
             sellPriceValue = new BigDecimal(sellPriceField.getText());
-            if (sellPriceValue.compareTo(correctSellPrice.multiply(BigDecimal.valueOf(1.1))) <= 0) {
+            if (sellPriceValue.compareTo(correctSellPrice) <= 0) {
                 sellPriceLabel.setText("At least 10% more than import price");
                 sellPriceValue = null;
             } else {
                 sellPriceLabel.setText("");
-                sellPriceValue = null;
             }
 
         } catch (NumberFormatException e) {
@@ -64,6 +63,6 @@ public class UpdatePriceItemController {
         else {
             currentSellPrice.setText("Not set");
         }
-        sellPriceField.setPromptText("Import sell price * 1.1 = " + correctSellPrice.toString());
+        sellPriceField.setPromptText("Import sell price * 1.1 >= " + correctSellPrice.toString());
     }
 }

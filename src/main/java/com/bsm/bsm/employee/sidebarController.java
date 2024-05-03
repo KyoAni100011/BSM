@@ -140,6 +140,7 @@ public class sidebarController {
     void handleProfileSetting(ActionEvent event) throws IOException {
         loadPage("profileSetting/profileSetting");
         menuButton.setVisible(false);
+        applyActiveStyles(null);
     }
 
     private void loadPage(String page) throws IOException {
@@ -163,6 +164,10 @@ public class sidebarController {
 
         for (SVGPath svgPath : svgPaths) {
             String svgId = svgPath.getId().toLowerCase();
+            if (activeButton == null) {
+                svgPath.getStyleClass().remove("sideBarIconEmployeeActive");
+                continue;
+            }
             if (svgId.contains(activeButton.getId().toLowerCase()) && svgId.length() == activeButton.getId().length() + 3 ) {
                 svgPath.getStyleClass().remove("sideBarIconEmployeeActive");
                 svgPath.getStyleClass().add("sideBarIconEmployeeActive");

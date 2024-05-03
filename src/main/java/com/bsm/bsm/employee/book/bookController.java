@@ -258,13 +258,9 @@ public class bookController implements Initializable {
             for (int i = startPage; i <= endPage; i++) {
                 Button button;
                 int buttonIndex = i - startPage;
-                if (totalPages > 5 && startPage < 6) {
-                    button = paginationButtons.get(buttonIndex);
-                } else if (totalPages > 5) {
-                    button = paginationButtons.get(buttonIndex + 1);
-                } else {
-                    button = paginationButtons.get(buttonIndex);
-                }
+
+                button = paginationButtons.get(buttonIndex);
+
                 button.setText(String.valueOf(i));
                 button.setManaged(true);
                 button.setVisible(true);

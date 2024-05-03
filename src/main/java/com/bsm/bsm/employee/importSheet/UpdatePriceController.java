@@ -54,15 +54,22 @@ public class UpdatePriceController {
 
 
     public void handleSaveChanges(ActionEvent event) {
+        boolean isValid = true;
         for (int i = 0; i < updatePriceItemControllers.size(); i++) {
             UpdatePriceItemController updatePriceItemController = updatePriceItemControllers.get(i);
             BigDecimal sellPriceValue = updatePriceItemController.getSellPriceValue();
             if (sellPriceValue == null) {
-                return;
+                isValid = false;
             }
             bookBatches.get(i).getBook().setSalePrice(sellPriceValue);
             System.out.println(bookBatches.get(i).getBook().getTitle() + " " + bookBatches.get(i).getBook().getSalePrice());
         }
+
+        if (!isValid) {
+            AlertUtils.showAlert("Error", "Please enter valid price for all books", Alert.AlertType.ERROR);
+            return;
+        }
+
 
         if (true) {
 

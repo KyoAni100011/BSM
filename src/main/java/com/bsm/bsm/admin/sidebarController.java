@@ -18,6 +18,8 @@ import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class sidebarController {
@@ -65,23 +67,15 @@ public class sidebarController {
     void SwitchBookRevenue(ActionEvent event) throws IOException {
         initialize();
         loadPage("bookRevenue/bookRevenue");
-        bookRevenue.getStyleClass().add("sideBarItemActive");
-        categoryRevenue.getStyleClass().remove("sideBarItemActive");
-        revenueByCustomer.getStyleClass().remove("sideBarItemActive");
-        userAccount.getStyleClass().remove("sideBarItemActive");
-        revenueByEmployee.getStyleClass().remove("sideBarItemActive");
-        svgCategory.getStyleClass().remove("sideBarIconActive");
+        applyActiveStyles(bookRevenue);
     }
 
     @FXML
     void SwitchCategoryRevenue(ActionEvent event) throws IOException {
         initialize();
         loadPage("categoryRevenue/categoryRevenue");
-        categoryRevenue.getStyleClass().add("sideBarItemActive");
-        revenueByCustomer.getStyleClass().remove("sideBarItemActive");
-        userAccount.getStyleClass().remove("sideBarItemActive");
-        bookRevenue.getStyleClass().remove("sideBarItemActive");
-        revenueByEmployee.getStyleClass().remove("sideBarItemActive");
+        applyActiveStyles(categoryRevenue);
+        svgCategory.getStyleClass().remove("sideBarIconActive");
         svgCategory.getStyleClass().add("sideBarIconActive");
     }
 
@@ -89,40 +83,21 @@ public class sidebarController {
     void SwitchRevenueByCustomer(ActionEvent event) throws IOException {
         initialize();
         loadPage("revenueByCustomer/revenueByCustomer");
-        categoryRevenue.getStyleClass().remove("sideBarItemActive");
-        userAccount.getStyleClass().remove("sideBarItemActive");
-        bookRevenue.getStyleClass().remove("sideBarItemActive");
-        revenueByEmployee.getStyleClass().remove("sideBarItemActive");
-        svgCategory.getStyleClass().remove("sideBarIconActive");
-        revenueByCustomer.getStyleClass().add("sideBarItemActive");
-
-
+        applyActiveStyles(revenueByCustomer);
     }
 
     @FXML
     void SwitchRevenueByEmployee(ActionEvent event) throws IOException {
         initialize();
         loadPage("revenueByEmployee/revenueByEmployee");
-        revenueByEmployee.getStyleClass().add("sideBarItemActive");
-        categoryRevenue.getStyleClass().remove("sideBarItemActive");
-        revenueByCustomer.getStyleClass().remove("sideBarItemActive");
-        userAccount.getStyleClass().remove("sideBarItemActive");
-        bookRevenue.getStyleClass().remove("sideBarItemActive");
-        svgCategory.getStyleClass().remove("sideBarIconActive");
-
+        applyActiveStyles(revenueByEmployee);
     }
 
     @FXML
     void SwitchUserAccount(ActionEvent event) throws IOException {
         initialize();
         loadPage("userAccount/userAccount");
-        revenueByEmployee.getStyleClass().remove("sideBarItemActive");
-        userAccount.getStyleClass().add("sideBarItemActive");
-        categoryRevenue.getStyleClass().remove("sideBarItemActive");
-        revenueByCustomer.getStyleClass().remove("sideBarItemActive");
-        bookRevenue.getStyleClass().remove("sideBarItemActive");
-        svgCategory.getStyleClass().remove("sideBarIconActive");
-
+        applyActiveStyles(userAccount);
     }
 
     @FXML
@@ -135,6 +110,22 @@ public class sidebarController {
     void handleProfileSetting(ActionEvent event) throws IOException {
         loadPage("profileSetting/profileSetting");
         menuButton.setVisible(false);
+        applyActiveStyles(null);
+    }
+
+    private void applyActiveStyles(Button activeButton) {
+        List<Button> buttons = Arrays.asList(bookRevenue, categoryRevenue, revenueByCustomer, revenueByEmployee, userAccount, logoButton);
+
+        for (Button button : buttons) {
+            if (button == activeButton) {
+                button.getStyleClass().remove("sideBarItemActive");
+                button.getStyleClass().add("sideBarItemActive");
+            } else {
+                button.getStyleClass().remove("sideBarItemActive");
+                svgCategory.getStyleClass().remove("sideBarIconActive");
+            }
+        }
+
     }
 
     private void loadPage(String page) throws IOException {
