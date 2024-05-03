@@ -1,5 +1,7 @@
 package com.bsm.bsm.admin.categoryRevenue;
 
+import com.bsm.bsm.book.Book;
+import com.bsm.bsm.category.Category;
 import com.bsm.bsm.revenue.ResultStatistic;
 import com.bsm.bsm.revenue.RevenueStatisticService;
 import javafx.application.Platform;
@@ -17,6 +19,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.DayOfWeek;
@@ -24,9 +27,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -88,7 +89,7 @@ public class CategoryRevenueController {
         String chartTitle = getChartTitle("Month", selectedDate);
         executorService.submit(() -> {
             try {
-                List<ResultStatistic> categoryMonthly = revenueStatisticService.getCategoryMonthlyRevenue(selectedDate.getYear(), selectedDate.getMonthValue());
+                Map<Category, BigDecimal> categoryMonthly = revenueStatisticService.getCategoryMonthlyRevenue(selectedDate.getYear(), selectedDate.getMonthValue());
                 Platform.runLater(() -> updateChartWithData(categoryMonthly, chartTitle));
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -109,7 +110,7 @@ public class CategoryRevenueController {
         String chartTitle = getChartTitle("Week", selectedDate);
         executorService.submit(() -> {
             try {
-                List<ResultStatistic> categoryWeekly = revenueStatisticService.getCategoryWeeklyRevenue(selectedDate.getYear(), selectedDate.get(WeekFields.ISO.weekOfYear()));
+                Map<Category, BigDecimal> categoryWeekly = revenueStatisticService.getCategoryWeeklyRevenue(selectedDate.getYear(), selectedDate.get(WeekFields.ISO.weekOfYear()));
                 Platform.runLater(() -> updateChartWithData(categoryWeekly, chartTitle));
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -203,7 +204,7 @@ public class CategoryRevenueController {
         String chartTitle = getChartTitle("Date", selectedDate);
         executorService.submit(() -> {
             try {
-                List<ResultStatistic> categoryDaily = revenueStatisticService.getCategoryDailyRevenue(selectedDate.toString());
+                Map<Category, BigDecimal> categoryDaily = revenueStatisticService.getCategoryDailyRevenue(selectedDate.toString());
                 Platform.runLater(() -> updateChartWithData(categoryDaily, chartTitle));
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -230,7 +231,7 @@ public class CategoryRevenueController {
             if (startDate != null && endDate != null && !startDate.isAfter(endDate)) {
                 String chartTitle = "Top 10 Best Selling Categories From " + getFormattedDate(startDate) + " To " + getFormattedDate(endDate);
                 try {
-                    List<ResultStatistic> CategoryFromTo = revenueStatisticService.getCategoryDateToDateRevenue(startDate.toString(), endDate.toString());
+                    Map<Category, BigDecimal> CategoryFromTo = revenueStatisticService.getCategoryDateToDateRevenue(startDate.toString(), endDate.toString());
                     Platform.runLater(() -> updateChartWithData(CategoryFromTo, chartTitle));
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -256,16 +257,25 @@ public class CategoryRevenueController {
         }
     }
 
-    private void updateChartWithData(List<ResultStatistic> data, String chartTitle) {
+    private void updateChartWithData(Map<Category, BigDecimal> data, String chartTitle) {
         ObservableList<XYChart.Data<String, Number>> chartData = FXCollections.observableArrayList();
         List<String> dataNames = new ArrayList<>();
 
         if (data != null) {
-            int count = 1;
-            for (ResultStatistic rs : data) {
-                chartData.add(new XYChart.Data<>(String.valueOf(count), rs.getStatisticValue()));
-                dataNames.add(rs.getTitle());
-                count++;
+            List<Map.Entry<Category, BigDecimal>> sortedEntries = data.entrySet().stream()
+                    .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                    .toList();
+
+            int index = 1;
+            for (Map.Entry<Category, BigDecimal> entry : sortedEntries) {
+                Category category = entry.getKey();
+                BigDecimal revenue = entry.getValue();
+                chartData.add(new XYChart.Data<>(String.valueOf(index), revenue));
+                dataNames.add(category.getName());
+
+                if (index++ == 10) {
+                    break;
+                }
             }
         }
 

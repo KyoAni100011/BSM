@@ -22,6 +22,11 @@ public class Customer {
         this(null, name, phone, isMember);
     }
 
+    public  Customer(String id, String name)
+    {
+        this(id, name, null, false);
+    }
+
     public String getId() {
         return id;
     }

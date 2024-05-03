@@ -33,6 +33,10 @@ public class Book {
         this.categories = categories;
     }
 
+    public Book(String isbn, String title) {
+        this(isbn, title, null, null, null, true, 0, null, null, null);
+    }
+
     public Book(String title, Publisher publisher, String publishingDate, String languages, boolean isEnabled, int quantity, BigDecimal salePrice, List<Author> authors, List<Category> categories) {
         this(null, title, publisher, publishingDate, languages, isEnabled, quantity, salePrice, authors, categories);
     }

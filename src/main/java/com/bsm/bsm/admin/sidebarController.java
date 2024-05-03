@@ -46,10 +46,13 @@ public class sidebarController {
     }
 
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
         menuButton.setVisible(true);
         updateNameText();
         updateRoleText();
+
+        loadPage("userAccount/userAccount");
+        applyActiveStyles(userAccount);
     }
 
     private void updateNameText() {

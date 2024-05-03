@@ -1,253 +1,81 @@
 package com.bsm.bsm.revenue;
 
+import com.bsm.bsm.book.Book;
+import com.bsm.bsm.category.Category;
+import com.bsm.bsm.customer.Customer;
 import com.bsm.bsm.database.DatabaseConnection;
+import com.bsm.bsm.employee.EmployeeModel;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RevenueStatisticDAO {
-    public List<ResultStatistic> getTop10BooksByDailyRevenue(String date) throws SQLException {
-        List<ResultStatistic> bookRevenues = new ArrayList<>();
-        String query = "SELECT b.title, SUM(obd.quantity * obd.salePrice) AS revenue FROM orderBooksDetails obd JOIN bookBatch bb ON obd.bookBatchID = bb.id JOIN book b ON bb.bookID = b.isbn JOIN orderSheet os ON obd.orderID = os.id WHERE os.orderDate = ? GROUP BY b.title ORDER BY revenue DESC LIMIT 10;";
+
+    public Map<Book, BigDecimal> getTop10BooksRevenue(TimeRange date) throws SQLException {
+        Map<Book, BigDecimal> bookRevenues = new HashMap<>();
+        String query = "SELECT b.isbn, b.title, SUM(obd.quantity * obd.salePrice) AS revenue FROM orderBooksDetails obd JOIN bookBatch bb ON obd.bookBatchID = bb.id JOIN book b ON bb.bookID = b.isbn JOIN orderSheet os ON obd.orderID = os.id WHERE os.orderDate BETWEEN ? AND ? GROUP BY b.isbn ORDER BY revenue DESC LIMIT 10;";
 
         DatabaseConnection.executeQuery(query, resultSet -> {
             while (resultSet.next()) {
+                String isbn = resultSet.getString("isbn");
                 String title = resultSet.getString("title");
-                double revenue = resultSet.getDouble("revenue");
-                bookRevenues.add(new ResultStatistic(title, revenue));
+                BigDecimal revenue = resultSet.getBigDecimal("revenue");
+                bookRevenues.put(new Book(isbn, title), revenue);
             }
-        }, date);
+        }, date.getStartDate(), date.getEndDate());
 
         return bookRevenues;
     }
 
-    public List<ResultStatistic> getTop10BooksByMonthlyRevenue(int year, int month) throws SQLException {
-        List<ResultStatistic> bookRevenues = new ArrayList<>();
-        String query = "SELECT b.title, SUM(obd.quantity * obd.salePrice) AS revenue FROM orderBooksDetails obd JOIN bookBatch bb ON obd.bookBatchID = bb.id JOIN book b ON bb.bookID = b.isbn JOIN orderSheet os ON obd.orderID = os.id WHERE YEAR(os.orderDate) = ? AND MONTH(os.orderDate) = ? GROUP BY b.title ORDER BY revenue DESC LIMIT 10;";
+    public Map<Category, BigDecimal> getTop10CategoriesRevenue(TimeRange date) throws SQLException {
+        Map<Category, BigDecimal> categoryRevenues = new HashMap<>();
+        String query = "SELECT c.id, c.name, SUM(obd.quantity * obd.salePrice) AS revenue FROM orderBooksDetails obd JOIN bookBatch bb ON obd.bookBatchID = bb.id JOIN book b ON bb.bookID = b.isbn JOIN bookCategory bc ON b.isbn = bc.bookID JOIN category c ON bc.categoryID = c.id JOIN orderSheet os ON obd.orderID = os.id WHERE os.orderDate BETWEEN ? AND ? GROUP BY c.id ORDER BY revenue DESC LIMIT 10;";
 
         DatabaseConnection.executeQuery(query, resultSet -> {
             while (resultSet.next()) {
-                String title = resultSet.getString("title");
-                double revenue = resultSet.getDouble("revenue");
-                bookRevenues.add(new ResultStatistic(title, revenue));
+                String id = resultSet.getString("id");
+                String name = resultSet.getString("name");
+                BigDecimal revenue = resultSet.getBigDecimal("revenue");
+                categoryRevenues.put(new Category(id, name), revenue);
             }
-        }, year, month);
-
-        return bookRevenues;
-    }
-
-    public List<ResultStatistic> getTop10BooksByWeeklyRevenue(int year, int week) throws SQLException {
-        List<ResultStatistic> bookRevenues = new ArrayList<>();
-        String query = "SELECT b.title, SUM(obd.quantity * obd.salePrice) AS revenue FROM orderBooksDetails obd JOIN bookBatch bb ON obd.bookBatchID = bb.id JOIN book b ON bb.bookID = b.isbn JOIN orderSheet os ON obd.orderID = os.id WHERE YEAR(os.orderDate) = ? AND WEEK(os.orderDate) = ? GROUP BY b.title ORDER BY revenue DESC LIMIT 10;";
-
-        DatabaseConnection.executeQuery(query, resultSet -> {
-            while (resultSet.next()) {
-                String title = resultSet.getString("title");
-                double revenue = resultSet.getDouble("revenue");
-                bookRevenues.add(new ResultStatistic(title, revenue));
-            }
-        }, year, week);
-
-        return bookRevenues;
-    }
-
-    public List<ResultStatistic> getTop10BooksByRevenueDateToDate(String startDate, String endDate) throws SQLException {
-        List<ResultStatistic> bookRevenues = new ArrayList<>();
-        String query = "SELECT b.title, SUM(obd.quantity * obd.salePrice) AS revenue FROM orderBooksDetails obd JOIN bookBatch bb ON obd.bookBatchID = bb.id JOIN book b ON bb.bookID = b.isbn JOIN orderSheet os ON obd.orderID = os.id WHERE os.orderDate BETWEEN ? AND ? GROUP BY b.title ORDER BY revenue DESC LIMIT 10;";
-
-        DatabaseConnection.executeQuery(query, resultSet -> {
-            while (resultSet.next()) {
-                String title = resultSet.getString("title");
-                double revenue = resultSet.getDouble("revenue");
-                bookRevenues.add(new ResultStatistic(title, revenue));
-            }
-        }, startDate, endDate);
-
-        return bookRevenues;
-    }
-
-    public List<ResultStatistic> getTop10CategoriesByDailyRevenue(String date) throws SQLException {
-        List<ResultStatistic> categoryRevenues = new ArrayList<>();
-        String query = "SELECT c.name AS title, SUM(od.quantity * od.salePrice) AS revenue FROM orderBooksDetails od JOIN bookBatch bb ON od.bookBatchID = bb.id JOIN book b ON bb.bookID = b.isbn JOIN bookCategory bc ON b.isbn = bc.bookID JOIN category c ON bc.categoryID = c.id JOIN orderSheet os ON od.orderID = os.id WHERE os.orderDate = ? GROUP BY c.name ORDER BY revenue DESC LIMIT 10;";
-
-        DatabaseConnection.executeQuery(query, resultSet -> {
-            while (resultSet.next()) {
-                String categoryName = resultSet.getString("title");
-                double revenue = resultSet.getDouble("revenue");
-                categoryRevenues.add(new ResultStatistic(categoryName, revenue));
-            }
-        }, date);
+        }, date.getStartDate(), date.getEndDate());
 
         return categoryRevenues;
     }
 
-    public List<ResultStatistic> getTop10CategoriesByMonthlyRevenue(int year, int month) throws SQLException {
-        List<ResultStatistic> categoryRevenues = new ArrayList<>();
-        String query = "SELECT c.name AS title, SUM(od.quantity * od.salePrice) AS revenue FROM orderBooksDetails od JOIN bookBatch bb ON od.bookBatchID = bb.id JOIN book b ON bb.bookID = b.isbn JOIN bookCategory bc ON b.isbn = bc.bookID JOIN category c ON bc.categoryID = c.id JOIN orderSheet os ON od.orderID = os.id WHERE YEAR(os.orderDate) = ? AND MONTH(os.orderDate) = ? GROUP BY c.name ORDER BY revenue DESC LIMIT 10;";
+    public Map<Customer, BigDecimal> getTop10CustomersRevenue(TimeRange date) throws SQLException {
+        Map<Customer, BigDecimal> customerRevenues = new HashMap<>();
+        String query = "SELECT cu.id, cu.name, SUM(odb.quantity * odb.salePrice) AS revenue FROM orderBooksDetails odb JOIN orderSheet os ON odb.orderID = os.id JOIN customer cu ON os.customerID = cu.id WHERE os.orderDate BETWEEN ? AND ? GROUP BY cu.id ORDER BY revenue DESC LIMIT 10;";
 
         DatabaseConnection.executeQuery(query, resultSet -> {
             while (resultSet.next()) {
-                String categoryName = resultSet.getString("title");
-                double revenue = resultSet.getDouble("revenue");
-                categoryRevenues.add(new ResultStatistic(categoryName, revenue));
+                String id = resultSet.getString("id");
+                String name = resultSet.getString("name");
+                BigDecimal revenue = resultSet.getBigDecimal("revenue");
+                customerRevenues.put(new Customer(id, name), revenue);
             }
-        }, year, month);
-
-        return categoryRevenues;
-    }
-
-    public List<ResultStatistic> getTop10CategoriesByWeeklyRevenue(int year, int week) throws SQLException {
-        List<ResultStatistic> categoryRevenues = new ArrayList<>();
-        String query = "SELECT c.name AS title, SUM(od.quantity * od.salePrice) AS revenue FROM orderBooksDetails od JOIN bookBatch bb ON od.bookBatchID = bb.id JOIN book b ON bb.bookID = b.isbn JOIN bookCategory bc ON b.isbn = bc.bookID JOIN category c ON bc.categoryID = c.id JOIN orderSheet os ON od.orderID = os.id WHERE YEAR(os.orderDate) = ? AND WEEK(os.orderDate) = ? GROUP BY c.name ORDER BY revenue DESC LIMIT 10;";
-
-        DatabaseConnection.executeQuery(query, resultSet -> {
-            while (resultSet.next()) {
-                String categoryName = resultSet.getString("title");
-                double revenue = resultSet.getDouble("revenue");
-                categoryRevenues.add(new ResultStatistic(categoryName, revenue));
-            }
-        }, year, week);
-
-        return categoryRevenues;
-    }
-
-    public List<ResultStatistic> getTop10CategoriesByRevenueDateToDate(String startDate, String endDate) throws SQLException {
-        List<ResultStatistic> categoryRevenues = new ArrayList<>();
-        String query = "SELECT c.name AS title, SUM(od.quantity * od.salePrice) AS revenue FROM orderBooksDetails od JOIN bookBatch bb ON od.bookBatchID = bb.id JOIN book b ON bb.bookID = b.isbn JOIN bookCategory bc ON b.isbn = bc.bookID JOIN category c ON bc.categoryID = c.id JOIN orderSheet os ON od.orderID = os.id WHERE os.orderDate BETWEEN ? AND ? GROUP BY c.name ORDER BY revenue DESC LIMIT 10;";
-
-        DatabaseConnection.executeQuery(query, resultSet -> {
-            while (resultSet.next()) {
-                String categoryName = resultSet.getString("title");
-                double revenue = resultSet.getDouble("revenue");
-                categoryRevenues.add(new ResultStatistic(categoryName, revenue));
-            }
-        }, startDate, endDate);
-
-        return categoryRevenues;
-    }
-
-    public List<ResultStatistic> getTop10CustomerByDailyRevenue(String date) throws SQLException {
-        List<ResultStatistic> customerRevenues = new ArrayList<>();
-        String query = "SELECT cu.name AS title, SUM(odb.quantity * odb.salePrice) AS revenue FROM orderBooksDetails odb JOIN orderSheet os ON odb.orderID = os.id JOIN customer cu ON os.customerID = cu.id WHERE os.orderDate = ? GROUP BY cu.name ORDER BY revenue DESC LIMIT 10;";
-
-        DatabaseConnection.executeQuery(query, resultSet -> {
-            while (resultSet.next()) {
-                String customerName = resultSet.getString("title");
-                double totalRevenue = resultSet.getDouble("revenue");
-                customerRevenues.add(new ResultStatistic(customerName, totalRevenue));
-            }
-        }, date);
+        }, date.getStartDate(), date.getEndDate());
 
         return customerRevenues;
     }
 
-    public List<ResultStatistic> getTop10CustomerByMonthlyRevenue(int month, int year) throws SQLException {
-        List<ResultStatistic> customerRevenues = new ArrayList<>();
-
-        String query = "SELECT cu.name AS title, SUM(odb.quantity * odb.salePrice) AS revenue FROM orderBooksDetails odb JOIN orderSheet os ON odb.orderID = os.id JOIN customer cu ON os.customerID = cu.id WHERE YEAR(os.orderDate) = ? AND MONTH(os.orderDate) = ? GROUP BY cu.name ORDER BY revenue DESC LIMIT 10;";
-
-        DatabaseConnection.executeQuery(query, resultSet -> {
-            while (resultSet.next()) {
-                String customerName = resultSet.getString("title");
-                double totalRevenue = resultSet.getDouble("revenue");
-                customerRevenues.add(new ResultStatistic(customerName, totalRevenue));
-            }
-        }, year, month);
-
-        System.out.println(customerRevenues);
-
-        return customerRevenues;
-    }
-
-    public List<ResultStatistic> getTop10CustomerByWeeklyRevenue(int year, int week) throws SQLException {
-        List<ResultStatistic> customerRevenues = new ArrayList<>();
-        String query = "SELECT cu.name AS title, SUM(odb.quantity * odb.salePrice) AS revenue FROM orderBooksDetails odb JOIN orderSheet os ON odb.orderID = os.id JOIN customer cu ON os.customerID = cu.id WHERE YEAR(os.orderDate) = ? AND WEEK(os.orderDate) = ? GROUP BY cu.name ORDER BY revenue DESC LIMIT 10;";
+   public Map<EmployeeModel, BigDecimal> getTop10EmployeeRevenue(TimeRange date) throws SQLException {
+        Map<EmployeeModel, BigDecimal> employeeRevenues = new HashMap<>();
+        String query = "SELECT e.id, u.name, SUM(od.quantity * od.salePrice) AS revenue FROM orderBooksDetails od JOIN orderSheet os ON od.orderID = os.id JOIN employee e ON os.employeeID = e.id JOIN user u ON e.userID = u.id WHERE os.orderDate BETWEEN ? AND ? GROUP BY e.id ORDER BY revenue DESC LIMIT 10;";
 
         DatabaseConnection.executeQuery(query, resultSet -> {
             while (resultSet.next()) {
-                String customerName = resultSet.getString("title");
-                double totalRevenue = resultSet.getDouble("revenue");
-                customerRevenues.add(new ResultStatistic(customerName, totalRevenue));
+                String id = resultSet.getString("id");
+                String name = resultSet.getString("name");
+                BigDecimal revenue = resultSet.getBigDecimal("revenue");
+                employeeRevenues.put(new EmployeeModel(id, name), revenue);
             }
-        }, year, week);
-
-        return customerRevenues;
-    }
-
-    public List<ResultStatistic> getTop10CustomersByRevenueDateToDate(String startDate, String endDate) throws SQLException {
-        List<ResultStatistic> customerRevenues = new ArrayList<>();
-        String query = "SELECT cu.name AS title, SUM(odb.quantity * odb.salePrice) AS revenue FROM orderBooksDetails odb JOIN orderSheet os ON odb.orderID = os.id JOIN customer cu ON os.customerID = cu.id WHERE os.orderDate BETWEEN ? AND ? GROUP BY cu.name ORDER BY revenue DESC LIMIT 10;";
-
-        DatabaseConnection.executeQuery(query, resultSet -> {
-            while (resultSet.next()) {
-                String customerName = resultSet.getString("title");
-                double totalRevenue = resultSet.getDouble("revenue");
-                customerRevenues.add(new ResultStatistic(customerName, totalRevenue));
-            }
-        }, startDate, endDate);
-
-        return customerRevenues;
-    }
-
-    public List<ResultStatistic> getTop10EmployeeByDailyRevenue(String date) throws SQLException {
-        List<ResultStatistic> employeeRevenues = new ArrayList<>();
-        String query = "SELECT u.name AS title, SUM(od.quantity * od.salePrice) AS revenue FROM orderBooksDetails od JOIN orderSheet os ON od.orderID = os.id JOIN employee e ON os.employeeID = e.id JOIN user u ON e.userID = u.id WHERE os.orderDate = ? GROUP BY u.name ORDER BY revenue DESC LIMIT 10;\n;";
-
-        DatabaseConnection.executeQuery(query, resultSet -> {
-            while (resultSet.next()) {
-                String employeeName = resultSet.getString("title");
-                double totalRevenue = resultSet.getDouble("revenue");
-                employeeRevenues.add(new ResultStatistic(employeeName, totalRevenue));
-            }
-        }, date);
+        }, date.getStartDate(), date.getEndDate());
 
         return employeeRevenues;
     }
-
-    public List<ResultStatistic> getTop10EmployeeByMonthlyRevenue(int year, int month) throws SQLException {
-        List<ResultStatistic> employeeRevenues = new ArrayList<>();
-        String query = "SELECT u.name AS title, SUM(od.quantity * od.salePrice) AS revenue FROM orderBooksDetails od JOIN orderSheet os ON od.orderID = os.id JOIN employee e ON os.employeeID = e.id JOIN user u ON e.userID = u.id WHERE YEAR(os.orderDate) = ? AND MONTH(os.orderDate) = ? GROUP BY u.name ORDER BY revenue DESC LIMIT 10;";
-
-        DatabaseConnection.executeQuery(query, resultSet -> {
-            while (resultSet.next()) {
-                String employeeName = resultSet.getString("title");
-                double totalRevenue = resultSet.getDouble("revenue");
-                employeeRevenues.add(new ResultStatistic(employeeName, totalRevenue));
-            }
-        }, year, month);
-
-        return employeeRevenues;
-    }
-
-    public List<ResultStatistic> getTop10EmployeeByWeeklyRevenue(int year, int week) throws SQLException {
-        List<ResultStatistic> employeeRevenues = new ArrayList<>();
-        String query = "SELECT u.name AS title, SUM(od.quantity * od.salePrice) AS revenue FROM orderBooksDetails od JOIN orderSheet os ON od.orderID = os.id JOIN employee e ON os.employeeID = e.id JOIN user u ON e.userID = u.id WHERE YEAR(os.orderDate) = ? AND WEEK(os.orderDate) = ? GROUP BY u.name ORDER BY revenue DESC LIMIT 10;";
-
-        DatabaseConnection.executeQuery(query, resultSet -> {
-            while (resultSet.next()) {
-                String employeeName = resultSet.getString("title");
-                double totalRevenue = resultSet.getDouble("revenue");
-                employeeRevenues.add(new ResultStatistic(employeeName, totalRevenue));
-            }
-        }, year, week);
-
-        return employeeRevenues;
-    }
-
-    public List<ResultStatistic> getTop10EmployeesByRevenueDateToDate(String startDate, String endDate) throws SQLException {
-        List<ResultStatistic> employeeRevenues = new ArrayList<>();
-        String query = "SELECT u.name AS title, SUM(od.quantity * od.salePrice) AS revenue FROM orderBooksDetails od JOIN orderSheet os ON od.orderID = os.id JOIN employee e ON os.employeeID = e.id JOIN user u ON e.userID = u.id WHERE os.orderDate BETWEEN ? AND ? GROUP BY u.name ORDER BY revenue DESC LIMIT 10;";
-
-        DatabaseConnection.executeQuery(query, resultSet -> {
-            while (resultSet.next()) {
-                String employeeName = resultSet.getString("title");
-                double totalRevenue = resultSet.getDouble("revenue");
-                employeeRevenues.add(new ResultStatistic(employeeName, totalRevenue));
-            }
-        }, startDate, endDate);
-
-        return employeeRevenues;
-    }
-
 }

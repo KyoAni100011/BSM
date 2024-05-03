@@ -56,6 +56,10 @@ public class EmployeeModel extends UserModel {
         this.orders = new ArrayList<>();
     }
 
+    public EmployeeModel(String id, String name) {
+        this(id, name, null, null, null, null, true, null);
+    }
+
     public EmployeeModel(){};
 
     @Override

@@ -1,5 +1,6 @@
 package com.bsm.bsm.admin.bookRevenue;
 
+import com.bsm.bsm.book.Book;
 import com.bsm.bsm.revenue.ResultStatistic;
 import com.bsm.bsm.revenue.RevenueStatisticService;
 import com.bsm.bsm.utils.NumericValidationUtils;
@@ -19,6 +20,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.DayOfWeek;
@@ -29,8 +31,11 @@ import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 public class BookRevenueController {
     private final RevenueStatisticService revenueStatisticService = new RevenueStatisticService();
@@ -114,7 +119,7 @@ public class BookRevenueController {
         String chartTitle = getChartTitle("Month", selectedDate);
         executorService.submit(() -> {
             try {
-                List<ResultStatistic> bookMonthly = revenueStatisticService.getBookMonthlyRevenue(selectedDate.getYear(), selectedDate.getMonthValue());
+                Map<Book, BigDecimal> bookMonthly = revenueStatisticService.getBookMonthlyRevenue(selectedDate.getYear(), selectedDate.getMonthValue());
                 Platform.runLater(() -> updateChartWithData(bookMonthly, chartTitle));
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -135,7 +140,7 @@ public class BookRevenueController {
         String chartTitle = getChartTitle("Week", selectedDate);
         executorService.submit(() -> {
             try {
-                List<ResultStatistic> bookWeekly = revenueStatisticService.getBookWeeklyRevenue(selectedDate.getYear(), selectedDate.get(WeekFields.ISO.weekOfYear()));
+                Map<Book, BigDecimal> bookWeekly = revenueStatisticService.getBookWeeklyRevenue(selectedDate.getYear(), selectedDate.get(WeekFields.ISO.weekOfYear()));
                 Platform.runLater(() -> updateChartWithData(bookWeekly, chartTitle));
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -203,7 +208,7 @@ public class BookRevenueController {
         String chartTitle = getChartTitle("Date", selectedDate);
         executorService.submit(() -> {
             try {
-                List<ResultStatistic> bookDaily = revenueStatisticService.getBookDailyRevenue(selectedDate.toString());
+                Map<Book, BigDecimal> bookDaily = revenueStatisticService.getBookDailyRevenue(selectedDate.toString());
                 Platform.runLater(() -> updateChartWithData(bookDaily, chartTitle));
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -230,7 +235,7 @@ public class BookRevenueController {
             if (startDate != null && endDate != null && !startDate.isAfter(endDate)) {
                 String chartTitle = "Top 10 Best Selling Books From " + getFormattedDate(startDate) + " To " + getFormattedDate(endDate);
                 try {
-                    List<ResultStatistic> booksFromTo = revenueStatisticService.getBookDateToDateRevenue(startDate.toString(), endDate.toString());
+                    Map<Book, BigDecimal> booksFromTo = revenueStatisticService.getBookDateToDateRevenue(startDate.toString(), endDate.toString());
                     Platform.runLater(() -> updateChartWithData(booksFromTo, chartTitle));
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -256,16 +261,24 @@ public class BookRevenueController {
         }
     }
 
-    private void updateChartWithData(List<ResultStatistic> data, String chartTitle) {
+    private void updateChartWithData(Map<Book, BigDecimal> data, String chartTitle) {
         ObservableList<XYChart.Data<String, Number>> chartData = FXCollections.observableArrayList();
-        List<String> dataNames = new ArrayList<>(); 
+        List<String> dataNames = new ArrayList<>();
 
         if (data != null) {
-            int count = 1;
-            for (ResultStatistic rs : data) {
-                chartData.add(new XYChart.Data<>(String.valueOf(count), rs.getStatisticValue()));
-                dataNames.add(rs.getTitle()); 
-                count++;
+            List<Map.Entry<Book, BigDecimal>> sortedEntries = data.entrySet().stream()
+                    .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                    .toList();
+
+            int index = 1;
+            for (Map.Entry<Book, BigDecimal> entry : sortedEntries) {
+                Book book = entry.getKey();
+                BigDecimal revenue = entry.getValue();
+                chartData.add(new XYChart.Data<>(String.valueOf(index), revenue));
+                dataNames.add(book.getTitle());
+                if (index++ == 10) {
+                    break;
+                }
             }
         }
 

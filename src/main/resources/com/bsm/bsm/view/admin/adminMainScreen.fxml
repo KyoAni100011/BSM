@@ -88,22 +88,7 @@
          <center>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <VBox fx:id="bp" alignment="CENTER" layoutY="62.0" prefHeight="656.0" prefWidth="827.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 45px;" text="Welcome to BSM" />
-                        <ImageView fitHeight="482.0" fitWidth="598.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../images/catWelcome.jpg" />
-                           </image>
-                        </ImageView>
-<!--                        <Label styleClass="text-menu-item-1" text="Roboto Black" />-->
-<!--                        <Label styleClass="text-menu-item-2" text="Roboto Thin" />-->
-<!--                        <Label styleClass="text-menu-item-3" text="Roboto Light" />-->
-<!--                        <Label styleClass="text-menu-item-4" text="Roboto Regular" />-->
-<!--                        <Label styleClass="text-menu-item-5" text="Roboto Medium" />-->
-<!--                        <Label styleClass="text-menu-item-6" text="Roboto Bold" />-->
-                     </children>
-                  </VBox>
+                  <VBox fx:id="bp" alignment="CENTER" layoutY="58.0" prefHeight="656.0" prefWidth="827.0" />
                </children>
             </AnchorPane>
          </center>

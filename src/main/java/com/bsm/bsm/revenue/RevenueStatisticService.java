@@ -1,5 +1,11 @@
 package com.bsm.bsm.revenue;
 
+import com.bsm.bsm.book.Book;
+import com.bsm.bsm.category.Category;
+import com.bsm.bsm.customer.Customer;
+import com.bsm.bsm.employee.EmployeeModel;
+
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -12,67 +18,83 @@ public class RevenueStatisticService {
         revenueStatisticDAO = new RevenueStatisticDAO();
     }
 
-    public List<ResultStatistic> getBookDailyRevenue(String date) throws SQLException {
-        return revenueStatisticDAO.getTop10BooksByDailyRevenue(date);
+    public Map<Book, BigDecimal> getBookDailyRevenue(String date) throws SQLException {
+        TimeRange timeRange = new TimeRange(date, date);
+        return revenueStatisticDAO.getTop10BooksRevenue(timeRange);
     }
 
-    public List<ResultStatistic> getBookMonthlyRevenue(int year, int month) throws SQLException {
-        return revenueStatisticDAO.getTop10BooksByMonthlyRevenue(year, month);
+    public Map<Book, BigDecimal> getBookMonthlyRevenue(int year, int month) throws SQLException {
+        TimeRange timeRange = new TimeRange(year + "-" + month + "-01", year + "-" + month + "-31");
+        return revenueStatisticDAO.getTop10BooksRevenue(timeRange);
     }
 
-    public List<ResultStatistic> getBookWeeklyRevenue(int year, int week) throws SQLException {
-        return revenueStatisticDAO.getTop10BooksByWeeklyRevenue(year, week);
+    public Map<Book, BigDecimal> getBookWeeklyRevenue(int year, int week) throws SQLException {
+        TimeRange timeRange = new TimeRange(year + "-" + week + "-01", year + "-" + week + "-31");
+        return revenueStatisticDAO.getTop10BooksRevenue(timeRange);
     }
 
-    public List<ResultStatistic> getBookDateToDateRevenue(String startDate, String endDate) throws SQLException {
-        return revenueStatisticDAO.getTop10BooksByRevenueDateToDate(startDate, endDate);
+    public Map<Book, BigDecimal> getBookDateToDateRevenue(String startDate, String endDate) throws SQLException {
+        TimeRange timeRange = new TimeRange(startDate, endDate);
+        return revenueStatisticDAO.getTop10BooksRevenue(timeRange);
     }
 
-    public List<ResultStatistic> getCategoryDailyRevenue(String date) throws SQLException {
-        return revenueStatisticDAO.getTop10CategoriesByDailyRevenue(date);
+    public Map<Category, BigDecimal> getCategoryDailyRevenue(String date) throws SQLException {
+        TimeRange timeRange = new TimeRange(date, date);
+        return revenueStatisticDAO.getTop10CategoriesRevenue(timeRange);
     }
 
-    public List<ResultStatistic> getCategoryMonthlyRevenue(int year, int month) throws SQLException {
-        return revenueStatisticDAO.getTop10CategoriesByMonthlyRevenue(year, month);
+    public Map<Category, BigDecimal> getCategoryMonthlyRevenue(int year, int month) throws SQLException {
+        TimeRange timeRange = new TimeRange(year + "-" + month + "-01", year + "-" + month + "-31");
+        return revenueStatisticDAO.getTop10CategoriesRevenue(timeRange);
     }
 
-    public List<ResultStatistic> getCategoryWeeklyRevenue(int year, int week) throws SQLException {
-        return revenueStatisticDAO.getTop10CategoriesByWeeklyRevenue(year, week);
+    public Map<Category, BigDecimal> getCategoryWeeklyRevenue(int year, int week) throws SQLException {
+        TimeRange timeRange = new TimeRange(year + "-" + week + "-01", year + "-" + week + "-31");
+        return revenueStatisticDAO.getTop10CategoriesRevenue(timeRange);
     }
 
-    public List<ResultStatistic> getCategoryDateToDateRevenue(String startDate, String endDate) throws SQLException {
-        return revenueStatisticDAO.getTop10CategoriesByRevenueDateToDate(startDate, endDate);
+    public Map<Category, BigDecimal> getCategoryDateToDateRevenue(String startDate, String endDate) throws SQLException {
+        TimeRange timeRange = new TimeRange(startDate, endDate);
+        return revenueStatisticDAO.getTop10CategoriesRevenue(timeRange);
     }
 
-    public List<ResultStatistic> getCustomerDailyRevenue(String date) throws SQLException {
-        return revenueStatisticDAO.getTop10CustomerByDailyRevenue(date);
+    public Map<Customer, BigDecimal> getCustomerDailyRevenue(String date) throws SQLException {
+        TimeRange timeRange = new TimeRange(date, date);
+        return revenueStatisticDAO.getTop10CustomersRevenue(timeRange);
     }
 
-    public List<ResultStatistic> getCustomerMonthlyRevenue(int year, int month) throws SQLException {
-        return revenueStatisticDAO.getTop10CustomerByMonthlyRevenue(month, year);
+    public Map<Customer, BigDecimal> getCustomerMonthlyRevenue(int year, int month) throws SQLException {
+        TimeRange timeRange = new TimeRange(year + "-" + month + "-01", year + "-" + month + "-31");
+        return revenueStatisticDAO.getTop10CustomersRevenue(timeRange);
     }
 
-    public List<ResultStatistic> getCustomerWeeklyRevenue(int year, int week) throws SQLException {
-        return revenueStatisticDAO.getTop10CustomerByWeeklyRevenue(year, week);
+    public Map<Customer, BigDecimal> getCustomerWeeklyRevenue(int year, int week) throws SQLException {
+        TimeRange timeRange = new TimeRange(year + "-" + week + "-01", year + "-" + week + "-31");
+        return revenueStatisticDAO.getTop10CustomersRevenue(timeRange);
     }
 
-    public List<ResultStatistic> getCustomerDateToDateRevenue(String startDate, String endDate) throws SQLException {
-        return revenueStatisticDAO.getTop10CustomersByRevenueDateToDate(startDate, endDate);
+    public Map<Customer, BigDecimal> getCustomerDateToDateRevenue(String startDate, String endDate) throws SQLException {
+        TimeRange timeRange = new TimeRange(startDate, endDate);
+        return revenueStatisticDAO.getTop10CustomersRevenue(timeRange);
     }
 
-    public List<ResultStatistic> getEmployeeDailyRevenue(String date) throws SQLException {
-        return revenueStatisticDAO.getTop10EmployeeByDailyRevenue(date);
+    public Map<EmployeeModel, BigDecimal> getEmployeeDailyRevenue(String date) throws SQLException {
+        TimeRange timeRange = new TimeRange(date, date);
+        return revenueStatisticDAO.getTop10EmployeeRevenue(timeRange);
     }
 
-    public List<ResultStatistic> getEmployeeMonthlyRevenue(int year, int month) throws SQLException {
-        return revenueStatisticDAO.getTop10EmployeeByMonthlyRevenue(year, month);
+    public Map<EmployeeModel, BigDecimal> getEmployeeMonthlyRevenue(int year, int month) throws SQLException {
+        TimeRange timeRange = new TimeRange(year + "-" + month + "-01", year + "-" + month + "-31");
+        return revenueStatisticDAO.getTop10EmployeeRevenue(timeRange);
     }
 
-    public List<ResultStatistic> getEmployeeWeeklyRevenue(int year, int week) throws SQLException {
-        return revenueStatisticDAO.getTop10EmployeeByWeeklyRevenue(year, week);
+    public Map<EmployeeModel, BigDecimal> getEmployeeWeeklyRevenue(int year, int week) throws SQLException {
+        TimeRange timeRange = new TimeRange(year + "-" + week + "-01", year + "-" + week + "-31");
+        return revenueStatisticDAO.getTop10EmployeeRevenue(timeRange);
     }
 
-    public List<ResultStatistic> getEmployeeDateToDateRevenue(String startDate, String endDate) throws SQLException {
-        return revenueStatisticDAO.getTop10EmployeesByRevenueDateToDate(startDate, endDate);
+    public Map<EmployeeModel, BigDecimal> getEmployeeDateToDateRevenue(String startDate, String endDate) throws SQLException {
+        TimeRange timeRange = new TimeRange(startDate, endDate);
+        return revenueStatisticDAO.getTop10EmployeeRevenue(timeRange);
     }
 }

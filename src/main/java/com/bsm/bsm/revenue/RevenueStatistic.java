@@ -7,12 +7,10 @@ import java.util.Map;
 
 public class RevenueStatistic<T> {
     private final TimeRange date;
-    private final AdminModel inchargeAdmin;
     private final Map<T, Double> revenues;
 
     public RevenueStatistic(TimeRange date, AdminModel inchargeAdmin) {
         this.date = date;
-        this.inchargeAdmin = inchargeAdmin;
         this.revenues = new HashMap<>();
     }
 

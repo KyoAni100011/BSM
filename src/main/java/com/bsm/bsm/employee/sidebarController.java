@@ -50,11 +50,13 @@ public class sidebarController {
         userName = name;
     }
 
-    public void initialize()
-    {
+    public void initialize() throws IOException {
         menuButton.setVisible(true);
         updateNameText();
         updateRoleText();
+
+        loadPage("order/createOrder");
+        applyActiveStyles(addOrder);
     }
 
     private void updateNameText() {
