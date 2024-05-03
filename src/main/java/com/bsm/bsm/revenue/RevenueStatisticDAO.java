@@ -33,14 +33,15 @@ public class RevenueStatisticDAO {
 
     public Map<Category, BigDecimal> getTop10CategoriesRevenue(TimeRange date) throws SQLException {
         Map<Category, BigDecimal> categoryRevenues = new HashMap<>();
-        String query = "SELECT c.id, c.name, SUM(obd.quantity * obd.salePrice) AS revenue FROM orderBooksDetails obd JOIN bookBatch bb ON obd.bookBatchID = bb.id JOIN book b ON bb.bookID = b.isbn JOIN bookCategory bc ON b.isbn = bc.bookID JOIN category c ON bc.categoryID = c.id JOIN orderSheet os ON obd.orderID = os.id WHERE os.orderDate BETWEEN ? AND ? GROUP BY c.id ORDER BY revenue DESC LIMIT 10;";
+        String query = "SELECT c.id, c.name, c.isEnabled, SUM(obd.quantity * obd.salePrice) AS revenue FROM orderBooksDetails obd JOIN bookBatch bb ON obd.bookBatchID = bb.id JOIN book b ON bb.bookID = b.isbn JOIN bookCategory bc ON b.isbn = bc.bookID JOIN category c ON bc.categoryID = c.id JOIN orderSheet os ON obd.orderID = os.id WHERE os.orderDate BETWEEN ? AND ? GROUP BY c.id ORDER BY revenue DESC LIMIT 10;";
 
         DatabaseConnection.executeQuery(query, resultSet -> {
             while (resultSet.next()) {
                 String id = resultSet.getString("id");
                 String name = resultSet.getString("name");
+                boolean isEnabled = resultSet.getBoolean("isEnabled");
                 BigDecimal revenue = resultSet.getBigDecimal("revenue");
-                categoryRevenues.put(new Category(id, name), revenue);
+                categoryRevenues.put(new Category(id, name, isEnabled), revenue);
             }
         }, date.getStartDate(), date.getEndDate());
 
