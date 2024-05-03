@@ -35,8 +35,10 @@ public class UpdatePriceItemController {
         } catch (NumberFormatException e) {
             if (sellPriceField.getText().isEmpty()) {
                 sellPriceLabel.setText("Price cannot be empty");
+                sellPriceValue = null;
             } else {
                 sellPriceLabel.setText("Invalid price");
+                sellPriceValue = null;
             }
         }
         return sellPriceValue;
