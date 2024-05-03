@@ -53,19 +53,22 @@
                     </Button>
                 </AnchorPane>
                 <AnchorPane prefHeight="43.0" prefWidth="130.0">
-                    <Button fx:id="employeeLabel" layoutY="7.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="130.0" style="-fx-background-color: transparent;" text="Employee">
+                    <Button fx:id="employeeLabel" layoutY="7.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="144.0" style="-fx-background-color: transparent;" text="Employee">
                         <graphic>
                             <Group>
                                 <SVGPath fx:id="employeeSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" scaleX="0.03" scaleY="0.03" />
                             </Group>
                         </graphic></Button>
                 </AnchorPane>
-                <Button fx:id="quantityLabel" mnemonicParsing="false" prefHeight="30.0" prefWidth="130.0" style="-fx-background-color: transparent;" text="Quantity">
+                <Button fx:id="quantityLabel" mnemonicParsing="false" prefHeight="30.0" prefWidth="140.0" style="-fx-background-color: transparent;" text="Quantity">
                     <graphic>
                         <Group>
                             <SVGPath fx:id="quantitySortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" scaleX="0.03" scaleY="0.03" />
                         </Group>
                     </graphic>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
                 </Button>
                 <AnchorPane prefHeight="43.0" prefWidth="87.0">
                     <Button fx:id="totalPriceLabel" layoutY="9.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="158.0" style="-fx-background-color: transparent;" text="Total Price">

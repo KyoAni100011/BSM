@@ -6,9 +6,6 @@ import com.bsm.bsm.book.BookDAO;
 import com.bsm.bsm.database.DatabaseConnection;
 import com.bsm.bsm.employee.EmployeeModel;
 import com.bsm.bsm.user.UserDAO;
-import com.bsm.bsm.user.UserModel;
-import com.bsm.bsm.user.UserSingleton;
-import com.bsm.bsm.utils.DateUtils;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -20,6 +17,23 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ImportSheetDAO {
 
     private final UserDAO userDao = new UserDAO();
+
+    public boolean updateSalePrice(List<BookBatch> bookBatches) throws SQLException {
+
+        String QUERY_UPDATE_SALE_PRICE = "update book set salePrice = ? where isbn = ?";
+        Connection connection = DatabaseConnection.getConnection();
+        connection.setAutoCommit(false);
+
+        for (var bookBatch: bookBatches) {
+            String isbn = bookBatch.getBook().getIsbn();
+            BigDecimal salePrice = bookBatch.getBook().getSalePrice();
+            DatabaseConnection.executeUpdate(connection, QUERY_UPDATE_SALE_PRICE, salePrice, isbn);
+        }
+
+        connection.commit();
+        connection.setAutoCommit(true);
+        return true;
+    };
 
     public boolean createImportSheet(ImportSheet importSheet, List<BookBatch> bookBatches) throws SQLException {
         Connection connection = DatabaseConnection.getConnection();
@@ -47,26 +61,23 @@ public class ImportSheetDAO {
 
     public List<Book> getISheetBookDetails(String idSheet) {
         List<Book> bookDetails = new ArrayList<>();
-        String query = "SELECT " +
-                "    b.title AS bookTitle, " +
-                "    bBatch.quantity AS quantity, " +
-                "    bBatch.importPrice as price " +
-                "FROM " +
-                "    importSheet isheet " +
-                "JOIN " +
-                "    bookBatch bBatch ON isheet.id = bBatch.importSheetID " +
-                "JOIN " +
-                "    book b ON bBatch.bookID = b.isbn " +
-                "WHERE " +
-                "    isheet.id = ?";
+        String query = """
+                SELECT b.isbn as bookID, b.title as bookTitle, bBatch.quantity as quantity, bBatch.importPrice as price
+                FROM importSheet isheet
+                JOIN bookBatch bBatch ON isheet.id = bBatch.importSheetID
+                JOIN book b ON bBatch.bookID = b.isbn
+                WHERE isheet.id = ?
+                """;
+
 
         DatabaseConnection.executeQuery(query, resultSet -> {
             if (resultSet != null) {
                 while (resultSet.next()) {
+                    String isbn = resultSet.getString("bookID");
                     String title = resultSet.getString("bookTitle");
                     BigDecimal price = resultSet.getBigDecimal("price");
                     int quantity = resultSet.getInt("quantity");
-                    bookDetails.add(new Book(title, quantity ,price));
+                    bookDetails.add(new Book(isbn, title, quantity ,price));
                 }
             }
         }, idSheet);

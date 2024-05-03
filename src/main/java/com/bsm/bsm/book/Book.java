@@ -45,11 +45,9 @@ public class Book {
        this(null, title, null, null, null, true, 0, null, null, null);
     }
 
-    public Book(String title, int quantity, BigDecimal salePrice)
+    public Book(String id, String title, int quantity, BigDecimal salePrice)
     {
-        this.title = title;
-        this.quantity = quantity;
-        this.salePrice = salePrice;
+        this (id, title, null, null, null, true, quantity, salePrice, null, null);
     }
 
     public String getIsbn() {

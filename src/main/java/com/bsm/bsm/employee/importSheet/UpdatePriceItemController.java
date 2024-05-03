@@ -1,6 +1,7 @@
 package com.bsm.bsm.employee.importSheet;
 
 import com.bsm.bsm.book.BookService;
+import com.bsm.bsm.sheet.ImportSheetService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -8,6 +9,7 @@ import javafx.scene.text.Text;
 import com.bsm.bsm.book.BookBatch;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class UpdatePriceItemController {
     BigDecimal correctSellPrice = BigDecimal.ZERO;
@@ -21,17 +23,17 @@ public class UpdatePriceItemController {
     @FXML
     public Text id, importPrice, currentSellPrice;
 
+
     BigDecimal getSellPriceValue() {
-        BigDecimal sellPriceValue = BigDecimal.ZERO;
+        BigDecimal sellPriceValue;
         try {
             sellPriceValue = new BigDecimal(sellPriceField.getText());
             if (sellPriceValue.compareTo(correctSellPrice) <= 0) {
-                sellPriceLabel.setText("At least 10% more than import price");
+                sellPriceLabel.setText("Must be more than 10% of import price");
                 sellPriceValue = null;
             } else {
                 sellPriceLabel.setText("");
             }
-
         } catch (NumberFormatException e) {
             if (sellPriceField.getText().isEmpty()) {
                 sellPriceLabel.setText("Price cannot be empty");
@@ -40,6 +42,7 @@ public class UpdatePriceItemController {
                 sellPriceLabel.setText("Invalid price");
                 sellPriceValue = null;
             }
+            sellPriceValue = null;
         }
         return sellPriceValue;
     }
@@ -56,8 +59,8 @@ public class UpdatePriceItemController {
         importPrice.setText(String.valueOf(bookBatch.getImportPrice()));
 
         correctSellPrice = bookBatch.getImportPrice().multiply(BigDecimal.valueOf(1.1));
+        correctSellPrice = correctSellPrice.setScale(0, RoundingMode.UP);
 
-        System.out.println("bookBatch = " + bookBatch.getBook().getSalePrice());
         BigDecimal currentSellPriceString = bookService.getBookByName(bookBatch.getBook().getTitle()).getSalePrice();
         if (currentSellPriceString != null){
             currentSellPrice.setText(currentSellPriceString.toString());
@@ -65,6 +68,7 @@ public class UpdatePriceItemController {
         else {
             currentSellPrice.setText("Not set");
         }
-        sellPriceField.setPromptText("Import sell price * 1.1 >= " + correctSellPrice.toString());
+        sellPriceField.setPromptText("More than " + correctSellPrice.toString());
+
     }
 }
