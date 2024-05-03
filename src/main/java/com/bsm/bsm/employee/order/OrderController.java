@@ -68,6 +68,7 @@ public class OrderController implements Initializable  {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeButtonsAndLabels();
+        setupDatePicker();
         try {
             loadAllOrders(condition);
         } catch (IOException e) {
