@@ -30,14 +30,16 @@ public class OrderService {
         return orderDAO.getOrderInfo(condition);
     }
 
-    public List<Order> search(String keyword, String condition) throws SQLException {
+    public List<Order> search(String keyword, String condition) {
         List<Order> orders = getAllOrders(condition);
         String finalKeyword = keyword.toLowerCase();
         return orders.stream()
                 .filter(order ->
                         order.getCustomer().getName().toLowerCase().contains(finalKeyword) ||
                                 order.getEmployee().getName().toLowerCase().contains(finalKeyword) ||
-                                String.valueOf(order.getId()).contains(finalKeyword))
+                                String.valueOf(order.getId()).contains(finalKeyword) ||
+                                order.getOrderDate().contains(finalKeyword) ||
+                                String.valueOf(order.getTotalPrice()).contains(finalKeyword))
                 .collect(Collectors.toList());
     }
 

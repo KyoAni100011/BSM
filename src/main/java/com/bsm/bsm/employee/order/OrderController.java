@@ -65,11 +65,7 @@ public class OrderController implements Initializable  {
     public void initialize(URL location, ResourceBundle resources) {
         initializeButtonsAndLabels();
         setupDatePicker();
-        try {
-            loadAllOrders(condition);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadAllOrders(condition);
         initializePaginationButtons();
 
         inputSearch.textProperty().addListener(new ChangeListener<String>() {
@@ -77,22 +73,13 @@ public class OrderController implements Initializable  {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 isSearch = !newValue.isEmpty();
                 inputSearchText = newValue;
-                if(!isSearch) {
-                    try {
-                        loadAllOrders(condition);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
+                if(!isSearch) loadAllOrders(condition);
                 else {
-                    try {
-                        orders = Orderservice.search(inputSearchText, condition);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
+                    orders = Orderservice.search(inputSearchText, condition);
                 }
 
                 orders = Orderservice.sort(orders, sortOrder.equals("ASC"), column);
+
                 try {
                     updateOrdersList();
                 } catch (IOException e) {
@@ -129,14 +116,14 @@ public class OrderController implements Initializable  {
                 return string != null && !string.isEmpty() ? LocalDate.parse(string, dateFormatter) : null;
             }
         });
+
         fromDateField.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
         toDateField.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
     }
 
-    private void loadAllOrders(String condition) throws IOException {
+    private void loadAllOrders(String condition) {
         orders = Orderservice.getAllOrders(condition);
         orders = Orderservice.sort(orders, true, "id");
-        updateOrdersList();
         try {
             updateOrdersList();
         } catch (IOException e) {
@@ -207,6 +194,15 @@ public class OrderController implements Initializable  {
         }
         condition = "WHERE os.orderDate BETWEEN '" + fromDate + "' AND '" + toDate + "'";
         loadAllOrders(condition);
+
+        if (isSearch) {
+            orders = Orderservice.search(inputSearchText, condition);
+        } else {
+            orders = Orderservice.getAllOrders(condition);
+        }
+
+        orders = Orderservice.sort(orders, sortOrder.equals("ASC"), column);
+        updateOrdersList();
     }
 
 
@@ -215,8 +211,15 @@ public class OrderController implements Initializable  {
         column = "isbn";
         sortOrder = "ASC";
         currentPage = 1;
+        fromDateField.getEditor().clear();
+        toDateField.getEditor().clear();
         inputSearch.setText("");
         idSortLabel.setContent("");
+        CustomerSortLabel.setContent("");
+        employeeSortLabel.setContent("");
+        orderSortLabel.setContent("");
+        priceSortLabel.setContent("");
+        condition = "";
         loadAllOrders(condition);
     }
 
@@ -261,7 +264,7 @@ public class OrderController implements Initializable  {
                 int buttonIndex = i - startPage;
                 if (totalPages > 5 && startPage < 6) {
                     button = paginationButtons.get(buttonIndex);
-                } else if (totalPages > 5) {
+                } else if (totalPages > 5 && buttonIndex + 1 < paginationButtons.size()) {
                     button = paginationButtons.get(buttonIndex + 1);
                 } else {
                     button = paginationButtons.get(buttonIndex);
@@ -333,9 +336,10 @@ public class OrderController implements Initializable  {
                 orders = Orderservice.search(inputSearchText, condition);
             } else {
                 orders = Orderservice.getAllOrders(condition);
-
             }
             orders = Orderservice.sort(orders, isAscending, column);
+            System.out.println("here");
+            orders.forEach(System.out::println);
             updateOrdersList();
         } catch (Exception e) {
             System.out.println(e.getMessage());
