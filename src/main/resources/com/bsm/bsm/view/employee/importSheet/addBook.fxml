@@ -86,7 +86,6 @@
     <TextField fx:id="categorySearch" layoutX="160.0" layoutY="265.0" prefHeight="27.0" prefWidth="133.0" promptText="Search category" />
     <TextField fx:id="authorSearch" layoutX="138.0" layoutY="177.0" prefHeight="27.0" prefWidth="388.0" promptText="Search author" />
     <Label fx:id="languageErrorLabel" layoutX="317.0" layoutY="413.0" prefHeight="17.0" prefWidth="216.0" styleClass="error-label" />
-    <SearchableComboBox fx:id="fullNameField" disable="true" layoutX="77.0" layoutY="133.0" prefHeight="40.0" prefWidth="450.0" visible="false" />
     <TextField fx:id="bookNameField" layoutX="77.0" layoutY="133.0" prefHeight="40.0" prefWidth="450.0" />
     <ScrollPane fx:id="scrollPanelBook" visible="false" layoutX="77.0" layoutY="175.0" prefHeight="200.0" prefWidth="450.0">
         <VBox fx:id="itemBook" prefHeight="200.0" prefWidth="436.0" />

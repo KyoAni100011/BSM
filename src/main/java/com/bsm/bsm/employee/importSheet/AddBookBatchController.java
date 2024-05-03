@@ -49,7 +49,7 @@ public class AddBookBatchController {
     @FXML
     public CheckComboBox<String> authorNameCheckCombo , categoryCheckCombo;
     @FXML
-    public SearchableComboBox languageComboBox, publisherComboBox,  fullNameField;
+    public SearchableComboBox languageComboBox, publisherComboBox;
     @FXML
     public Button saveChangesButton;
     public ScrollPane scrollPanelBook;
@@ -132,7 +132,6 @@ public class AddBookBatchController {
 
         categoryCheckCombo.getItems().addAll(categoriesItems);
         authorNameCheckCombo.getItems().addAll(authorItems);
-        fullNameField.getItems().addAll(bookItems);
         languageComboBox.setItems(languageItems);
         publisherComboBox.getItems().addAll(publisherItems);
         setupDatePicker();
@@ -488,7 +487,7 @@ public class AddBookBatchController {
     private void handleSaveChanges(ActionEvent event) {
         clearErrorMessages();
 
-        String title = (String) fullNameField.getValue();
+        String title =  bookNameField.getText();
         String releaseDate = releaseDatePicker.getEditor().getText();
         String publisherName = (String)publisherComboBox.getValue();
         String quantity = bookQuantityField.getText();
