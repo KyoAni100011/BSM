@@ -25,9 +25,7 @@ public class Category {
         this(id, name, "", isEnabled);
     }
 
-    public Category(String id, String name) {
-        this(id, name, "", true);
-    }
+
 
     public Category(String name) {
         this("", name, "", true);

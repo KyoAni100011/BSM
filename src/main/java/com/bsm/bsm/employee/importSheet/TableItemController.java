@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import static com.bsm.bsm.utils.DateUtils.convertDOBFormat;
+
 
 public class TableItemController {
     private final ImportSheetService importSheetService = new ImportSheetService();
@@ -45,7 +47,8 @@ public class TableItemController {
         sheetModel = sheet;
         id = sheet.getId();
         idLabel.setText(sheet.getId());
-        dateImportLabel.setText(sheet.getImportDate());
+        String date = convertDOBFormat(sheet.getImportDate());
+        dateImportLabel.setText(date);
         employeeLabel.setText(sheet.getEmployee().getName());
         quantityLabel.setText(String.valueOf(sheet.getQuantity()));
         totalPriceLabel.setText(sheet.getTotalPrice().toString());
