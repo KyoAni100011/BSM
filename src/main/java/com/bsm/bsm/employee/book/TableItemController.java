@@ -66,7 +66,7 @@ public class TableItemController {
                 if (bookService.setEnable(isbn, !oldState.get())) {
                     isOn.setSwitchedProperty(!oldState.get());
                     book.setEnabled(!oldState.get());
-                    AlertUtils.showAlert("Success", "Author has been " + isEnabledState, Alert.AlertType.INFORMATION);
+                    AlertUtils.showAlert("Success", "Book has been " + isEnabledState, Alert.AlertType.INFORMATION);
                 } else {
                     AlertUtils.showAlert("Error", "Failed to " + isEnabledState + " author", Alert.AlertType.ERROR);
                 }
@@ -84,7 +84,7 @@ public class TableItemController {
         if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
             if (isbn != null) {
                 BookDetailController.handleTableItemSelection(isbn);
-                FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/bookDetail");
+                FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/bookDetail", "Book Detail");
             } else {
                 AlertUtils.showAlert("Error", "Can't find book", Alert.AlertType.ERROR);
 

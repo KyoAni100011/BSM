@@ -5,6 +5,7 @@ import com.bsm.bsm.book.BookBatch;
 import com.bsm.bsm.book.BookService;
 import com.bsm.bsm.database.DatabaseConnection;
 import com.bsm.bsm.employee.EmployeeModel;
+import com.bsm.bsm.employee.book.AddBookController;
 import com.bsm.bsm.sheet.ImportSheet;
 import com.bsm.bsm.sheet.ImportSheetService;
 import com.bsm.bsm.user.UserSingleton;
@@ -107,7 +108,8 @@ public class ImportSheetController {
     @FXML
     public void handleAddBookButton() {
         try {
-            FXMLLoaderHelper.loadFXML(new Stage(),"employee/importSheet/addBook", "Add Book");
+            AddBookBatchController controller = FXMLLoaderHelper.loadFXMLWithController(new Stage(),"/com/bsm/bsm/view/employee/importSheet/addBook.fxml", "Add Book Batch To Import Sheet");
+            controller.test();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

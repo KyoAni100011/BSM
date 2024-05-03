@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="565.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.book.BookDetailController">
+<AnchorPane prefHeight="565.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.book.BookDetailController">
     <Label layoutX="312.0" layoutY="101.0" styleClass="label-bold" text="Book Name">
         <font>
             <Font size="18.0" />
@@ -34,7 +34,7 @@
 
     <TextField fx:id="fullNameField" disable="true" layoutX="311.0" layoutY="129.0" prefHeight="40.0" prefWidth="218.0" styleClass="input-field-add-special-disable" />
     <TextField fx:id="publisherField" disable="true" layoutX="77.0" layoutY="319.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add-special-disable" />
-    <DatePicker fx:id="releaseDatePicker" disable="true" layoutX="75.0" layoutY="473.0" prefHeight="40.0" prefWidth="217.0" style="-fx-control-inner-background: #F4F4F4;" styleClass="input-field-add-special-disable" />
+    <DatePicker fx:id="releaseDatePicker" disable="true" layoutX="75.0" layoutY="473.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add-special-disable" />
     <Label layoutX="217.0" layoutY="45.0" text="BOOK DETAIL">
         <font>
             <Font size="25.0" />
@@ -74,14 +74,14 @@
          <Font size="18.0" />
       </font>
    </Label>
-   <ScrollPane layoutX="78.0" layoutY="211.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="69.0" prefWidth="217.0" styleClass="input-field-add-special-disable">
+   <ScrollPane fx:id="scrollPanelAuthor" layoutX="78.0" layoutY="211.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="69.0" prefWidth="217.0" styleClass="input-field-add-special-disable">
       <content>
-         <VBox fx:id="pnAuthor" prefHeight="69.0" prefWidth="199.0" />
+         <VBox fx:id="pnAuthor" prefHeight="69.0" prefWidth="199.0" style="-fx-background-color: white;" />
       </content>
    </ScrollPane>
-   <ScrollPane layoutX="317.0" layoutY="211.0" prefHeight="69.0" prefWidth="207.0" styleClass="input-field-add-special-disable">
+   <ScrollPane fx:id="scrollPanelCategory" layoutX="317.0" layoutY="211.0" prefHeight="69.0" prefWidth="207.0" styleClass="input-field-add-special-disable">
       <content>
-         <VBox fx:id="pnCate" prefHeight="70.0" prefWidth="187.0" />
+         <VBox fx:id="pnCate" prefHeight="70.0" prefWidth="187.0" style="-fx-background-color: white;" />
       </content>
    </ScrollPane>
    <TextField fx:id="idField" disable="true" layoutX="77.0" layoutY="129.0" prefHeight="40.0" prefWidth="218.0" styleClass="input-field-add-special-disable" />

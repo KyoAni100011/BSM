@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="Anc" prefHeight="565.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.importSheet.ImportSheetDetailController">
+<AnchorPane prefHeight="565.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.importSheet.ImportSheetDetailController">
     <Label layoutX="81.0" layoutY="192.0" styleClass="label-bold" text="Employee">
         <font>
             <Font size="18.0" />
@@ -27,7 +27,7 @@
 
     <TextField fx:id="employeeNameField" disable="true" layoutX="80.0" layoutY="220.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add-special-disable" />
     <TextField fx:id="totalPricefield" disable="true" layoutX="320.0" layoutY="220.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add-special-disable" />
-    <DatePicker fx:id="importDatePicker" disable="true" layoutX="320.0" layoutY="129.0" prefHeight="40.0" prefWidth="217.0" style="-fx-control-inner-background: #F4F4F4;" styleClass="input-field-add-special-disable" />
+    <DatePicker fx:id="importDatePicker" disable="true" layoutX="320.0" layoutY="129.0" prefHeight="40.0" prefWidth="217.0" styleClass="input-field-add-special-disable" />
     <Label layoutX="174.0" layoutY="43.0" text="IMPORT SHEET DETAIL">
         <font>
             <Font size="25.0" />
@@ -39,14 +39,12 @@
             <Font size="18.0" />
         </font>
     </Label>
-   <Label layoutX="83.0" layoutY="282.0" styleClass="label-bold" text="Book">
+   <Label layoutX="83.0" layoutY="282.0" styleClass="label-bold" text="Book Batch">
       <font>
          <Font size="18.0" />
       </font>
    </Label>
-   <ScrollPane layoutX="86.0" layoutY="309.0" prefHeight="200.0" prefWidth="453.0">
-      <content>
-         <VBox fx:id="bookItem" prefHeight="200.0" prefWidth="437.0" />
-      </content>
-   </ScrollPane>
+    <ScrollPane layoutX="86.0" layoutY="309.0" prefHeight="200.0" prefWidth="453.0" styleClass="input-field-add-special-disable">
+        <VBox fx:id="bookItem" prefHeight="200.0" prefWidth="435.0" style="-fx-background-color: white;" />
+    </ScrollPane>
 </AnchorPane>

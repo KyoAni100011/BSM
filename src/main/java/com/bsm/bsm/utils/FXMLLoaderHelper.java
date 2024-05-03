@@ -18,7 +18,17 @@ public class FXMLLoaderHelper {
     public static void loadFXML(Stage currentStage, String fxmlPath, String title) throws IOException {
         loadFXML(currentStage, fxmlPath, title, true); // Always resizable is true
     }
+    public static <T> T loadFXMLWithController(Stage currentStage, String fxmlPath, String title) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(FXMLLoaderHelper.class.getResource(fxmlPath));
+        Parent root = fxmlLoader.load();
+        Scene scene = new Scene(root);
+        currentStage.setScene(scene);
+        currentStage.setTitle(title); // Setting the title here
+        currentStage.setResizable(true); // Always resizable is true
+        currentStage.show();
 
+        return fxmlLoader.getController();
+    }
     public static void loadFXML(Stage currentStage, String fxmlPath, String title, boolean resizable) throws IOException {
         if (currentStage == null || fxmlPath == null) {
             throw new IllegalArgumentException("currentStage and fxmlPath cannot be null");

@@ -33,7 +33,7 @@ public class TableItemController {
         if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
             if (id != null) {
                 ImportSheetDetailController.handleTableItemSelection(id, sheetModel);
-                FXMLLoaderHelper.loadFXML(new Stage(), "employee/importSheet/importSheetDetail");
+                FXMLLoaderHelper.loadFXML(new Stage(), "employee/importSheet/importSheetDetail", "Import Sheet Detail");
             } else {
                 AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
 

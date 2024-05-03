@@ -19,6 +19,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.bsm.bsm.utils.DateUtils.convertDOBFormat;
+
 
 public class OrderDetailController {
     private static final OrderService importSheetService = new OrderService();
@@ -33,6 +35,7 @@ public class OrderDetailController {
     public DatePicker importDatePicker;
     @FXML
     public VBox bookItem;
+    public TextField customerPhoneField;
 
     static void handleTableItemSelection(int myId, Order thisorder) {
         id = myId;
@@ -71,9 +74,12 @@ public class OrderDetailController {
         employeeNameField.setText(order.getEmployee().getName());
         customerNameField.setText(order.getCustomer().getName());
         totalPricefield.setText(String.valueOf(order.getTotalPrice()));
-        System.out.println("date" + order.getOrderDate() );
-
-        importDatePicker.setValue(LocalDate.parse(order.getOrderDate(), dateFormatter));
+        String date = order.getOrderDate();
+        if (date.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            date = convertDOBFormat(date);
+        }
+        importDatePicker.setValue(LocalDate.parse(date, dateFormatter));
+        customerPhoneField.setText(order.getCustomer().getPhone());
     }
 
     private void updateSheet() {

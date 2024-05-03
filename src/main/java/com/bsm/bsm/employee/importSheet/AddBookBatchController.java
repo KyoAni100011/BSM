@@ -47,7 +47,7 @@ public class AddBookBatchController {
     @FXML
     public CheckComboBox<String> authorNameCheckCombo , categoryCheckCombo;
     @FXML
-    public SearchableComboBox languageComboBox, publisherComboBox,  fullNameField;
+    public SearchableComboBox languageComboBox, publisherComboBox,fullNameField;
     @FXML
     public Button saveChangesButton;
     @FXML
@@ -281,7 +281,9 @@ public class AddBookBatchController {
 
 
     }
-
+    public void test(){
+        System.out.println("hi");
+    }
     private void updateFilteredCategories(String searchQuery) {
         filteredCategoriesItems.clear();
 
