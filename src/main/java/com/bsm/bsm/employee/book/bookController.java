@@ -79,6 +79,7 @@ public class bookController implements Initializable {
                 if(!isSearch) loadAllBooks();
                 else  books = bookService.search(inputSearchText);
                 try {
+                    System.out.println("Search: " + books);
                     updateBooksList();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -316,6 +317,7 @@ public class bookController implements Initializable {
         int totalUserCountForRole = getTotalBookCountForRole(type);
         int endIndex = Math.min(startIndex + itemsPerPage, totalUserCountForRole);
         int totalCount = 0;
+
 
         for (int i = startIndex; i < books.size() && totalCount < endIndex; i++) {
             Book b = books.get(i);

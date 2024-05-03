@@ -41,31 +41,6 @@
             </HBox>
             </HBox>
         </AnchorPane>
-<!--        <AnchorPane fx:id="AncBookBarChart" prefHeight="560.0" prefWidth="700.0">-->
-<!--            <BarChart fx:id="bookBarChart" alternativeRowFillVisible="false" barGap="10.0" legendSide="TOP" prefHeight="560.0" prefWidth="700.0" titleSide="BOTTOM" verticalGridLinesVisible="false">-->
-<!--                <xAxis>-->
-<!--                    <CategoryAxis label="Book Name" maxHeight="50.0" prefHeight="50.0" styleClass="axis-label" tickLabelGap="20.0" tickLength="5.0">-->
-<!--                        <tickLabelFont>-->
-<!--                            <Font name="Roboto Bold" size="14.0" />-->
-<!--                        </tickLabelFont>-->
-<!--                        <opaqueInsets>-->
-<!--                            <Insets />-->
-<!--                        </opaqueInsets>-->
-<!--                        <padding>-->
-<!--                            <Insets bottom="20.0" />-->
-<!--                        </padding>-->
-<!--                    </CategoryAxis>-->
-<!--                </xAxis>-->
-<!--                <yAxis>-->
-<!--                    <NumberAxis label="Revenue (VNĐ)" side="LEFT" styleClass="axis-label">-->
-<!--                        <tickLabelFont>-->
-<!--                            <Font name="Roboto Bold" size="14.0" />-->
-<!--                        </tickLabelFont>-->
-<!--                    </NumberAxis>-->
-<!--                </yAxis>-->
-<!--            </BarChart>-->
-<!--        </AnchorPane>-->
-
         <AnchorPane fx:id="AncBookBarChart" prefHeight="511.0" prefWidth="700.0">
             <BarChart fx:id="customerBarChart" alternativeRowFillVisible="false" barGap="10.0" legendSide="TOP" prefHeight="511.0" prefWidth="700.0" titleSide="BOTTOM" verticalGridLinesVisible="false">
                 <xAxis>
@@ -84,6 +59,5 @@
                 </yAxis>
             </BarChart>
         </AnchorPane>
-
     </VBox>
 </AnchorPane>
