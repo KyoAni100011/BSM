@@ -61,7 +61,7 @@
     -fx-text-fill: #F5A11C !important;
 }
 .sideBarItemEmployeeActive .graphic{
-    -fx-fill: #F5A11C!important;
+    -fx-fill: #F5A11C !important;
 }
 
 .sideBarIconEmployeeActive {
@@ -120,12 +120,24 @@
 .input-field-add-special-disable {
     -fx-background-color: transparent;
     -fx-border-width: 1px;
-    -fx-border-color: black;
+    -fx-border-color: #E8E8E8;
     -fx-border-radius: 5px;
 }
 .input-field-add-special-disable:hover {
     -fx-opacity: 1  ;
 }
+
+
+.input-field-add-special-disable-item {
+    -fx-background-color: transparent;
+    -fx-border-width: 1px;
+    -fx-border-color: #CECECE;
+    -fx-border-radius: 5px;
+}
+.input-field-add-special-disable-item:disabled {
+    -fx-opacity: 1  ;
+}
+
 .combo-box-popup .list-cell:disabled  {
     -fx-opacity: 0.4 ;
 }
@@ -325,4 +337,8 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-background-size: 70% 70%; /* Adjust the size of the icon */
+}
+
+.title-item{
+    -fx-font-family: "Roboto Medium";
 }

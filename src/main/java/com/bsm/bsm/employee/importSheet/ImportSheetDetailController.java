@@ -4,16 +4,21 @@ import com.bsm.bsm.book.Book;
 import com.bsm.bsm.sheet.ImportSheet;
 import com.bsm.bsm.sheet.ImportSheetService;
 import com.bsm.bsm.utils.NumericValidationUtils;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -36,16 +41,22 @@ public class ImportSheetDetailController {
     public TextField idField;
     @FXML
     public VBox bookItem;
+    public Tooltip employeeTooltip;
 
     @FXML
     public void initialize() {
         new ImportSheetDetailController();
+//
+
         importDatePicker.getEditor().setOpacity(1);
         setupDatePicker();
 
         setImportSheetInfo();
         updateSheet();
     }
+
+    
+
     private void setupDatePicker() {
         importDatePicker.setPromptText("dd/mm/yyyy");
 
@@ -70,8 +81,12 @@ public class ImportSheetDetailController {
     }
 
     private void setImportSheetInfo() {
+
         idField.setText(importSheet.getId());
         employeeNameField.setText(importSheet.getEmployee().getName());
+
+
+
         totalPricefield.setText(String.valueOf(importSheet.getTotalPrice()));
         String date = convertDOBFormat(importSheet.getImportDate());
         importDatePicker.setValue(LocalDate.parse(date, dateFormatter));
