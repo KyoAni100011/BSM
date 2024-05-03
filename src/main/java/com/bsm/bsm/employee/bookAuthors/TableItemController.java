@@ -78,6 +78,10 @@ public class TableItemController {
     void handleTableItemDoubleClick(MouseEvent event) throws IOException {
         if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
             if (id != null) {
+                if (!authorService.isEnabled(id)) {
+                    AlertUtils.showAlert("Error", "Need to enable author to view details", Alert.AlertType.ERROR);
+                    return;
+                }
                 AuthorDetailController.handleTableItemSelection(id);
                 FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/authorDetail", "Author Detail");
             } else {

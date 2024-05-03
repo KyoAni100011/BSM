@@ -148,6 +148,10 @@ public class AuthorController implements Initializable {
     void handleUpdateAuthorButton(ActionEvent event) {
         try {
             if (id != null) {
+                if (!authorService.checkAuthorExists(id)) {
+                    AlertUtils.showAlert("Error", "Need to enable author to update", Alert.AlertType.ERROR);
+                    return;
+                }
                 UpdateAuthorController.handleTableItemSelection(id);
                 FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/updateAuthor", "Update Author");
             } else {

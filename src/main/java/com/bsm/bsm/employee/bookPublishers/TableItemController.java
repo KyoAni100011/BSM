@@ -80,6 +80,10 @@ public class TableItemController {
     void handleTableItemDoubleClick(MouseEvent event) throws IOException {
         if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
             if (id != null) {
+                if (!publisherService.isEnabled(id)) {
+                    AlertUtils.showAlert("Error", "Need to enable publisher to view details", Alert.AlertType.ERROR);
+                    return;
+                }
                 PublisherDetailController.handleTableItemSelection(id);
                 FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookPublishers/publisherDetail", "Publisher Detail");
             } else {
