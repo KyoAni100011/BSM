@@ -124,6 +124,18 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
         return bookDAO.getLanguages();
     }
 
+    public List<Book> getAllBooksForViewList() {
+        List<Book> books = getAllBooks();
+        List<Book> booksForViewList = new ArrayList<>();
+
+        for (var book: books) {
+            if (checkIfBookCanBeEnabled(book.getIsbn())) {
+                booksForViewList.add(book);
+            }
+        }
+        return booksForViewList;
+    }
+
     public List<Book> getAllBooks() {
         try {
             return bookDAO.getAllBooks();
@@ -133,7 +145,11 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
     }
 
     public boolean checkIfBookCanBeEnabled(String isbn) {
-        return bookDAO.checkIfBookCanBeEnabled(isbn);
+        try {
+            return bookDAO.checkIfBookCanBeEnabled(isbn);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 

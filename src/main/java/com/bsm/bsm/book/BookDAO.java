@@ -259,14 +259,20 @@ public class BookDAO {
         return rowAffected > 0;
     }
 
-    public boolean checkIfBookCanBeEnabled(String isbn) {
-        var checkAuthor = checkIfBookCanBeEnabledFromAuthors(isbn);
-        var checkCategory = checkIfBookCanBeEnabledFromCategories(isbn);
-        var checkPublisher = checkIfBookCanBeEnabledFromPublisher(isbn);
+    public boolean checkIfBookCanBeEnabled(String isbn) throws SQLException {
+        Connection connection = DatabaseConnection.getConnection();
+        connection.setAutoCommit(false);
+
+        var checkAuthor = checkIfBookCanBeEnabledFromAuthors(connection, isbn);
+        var checkCategory = checkIfBookCanBeEnabledFromCategories(connection, isbn);
+        var checkPublisher = checkIfBookCanBeEnabledFromPublisher(connection, isbn);
+
+        connection.commit();
+        connection.setAutoCommit(true);
         return checkAuthor && checkCategory && checkPublisher;
     }
 
-    private boolean checkIfBookCanBeEnabledFromAuthors(String isbn) {
+    private boolean checkIfBookCanBeEnabledFromAuthors(Connection connection, String isbn) {
         String QUERY_CHECK_AUTHOR = """
                 select a.isEnabled as enabledAuthor from author a join bookAuthor ba on a.id = ba.authorID
                 where ba.bookID = ?
@@ -274,7 +280,7 @@ public class BookDAO {
 
         AtomicReference<Boolean> canEnable = new AtomicReference<>();
 
-        DatabaseConnection.executeQuery(QUERY_CHECK_AUTHOR, resultSet -> {
+        DatabaseConnection.executeQuery(connection, QUERY_CHECK_AUTHOR, resultSet -> {
             if (resultSet != null) {
                 while (resultSet.next()) {
                     if (!resultSet.getBoolean("enabledAuthor")) {
@@ -289,7 +295,7 @@ public class BookDAO {
         return canEnable.get();
     }
 
-    private boolean checkIfBookCanBeEnabledFromCategories(String isbn) {
+    private boolean checkIfBookCanBeEnabledFromCategories(Connection connection, String isbn) {
         String QUERY_CHECK_CATEGORY = """
                 select c.isEnabled as enabledCategory from category c join bookCategory bc on c.id = bc.categoryID
                 where bc.bookID = ?
@@ -297,7 +303,7 @@ public class BookDAO {
 
         AtomicReference<Boolean> canEnable = new AtomicReference<>();
 
-        DatabaseConnection.executeQuery(QUERY_CHECK_CATEGORY, resultSet -> {
+        DatabaseConnection.executeQuery(connection, QUERY_CHECK_CATEGORY, resultSet -> {
             if (resultSet != null) {
                 while (resultSet.next()) {
                     if (!resultSet.getBoolean("enabledCategory")) {
@@ -312,7 +318,7 @@ public class BookDAO {
         return canEnable.get();
     }
 
-    private boolean checkIfBookCanBeEnabledFromPublisher(String isbn) {
+    private boolean checkIfBookCanBeEnabledFromPublisher(Connection connection, String isbn) {
         String QUERY_CHECK_PUBLISHER = """
                 select p.isEnabled as enabledPublisher from Publisher p join Book b on p.id = b.publisherID
                 where b.isbn = ?
@@ -320,7 +326,7 @@ public class BookDAO {
 
         AtomicReference<Boolean> canEnable = new AtomicReference<>();
 
-        DatabaseConnection.executeQuery(QUERY_CHECK_PUBLISHER, resultSet -> {
+        DatabaseConnection.executeQuery(connection, QUERY_CHECK_PUBLISHER, resultSet -> {
             if (resultSet != null && resultSet.next()) {
                 if (!resultSet.getBoolean("enabledPublisher")) {
                     canEnable.set(false);

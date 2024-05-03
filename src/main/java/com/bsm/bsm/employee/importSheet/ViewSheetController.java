@@ -139,6 +139,7 @@ public class ViewSheetController {
                 e.printStackTrace();
             }
         }
+        int totalPages = (int) Math.ceil((double) sheets.size() / itemsPerPage);
         updatePaginationButtons(totalPages);
     }
 
