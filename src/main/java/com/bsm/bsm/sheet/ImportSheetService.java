@@ -19,6 +19,15 @@ public class ImportSheetService {
         importSheetDAO = new ImportSheetDAO();
     }
 
+    public boolean updateSalePrice(List<BookBatch> bookBatches) {
+        try {
+            return importSheetDAO.updateSalePrice(bookBatches);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
     public boolean createImportSheet(ImportSheet importSheet, List<BookBatch> bookBatches) {
         try {
             return importSheetDAO.createImportSheet(importSheet, bookBatches);

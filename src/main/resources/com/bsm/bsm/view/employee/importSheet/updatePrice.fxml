@@ -16,7 +16,7 @@
    <ScrollPane layoutY="100.0" prefHeight="458.0" prefWidth="700.0">
       <VBox fx:id="pnItems" prefHeight="458.0" prefWidth="684.0" style="-fx-border-color: #CECECE; -fx-border-width: 1 0 0 0; -fx-background-color: white;" />
    </ScrollPane>
-   <Button layoutX="534.0" layoutY="582.0" minHeight="40.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefWidth="150.0" styleClass="button-custom-employee" text="Save">
+   <Button layoutX="534.0" layoutY="582.0" minHeight="40.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefWidth="150.0" style="-fx-background-color: #F5A11C;" styleClass="button-custom-employee" text="Save">
       <font>
          <Font size="18.0" />
       </font>
