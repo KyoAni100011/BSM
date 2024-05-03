@@ -44,7 +44,7 @@
             </AnchorPane>
          </VBox>
          <HBox alignment="CENTER_RIGHT" layoutY="422.0" prefHeight="44.0" prefWidth="700.0" spacing="15.0" style="-fx-background-color: white; -fx-border-width: 2px 0px 0px 0px; -fx-border-color: #F3F3F3; -fx-background-radius: 0px 0px 10px 10px;">
-            <Button fx:id="addBookButton" focusTraversable="false" mnemonicParsing="false" onAction="#handleAddBookButton" style="-fx-background-color: transparent; -fx-text-fill: #F5A11C;" styleClass="text-bold" text=" Add book batch">
+            <Button fx:id="addBookButton" focusTraversable="false" mnemonicParsing="false" onAction="#handleAddBookButton" style="-fx-background-color: transparent; -fx-text-fill: #F5A11C;" text=" Add book batch">
                <HBox.margin>
                   <Insets />
                </HBox.margin>

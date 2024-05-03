@@ -57,7 +57,7 @@ public class UpdatePriceController {
         for (int i = 0; i < updatePriceItemControllers.size(); i++) {
             UpdatePriceItemController updatePriceItemController = updatePriceItemControllers.get(i);
             BigDecimal sellPriceValue = updatePriceItemController.getSellPriceValue();
-            if (sellPriceValue.compareTo(BigDecimal.ZERO) == 0) {
+            if (sellPriceValue == null) {
                 return;
             }
             bookBatches.get(i).getBook().setSalePrice(sellPriceValue);

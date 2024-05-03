@@ -27,9 +27,12 @@ public class UpdatePriceItemController {
             sellPriceValue = new BigDecimal(sellPriceField.getText());
             if (sellPriceValue.compareTo(correctSellPrice.multiply(BigDecimal.valueOf(1.1))) <= 0) {
                 sellPriceLabel.setText("At least 10% more than import price");
+                sellPriceValue = null;
             } else {
                 sellPriceLabel.setText("");
+                sellPriceValue = null;
             }
+
         } catch (NumberFormatException e) {
             if (sellPriceField.getText().isEmpty()) {
                 sellPriceLabel.setText("Price cannot be empty");

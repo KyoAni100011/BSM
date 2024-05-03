@@ -29,10 +29,7 @@
       </Label>
    </HBox>
    <HBox alignment="CENTER_LEFT" layoutY="26.0" prefHeight="62.0" prefWidth="684.0">
-      <Label prefHeight="18.0" prefWidth="106.0" styleClass="text-bold" text="Max Import Price:">
-         <padding>
-            <Insets right="5.0" />
-         </padding>
+      <Label prefHeight="18.0" prefWidth="110.0" styleClass="text-bold" text="Max Import Price:">
          <HBox.margin>
             <Insets left="10.0" />
          </HBox.margin>
@@ -56,20 +53,20 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="219.0">
                <children>
-                  <Label prefHeight="18.0" prefWidth="98.0" styleClass="text-bold" text="Update Sell Price:">
+                  <Label prefHeight="18.0" prefWidth="109.0" styleClass="text-bold" text="Update Sell Price:">
                      <HBox.margin>
                         <Insets right="4.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="sellPriceField" prefHeight="26.0" prefWidth="197.0" />
+                  <TextField fx:id="sellPriceField" prefHeight="26.0" prefWidth="183.0" />
                </children>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
             </HBox>
-            <Label fx:id="sellPriceLabel" prefHeight="18.0" prefWidth="200.0" styleClass="error-label">
+            <Label fx:id="sellPriceLabel" prefHeight="18.0" prefWidth="182.0" styleClass="error-label">
                <VBox.margin>
-                  <Insets left="100.0" />
+                  <Insets left="115.0" />
                </VBox.margin>
             </Label>
          </children>

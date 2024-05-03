@@ -161,11 +161,12 @@ public class ImportSheetController {
                 String importSheetID = importSheetService.getImportSheetID(importSheet);
                 importSheet.setId(importSheetID);
                 ImportSheetDetailController.handleTableItemSelection(importSheetID, importSheet);
-                FXMLLoaderHelper.loadFXML(new Stage(), "employee/importSheet/importSheetDetail");
+                Stage s = new Stage();
+                FXMLLoaderHelper.loadFXML(s, "employee/importSheet/importSheetDetail");
+                ImportSheetDetailController.setStage(s);
 
                 if (!bookBatches.isEmpty()) {
                     UpdatePriceController.setBookBatches(bookBatches);
-                    FXMLLoaderHelper.loadFXML(new Stage(), "employee/importSheet/updatePrice", "Update Sell Price");
                 }
                 else {
                     System.out.println("No book to update price.");
@@ -183,6 +184,7 @@ public class ImportSheetController {
         }
 
     }
+
 
     private boolean validateInputs(String importDate, String totalCost) {
         String importDateError = ValidationUtils.validateImportDay(importDate);
