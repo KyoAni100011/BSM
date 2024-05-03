@@ -47,7 +47,7 @@ public class AddBookBatchController {
     @FXML
     public CheckComboBox<String> authorNameCheckCombo , categoryCheckCombo;
     @FXML
-    public SearchableComboBox languageComboBox, publisherComboBox,  fullNameField;
+    public SearchableComboBox languageComboBox, publisherComboBox,fullNameField;
     @FXML
     public Button saveChangesButton;
     @FXML
@@ -87,6 +87,12 @@ public class AddBookBatchController {
             return null; // Nếu không phải là số, chặn việc nhập
         }
     };
+
+    ImportSheetController importSheetController;
+
+    void setImportSheetController(ImportSheetController thisImportSheetController) {
+        importSheetController = thisImportSheetController;
+    }
 
     @FXML
     public void initialize() {
@@ -281,7 +287,9 @@ public class AddBookBatchController {
 
 
     }
-
+    public void test(){
+        System.out.println("hi");
+    }
     private void updateFilteredCategories(String searchQuery) {
         filteredCategoriesItems.clear();
 
@@ -447,7 +455,7 @@ public class AddBookBatchController {
 
             Book book = new Book(title, publisher, publishingDateConverted, selectedLanguage, authors, categories);
             BookBatch bookBatch = new BookBatch(Integer.parseInt(quantity), new BigDecimal(importPrice), book);
-            ImportSheetController.addBookBatchToSheet(bookBatch);
+            importSheetController.setBookBatch(bookBatch);
 
             // Close the current stage
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

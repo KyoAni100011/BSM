@@ -3,9 +3,11 @@ package com.bsm.bsm.employee.importSheet;
 import com.bsm.bsm.book.Book;
 import com.bsm.bsm.sheet.ImportSheet;
 import com.bsm.bsm.sheet.ImportSheetService;
+import com.bsm.bsm.utils.FXMLLoaderHelper;
 import com.bsm.bsm.utils.NumericValidationUtils;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -13,8 +15,11 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
@@ -41,6 +46,27 @@ public class ImportSheetDetailController {
     public TextField idField;
     @FXML
     public VBox bookItem;
+    public AnchorPane Anc;
+
+    private static Stage stage;
+
+    public static void setStage(Stage thisStage) {
+        stage = thisStage;
+        setupCloseHandler();
+    }
+
+    private static void setupCloseHandler() {
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                try {
+                    FXMLLoaderHelper.loadFXML(new Stage(), "employee/importSheet/updatePrice", "Update Sell Price");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
     public Tooltip employeeTooltip;
 
     @FXML

@@ -5,6 +5,7 @@ import com.bsm.bsm.book.BookBatch;
 import com.bsm.bsm.book.BookService;
 import com.bsm.bsm.database.DatabaseConnection;
 import com.bsm.bsm.employee.EmployeeModel;
+import com.bsm.bsm.employee.book.AddBookController;
 import com.bsm.bsm.sheet.ImportSheet;
 import com.bsm.bsm.sheet.ImportSheetService;
 import com.bsm.bsm.user.UserSingleton;
@@ -48,19 +49,25 @@ public class ImportSheetController {
     @FXML
     public Button btnAddSheet;
 
-    private static List<BookBatch> bookBatches;
+    private List<BookBatch> bookBatches;
 
-    public Button refreshButton;
 
     private ImportSheetService importSheetService = new ImportSheetService();
     private BookService bookService = new BookService();
 
-    static void handleTableItemSelection(String thisBookName) {
+
+
+    void handleTableItemSelection(String thisBookName) {
         if (thisBookName == null) {
             return;
         }
         bookBatches.removeIf(bookBatch -> bookBatch.getBook().getTitle().equals(thisBookName));
-        AlertUtils.showAlert("Success", "Book removed from import sheet.", Alert.AlertType.INFORMATION);
+        try {
+            updateBookList();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+//        AlertUtils.showAlert("Success", "Book removed from import sheet.", Alert.AlertType.INFORMATION);
     }
 
     @FXML
@@ -94,27 +101,24 @@ public class ImportSheetController {
 
         importDatePicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
     }
-
+    
     @FXML
-    void handleRefreshButton(ActionEvent event) {
+    public void handleAddBookButton() {
+        try {
+            AddBookBatchController controller = FXMLLoaderHelper.loadFXMLWithController(new Stage(),"/com/bsm/bsm/view/employee/importSheet/addBook.fxml", "Add Book Batch To Import Sheet");
+            controller.setImportSheetController(this);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    void setBookBatch(BookBatch bookBatch) {
+        bookBatches.add(bookBatch);
         try {
             updateBookList();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-    }
-    
-    @FXML
-    public void handleAddBookButton() {
-        try {
-            FXMLLoaderHelper.loadFXML(new Stage(),"employee/importSheet/addBook", "Add Book Batch To Import Sheet");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    static void addBookBatchToSheet(BookBatch bookBatch) {
-        bookBatches.add(bookBatch);
     }
 
     private void updateBookList() throws Exception {
@@ -125,6 +129,7 @@ public class ImportSheetController {
                 Node item = fxmlLoader.load();
                 ItemImportController tableItemController = fxmlLoader.getController();
                 tableItemController.setBookBatch(b);
+                tableItemController.setImportSheetController(this);
                 pnItems.getChildren().add(item);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -161,11 +166,12 @@ public class ImportSheetController {
                 String importSheetID = importSheetService.getImportSheetID(importSheet);
                 importSheet.setId(importSheetID);
                 ImportSheetDetailController.handleTableItemSelection(importSheetID, importSheet);
-                FXMLLoaderHelper.loadFXML(new Stage(), "employee/importSheet/importSheetDetail");
+                Stage s = new Stage();
+                FXMLLoaderHelper.loadFXML(s, "employee/importSheet/importSheetDetail");
+                ImportSheetDetailController.setStage(s);
 
                 if (!bookBatches.isEmpty()) {
                     UpdatePriceController.setBookBatches(bookBatches);
-                    FXMLLoaderHelper.loadFXML(new Stage(), "employee/importSheet/updatePrice", "Update Sell Price");
                 }
                 else {
                     System.out.println("No book to update price.");
@@ -183,6 +189,7 @@ public class ImportSheetController {
         }
 
     }
+
 
     private boolean validateInputs(String importDate, String totalCost) {
         String importDateError = ValidationUtils.validateImportDay(importDate);
