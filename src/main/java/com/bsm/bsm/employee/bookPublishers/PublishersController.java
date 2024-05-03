@@ -130,6 +130,11 @@ public class PublishersController implements Initializable {
 
     @FXML
     void handleRefreshButton(ActionEvent event) {
+        column = "id";
+        sortOrder = "ASC";
+        currentPage = 1;
+        inputSearch.setText("");
+        idSortLabel.setContent("");
         loadAllPublishers();
     }
 

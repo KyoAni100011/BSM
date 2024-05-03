@@ -33,6 +33,8 @@ public class ViewSheetController {
     @FXML
     private VBox pnItems;
     @FXML
+    private Button refreshButton;
+    @FXML
     private Button idLabel, dateImportLabel, employeeLabel, quantityLabel, totalPriceLabel;
     @FXML
     private SVGPath idSortLabel, dateImportSortLabel, employeeSortLabel, quantitySortLabel, totalPriceSortLabel;
@@ -72,6 +74,16 @@ public class ViewSheetController {
                 }
             }
         });
+    }
+
+    @FXML
+    void handleRefreshButton(ActionEvent event) {
+        column = "isbn";
+        sortOrder = "ASC";
+        currentPage = 1;
+        inputSearch.setText("");
+        idSortLabel.setContent("");
+        loadAllSheets();
     }
 
     private void loadAllSheets() {

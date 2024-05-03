@@ -213,7 +213,15 @@ public class OrderController implements Initializable  {
     }
 
 
-
+    @FXML
+    void handleRefreshButton(ActionEvent event) throws IOException {
+        column = "isbn";
+        sortOrder = "ASC";
+        currentPage = 1;
+        inputSearch.setText("");
+        idSortLabel.setContent("");
+        loadAllOrders(condition);
+    }
 
     @FXML
     private void handlePaginationButton(ActionEvent event) {

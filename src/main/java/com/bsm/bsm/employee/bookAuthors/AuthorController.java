@@ -124,6 +124,11 @@ public class AuthorController implements Initializable {
 
     @FXML
     void handleRefreshButton(ActionEvent event) {
+        column = "id";
+        sortOrder = "ASC";
+        currentPage = 1;
+        inputSearch.setText("");
+        idSortLabel.setContent("");
         loadAllAuthors();
     }
 
