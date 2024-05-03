@@ -88,6 +88,12 @@ public class AddBookBatchController {
         }
     };
 
+    ImportSheetController importSheetController;
+
+    void setImportSheetController(ImportSheetController thisImportSheetController) {
+        importSheetController = thisImportSheetController;
+    }
+
     @FXML
     public void initialize() {
         bookQuantityField.setTextFormatter(new TextFormatter<>(integerFilter));
@@ -449,7 +455,7 @@ public class AddBookBatchController {
 
             Book book = new Book(title, publisher, publishingDateConverted, selectedLanguage, authors, categories);
             BookBatch bookBatch = new BookBatch(Integer.parseInt(quantity), new BigDecimal(importPrice), book);
-            ImportSheetController.addBookBatchToSheet(bookBatch);
+            importSheetController.setBookBatch(bookBatch);
 
             // Close the current stage
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

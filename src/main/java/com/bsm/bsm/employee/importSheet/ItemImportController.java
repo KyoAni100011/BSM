@@ -15,14 +15,19 @@ public class ItemImportController {
     @FXML
     public Label bookNameLabel, authorLabel, publisherLabel, qtyLabel, typeLabel, priceLabel;
 
+    ImportSheetController importSheetController;
+
+    void setImportSheetController(ImportSheetController thisImportSheetController) {
+        importSheetController = thisImportSheetController;
+    }
+
     @FXML
     private void initialize() {
-        ImportSheetController.handleTableItemSelection(null);
     }
 
     @FXML
     private void handleRemoveButtonClick() {
-        ImportSheetController.handleTableItemSelection(bookNameLabel.getText());
+        importSheetController.handleTableItemSelection(bookNameLabel.getText());
     }
 
     public void setBookBatch(BookBatch bookBatch) {

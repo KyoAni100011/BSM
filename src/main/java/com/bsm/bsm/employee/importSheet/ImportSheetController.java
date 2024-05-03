@@ -49,19 +49,25 @@ public class ImportSheetController {
     @FXML
     public Button btnAddSheet;
 
-    private static List<BookBatch> bookBatches;
+    private List<BookBatch> bookBatches;
 
-    public Button refreshButton;
 
     private ImportSheetService importSheetService = new ImportSheetService();
     private BookService bookService = new BookService();
 
-    static void handleTableItemSelection(String thisBookName) {
+
+
+    void handleTableItemSelection(String thisBookName) {
         if (thisBookName == null) {
             return;
         }
         bookBatches.removeIf(bookBatch -> bookBatch.getBook().getTitle().equals(thisBookName));
-        AlertUtils.showAlert("Success", "Book removed from import sheet.", Alert.AlertType.INFORMATION);
+        try {
+            updateBookList();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+//        AlertUtils.showAlert("Success", "Book removed from import sheet.", Alert.AlertType.INFORMATION);
     }
 
     @FXML
@@ -95,28 +101,24 @@ public class ImportSheetController {
 
         importDatePicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, NumericValidationUtils.numericValidation(10));
     }
-
-    @FXML
-    void handleRefreshButton(ActionEvent event) {
-        try {
-            updateBookList();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
     
     @FXML
     public void handleAddBookButton() {
         try {
             AddBookBatchController controller = FXMLLoaderHelper.loadFXMLWithController(new Stage(),"/com/bsm/bsm/view/employee/importSheet/addBook.fxml", "Add Book Batch To Import Sheet");
-            controller.test();
+            controller.setImportSheetController(this);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    static void addBookBatchToSheet(BookBatch bookBatch) {
+    void setBookBatch(BookBatch bookBatch) {
         bookBatches.add(bookBatch);
+        try {
+            updateBookList();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void updateBookList() throws Exception {
@@ -127,6 +129,7 @@ public class ImportSheetController {
                 Node item = fxmlLoader.load();
                 ItemImportController tableItemController = fxmlLoader.getController();
                 tableItemController.setBookBatch(b);
+                tableItemController.setImportSheetController(this);
                 pnItems.getChildren().add(item);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
