@@ -11,7 +11,6 @@ import com.bsm.bsm.category.CategoryService;
 import com.bsm.bsm.publisher.Publisher;
 import com.bsm.bsm.publisher.PublisherService;
 import com.bsm.bsm.utils.DateUtils;
-import com.bsm.bsm.utils.FXMLLoaderHelper;
 import com.bsm.bsm.utils.NumericValidationUtils;
 import com.bsm.bsm.utils.ValidationUtils;
 import javafx.collections.FXCollections;
@@ -165,47 +164,47 @@ public class AddBookBatchController {
             }
         });
 
-        fullNameField.setOnAction(event -> {
-            String selectedItem = fullNameField.getText();
-            if (bookItems.contains(selectedItem) ) {
-                String selectedBookName = (String) selectedItem;
-
-                bookDetails = bookService.getBookByName(selectedBookName);
-
-                List<Author> authors = bookDetails.getAuthors();
-                List<Category> categories = bookDetails.getCategories();
-                String publishers = bookDetails.getPublisher().getName();
-                String language = bookDetails.getLanguages();
-                int quanity = bookDetails.getQuantity();
-                BigDecimal salePrice = bookDetails.getSalePrice();
-                String releaseDate = bookDetails.getPublishingDate();
-
-                authorNameCheckCombo.getCheckModel().clearChecks();
-                categoryCheckCombo.getCheckModel().clearChecks();
-
-
-                for (Author author : authors) {
-                    if (authorNameCheckCombo.getItems().contains(author.getName())) {
-                        authorNameCheckCombo.getCheckModel().check(author.getName());
-                    }
-                }
-
-                for (Category category : categories) {
-                    if (categoryCheckCombo.getItems().contains(category.getName())) {
-                        categoryCheckCombo.getCheckModel().check(category.getName());
-                    }
-                }
-
-                publisherComboBox.setValue(publishers);
-                languageComboBox.setValue(language);
-//                bookQuantityField.setText(String.valueOf(quanity));
-//                bookPriceField.setText(String.valueOf(salePrice));
-                releaseDatePicker.setValue(LocalDate.parse(releaseDate, dateFormatter));
-            }
-            else{
-                System.out.println("hiiiiii");
-            }
-        });
+//        fullNameField.setOnAction(event -> {
+//            String selectedItem = fullNameField.getText();
+//            if (bookItems.contains(selectedItem) ) {
+//                String selectedBookName = (String) selectedItem;
+//
+//                bookDetails = bookService.getBookByName(selectedBookName);
+//
+//                List<Author> authors = bookDetails.getAuthors();
+//                List<Category> categories = bookDetails.getCategories();
+//                String publishers = bookDetails.getPublisher().getName();
+//                String language = bookDetails.getLanguages();
+//                int quanity = bookDetails.getQuantity();
+//                BigDecimal salePrice = bookDetails.getSalePrice();
+//                String releaseDate = bookDetails.getPublishingDate();
+//
+//                authorNameCheckCombo.getCheckModel().clearChecks();
+//                categoryCheckCombo.getCheckModel().clearChecks();
+//
+//
+//                for (Author author : authors) {
+//                    if (authorNameCheckCombo.getItems().contains(author.getName())) {
+//                        authorNameCheckCombo.getCheckModel().check(author.getName());
+//                    }
+//                }
+//
+//                for (Category category : categories) {
+//                    if (categoryCheckCombo.getItems().contains(category.getName())) {
+//                        categoryCheckCombo.getCheckModel().check(category.getName());
+//                    }
+//                }
+//
+//                publisherComboBox.setValue(publishers);
+//                languageComboBox.setValue(language);
+////                bookQuantityField.setText(String.valueOf(quanity));
+////                bookPriceField.setText(String.valueOf(salePrice));
+//                releaseDatePicker.setValue(LocalDate.parse(releaseDate, dateFormatter));
+//            }
+//            else{
+//                System.out.println("hiiiiii");
+//            }
+//        });
 
 
         categoryCheckCombo.getCheckModel().getCheckedItems().addListener((ListChangeListener<String>) c -> {
@@ -428,7 +427,7 @@ public class AddBookBatchController {
     private void handleSaveChanges(ActionEvent event) {
         clearErrorMessages();
 
-        String title =  fullNameField.getText();
+//        String title =  fullNameField.getText();
         String releaseDate = releaseDatePicker.getEditor().getText();
         String publisherName = (String)publisherComboBox.getValue();
         String quantity = bookQuantityField.getText();
@@ -437,29 +436,29 @@ public class AddBookBatchController {
         var selectedCategory = categoryCheckCombo.getCheckModel().getCheckedItems();
         String selectedLanguage = (String) languageComboBox.getValue();
 
-        if (validateInputs(title, releaseDate, importPrice, publisherName, selectedLanguage, selectedCategory, selectedAuthor, quantity)) {
-            Publisher publisher = publisherService.getPublisherByName(publisherName);
-            List<Category> categories = new ArrayList<>();
-            for (var category: selectedCategory) {
-                categories.add(categoryService.getCategoryByName(category));
-            }
-
-            List<Author> authors = new ArrayList<>();
-            for (var author: selectedAuthor) {
-                authors.add(authorService.getAuthorByName(author));
-            }
-
-            var publishingDateConverted = DateUtils.formatDOB(releaseDate);
-
-            Book book = new Book(title, publisher, publishingDateConverted, selectedLanguage, authors, categories);
-            BookBatch bookBatch = new BookBatch(Integer.parseInt(quantity), new BigDecimal(importPrice), book);
-            ImportSheetController.addBookBatchToSheet(bookBatch);
-
-            // Close the current stage
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.close();
-
-        }
+//        if (validateInputs(title, releaseDate, importPrice, publisherName, selectedLanguage, selectedCategory, selectedAuthor, quantity)) {
+//            Publisher publisher = publisherService.getPublisherByName(publisherName);
+//            List<Category> categories = new ArrayList<>();
+//            for (var category: selectedCategory) {
+//                categories.add(categoryService.getCategoryByName(category));
+//            }
+//
+//            List<Author> authors = new ArrayList<>();
+//            for (var author: selectedAuthor) {
+//                authors.add(authorService.getAuthorByName(author));
+//            }
+//
+//            var publishingDateConverted = DateUtils.formatDOB(releaseDate);
+//
+//            Book book = new Book(title, publisher, publishingDateConverted, selectedLanguage, authors, categories);
+//            BookBatch bookBatch = new BookBatch(Integer.parseInt(quantity), new BigDecimal(importPrice), book);
+//            ImportSheetController.addBookBatchToSheet(bookBatch);
+//
+//            // Close the current stage
+//            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//            stage.close();
+//
+//        }
     }
 
     private void clearErrorMessages() {
