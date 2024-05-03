@@ -98,22 +98,22 @@ public class AddBookBatchController {
     public void initialize() {
         bookQuantityField.setTextFormatter(new TextFormatter<>(integerFilter));
         bookPriceField.setTextFormatter(new TextFormatter<>(integerFilter));
-        for (var category: categoryService.getAllCategories()) {
+        for (var category: categoryService.display()) {
             if (category.isEnabled())
                 categoriesItems.add(category.getName());
         }
 
-        for (var author: authorService.getAllAuthors()) {
+        for (var author: authorService.display()) {
             if (author.isEnabled())
                 authorItems.add(author.getName());
         }
 
-        for (var publisher: publisherService.getAllPublishers()) {
+        for (var publisher: publisherService.display()) {
             if (publisher.isEnabled())
                 publisherItems.add(publisher.getName());
         }
 
-        for (var book: bookService.getAllBooks()) {
+        for (var book: bookService.display()) {
             if (book.isEnabled())
                 bookItems.add(book.getTitle());
         }

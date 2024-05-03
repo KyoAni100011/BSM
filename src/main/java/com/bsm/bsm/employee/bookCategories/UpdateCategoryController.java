@@ -61,7 +61,8 @@ public class UpdateCategoryController {
                 return;
             }
 
-            if (categoryService.update(id, name, description)) {
+            Category category = new Category(id, name, description, isEnabled);
+            if (categoryService.update(category)) {
                 AlertUtils.showAlert("Success", "Category updated successfully.", Alert.AlertType.INFORMATION);
             } else {
                 AlertUtils.showAlert("Error", "Category update failed.", Alert.AlertType.ERROR);

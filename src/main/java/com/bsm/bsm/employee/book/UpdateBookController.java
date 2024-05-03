@@ -84,19 +84,19 @@ public class UpdateBookController {
     @FXML
     public void initialize() {
         book = bookService.getBookByISBN(bookID);
-        for (var item: categoryService.getAllCategories()) {
+        for (var item: categoryService.display()) {
             // check category is enabled
             if (item.isEnabled())
                 categoriesItems.add(item.getName());
         }
 
-        for (var item : authorService.getAllAuthors()) {
+        for (var item : authorService.display()) {
             if (item.isEnabled())
                 // check category is enabled
                 authorItems.add(item.getName());
         }
 
-        for (var item: publisherService.getAllPublishers()) {
+        for (var item: publisherService.display()) {
             if (item.isEnabled())
                 // check category is enabled
                 publisherItems.add(item.getName());

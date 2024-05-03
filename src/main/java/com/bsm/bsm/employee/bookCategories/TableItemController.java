@@ -49,12 +49,14 @@ public class TableItemController {
         confirmationAlert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 if (oldState.get()) {
-                    if (!categoryService.disableCategory(id)) {
+//                    if (!categoryService.disableCategory(id)) {
+                    if (!categoryService.setEnable(id, false)) {
                         AlertUtils.showAlert("Error", "Failed to disable category", Alert.AlertType.ERROR);
                         return;
                     }
                 } else {
-                    if (!categoryService.enableCategory(id)) {
+//                    if (!categoryService.enableCategory(id)) {
+                    if (!categoryService.setEnable(id, true)) {
                         AlertUtils.showAlert("Error", "Failed to enable category", Alert.AlertType.ERROR);
                         return;
                     }

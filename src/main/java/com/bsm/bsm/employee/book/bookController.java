@@ -180,7 +180,7 @@ public class bookController implements Initializable {
     private void handleUpdateUserButton(ActionEvent event) {
         try {
             if (isbn != null) {
-                if (bookService.checkIfBookCanBeEnabled(isbn)) {
+                if (bookService.isEnable(isbn)) {
                     UpdateBookController.handleTableItemSelection(isbn);
                     FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/updateBook", "Update Book");
                 } else {

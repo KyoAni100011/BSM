@@ -5,10 +5,9 @@ import com.bsm.bsm.commonInterface.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class AuthorService implements Activable, Searchable<Author>, Sortable<Author>, Updatable<Author>, Addable<Author> {
+public class AuthorService implements Activable, Searchable<Author>, Sortable<Author>, Updatable<Author>, Addable<Author>, Displayable<Author> {
     private final AuthorDAO authorDAO;
 
     public AuthorService() {
@@ -16,8 +15,13 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
     }
 
     @Override
-    public boolean update(Author item) {
-        return authorDAO.update(item);
+    public List<Author> display() {
+        return authorDAO.getAllAuthors();
+    }
+
+    @Override
+    public boolean update(Author author) {
+        return authorDAO.updateAuthor(author.getId(), author.getName(), author.getIntroduction());
     }
 
     @Override
@@ -54,7 +58,7 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
 
     @Override
     public List<Author> search(String keyword) {
-        List<Author> authors = getAllAuthors();
+        List<Author> authors = display();
         String finalKeyword = keyword.toLowerCase();
         return authors.stream()
                 .filter(author ->
@@ -71,23 +75,9 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
 
     @Override
     public boolean setEnable(String id, boolean state) {
-        return state;
-    }
-    public boolean enableAuthor(String authorId) {
-        try {
-            return authorDAO.enableBookAuthor(authorId);
-        } catch (Exception e) {
-            return false;
-        }
+        return authorDAO.setEnable(id, state);
     }
 
-    public boolean disableAuthor(String authorId) {
-        try {
-            return authorDAO.disableBookAuthor(authorId);
-        } catch (Exception e) {
-            return false;
-        }
-    }
 
     // use this to check case update author
     public boolean checkAuthorExists (String name, String id) {
@@ -99,9 +89,6 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
         return checkAuthorExists(name, "");
     }
 
-    public boolean updateAuthor(Author author) {
-        return authorDAO.updateAuthor(author.getId(), author.getName(), author.getIntroduction());
-    }
 
     public Author getAuthor(String id) {
         return authorDAO.getAuthorById(id);
@@ -115,7 +102,4 @@ public class AuthorService implements Activable, Searchable<Author>, Sortable<Au
         return getAuthor(id).isEnabled();
     }
 
-    public List<Author> getAllAuthors() {
-        return authorDAO.getAllAuthors();
-    }
 }

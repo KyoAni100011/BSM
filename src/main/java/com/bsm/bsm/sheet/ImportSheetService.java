@@ -2,6 +2,7 @@ package com.bsm.bsm.sheet;
 
 import com.bsm.bsm.book.Book;
 import com.bsm.bsm.book.BookBatch;
+import com.bsm.bsm.commonInterface.*;
 import com.bsm.bsm.employee.EmployeeModel;
 import com.bsm.bsm.user.UserSingleton;
 
@@ -11,7 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ImportSheetService {
+public class ImportSheetService implements Searchable<ImportSheet>, Sortable<ImportSheet>, Displayable<ImportSheet>{
 
     private final ImportSheetDAO importSheetDAO;
 
@@ -19,30 +20,23 @@ public class ImportSheetService {
         importSheetDAO = new ImportSheetDAO();
     }
 
-    public boolean updateSalePrice(List<BookBatch> bookBatches) {
-        try {
-            return importSheetDAO.updateSalePrice(bookBatches);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
-
-    public boolean createImportSheet(ImportSheet importSheet, List<BookBatch> bookBatches) {
-        try {
-            return importSheetDAO.createImportSheet(importSheet, bookBatches);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
-
-    public List<ImportSheet> getAllSheets() {
+    @Override
+    public List<ImportSheet> display() {
         return importSheetDAO.getAllImportSheets();
     }
 
+    public boolean createImportSheet(ImportSheet importSheet) {
+        try {
+            return importSheetDAO.createImportSheet(importSheet);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
     public List<ImportSheet> search(String keyword) {
-        List<ImportSheet> sheets = getAllSheets();
+        List<ImportSheet> sheets = display();
         String finalKeyword = keyword.toLowerCase();
         return sheets.stream()
                 .filter(sheet ->
@@ -55,6 +49,7 @@ public class ImportSheetService {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public List<ImportSheet> sort(List<ImportSheet> sheets, boolean isAscending, String column) {
         List<ImportSheet> sortedImportSheet = new ArrayList<>(sheets);
         Comparator<ImportSheet> comparator = (importSheet1,importSheet2) -> {
@@ -91,6 +86,15 @@ public class ImportSheetService {
         return sortedImportSheet.stream().sorted(comparator).collect(Collectors.toList());
     }
 
+    public boolean updateSalePrice(List<BookBatch> bookBatches) {
+        try {
+            return importSheetDAO.updateSalePrice(bookBatches);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
     public List<Book> getISheetBookDetails(String id)
     {
         return importSheetDAO.getISheetBookDetails(id);
@@ -100,5 +104,4 @@ public class ImportSheetService {
         EmployeeModel employee = (EmployeeModel) UserSingleton.getInstance().getUser();
         return importSheetDAO.getImportSheetID(employee,importSheet);
     }
-
 }

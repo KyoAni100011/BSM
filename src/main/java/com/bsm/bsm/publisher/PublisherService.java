@@ -7,23 +7,16 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PublisherService implements Activable, Searchable<Publisher>, Sortable<Publisher>, Updatable<Publisher>, Addable<Publisher> {
+public class PublisherService implements Activable, Searchable<Publisher>, Sortable<Publisher>, Updatable<Publisher>, Addable<Publisher>, Displayable<Publisher> {
     private final PublisherDAO publisherDAO;
 
     public PublisherService() {
         this.publisherDAO = new PublisherDAO();
     }
 
-    public Publisher getPublisher(String id) {
-        return publisherDAO.getPublisher(id);
-    }
-
-    public Publisher getPublisherByName(String name) {
-        return publisherDAO.getPublisherByName(name);
-    }
-
-    public boolean isEnabled(String id) {
-        return getPublisher(id).isEnabled();
+    @Override
+    public List<Publisher> display() {
+        return publisherDAO.getAllPublisher();
     }
 
     @Override
@@ -66,13 +59,13 @@ public class PublisherService implements Activable, Searchable<Publisher>, Sorta
 
     @Override
     public List<Publisher> search(String keyword) {
-        List<Publisher> publishers = getAllPublishers();
+        List<Publisher> publishers = display();
         String finalKeyword = keyword.toLowerCase();
         return publishers.stream()
                 .filter(publisher ->
                         publisher.getId().contains(finalKeyword) ||
-                        publisher.getName().toLowerCase().contains(finalKeyword) ||
-                        publisher.getAddress().toLowerCase().contains(finalKeyword))
+                                publisher.getName().toLowerCase().contains(finalKeyword) ||
+                                publisher.getAddress().toLowerCase().contains(finalKeyword))
                 .collect(Collectors.toList());
     }
 
@@ -81,35 +74,28 @@ public class PublisherService implements Activable, Searchable<Publisher>, Sorta
         return publisherDAO.addPublisher(item.getName(), item.getAddress());
     }
 
+    @Override
+    public boolean setEnable(String id, boolean state) {
+        return publisherDAO.setEnable(id, state);
+    }
+
+    public Publisher getPublisher(String id) {
+        return publisherDAO.getPublisher(id);
+    }
+
+    public Publisher getPublisherByName(String name) {
+        return publisherDAO.getPublisherByName(name);
+    }
+
+    public boolean isEnabled(String id) {
+        return getPublisher(id).isEnabled();
+    }
+
     public boolean checkPublisherExists(String name, String id) {
         return publisherDAO.checkPublisherExists(name, id);
     }
 
     public boolean checkPublisherExists(String name) {
         return checkPublisherExists(name, "");
-    }
-
-    @Override
-    public boolean setEnable(String id, boolean state) {
-
-        return state;
-    }
-
-    public List<Publisher> getAllPublishers() {
-        return publisherDAO.getAllPublisher();
-    }
-    public boolean disablePublisher(String publisherId) {
-        try {
-            return publisherDAO.disablePublisher(publisherId);
-        } catch (Exception e) {
-            return false;
-        }
-    }
-    public boolean enablePublisher(String publisherId) {
-        try {
-            return publisherDAO.enablePublisher(publisherId);
-        } catch (Exception e) {
-            return false;
-        }
     }
 }

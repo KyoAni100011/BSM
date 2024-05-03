@@ -1,11 +1,8 @@
 package com.bsm.bsm.employee.importSheet;
 
-import com.bsm.bsm.book.Book;
 import com.bsm.bsm.book.BookBatch;
 import com.bsm.bsm.book.BookService;
-import com.bsm.bsm.database.DatabaseConnection;
 import com.bsm.bsm.employee.EmployeeModel;
-import com.bsm.bsm.employee.book.AddBookController;
 import com.bsm.bsm.sheet.ImportSheet;
 import com.bsm.bsm.sheet.ImportSheetService;
 import com.bsm.bsm.user.UserSingleton;
@@ -28,7 +25,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ImportSheetController {
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -51,11 +50,8 @@ public class ImportSheetController {
 
     private List<BookBatch> bookBatches;
 
-
     private ImportSheetService importSheetService = new ImportSheetService();
     private BookService bookService = new BookService();
-
-
 
     void handleTableItemSelection(String thisBookName) {
         if (thisBookName == null) {
@@ -67,7 +63,6 @@ public class ImportSheetController {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-//        AlertUtils.showAlert("Success", "Book removed from import sheet.", Alert.AlertType.INFORMATION);
     }
 
     @FXML
@@ -160,11 +155,19 @@ public class ImportSheetController {
 
             EmployeeModel employee = (EmployeeModel) UserSingleton.getInstance().getUser();
             String importDateConverted = DateUtils.formatDOB(importDate);
-            ImportSheet importSheet = new ImportSheet(employee, importDateConverted, totalQuantity, new BigDecimal(totalCost));
+            Map<BookBatch, Integer> importBooks = new HashMap<>();
+            for (BookBatch bookBatch : bookBatches) {
+                importBooks.put(bookBatch, bookBatch.getQuantity());
+            }
 
-            if (importSheetService.createImportSheet(importSheet, bookBatches)) {
+            ImportSheet importSheet = new ImportSheet(employee, importDateConverted, totalQuantity, new BigDecimal(totalCost));
+            importSheet.setImportBooks(importBooks);
+
+
+            if (importSheetService.createImportSheet(importSheet)) {
                 String importSheetID = importSheetService.getImportSheetID(importSheet);
                 importSheet.setId(importSheetID);
+
                 ImportSheetDetailController.handleTableItemSelection(importSheetID, importSheet);
                 Stage s = new Stage();
                 FXMLLoaderHelper.loadFXML(s, "employee/importSheet/importSheetDetail");
@@ -173,12 +176,10 @@ public class ImportSheetController {
                 if (!bookBatches.isEmpty()) {
                     UpdatePriceController.setBookBatches(bookBatches);
                 }
-                else {
-                    System.out.println("No book to update price.");
-                }
 
                 clearInputs();
                 bookBatches = new ArrayList<>();
+                importSheet.setImportBooks(null);
                 setupDatePicker();
                 importDatePicker.setValue(LocalDate.now());
                 updateBookList();

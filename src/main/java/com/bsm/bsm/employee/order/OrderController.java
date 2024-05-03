@@ -122,7 +122,7 @@ public class OrderController implements Initializable  {
     }
 
     private void loadAllOrders(String condition) {
-        orders = Orderservice.getAllOrders(condition);
+        orders = Orderservice.display(condition);
         orders = Orderservice.sort(orders, true, "id");
         try {
             updateOrdersList();
@@ -198,7 +198,7 @@ public class OrderController implements Initializable  {
         if (isSearch) {
             orders = Orderservice.search(inputSearchText, condition);
         } else {
-            orders = Orderservice.getAllOrders(condition);
+            orders = Orderservice.display(condition);
         }
 
         orders = Orderservice.sort(orders, sortOrder.equals("ASC"), column);
@@ -335,11 +335,9 @@ public class OrderController implements Initializable  {
             if (isSearch) {
                 orders = Orderservice.search(inputSearchText, condition);
             } else {
-                orders = Orderservice.getAllOrders(condition);
+                orders = Orderservice.display(condition);
             }
             orders = Orderservice.sort(orders, isAscending, column);
-            System.out.println("here");
-            orders.forEach(System.out::println);
             updateOrdersList();
         } catch (Exception e) {
             System.out.println(e.getMessage());

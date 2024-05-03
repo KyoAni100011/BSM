@@ -87,7 +87,7 @@ public class ViewSheetController {
     }
 
     private void loadAllSheets() {
-        sheets = importSheetService.getAllSheets();
+        sheets = importSheetService.display();
         sheets = importSheetService.sort(sheets, true, "id");
         employeeInfo.setImportSlips(sheets);
         try {
@@ -232,7 +232,7 @@ public class ViewSheetController {
             if (isSearch) {
                 sheets = importSheetService.search(inputSearchText);
             } else {
-                sheets = importSheetService.getAllSheets();
+                sheets = importSheetService.display();
             }
             sheets = importSheetService.sort(sheets, isAscending, column);
             updateSheetsList();

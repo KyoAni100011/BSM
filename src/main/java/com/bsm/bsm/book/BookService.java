@@ -9,11 +9,21 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BookService implements Activable, Searchable<Book>, Sortable<Book>, Updatable<Book>, Addable<Book> {
+public class BookService implements Activable, Searchable<Book>, Sortable<Book>, Updatable<Book>, Addable<Book>, Displayable<Book> {
     private BookDAO bookDAO;
 
     public BookService() {
         this.bookDAO = new BookDAO();
+    }
+
+
+    @Override
+    public List<Book> display() {
+        try {
+            return bookDAO.getAllBooks();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -63,7 +73,7 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
 
     @Override
     public List<Book> search(String keyword) {
-        List<Book> books = getAllBooks();
+        List<Book> books = display();
         String finalKeyword = keyword.toLowerCase();
         return books.stream()
                 .filter(book ->
@@ -125,7 +135,7 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
     }
 
     public List<Book> getAllBooksForViewList() {
-        List<Book> books = getAllBooks();
+        List<Book> books = display();
         List<Book> booksForViewList = new ArrayList<>();
 
         for (var book: books) {

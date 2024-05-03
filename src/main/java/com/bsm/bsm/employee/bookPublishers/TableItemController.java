@@ -52,13 +52,12 @@ public class TableItemController {
         confirmationAlert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 if (oldState.get()) {
-                    if (!publisherService.disablePublisher(id)) {
+                    if (!publisherService.setEnable(id, false)) {
                         AlertUtils.showAlert("Error", "Failed to disable publisher", Alert.AlertType.ERROR);
                         return;
                     }
-                   // Update userModel's property
                 } else {
-                    if (!publisherService.enablePublisher(id)) {
+                    if (!publisherService.setEnable(id, true)) {
                         AlertUtils.showAlert("Error", "Failed to enable publisher", Alert.AlertType.ERROR);
                         return;
                     }

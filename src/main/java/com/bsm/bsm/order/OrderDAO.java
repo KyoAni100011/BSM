@@ -34,8 +34,6 @@ public class OrderDAO {
         }
 
         for (int i = 0; i < selectedBooks.size(); i++) {
-            System.out.println(selectedBooks.get(i));
-            System.out.println(salePrices.get(i));
 
             int quantityInput = quantities.get(i);
             while (quantityInput > 0) {
@@ -43,7 +41,6 @@ public class OrderDAO {
             }
         }
 
-        //if customer is Member, discount 5%
         discountForCustomer(connection, orderID, customer);
         connection.setAutoCommit(true);
         return true;

@@ -51,12 +51,12 @@ public class TableItemController {
         confirmationAlert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 if (oldState.get()) {
-                    if (!authorService.disableAuthor(id)) {
+                    if (!authorService.setEnable(id, false)) {
                         AlertUtils.showAlert("Error", "Failed to disable author", Alert.AlertType.ERROR);
                         return;
                     }
                 } else {
-                    if (!authorService.enableAuthor(id)) {
+                    if (!authorService.setEnable(id, true)) {
                         AlertUtils.showAlert("Error", "Failed to enable author", Alert.AlertType.ERROR);
                         return;
                     }

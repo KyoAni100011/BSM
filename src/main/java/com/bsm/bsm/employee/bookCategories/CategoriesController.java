@@ -90,7 +90,7 @@ public class CategoriesController implements Initializable {
     }
 
     private void loadAllCategory() {
-        categories = categoryService.getAllCategories();
+        categories = categoryService.display();
         employeeInfo.setCategories(categories);
         try {
             updateCategoryList();
@@ -129,7 +129,7 @@ public class CategoriesController implements Initializable {
         try {
             FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookCategories/addCategory", "Add Category");
             //update categories list after adding new category
-            categories = categoryService.getAllCategories();
+            categories = categoryService.display();
             updateCategoryList();
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -281,7 +281,7 @@ public class CategoriesController implements Initializable {
             if (isSearch) {
                 categories = categoryService.search(inputSearchText);
             } else {
-                categories = categoryService.getAllCategories();
+                categories = categoryService.display();
             }
             categories = categoryService.sort(categories, isAscending, column);
             updateCategoryList();
