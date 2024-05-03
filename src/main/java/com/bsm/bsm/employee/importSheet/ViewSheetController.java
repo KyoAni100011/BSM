@@ -113,6 +113,7 @@ public class ViewSheetController {
         int itemsPerPage = 9;
         int startIndex = isSearch ? 0 : (currentPage - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, sheets.size());
+        int totalPages = (int) Math.ceil((double) sheets.size() / itemsPerPage);
 
         for (int i = startIndex; i < endIndex; i++) {
             ImportSheet sheet = sheets.get(i);
@@ -127,7 +128,6 @@ public class ViewSheetController {
                 e.printStackTrace();
             }
         }
-        int totalPages = (int) Math.ceil((double) sheets.size() / itemsPerPage);
         updatePaginationButtons(totalPages);
     }
 

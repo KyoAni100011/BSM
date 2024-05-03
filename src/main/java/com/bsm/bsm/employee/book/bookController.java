@@ -300,7 +300,7 @@ public class bookController implements Initializable {
 
     private void updateBooksList() throws IOException {
         pnItems.getChildren().clear();
-        int itemsPerPage = 8;
+        int itemsPerPage = 9;
         int totalBooksCountForRole = getTotalBookCountForRole(type);
 
         int totalPages = (int) Math.ceil((double) totalBooksCountForRole / itemsPerPage);
