@@ -398,23 +398,7 @@ public class AddBookBatchController {
             BookBatch bookBatch = new BookBatch(Integer.parseInt(quantity), new BigDecimal(importPrice), book);
             ImportSheetController.addBookBatchToSheet(bookBatch);
 
-            // Update price
-            if (bookService.isNameExist(title)) {
-                try {
-                    // Load the FXML file for updating sell price
-                    UpdatePriceController.setBookName(title);
-                    FXMLLoaderHelper.loadFXML(new Stage(),"employee/importSheet/updatePrice", "Update Sell Price");
-                    // Set the book name in the UpdatePriceController
-
-                    System.out.println("Successfully loaded Update Price window.");
-                } catch (Exception e) {
-                    System.out.println("Error loading Update Price window: " + e.getMessage());
-                }
-            } else {
-                System.out.println("Book with title " + title + " does not exist.");
-            }
-
-// Close the current stage
+            // Close the current stage
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.close();
 
