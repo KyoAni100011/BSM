@@ -123,7 +123,7 @@
     -fx-border-color: black;
     -fx-border-radius: 5px;
 }
-.input-field-add-special-disable:disabled {
+.input-field-add-special-disable:hover {
     -fx-opacity: 1  ;
 }
 .combo-box-popup .list-cell:disabled  {
