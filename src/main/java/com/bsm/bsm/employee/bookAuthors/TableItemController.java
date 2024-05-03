@@ -79,7 +79,7 @@ public class TableItemController {
         if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
             if (id != null) {
                 AuthorDetailController.handleTableItemSelection(id);
-                FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/authorDetail");
+                FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/authorDetail", "Author Detail");
             } else {
                 AlertUtils.showAlert("Error", "Can't find user", Alert.AlertType.ERROR);
 

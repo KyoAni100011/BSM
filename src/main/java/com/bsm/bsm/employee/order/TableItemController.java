@@ -39,7 +39,7 @@ public class TableItemController {
     private void handleTableItemDoubleClick(MouseEvent event) throws IOException {
         if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
             OrderDetailController.handleTableItemSelection(id, order);
-            FXMLLoaderHelper.loadFXML(new Stage(), "employee/order/orderDetail");
+            FXMLLoaderHelper.loadFXML(new Stage(), "employee/order/orderDetail", "Order Detail");
         }
     }
 
@@ -48,6 +48,7 @@ public class TableItemController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return date.format(formatter);
     }
+
     public void setOrder(Order thisOrder) {
         order = thisOrder;
         id = thisOrder.getId();

@@ -84,7 +84,7 @@ public class TableItemController {
         if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
             if (isbn != null) {
                 BookDetailController.handleTableItemSelection(isbn);
-                FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/bookDetail");
+                FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/bookDetail", "Book Detail");
             } else {
                 AlertUtils.showAlert("Error", "Can't find book", Alert.AlertType.ERROR);
 
