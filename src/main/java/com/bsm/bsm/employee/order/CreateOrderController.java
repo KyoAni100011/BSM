@@ -217,7 +217,7 @@ public class CreateOrderController implements Initializable {
         }
 
         Customer customer = null;
-        if ((!handleNameField.getText().isEmpty() && (handlePhoneField.getText().length() == 11 || handlePhoneField.getText().length() == 10) || (handleNameField.getText().isEmpty() && handlePhoneField.getText().isEmpty())) && (!MoneyTextField.getText().isEmpty()) && Integer.parseInt(MoneyReturnLabel.getText()) > 0) {
+        if ((!handleNameField.getText().isEmpty() && (handlePhoneField.getText().length() == 11 || handlePhoneField.getText().length() == 10) || (handleNameField.getText().isEmpty() && handlePhoneField.getText().isEmpty())) && (!MoneyTextField.getText().isEmpty()) && new BigDecimal(MoneyReturnLabel.getText()).compareTo(BigDecimal.ZERO) > 0) {
             //get customer information
 
             boolean isMember = !handleNameField.getText().isEmpty();
@@ -242,7 +242,7 @@ public class CreateOrderController implements Initializable {
             }
         } else if (MoneyTextField.getText().isEmpty()) {
             AlertUtils.showAlert("Error", "Please fill in the money received field", Alert.AlertType.CONFIRMATION);
-        } else if(Integer.parseInt(MoneyReturnLabel.getText()) < 0) {
+        } else if(new BigDecimal(MoneyReturnLabel.getText()).compareTo(BigDecimal.ZERO) < 0) {
             AlertUtils.showAlert("Error", "Money return should greater than total price", Alert.AlertType.CONFIRMATION);
         } else {
             AlertUtils.showAlert("Error", "Please fill in the user's information completely", Alert.AlertType.CONFIRMATION);
