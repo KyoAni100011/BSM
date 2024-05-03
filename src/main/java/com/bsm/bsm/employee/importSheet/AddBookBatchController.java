@@ -11,7 +11,6 @@ import com.bsm.bsm.category.CategoryService;
 import com.bsm.bsm.publisher.Publisher;
 import com.bsm.bsm.publisher.PublisherService;
 import com.bsm.bsm.utils.DateUtils;
-import com.bsm.bsm.utils.FXMLLoaderHelper;
 import com.bsm.bsm.utils.NumericValidationUtils;
 import com.bsm.bsm.utils.ValidationUtils;
 import javafx.collections.FXCollections;
@@ -19,15 +18,18 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.SearchableComboBox;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -43,13 +45,15 @@ public class AddBookBatchController {
     @FXML
     public Label bookNameErrorLabel,languageErrorLabel,categoryErrorLabel,authorErrorLabel,quantityErrorLabel,publisherErrorLabel,priceErrorLabel,releaseErrorLabel;
     @FXML
-    public TextField  bookQuantityField, bookPriceField;
+    public TextField  bookQuantityField, bookPriceField, bookNameField;
     @FXML
     public CheckComboBox<String> authorNameCheckCombo , categoryCheckCombo;
     @FXML
-    public SearchableComboBox languageComboBox, publisherComboBox,fullNameField;
+    public SearchableComboBox languageComboBox, publisherComboBox;
     @FXML
     public Button saveChangesButton;
+    public ScrollPane scrollPanelBook;
+    public VBox itemBook;
     @FXML
     private DatePicker releaseDatePicker;
     @FXML
@@ -71,7 +75,6 @@ public class AddBookBatchController {
     ObservableList<String> categoriesItems = FXCollections.observableArrayList();
     ObservableList<String> publisherItems = FXCollections.observableArrayList();
     ObservableList<String> bookItems = FXCollections.observableArrayList();
-
     private Book bookDetails = null;
 
     private ObservableList<String> filteredCategoriesItems = FXCollections.observableArrayList(); // Store filtered category items
@@ -112,10 +115,22 @@ public class AddBookBatchController {
             if (publisher.isEnabled())
                 publisherItems.add(publisher.getName());
         }
-
-        for (var book: bookService.display()) {
-            if (book.isEnabled())
+        itemBook.getChildren().clear();
+        for (var book: bookService.getAllBooks()) {
+            if (book.isEnabled()){
                 bookItems.add(book.getTitle());
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/importSheet/itemSearch.fxml"));
+                    Node no = fxmlLoader.load();
+                    ItemSearch a = fxmlLoader.getController();
+                    a.addName(book.getTitle(), this);
+                    itemBook.getChildren().add(no);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+
         }
 
         List<String> languages = bookService.getLanguages();
@@ -123,11 +138,62 @@ public class AddBookBatchController {
 
         categoryCheckCombo.getItems().addAll(categoriesItems);
         authorNameCheckCombo.getItems().addAll(authorItems);
-        fullNameField.getItems().addAll(bookItems);
         languageComboBox.setItems(languageItems);
         publisherComboBox.getItems().addAll(publisherItems);
         setupDatePicker();
+        bookNameField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue){
+                scrollPanelBook.setVisible(true);
+            }
+        });
+        bookNameField.textProperty().addListener((observable, oldValue, newValue) -> {
+            int i = 0;
+            itemBook.getChildren().clear();
+            clearInputs();
+            for (String book : bookItems) {
+                if (newValue == null || newValue.isEmpty()) {
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/importSheet/itemSearch.fxml"));
+                        Node no = fxmlLoader.load();
+                        ItemSearch a = fxmlLoader.getController();
+                        a.addName(book, this);
+                        itemBook.getChildren().add(no);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else if (book.contains(newValue)) {
+                    try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/importSheet/itemSearch.fxml"));
+                    Node no = fxmlLoader.load();
+                    ItemSearch a = fxmlLoader.getController();
+                    a.addName(book, this);
+                    itemBook.getChildren().add(no);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                // You can perform any action you want with each item here
+            }
+        });
 
+        bookNameField.getParent().addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+            // Check if the mouse event target is outside the bookNameField
+            if (!bookNameField.getBoundsInParent().contains(event.getX(), event.getY())) {
+                // Mouse is pressed outside the bookNameField
+                if (bookNameField.isFocused()) {
+                    bookNameField.getParent().requestFocus();
+
+                }
+            }
+        });
+        scrollPanelBook.getParent().addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+            // Check if the mouse event target is outside the bookNameField
+            if (!scrollPanelBook.getBoundsInParent().contains(event.getX(), event.getY())) {
+                // Mouse is pressed outside the bookNameField
+                scrollPanelBook.setVisible(false);
+
+            }
+        });
         categorySearch.setVisible(false);
         authorSearch.setVisible(false);
 
@@ -169,45 +235,6 @@ public class AddBookBatchController {
             }
         });
 
-        fullNameField.setOnAction(event -> {
-            Object selectedItem = fullNameField.getSelectionModel().getSelectedItem();
-            if (selectedItem != null) {
-                String selectedBookName = (String) selectedItem;
-
-                bookDetails = bookService.getBookByName(selectedBookName);
-
-                List<Author> authors = bookDetails.getAuthors();
-                List<Category> categories = bookDetails.getCategories();
-                String publishers = bookDetails.getPublisher().getName();
-                String language = bookDetails.getLanguages();
-                int quanity = bookDetails.getQuantity();
-                BigDecimal salePrice = bookDetails.getSalePrice();
-                String releaseDate = bookDetails.getPublishingDate();
-
-                authorNameCheckCombo.getCheckModel().clearChecks();
-                categoryCheckCombo.getCheckModel().clearChecks();
-
-
-                for (Author author : authors) {
-                    if (authorNameCheckCombo.getItems().contains(author.getName())) {
-                        authorNameCheckCombo.getCheckModel().check(author.getName());
-                    }
-                }
-
-                for (Category category : categories) {
-                    if (categoryCheckCombo.getItems().contains(category.getName())) {
-                        categoryCheckCombo.getCheckModel().check(category.getName());
-                    }
-                }
-
-                publisherComboBox.setValue(publishers);
-                languageComboBox.setValue(language);
-//                bookQuantityField.setText(String.valueOf(quanity));
-//                bookPriceField.setText(String.valueOf(salePrice));
-                releaseDatePicker.setValue(LocalDate.parse(releaseDate, dateFormatter));
-
-            }
-        });
 
 
         categoryCheckCombo.getCheckModel().getCheckedItems().addListener((ListChangeListener<String>) c -> {
@@ -287,9 +314,45 @@ public class AddBookBatchController {
 
 
     }
-    public void test(){
-        System.out.println("hi");
+
+    void handleChoiceAction(String title){
+        bookNameField.setText(title);
+        scrollPanelBook.setVisible(false);
+
+        bookDetails = bookService.getBookByName(title);
+
+        List<Author> authors = bookDetails.getAuthors();
+        List<Category> categories = bookDetails.getCategories();
+        String publishers = bookDetails.getPublisher().getName();
+        String language = bookDetails.getLanguages();
+        int quanity = bookDetails.getQuantity();
+        BigDecimal salePrice = bookDetails.getSalePrice();
+        String releaseDate = bookDetails.getPublishingDate();
+
+        authorNameCheckCombo.getCheckModel().clearChecks();
+        categoryCheckCombo.getCheckModel().clearChecks();
+
+
+        for (Author author : authors) {
+            if (authorNameCheckCombo.getItems().contains(author.getName())) {
+                authorNameCheckCombo.getCheckModel().check(author.getName());
+            }
+        }
+
+        for (Category category : categories) {
+            if (categoryCheckCombo.getItems().contains(category.getName())) {
+                categoryCheckCombo.getCheckModel().check(category.getName());
+            }
+        }
+
+        publisherComboBox.setValue(publishers);
+        languageComboBox.setValue(language);
+//                bookQuantityField.setText(String.valueOf(quanity));
+//                bookPriceField.setText(String.valueOf(salePrice));
+        releaseDatePicker.setValue(LocalDate.parse(releaseDate, dateFormatter));
+
     }
+
     private void updateFilteredCategories(String searchQuery) {
         filteredCategoriesItems.clear();
 
@@ -430,7 +493,7 @@ public class AddBookBatchController {
     private void handleSaveChanges(ActionEvent event) {
         clearErrorMessages();
 
-        String title = (String) fullNameField.getValue();
+        String title =  bookNameField.getText();
         String releaseDate = releaseDatePicker.getEditor().getText();
         String publisherName = (String)publisherComboBox.getValue();
         String quantity = bookQuantityField.getText();
@@ -476,6 +539,13 @@ public class AddBookBatchController {
     }
 
     private void clearInputs() {
+        bookQuantityField.setText("");
+        bookPriceField.setText("");
+        languageComboBox.setValue(null);
+        publisherComboBox.setValue(null);
+        categoryCheckCombo.getCheckModel().clearChecks();
+        releaseDatePicker.setValue(null);
+        authorNameCheckCombo.getCheckModel().clearChecks();
 
     }
 }
