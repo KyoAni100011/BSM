@@ -109,7 +109,6 @@ public class ImportSheetController {
     public void handleAddBookButton() {
         try {
             AddBookBatchController controller = FXMLLoaderHelper.loadFXMLWithController(new Stage(),"/com/bsm/bsm/view/employee/importSheet/addBook.fxml", "Add Book Batch To Import Sheet");
-            controller.test();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

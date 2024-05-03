@@ -336,3 +336,13 @@
 .text-bold {
     -fx-font-family: "Roboto Bold";
 }
+.button-clean {
+    -fx-background-color: transparent;
+    -fx-alignment: baseline-left;
+}
+
+.button-clean:hover {
+    -fx-background-color: #0096C9;
+}
+
+
