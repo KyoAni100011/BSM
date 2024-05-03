@@ -16,7 +16,7 @@
          <children>
             <AnchorPane fx:id="tableToolbar" prefHeight="48.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 10px;">
                <children>
-                  <Button fx:id="updateUserButton" layoutX="472.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleUpdateUserButton" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 20px;" text="Update">
+                  <Button fx:id="updateUserButton" layoutX="448.0" layoutY="9.0" mnemonicParsing="false" onAction="#handleUpdateUserButton" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 20px;" text="Update">
                      <graphic>
                         <Group>
                            <children>
@@ -35,7 +35,7 @@
                         </Group>
                      </children>
                   </AnchorPane>
-                  <Button fx:id="passwordResetButton" layoutX="562.0" layoutY="10.0" mnemonicParsing="false" onAction="#handlePasswordResetButton" prefHeight="30.0" prefWidth="120.0" style="-fx-background-radius: 20px;" text="Reset Password">
+                  <Button fx:id="passwordResetButton" layoutX="539.0" layoutY="10.0" mnemonicParsing="false" onAction="#handlePasswordResetButton" prefHeight="30.0" prefWidth="143.0" style="-fx-background-radius: 20px;" text="Reset Password">
                      <graphic>
                         <Group>
                            <children>
@@ -44,7 +44,7 @@
                         </Group>
                      </graphic>
                   </Button>
-                  <Button fx:id="addUserButton" layoutX="374.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleAddUserButton" prefHeight="30.0" prefWidth="88.0" style="-fx-background-radius: 20px;" text="Add User">
+                  <Button fx:id="addUserButton" layoutX="375.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleAddUserButton" prefHeight="30.0" prefWidth="63.0" style="-fx-background-radius: 20px;" text="Add">
                      <graphic>
                         <Group>
                            <children>
@@ -129,7 +129,7 @@
                         </AnchorPane>
                         <AnchorPane prefHeight="43.0" prefWidth="82.0">
                            <children>
-                              <Button fx:id="lastLoginLabel" layoutX="-8.0" layoutY="9.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Last login">
+                              <Button fx:id="lastLoginLabel" layoutX="-3.0" layoutY="9.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Last login">
                                  <graphic>
                                     <Group>
                                        <children>

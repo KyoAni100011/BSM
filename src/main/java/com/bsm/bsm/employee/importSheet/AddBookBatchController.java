@@ -43,11 +43,11 @@ public class AddBookBatchController {
     @FXML
     public Label bookNameErrorLabel,languageErrorLabel,categoryErrorLabel,authorErrorLabel,quantityErrorLabel,publisherErrorLabel,priceErrorLabel,releaseErrorLabel;
     @FXML
-    public TextField fullNameField, bookQuantityField, bookPriceField;
+    public TextField  bookQuantityField, bookPriceField;
     @FXML
     public CheckComboBox<String> authorNameCheckCombo , categoryCheckCombo;
     @FXML
-    public SearchableComboBox languageComboBox, publisherComboBox;
+    public SearchableComboBox languageComboBox, publisherComboBox,  fullNameField;
     @FXML
     public Button saveChangesButton;
     @FXML
@@ -66,12 +66,17 @@ public class AddBookBatchController {
     private Set<String> selectedLanguages = new HashSet<>();
     private ObservableList<String> selectedAuthors = FXCollections.observableArrayList();
     private ObservableList<String> selectedCategories = FXCollections.observableArrayList();
+    private ObservableList<String> selectedBooks = FXCollections.observableArrayList();
     ObservableList<String> authorItems = FXCollections.observableArrayList();
     ObservableList<String> categoriesItems = FXCollections.observableArrayList();
     ObservableList<String> publisherItems = FXCollections.observableArrayList();
+    ObservableList<String> bookItems = FXCollections.observableArrayList();
+
+    private Book bookDetails = null;
 
     private ObservableList<String> filteredCategoriesItems = FXCollections.observableArrayList(); // Store filtered category items
     private ObservableList<String> filteredAuthorItems = FXCollections.observableArrayList(); // Store filtered category items
+    private ObservableList<String> filteredBookItems = FXCollections.observableArrayList();
 
     // Khai báo biến kiểm tra số nguyên
     private final UnaryOperator<TextFormatter.Change> integerFilter = change -> {
@@ -102,11 +107,17 @@ public class AddBookBatchController {
                 publisherItems.add(publisher.getName());
         }
 
+        for (var book: bookService.getAllBooks()) {
+            if (book.isEnabled())
+                bookItems.add(book.getTitle());
+        }
+
         List<String> languages = bookService.getLanguages();
         ObservableList<String> languageItems = FXCollections.observableArrayList(languages);
 
         categoryCheckCombo.getItems().addAll(categoriesItems);
         authorNameCheckCombo.getItems().addAll(authorItems);
+        fullNameField.getItems().addAll(bookItems);
         languageComboBox.setItems(languageItems);
         publisherComboBox.getItems().addAll(publisherItems);
         setupDatePicker();
@@ -147,11 +158,51 @@ public class AddBookBatchController {
             // Check if the mouse event target is outside the categorySearch field
             if (!categorySearch.getBoundsInParent().contains(event.getX(), event.getY())) {
                 categorySearch.clear();
-                // Mouse is pressed outside the categorySearch field
                 categorySearch.setVisible(false); // Hide the categorySearch field
                 categoryCheckCombo.hide();
             }
         });
+
+        fullNameField.setOnAction(event -> {
+            Object selectedItem = fullNameField.getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                String selectedBookName = (String) selectedItem;
+
+                bookDetails = bookService.getBookByName(selectedBookName);
+
+                List<Author> authors = bookDetails.getAuthors();
+                List<Category> categories = bookDetails.getCategories();
+                String publishers = bookDetails.getPublisher().getName();
+                String language = bookDetails.getLanguages();
+                int quanity = bookDetails.getQuantity();
+                BigDecimal salePrice = bookDetails.getSalePrice();
+                String releaseDate = bookDetails.getPublishingDate();
+
+                authorNameCheckCombo.getCheckModel().clearChecks();
+                categoryCheckCombo.getCheckModel().clearChecks();
+
+
+                for (Author author : authors) {
+                    if (authorNameCheckCombo.getItems().contains(author.getName())) {
+                        authorNameCheckCombo.getCheckModel().check(author.getName());
+                    }
+                }
+
+                for (Category category : categories) {
+                    if (categoryCheckCombo.getItems().contains(category.getName())) {
+                        categoryCheckCombo.getCheckModel().check(category.getName());
+                    }
+                }
+
+                publisherComboBox.setValue(publishers);
+                languageComboBox.setValue(language);
+//                bookQuantityField.setText(String.valueOf(quanity));
+//                bookPriceField.setText(String.valueOf(salePrice));
+                releaseDatePicker.setValue(LocalDate.parse(releaseDate, dateFormatter));
+
+            }
+        });
+
 
         categoryCheckCombo.getCheckModel().getCheckedItems().addListener((ListChangeListener<String>) c -> {
             while (c.next()) {
@@ -371,7 +422,7 @@ public class AddBookBatchController {
     private void handleSaveChanges(ActionEvent event) {
         clearErrorMessages();
 
-        String title = fullNameField.getText();
+        String title = (String) fullNameField.getValue();
         String releaseDate = releaseDatePicker.getEditor().getText();
         String publisherName = (String)publisherComboBox.getValue();
         String quantity = bookQuantityField.getText();
@@ -398,23 +449,7 @@ public class AddBookBatchController {
             BookBatch bookBatch = new BookBatch(Integer.parseInt(quantity), new BigDecimal(importPrice), book);
             ImportSheetController.addBookBatchToSheet(bookBatch);
 
-            // Update price
-            if (bookService.isNameExist(title)) {
-                try {
-                    // Load the FXML file for updating sell price
-                    UpdatePriceController.setBookName(title);
-                    FXMLLoaderHelper.loadFXML(new Stage(),"employee/importSheet/updatePrice", "Update Sell Price");
-                    // Set the book name in the UpdatePriceController
-
-                    System.out.println("Successfully loaded Update Price window.");
-                } catch (Exception e) {
-                    System.out.println("Error loading Update Price window: " + e.getMessage());
-                }
-            } else {
-                System.out.println("Book with title " + title + " does not exist.");
-            }
-
-// Close the current stage
+            // Close the current stage
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.close();
 

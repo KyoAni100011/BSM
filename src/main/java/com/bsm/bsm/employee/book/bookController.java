@@ -37,7 +37,7 @@ public class bookController implements Initializable {
     private final EmployeeModel employeeInfo = (EmployeeModel) UserSingleton.getInstance().getUser();
 
     private boolean isSearch = false;
-
+    private boolean isSearchAndPagination = false;
 
     @FXML
     private TextField inputSearch;
@@ -70,6 +70,7 @@ public class bookController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeButtonsAndLabels();
+        type = "book";
         loadAllBooks();
         initializePaginationButtons();
 
@@ -92,25 +93,25 @@ public class bookController implements Initializable {
 
     @FXML
     void handleRefreshButton(ActionEvent event) {
+        column = "isbn";
+        sortOrder = "ASC";
+        currentPage = 1;
+        inputSearch.setText("");
         idSortLabel.setContent("");
-        quantitySortLabel.setContent("");
-        bookNameSortLabel.setContent("");
-        actionSortLabel.setContent("");
-        priceSortLabel.setContent("");
         loadAllBooks();
     }
 
     private void loadAllBooks() {
-        books = bookService.getAllBooks();
+        books = bookService.getAllBooksForViewList();
         books = bookService.sort(books, true, "isbn");
         employeeInfo.setBooks(books);
         try {
-            type = "book";
             updateBooksList();
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
+
     private void initializeButtonsAndLabels() {
         bookButton.getStyleClass().add("profile-setting-button");
         updateButtonStyle(bookButton);
@@ -148,51 +149,46 @@ public class bookController implements Initializable {
 
     @FXML
     private void handleBookButton(ActionEvent event) {
-        try {
-            type = "book";
-            currentPage = 1;
-            updateBooksList();
-            updateButtonStyle(bookButton);
-        } catch (IOException e) {
-            e.printStackTrace();
-            AlertUtils.showAlert("Error", "Error loading book", Alert.AlertType.ERROR);
-        }
+        type = "book";
+        handleRefreshButton(event);
+        updateButtonStyle(bookButton);
     }
 
     @FXML
     private void handleNewBookButton(ActionEvent event) {
-        try {
-            type = "newBook";
-            currentPage = 1;
-            updateBooksList();
-            updateButtonStyle(newBookButton);
-        } catch (IOException e) {
-            e.printStackTrace();
-            AlertUtils.showAlert("Error", "Error loading new book", Alert.AlertType.ERROR);
-        }
+        type = "newBook";
+        handleRefreshButton(event);
+        updateButtonStyle(newBookButton);
     }
 
     @FXML
     private void handleOutOfStockBookButton(ActionEvent event) {
-        try {
-            type = "outOfStockBook";
-            currentPage = 1;
-            updateBooksList();
-            updateButtonStyle(outOfStockBookButton);
-        } catch (IOException e) {
-            e.printStackTrace();
-            AlertUtils.showAlert("Error", "Error loading out of stock book", Alert.AlertType.ERROR);
-        }
+        type = "outOfStockBook";
+        handleRefreshButton(event);
+        updateButtonStyle(outOfStockBookButton);
     }
-
-
 
     @FXML
     private void handleUpdateUserButton(ActionEvent event) {
         try {
             if (isbn != null) {
-                UpdateBookController.handleTableItemSelection(isbn);
-                FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/updateBook");
+                boolean checkFindBook = false;
+                
+                for (var book: books) {
+                    if (book.getIsbn().equals(isbn)){
+                        if (book.isEnabled()) {
+                            checkFindBook = true;
+                            UpdateBookController.handleTableItemSelection(isbn);
+                            FXMLLoaderHelper.loadFXML(new Stage(), "employee/book/updateBook");
+                        }
+                        break;
+                    }
+                }
+
+                if (!checkFindBook) {
+                    AlertUtils.showAlert("Error", "Need to enable book to update", Alert.AlertType.ERROR);
+                }
+
             } else {
                 AlertUtils.showAlert("Error", "Can't find book", Alert.AlertType.ERROR);
             }
@@ -212,6 +208,7 @@ public class bookController implements Initializable {
 
     @FXML
     private void handlePaginationButton(ActionEvent event) {
+        if(isSearch) isSearchAndPagination = true;
         Button buttonClicked = (Button) event.getSource();
         if (buttonClicked == previousPaginationButton) {
             currentPage--;
@@ -315,15 +312,15 @@ public class bookController implements Initializable {
     private void updateBooksList() throws IOException {
         pnItems.getChildren().clear();
         int itemsPerPage = 8;
-        int totalUserCountForRole = getTotalBookCountForRole(type);
+        int totalBooksCountForRole = getTotalBookCountForRole(type);
 
-        int totalPages = (int) Math.ceil((double) totalUserCountForRole / itemsPerPage);
+        int totalPages = (int) Math.ceil((double) totalBooksCountForRole / itemsPerPage);
 
-        int startIndex =  isSearch ? 0 : (currentPage - 1) * itemsPerPage;
+        int startIndex = isSearchAndPagination ? ((currentPage - 1) * itemsPerPage) : (isSearch ? 0 : (currentPage - 1) * itemsPerPage);
         List<Book> bookForType = new ArrayList<>();
 
         for (var book: books) {
-            if ((isNormalBook(book) && type.equals("book")) || ( isNewBook(book) && type.equals("newBook") )|| ( isOutOfStockBook(book) && type.equals("outOfStockBook"))){
+            if ((type.equals("book")) || ( isNewBook(book) && type.equals("newBook") )|| ( isOutOfStockBook(book) && type.equals("outOfStockBook"))){
                 bookForType.add(book);
             }
         }
@@ -337,7 +334,6 @@ public class bookController implements Initializable {
                 TableItemController tableItemController = fxmlLoader.getController();
                 tableItemController.setToggleGroup(toggleGroup);
                 tableItemController.setBook(book);
-                System.out.println(book);
                 pnItems.getChildren().add(item);
             } catch (IOException e) {
                 System.out.println(e.getMessage());
@@ -349,12 +345,11 @@ public class bookController implements Initializable {
     private int getTotalBookCountForRole(String type) {
         int count = 0;
         for (Book book : books) {
-            if ((isNormalBook(book) && Objects.equals(type, "book")) || ( isNewBook(book) && Objects.equals(type, "newBook") )|| ( isOutOfStockBook(book) &&   Objects.equals(type, "outOfStockBook")))
+            if ((Objects.equals(type, "book")) || ( isNewBook(book) && Objects.equals(type, "newBook") )|| ( isOutOfStockBook(book) &&   Objects.equals(type, "outOfStockBook")))
             {
                 count++;
             }
         }
-        System.out.println("type = " + type + "quality: " + count);
         return count;
     }
 
@@ -369,9 +364,10 @@ public class bookController implements Initializable {
     private boolean isOutOfStockBook(Book thisBook){
         return !(thisBook.getQuantity() > 0);
     }
-    private boolean isNormalBook(Book thisBook){
-        return !(isOutOfStockBook(thisBook) || isNewBook(thisBook));
-    }
+
+//    private boolean isNormalBook(Book thisBook){
+//        return !(isOutOfStockBook(thisBook) || isNewBook(thisBook));
+//    }
 
 
     @FXML
@@ -398,7 +394,7 @@ public class bookController implements Initializable {
             if (isSearch) {
                 books = bookService.search(inputSearchText);
             } else {
-                books = bookService.getAllBooks();
+                books = bookService.getAllBooksForViewList();
             }
             books = bookService.sort(books, isAscending, column);
             updateBooksList();

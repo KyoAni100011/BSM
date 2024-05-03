@@ -1,12 +1,10 @@
 package com.bsm.bsm.sheet;
 
-import com.bsm.bsm.author.Author;
 import com.bsm.bsm.book.Book;
 import com.bsm.bsm.book.BookBatch;
 import com.bsm.bsm.employee.EmployeeModel;
 import com.bsm.bsm.user.UserSingleton;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -40,7 +38,11 @@ public class ImportSheetService {
         return sheets.stream()
                 .filter(sheet ->
                         sheet.getEmployee().getName().toLowerCase().contains(finalKeyword) ||
-                                sheet.getId().contains(finalKeyword))
+                                sheet.getId().contains(finalKeyword)||
+                                sheet.getImportDate().contains(finalKeyword) ||
+                                String.valueOf(sheet.getQuantity()).contains(finalKeyword) ||
+                                sheet.getTotalPrice().toString().contains(finalKeyword)
+                )
                 .collect(Collectors.toList());
     }
 
@@ -55,6 +57,11 @@ public class ImportSheetService {
                 }
                 case "date import" -> {
                     return Comparator.comparing(ImportSheet::getImportDate).compare(importSheet1, importSheet2);
+                }
+                case "employee" -> {
+                    String employeeName1 = importSheet1.getEmployee().getName();
+                    String employeeName2 = importSheet2.getEmployee().getName();
+                    return employeeName1.compareTo(employeeName2);
                 }
                 case "quantity" -> {
                     return Comparator.comparing(ImportSheet::getQuantity).compare(importSheet1, importSheet2);

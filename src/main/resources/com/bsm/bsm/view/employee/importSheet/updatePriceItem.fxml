@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="38.0" prefWidth="684.0" style="-fx-border-color: #CECECE; -fx-border-width: 0 0 1 0;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.importSheet.UpdatePriceItemController">
+   <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="684.0">
+      <Label prefHeight="18.0" prefWidth="35.0" styleClass="text-bold" text="ISBN:">
+         <HBox.margin>
+            <Insets left="10.0" right="5.0" />
+         </HBox.margin>
+      </Label>
+      <Text fx:id="id" strokeType="OUTSIDE" strokeWidth="0.0" text="66660001" wrappingWidth="70.93670845031738">
+         <HBox.margin>
+            <Insets right="60.0" />
+         </HBox.margin>
+      </Text>
+      <Label styleClass="text-bold" text="Title:">
+         <HBox.margin>
+            <Insets right="5.0" />
+         </HBox.margin>
+      </Label>
+      <Label fx:id="title" text="Doraremon tuyen tap truyen dai tap 3">
+      </Label>
+   </HBox>
+   <HBox alignment="CENTER_LEFT" layoutY="26.0" prefHeight="62.0" prefWidth="684.0">
+      <Label prefHeight="18.0" prefWidth="106.0" styleClass="text-bold" text="Max Import Price:">
+         <padding>
+            <Insets right="5.0" />
+         </padding>
+         <HBox.margin>
+            <Insets left="10.0" />
+         </HBox.margin>
+      </Label>
+      <Text fx:id="importPrice" strokeType="OUTSIDE" strokeWidth="0.0" text="1230450" wrappingWidth="54.936771392822266">
+         <HBox.margin>
+            <Insets right="10.0" />
+         </HBox.margin>
+      </Text>
+      <Label prefHeight="18.0" prefWidth="111.0" styleClass="text-bold" text="Current Sell Price:">
+         <HBox.margin>
+            <Insets left="10.0" />
+         </HBox.margin>
+      </Label>
+      <Text fx:id="currentSellPrice" strokeType="OUTSIDE" strokeWidth="0.0" text="1230450" wrappingWidth="54.936771392822266">
+         <HBox.margin>
+            <Insets left="5.0" right="10.0" />
+         </HBox.margin>
+      </Text>
+      <VBox alignment="BOTTOM_LEFT" prefHeight="62.0" prefWidth="305.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="219.0">
+               <children>
+                  <Label prefHeight="18.0" prefWidth="98.0" styleClass="text-bold" text="Update Sell Price:">
+                     <HBox.margin>
+                        <Insets right="4.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="sellPriceField" prefHeight="26.0" prefWidth="197.0" />
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <Label fx:id="sellPriceLabel" prefHeight="18.0" prefWidth="200.0" styleClass="error-label">
+               <VBox.margin>
+                  <Insets left="100.0" />
+               </VBox.margin>
+            </Label>
+         </children>
+      </VBox>
+   </HBox>
+</AnchorPane>

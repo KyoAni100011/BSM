@@ -1,6 +1,8 @@
 package com.bsm.bsm.employee.importSheet;
 
+import com.bsm.bsm.book.Book;
 import com.bsm.bsm.book.BookBatch;
+import com.bsm.bsm.book.BookService;
 import com.bsm.bsm.database.DatabaseConnection;
 import com.bsm.bsm.employee.EmployeeModel;
 import com.bsm.bsm.sheet.ImportSheet;
@@ -47,9 +49,11 @@ public class ImportSheetController {
     public Button btnAddSheet;
 
     private static List<BookBatch> bookBatches;
+
     public Button refreshButton;
 
     private ImportSheetService importSheetService = new ImportSheetService();
+    private BookService bookService = new BookService();
 
     static void handleTableItemSelection(String thisBookName) {
         if (thisBookName == null) {
@@ -158,6 +162,14 @@ public class ImportSheetController {
                 importSheet.setId(importSheetID);
                 ImportSheetDetailController.handleTableItemSelection(importSheetID, importSheet);
                 FXMLLoaderHelper.loadFXML(new Stage(), "employee/importSheet/importSheetDetail");
+
+                if (!bookBatches.isEmpty()) {
+                    UpdatePriceController.setBookBatches(bookBatches);
+                    FXMLLoaderHelper.loadFXML(new Stage(), "employee/importSheet/updatePrice", "Update Sell Price");
+                }
+                else {
+                    System.out.println("No book to update price.");
+                }
 
                 clearInputs();
                 bookBatches = new ArrayList<>();

@@ -96,12 +96,12 @@
                               <Image url="@../../images/catWelcome.jpg" />
                            </image>
                         </ImageView>
-                        <Label styleClass="text-menu-item-1" text="Roboto Black" />
-                        <Label styleClass="text-menu-item-2" text="Roboto Thin" />
-                        <Label styleClass="text-menu-item-3" text="Roboto Light" />
-                        <Label styleClass="text-menu-item-4" text="Roboto Regular" />
-                        <Label styleClass="text-menu-item-5" text="Roboto Medium" />
-                        <Label styleClass="text-menu-item-6" text="Roboto Bold" />
+<!--                        <Label styleClass="text-menu-item-1" text="Roboto Black" />-->
+<!--                        <Label styleClass="text-menu-item-2" text="Roboto Thin" />-->
+<!--                        <Label styleClass="text-menu-item-3" text="Roboto Light" />-->
+<!--                        <Label styleClass="text-menu-item-4" text="Roboto Regular" />-->
+<!--                        <Label styleClass="text-menu-item-5" text="Roboto Medium" />-->
+<!--                        <Label styleClass="text-menu-item-6" text="Roboto Bold" />-->
                      </children>
                   </VBox>
                </children>

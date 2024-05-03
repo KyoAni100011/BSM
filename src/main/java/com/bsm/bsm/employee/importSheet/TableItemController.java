@@ -1,12 +1,10 @@
 package com.bsm.bsm.employee.importSheet;
 
 
-import com.bsm.bsm.author.Author;
 import com.bsm.bsm.sheet.ImportSheet;
 import com.bsm.bsm.sheet.ImportSheetService;
 import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.FXMLLoaderHelper;
-import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
@@ -14,8 +12,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 
 public class TableItemController {
@@ -45,17 +41,11 @@ public class TableItemController {
         }
     }
 
-    private static String getFormattedDate(String dateString) {
-        LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return date.format(formatter);
-    }
-
     public void setSheetModel(ImportSheet sheet) {
         sheetModel = sheet;
         id = sheet.getId();
         idLabel.setText(sheet.getId());
-        dateImportLabel.setText(getFormattedDate(sheet.getImportDate()));
+        dateImportLabel.setText(sheet.getImportDate());
         employeeLabel.setText(sheet.getEmployee().getName());
         quantityLabel.setText(String.valueOf(sheet.getQuantity()));
         totalPriceLabel.setText(sheet.getTotalPrice().toString());

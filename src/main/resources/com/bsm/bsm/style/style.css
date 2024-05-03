@@ -332,3 +332,7 @@
 .title-item{
     -fx-font-family: "Roboto Medium";
 }
+
+.text-bold {
+    -fx-font-family: "Roboto Bold";
+}

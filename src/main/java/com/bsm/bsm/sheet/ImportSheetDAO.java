@@ -8,6 +8,7 @@ import com.bsm.bsm.employee.EmployeeModel;
 import com.bsm.bsm.user.UserDAO;
 import com.bsm.bsm.user.UserModel;
 import com.bsm.bsm.user.UserSingleton;
+import com.bsm.bsm.utils.DateUtils;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -110,10 +111,12 @@ public class ImportSheetDAO {
 
     public List<ImportSheet> getAllImportSheets() {
         List<ImportSheet> listImportSheets = new ArrayList<>();
-        String QUERY_ALL_IMPORT_SHEET = "select sheet.*, e.userID " +
-                "from importsheet sheet join employee e on sheet.employeeID = e.id";
-        List<String> listUserId = new ArrayList<>();
-        int indexListUserId = 0;
+        String QUERY_ALL_IMPORT_SHEET = """
+            select sheet.*,  u.name as userName
+            from importsheet sheet join employee e on sheet.employeeID = e.id
+            join user u on e.userID = u.id
+            """;
+
         DatabaseConnection.executeQuery(QUERY_ALL_IMPORT_SHEET, resultSet -> {
             if (resultSet != null) {
                 while (resultSet.next()) {
@@ -121,20 +124,14 @@ public class ImportSheetDAO {
                     BigDecimal totalPrice = resultSet.getBigDecimal("totalPrice");
                     int quantity = resultSet.getInt("quantity");
                     String importDate = resultSet.getString("importDate");
-                    String userID = resultSet.getString("userID");
-                    listUserId.add(userID);
-                    listImportSheets.add(new ImportSheet(id,null, importDate, quantity, totalPrice));
+                    String convertImportDate = DateUtils.convertDOBFormat(importDate);
+                    EmployeeModel employee = new EmployeeModel();
+                    employee.setName(resultSet.getString("userName"));
+
+                    listImportSheets.add(new ImportSheet(id, employee, convertImportDate, quantity, totalPrice));
                 }
             }
         });
-
-
-        for(ImportSheet sheet : listImportSheets)
-        {
-            EmployeeModel employee = (EmployeeModel) userDao.getUserInfo(listUserId.get(indexListUserId));
-            sheet.setEmployee(employee);
-            indexListUserId++;
-        }
 
         return listImportSheets;
     }
