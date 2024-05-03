@@ -36,6 +36,7 @@ public class AuthorController implements Initializable {
     private final AuthorService authorService = new AuthorService();
 
     private boolean isSearch = false;
+    private boolean isSearchAndPagination = false;
 
     @FXML
     private TextField inputSearch;
@@ -123,6 +124,11 @@ public class AuthorController implements Initializable {
 
     @FXML
     void handleRefreshButton(ActionEvent event) {
+        column = "id";
+        sortOrder = "ASC";
+        currentPage = 1;
+        inputSearch.setText("");
+        idSortLabel.setContent("");
         loadAllAuthors();
     }
 
@@ -155,7 +161,7 @@ public class AuthorController implements Initializable {
     private void updateAuthorsList() throws IOException {
         pnItems.getChildren().clear();
         int itemsPerPage = 9;
-        int startIndex = isSearch ? 0 : (currentPage - 1) * itemsPerPage;
+        int startIndex = isSearchAndPagination ? ((currentPage - 1) * itemsPerPage) : (isSearch ? 0 : (currentPage - 1) * itemsPerPage);
         int endIndex = Math.min(startIndex + itemsPerPage, authors.size());
 
         for (int i = startIndex; i < endIndex; i++) {
@@ -178,6 +184,7 @@ public class AuthorController implements Initializable {
 
     @FXML
     private void handlePaginationButton(ActionEvent event) {
+        if(isSearch) isSearchAndPagination = true;
         Button buttonClicked = (Button) event.getSource();
         if (buttonClicked == previousPaginationButton) {
             currentPage--;

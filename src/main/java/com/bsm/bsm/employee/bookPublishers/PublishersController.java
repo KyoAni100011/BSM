@@ -41,7 +41,7 @@ public class PublishersController implements Initializable {
     private final PublisherService publisherService = new PublisherService();
 
     private boolean isSearch = false;
-
+    private boolean isSearchAndPagination = false;
 
     @FXML
     private TextField inputSearch;
@@ -130,6 +130,11 @@ public class PublishersController implements Initializable {
 
     @FXML
     void handleRefreshButton(ActionEvent event) {
+        column = "id";
+        sortOrder = "ASC";
+        currentPage = 1;
+        inputSearch.setText("");
+        idSortLabel.setContent("");
         loadAllPublishers();
     }
 
@@ -164,7 +169,7 @@ public class PublishersController implements Initializable {
     private void updatePublishersList() throws IOException {
         pnItems.getChildren().clear();
         int itemsPerPage = 9;
-        int startIndex = isSearch ? 0 : (currentPage - 1) * itemsPerPage;
+        int startIndex = isSearchAndPagination ? ((currentPage - 1) * itemsPerPage) : (isSearch ? 0 : (currentPage - 1) * itemsPerPage);
         int endIndex = Math.min(startIndex + itemsPerPage, publishers.size());
 
         for (int i = startIndex; i < endIndex; i++) {
@@ -187,6 +192,7 @@ public class PublishersController implements Initializable {
 
     @FXML
     private void handlePaginationButton(ActionEvent event) {
+        if(isSearch) isSearchAndPagination = true;
         Button buttonClicked = (Button) event.getSource();
         if (buttonClicked == previousPaginationButton) {
             currentPage--;

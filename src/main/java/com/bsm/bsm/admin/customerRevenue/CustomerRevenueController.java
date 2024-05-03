@@ -149,14 +149,14 @@ public class CustomerRevenueController {
         String year = String.valueOf(selectedDate.getYear());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         if (tagType.equals("Month")) {
-            return "Top 10 Best Selling Books In " + month + " " + year;
+            return "Top 10 Best Selling Customers In " + month + " " + year;
         } else if (tagType.equals("Week")) {
-            return "Top 10 Best Selling Books In Week " + selectedDate.get(WeekFields.ISO.weekOfYear()) + ", " + year;
+            return "Top 10 Best Selling Customers In Week " + selectedDate.get(WeekFields.ISO.weekOfYear()) + ", " + year;
         } else if (tagType.equals("Date")) {
-            return "Top 10 Best Selling Books On " + selectedDate.format(formatter);
+            return "Top 10 Best Selling Customers On " + selectedDate.format(formatter);
         } else if (tagType.equals("DateRange")) {
             // Assuming datePicker and datePicker1 are DatePicker controls
-            return "Top 10 Best Selling Books From " + datePicker.getValue().format(formatter) + " To " + datePicker1.getValue().format(formatter);
+            return "Top 10 Best Selling Customers From " + datePicker.getValue().format(formatter) + " To " + datePicker1.getValue().format(formatter);
         } else {
             return "";
         }

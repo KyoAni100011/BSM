@@ -37,7 +37,7 @@ public class bookController implements Initializable {
     private final EmployeeModel employeeInfo = (EmployeeModel) UserSingleton.getInstance().getUser();
 
     private boolean isSearch = false;
-
+    private boolean isSearchAndPagination = false;
 
     @FXML
     private TextField inputSearch;
@@ -97,11 +97,7 @@ public class bookController implements Initializable {
         sortOrder = "ASC";
         currentPage = 1;
         inputSearch.setText("");
-        idSortLabel.setContent("M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z");
-        quantitySortLabel.setContent("");
-        bookNameSortLabel.setContent("");
-        actionSortLabel.setContent("");
-        priceSortLabel.setContent("");
+        idSortLabel.setContent("");
         loadAllBooks();
     }
 
@@ -198,6 +194,7 @@ public class bookController implements Initializable {
 
     @FXML
     private void handlePaginationButton(ActionEvent event) {
+        if(isSearch) isSearchAndPagination = true;
         Button buttonClicked = (Button) event.getSource();
         if (buttonClicked == previousPaginationButton) {
             currentPage--;
@@ -305,7 +302,7 @@ public class bookController implements Initializable {
 
         int totalPages = (int) Math.ceil((double) totalBooksCountForRole / itemsPerPage);
 
-        int startIndex =  isSearch ? 0 : (currentPage - 1) * itemsPerPage;
+        int startIndex = isSearchAndPagination ? ((currentPage - 1) * itemsPerPage) : (isSearch ? 0 : (currentPage - 1) * itemsPerPage);
         List<Book> bookForType = new ArrayList<>();
 
         for (var book: books) {

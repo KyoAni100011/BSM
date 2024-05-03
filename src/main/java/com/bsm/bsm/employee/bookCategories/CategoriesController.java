@@ -53,6 +53,7 @@ public class CategoriesController implements Initializable {
     private SVGPath idSortLabel, nameSortLabel, introductionSortLabel ,actionSortLabel;
 
     private boolean isSearch = false;
+    private boolean isSearchAndPagination = false;
 
     private List<Category> categories = null;
     private String sortOrder = "ASC";
@@ -151,12 +152,18 @@ public class CategoriesController implements Initializable {
 
     @FXML
     void handleRefreshButton(ActionEvent event) {
+        column = "id";
+        sortOrder = "ASC";
+        currentPage = 1;
+        inputSearch.setText("");
+        idSortLabel.setContent("");
         loadAllCategory();
     }
 
 
     @FXML
     private void handlePaginationButton(ActionEvent event) {
+        if(isSearch) isSearchAndPagination = true;
         Button buttonClicked = (Button) event.getSource();
         if (buttonClicked == previousPaginationButton) {
             currentPage--;
@@ -223,7 +230,7 @@ public class CategoriesController implements Initializable {
     private void updateCategoryList() throws IOException {
         pnItems.getChildren().clear();
         int itemsPerPage = 9;
-        int startIndex = isSearch ? 0 : (currentPage - 1) * itemsPerPage;
+        int startIndex = isSearchAndPagination ? ((currentPage - 1) * itemsPerPage) : (isSearch ? 0 : (currentPage - 1) * itemsPerPage);
         int endIndex = Math.min(startIndex + itemsPerPage, categories.size());
 
         for (int i = startIndex; i < endIndex; i++) {

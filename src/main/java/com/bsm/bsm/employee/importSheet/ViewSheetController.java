@@ -33,12 +33,15 @@ public class ViewSheetController {
     @FXML
     private VBox pnItems;
     @FXML
+    private Button refreshButton;
+    @FXML
     private Button idLabel, dateImportLabel, employeeLabel, quantityLabel, totalPriceLabel;
     @FXML
     private SVGPath idSortLabel, dateImportSortLabel, employeeSortLabel, quantitySortLabel, totalPriceSortLabel;
     @FXML
     private Button previousPaginationButton, nextPaginationButton, firstPaginationButton, secondPaginationButton, thirdPaginationButton, fourthPaginationButton, fifthPaginationButton;
     private boolean isSearch = false;
+    private boolean isSearchAndPagination = false;
     private List<ImportSheet> sheets;
     private String sortOrder = "ASC";
     private String column = "id";
@@ -71,6 +74,16 @@ public class ViewSheetController {
                 }
             }
         });
+    }
+
+    @FXML
+    void handleRefreshButton(ActionEvent event) {
+        column = "isbn";
+        sortOrder = "ASC";
+        currentPage = 1;
+        inputSearch.setText("");
+        idSortLabel.setContent("");
+        loadAllSheets();
     }
 
     private void loadAllSheets() {
@@ -111,10 +124,8 @@ public class ViewSheetController {
     private void updateSheetsList() throws IOException {
         pnItems.getChildren().clear();
         int itemsPerPage = 9;
-        int startIndex = isSearch ? 0 : (currentPage - 1) * itemsPerPage;
+        int startIndex = isSearchAndPagination ? ((currentPage - 1) * itemsPerPage) : (isSearch ? 0 : (currentPage - 1) * itemsPerPage);
         int endIndex = Math.min(startIndex + itemsPerPage, sheets.size());
-        int totalPages = (int) Math.ceil((double) sheets.size() / itemsPerPage);
-
         for (int i = startIndex; i < endIndex; i++) {
             ImportSheet sheet = sheets.get(i);
 
@@ -133,6 +144,7 @@ public class ViewSheetController {
 
     @FXML
     private void handlePaginationButton(ActionEvent event) {
+        if(isSearch) isSearchAndPagination = true;
         Button buttonClicked = (Button) event.getSource();
         if (buttonClicked == previousPaginationButton) {
             currentPage--;

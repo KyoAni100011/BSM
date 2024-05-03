@@ -35,6 +35,7 @@ public class OrderController implements Initializable  {
     private final ToggleGroup toggleGroup = new ToggleGroup();
     private final OrderService Orderservice = new OrderService();
     private boolean isSearch = false;
+    private boolean isSearchAndPagination = false;
     private String condition = "";
     @FXML
     public Button customerLabel,employeeLabel,orderLabel,priceLabel,idLabel;
@@ -212,10 +213,19 @@ public class OrderController implements Initializable  {
     }
 
 
-
+    @FXML
+    void handleRefreshButton(ActionEvent event) throws IOException {
+        column = "isbn";
+        sortOrder = "ASC";
+        currentPage = 1;
+        inputSearch.setText("");
+        idSortLabel.setContent("");
+        loadAllOrders(condition);
+    }
 
     @FXML
     private void handlePaginationButton(ActionEvent event) {
+        if(isSearch) isSearchAndPagination = true;
         Button buttonClicked = (Button) event.getSource();
         if (buttonClicked == previousPaginationButton) {
             currentPage--;
@@ -283,7 +293,7 @@ public class OrderController implements Initializable  {
     private void updateOrdersList() throws IOException {
         pnItems.getChildren().clear();
         int itemsPerPage = 10;
-        int startIndex = isSearch ? 0 : (currentPage - 1) * itemsPerPage;
+        int startIndex = isSearchAndPagination ? ((currentPage - 1) * itemsPerPage) : (isSearch ? 0 : (currentPage - 1) * itemsPerPage);
         int endIndex = Math.min(startIndex + itemsPerPage, orders.size());
 
         for (int i = startIndex; i < endIndex; i++) {
