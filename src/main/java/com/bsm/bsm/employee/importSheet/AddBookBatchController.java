@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.SearchableComboBox;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.math.BigDecimal;
@@ -77,7 +78,7 @@ public class AddBookBatchController {
     private ObservableList<String> filteredCategoriesItems = FXCollections.observableArrayList(); // Store filtered category items
     private ObservableList<String> filteredAuthorItems = FXCollections.observableArrayList(); // Store filtered category items
     private ObservableList<String> filteredBookItems = FXCollections.observableArrayList();
-
+    private AutoCompletionBinding<String> autoCompletionBinding;
     // Khai báo biến kiểm tra số nguyên
     private final UnaryOperator<TextFormatter.Change> integerFilter = change -> {
         // Kiểm tra nếu chuỗi mới chứa chỉ chứa các ký tự số hoặc là chuỗi rỗng
@@ -117,8 +118,12 @@ public class AddBookBatchController {
 
         categoryCheckCombo.getItems().addAll(categoriesItems);
         authorNameCheckCombo.getItems().addAll(authorItems);
-        TextFields.bindAutoCompletion(fullNameField,bookItems);
+        String []word = {"das", "hi" ,"3"};
+        autoCompletionBinding = TextFields.bindAutoCompletion(fullNameField,word);
 
+        autoCompletionBinding.setOnAutoCompleted(event -> {
+            System.out.println("Selected suggestion: " + event.getCompletion());
+        });
         languageComboBox.setItems(languageItems);
         publisherComboBox.getItems().addAll(publisherItems);
         setupDatePicker();
