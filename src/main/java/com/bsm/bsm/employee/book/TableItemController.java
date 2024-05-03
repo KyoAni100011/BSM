@@ -66,7 +66,7 @@ public class TableItemController {
                 if (bookService.setEnable(isbn, !oldState.get())) {
                     isOn.setSwitchedProperty(!oldState.get());
                     book.setEnabled(!oldState.get());
-                    AlertUtils.showAlert("Success", "Author has been " + isEnabledState, Alert.AlertType.INFORMATION);
+                    AlertUtils.showAlert("Success", "Book has been " + isEnabledState, Alert.AlertType.INFORMATION);
                 } else {
                     AlertUtils.showAlert("Error", "Failed to " + isEnabledState + " author", Alert.AlertType.ERROR);
                 }
