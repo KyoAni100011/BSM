@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.SearchableComboBox;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -47,13 +48,13 @@ public class AddBookBatchController {
     @FXML
     public CheckComboBox<String> authorNameCheckCombo , categoryCheckCombo;
     @FXML
-    public SearchableComboBox languageComboBox, publisherComboBox,fullNameField;
+    public SearchableComboBox languageComboBox, publisherComboBox;
     @FXML
     public Button saveChangesButton;
     @FXML
     private DatePicker releaseDatePicker;
     @FXML
-    private TextField categorySearch, authorSearch;
+    private TextField categorySearch, authorSearch,fullNameField;
 
 
     BookBatch bookBatch;
@@ -117,7 +118,8 @@ public class AddBookBatchController {
 
         categoryCheckCombo.getItems().addAll(categoriesItems);
         authorNameCheckCombo.getItems().addAll(authorItems);
-        fullNameField.getItems().addAll(bookItems);
+        TextFields.bindAutoCompletion(fullNameField,bookItems);
+
         languageComboBox.setItems(languageItems);
         publisherComboBox.getItems().addAll(publisherItems);
         setupDatePicker();
@@ -164,8 +166,8 @@ public class AddBookBatchController {
         });
 
         fullNameField.setOnAction(event -> {
-            Object selectedItem = fullNameField.getSelectionModel().getSelectedItem();
-            if (selectedItem != null) {
+            String selectedItem = fullNameField.getText();
+            if (bookItems.contains(selectedItem) ) {
                 String selectedBookName = (String) selectedItem;
 
                 bookDetails = bookService.getBookByName(selectedBookName);
@@ -199,7 +201,9 @@ public class AddBookBatchController {
 //                bookQuantityField.setText(String.valueOf(quanity));
 //                bookPriceField.setText(String.valueOf(salePrice));
                 releaseDatePicker.setValue(LocalDate.parse(releaseDate, dateFormatter));
-
+            }
+            else{
+                System.out.println("hiiiiii");
             }
         });
 
@@ -424,7 +428,7 @@ public class AddBookBatchController {
     private void handleSaveChanges(ActionEvent event) {
         clearErrorMessages();
 
-        String title = (String) fullNameField.getValue();
+        String title =  fullNameField.getText();
         String releaseDate = releaseDatePicker.getEditor().getText();
         String publisherName = (String)publisherComboBox.getValue();
         String quantity = bookQuantityField.getText();
