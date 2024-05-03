@@ -2,14 +2,18 @@ package com.bsm.bsm.employee.importSheet;
 
 import com.bsm.bsm.book.BookService;
 import com.bsm.bsm.sheet.ImportSheetService;
+import com.bsm.bsm.utils.NumericValidationUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.text.Text;
 import com.bsm.bsm.book.BookBatch;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 
 public class UpdatePriceItemController {
     BigDecimal correctSellPrice = BigDecimal.ZERO;
@@ -22,6 +26,7 @@ public class UpdatePriceItemController {
     public Label sellPriceLabel, title;
     @FXML
     public Text id, importPrice, currentSellPrice;
+
 
 
     BigDecimal getSellPriceValue() {
@@ -37,10 +42,8 @@ public class UpdatePriceItemController {
         } catch (NumberFormatException e) {
             if (sellPriceField.getText().isEmpty()) {
                 sellPriceLabel.setText("Price cannot be empty");
-                sellPriceValue = null;
             } else {
-                sellPriceLabel.setText("Invalid price");
-                sellPriceValue = null;
+                sellPriceLabel.setText("Invalid price");;
             }
             sellPriceValue = null;
         }
@@ -51,6 +54,7 @@ public class UpdatePriceItemController {
     @FXML
     void initialize() {
         sellPriceField.setFocusTraversable(false);
+        sellPriceField.setTextFormatter(new TextFormatter<>(NumericValidationUtils.integerFilter));
     }
 
     public void setBookBatch(BookBatch bookBatch) {
@@ -69,6 +73,5 @@ public class UpdatePriceItemController {
             currentSellPrice.setText("Not set");
         }
         sellPriceField.setPromptText("More than " + correctSellPrice.toString());
-
     }
 }

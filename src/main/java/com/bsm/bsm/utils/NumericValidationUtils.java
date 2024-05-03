@@ -2,9 +2,21 @@ package com.bsm.bsm.utils;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.input.KeyEvent;
 
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
+
 public class NumericValidationUtils {
+    public static final UnaryOperator<TextFormatter.Change> integerFilter = change -> {
+        if (Pattern.matches("\\d*", change.getControlNewText())) {
+            return change;
+        } else {
+            return null;
+        }
+    };
+
     public static EventHandler<KeyEvent> numericValidation(final Integer maxLength) {
         return e -> {
             TextField textField = (TextField) e.getSource();

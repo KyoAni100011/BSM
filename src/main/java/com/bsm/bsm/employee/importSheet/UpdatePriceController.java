@@ -60,7 +60,7 @@ public class UpdatePriceController {
 
             if (sellPriceValue == null) {
                 isValid = false;
-                break;
+                continue;
             }
 
             bookBatches.get(i).getBook().setSalePrice(sellPriceValue);
