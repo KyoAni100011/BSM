@@ -124,11 +124,10 @@ public class ImportSheetDAO {
                     BigDecimal totalPrice = resultSet.getBigDecimal("totalPrice");
                     int quantity = resultSet.getInt("quantity");
                     String importDate = resultSet.getString("importDate");
-                    String convertImportDate = DateUtils.convertDOBFormat(importDate);
                     EmployeeModel employee = new EmployeeModel();
                     employee.setName(resultSet.getString("userName"));
 
-                    listImportSheets.add(new ImportSheet(id, employee, convertImportDate, quantity, totalPrice));
+                    listImportSheets.add(new ImportSheet(id, employee, importDate, quantity, totalPrice));
                 }
             }
         });

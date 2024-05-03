@@ -3,15 +3,19 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="74.0" prefWidth="437.0" style="-fx-border-color: #CECECE;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.importSheet.ImportSheetDetailItemController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="84.0" prefWidth="435.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.importSheet.ImportSheetDetailItemController">
    <children>
-      <Label layoutX="13.0" layoutY="42.0" styleClass="title-item" text="Quantity:" />
-      <Label layoutX="154.0" layoutY="43.0" styleClass="title-item" text="Price:" />
-      <Label layoutX="14.0" layoutY="10.0" styleClass="title-item" text="ISBN:" />
-      <Label layoutX="155.0" layoutY="10.0" styleClass="title-item" text="Title:" />
-      <Label fx:id="isbnField" layoutX="73.0" layoutY="11.0" prefWidth="70.0" text="Label" />
-      <Label fx:id="titleField" layoutX="205.0" layoutY="11.0" prefWidth="200.0" text="Label" />
-      <Label fx:id="priceField" layoutX="205.0" layoutY="43.0" prefWidth="200.0" text="Label" />
-      <Label fx:id="quantityField" layoutX="73.0" layoutY="43.0" prefWidth="70.0" text="Label" />
+      <AnchorPane layoutX="6.0" layoutY="5.0" prefHeight="74.0" prefWidth="425.0" style="-fx-border-color: #E8E8E8; -fx-border-radius: 5px;">
+         <children>
+            <Label layoutX="13.0" layoutY="42.0" styleClass="title-item" text="Quantity:" />
+            <Label layoutX="154.0" layoutY="43.0" styleClass="title-item" text="Price:" />
+            <Label layoutX="14.0" layoutY="10.0" styleClass="title-item" text="ISBN:" />
+            <Label layoutX="155.0" layoutY="10.0" styleClass="title-item" text="Title:" />
+            <Label fx:id="isbnField" layoutX="73.0" layoutY="11.0" prefWidth="70.0" text="Label" />
+            <Label fx:id="titleField" layoutX="205.0" layoutY="11.0" prefHeight="17.0" prefWidth="205.0" text="Label" />
+            <Label fx:id="priceField" layoutX="205.0" layoutY="43.0" prefHeight="17.0" prefWidth="205.0" text="Label" />
+            <Label fx:id="quantityField" layoutX="73.0" layoutY="43.0" prefWidth="70.0" text="Label" />
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
