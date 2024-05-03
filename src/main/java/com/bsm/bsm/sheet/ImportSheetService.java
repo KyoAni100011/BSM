@@ -2,6 +2,7 @@ package com.bsm.bsm.sheet;
 
 import com.bsm.bsm.book.Book;
 import com.bsm.bsm.book.BookBatch;
+import com.bsm.bsm.commonInterface.*;
 import com.bsm.bsm.employee.EmployeeModel;
 import com.bsm.bsm.user.UserSingleton;
 
@@ -11,7 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ImportSheetService {
+public class ImportSheetService implements Searchable<ImportSheet>, Sortable<ImportSheet>{
 
     private final ImportSheetDAO importSheetDAO;
 
@@ -41,6 +42,7 @@ public class ImportSheetService {
         return importSheetDAO.getAllImportSheets();
     }
 
+    @Override
     public List<ImportSheet> search(String keyword) {
         List<ImportSheet> sheets = getAllSheets();
         String finalKeyword = keyword.toLowerCase();
@@ -55,6 +57,7 @@ public class ImportSheetService {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public List<ImportSheet> sort(List<ImportSheet> sheets, boolean isAscending, String column) {
         List<ImportSheet> sortedImportSheet = new ArrayList<>(sheets);
         Comparator<ImportSheet> comparator = (importSheet1,importSheet2) -> {
@@ -100,5 +103,4 @@ public class ImportSheetService {
         EmployeeModel employee = (EmployeeModel) UserSingleton.getInstance().getUser();
         return importSheetDAO.getImportSheetID(employee,importSheet);
     }
-
 }

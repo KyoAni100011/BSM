@@ -65,7 +65,7 @@ public class UpdateAuthorController {
             }
 
             Author newAuthor = new Author(id, fullName, introduction, isEnabled);
-            if (authorService.updateAuthor(newAuthor)) {
+            if (authorService.update(newAuthor)) {
                 AlertUtils.showAlert("Success", "Profile updated successfully.", Alert.AlertType.INFORMATION);
                 clearInputs();
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

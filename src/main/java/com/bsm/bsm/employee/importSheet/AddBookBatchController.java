@@ -103,7 +103,7 @@ public class AddBookBatchController {
                 categoriesItems.add(category.getName());
         }
 
-        for (var author: authorService.getAllAuthors()) {
+        for (var author: authorService.display()) {
             if (author.isEnabled())
                 authorItems.add(author.getName());
         }
@@ -113,7 +113,7 @@ public class AddBookBatchController {
                 publisherItems.add(publisher.getName());
         }
 
-        for (var book: bookService.getAllBooks()) {
+        for (var book: bookService.display()) {
             if (book.isEnabled())
                 bookItems.add(book.getTitle());
         }

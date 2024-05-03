@@ -88,7 +88,7 @@ public class AuthorController implements Initializable {
     }
 
     private void loadAllAuthors() {
-        authors = authorService.getAllAuthors();
+        authors = authorService.display();
         employeeInfo.setAuthors(authors);
         try {
             updateAuthorsList();
@@ -137,7 +137,7 @@ public class AuthorController implements Initializable {
         try {
             FXMLLoaderHelper.loadFXML(new Stage(), "employee/bookAuthors/addAuthor", "Add Author");
             //update authors list after adding new author
-            authors = authorService.getAllAuthors();
+            authors = authorService.display();
             updateAuthorsList();
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -277,7 +277,7 @@ public class AuthorController implements Initializable {
             if (isSearch) {
                 authors = authorService.search(inputSearchText);
             } else {
-                authors = authorService.getAllAuthors();
+                authors = authorService.display();
             }
             authors = authorService.sort(authors, isAscending, column);
             updateAuthorsList();

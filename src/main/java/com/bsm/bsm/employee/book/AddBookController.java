@@ -74,7 +74,7 @@ public class AddBookController {
                 categoriesItems.add(item.getName());
         }
 
-        for (var item : authorService.getAllAuthors()) {
+        for (var item : authorService.display()) {
             if (item.isEnabled())
                 // check category is enabled
                 authorItems.add(item.getName());

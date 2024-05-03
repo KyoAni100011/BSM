@@ -57,7 +57,7 @@ public class CreateOrderController implements Initializable {
             handlePhoneField.setTextFormatter(new TextFormatter<>(integerFilter));
 
             BookService bookService = new BookService();
-            List<Book> books = bookService.getAllBooks();
+            List<Book> books = bookService.display();
 
             for (var book : books) {
                 if (book.isEnabled())
@@ -250,7 +250,7 @@ public class CreateOrderController implements Initializable {
 
     public Book getBookByTitle(String title) {
         BookService bookService = new BookService();
-        List<Book> books = bookService.getAllBooks();
+        List<Book> books = bookService.display();
         for (var book : books) {
             if (book.getTitle().equals(title)) {
                 return book;

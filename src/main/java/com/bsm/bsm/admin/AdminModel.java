@@ -2,10 +2,8 @@ package com.bsm.bsm.admin;
 
 import com.bsm.bsm.commonInterface.Addable;
 import com.bsm.bsm.commonInterface.Searchable;
-import com.bsm.bsm.employee.EmployeeModel;
 import com.bsm.bsm.user.UserModel;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
