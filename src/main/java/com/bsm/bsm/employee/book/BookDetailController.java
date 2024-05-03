@@ -19,6 +19,7 @@ import java.util.List;
 public class BookDetailController {
     public ScrollPane scrollPanelAuthor;
     public ScrollPane scrollPanelCategory;
+    public Button button;
     @FXML
     private TextField fullNameField,bookPriceField,bookQuantityField,publisherField,languageField;
     @FXML
