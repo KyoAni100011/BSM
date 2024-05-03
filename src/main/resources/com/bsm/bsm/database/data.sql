@@ -7,7 +7,7 @@ insert user (id, name, email, password, dob, telephone) values ('11110001', 'Min
 ', '2003-11-11', '0101012346'); -- password: 11112003
 insert user (id, name, email, password, dob, telephone) values ('22220001', 'Bao Khanh', 'khanh.employee@bms.com', '$2a$12$bHxUp74tZNStRJCAi0PyE.5/NpP5Ay0z.UozP8Me2V/LgToy8B1DW', '2003-09-12', '0101012347'); -- password: 12092003
 insert user (id, name, email, password, dob, telephone) values ('22220002', 'Minh Triet', 'triet.employee@bms.com', '$2a$12$ZiOQq1mZ5kRkPHjYXoBpNO.Xmw4jnykkEpKD/2qtP51DiYQM2fxpC', '2003-10-10', '0101012348'); -- password: 10102003
-select * from author;
+
 
 update author set name ='Nguyen Nhat Anh' where name ='Nguyen Ngoc Tu';
 
@@ -46,7 +46,6 @@ insert into author (name, introduction) values ('Tony Robbins', 'Tony Robbins wa
 insert into author (name, introduction) values ('Elena Ferrante', 'Elena Ferrante was born on October 25, 1943 in Naples, Italy. She is an Italian novelist. She is the author of many famous works such as: My Brilliant Friend, The Story of a New Name, ...');
 insert into author (name, introduction) values ('Haruki Murakami', 'Haruki Murakami was born on January 12, 1949 in Kyoto, Japan. He is a Japanese writer. He is the author of many famous works such as: Norwegian Wood, Kafka on the Shore, ...');
 insert into author (name, introduction) values ('Francesca Cavallo', 'Francesca Cavallo was born on October 25, 1983 in Naples, Italy. She is an Italian writer. She is the author of many famous works such as: Good Night Stories for Rebel Girls...');
-select * from author;
 
 -- insert data for table publisher
 insert into publisher (id, name, address) values ('44441111', 'Nha Nam', '59/61/63 Vo Van Tan, Ward 6, District 3, Ho Chi Minh City');
@@ -60,7 +59,6 @@ insert into publisher (name, address) values ('NXB Kim Dong', '12 Hoa Ma, Phuc X
 insert into publisher (name, address) values ('NXB Hanoi', '46 Trang Tien, Trang Tien Ward, Hoan Kiem District, Hanoi');
 insert into publisher (name, address) values ('NXB Can Tho', '53 Vo Van Tan, Ward 6, District 3, Ho Chi Minh City');
 
-select * from publisher;
 
 -- insert data for table category
 insert into category (id, name, description) values ('55551111', 'Short Stories', 'Short stories are brief works of fiction. They are often published in literary magazines, anthologies, or as a collection of short stories.');
@@ -74,7 +72,6 @@ insert into category (name, description) values ('Thinking', 'Thinking is the co
 insert into category (name, description) values ('Science', 'Science is a systematic enterprise that builds and organizes knowledge in the form of testable explanations and predictions about the universe.');
 insert into category (name, description) values ('Art', 'Art is a diverse range of human activities and the products of those activities.');
 insert into category (name, description) values ('Personal Development', 'Personal development covers activities that improve awareness and identity, develop talents and potential, build human capital and facilitate employability, enhance the quality of life and contribute to the realization of dreams and aspirations.');
-select * from category;
 
 -- insert data for table language
 insert into language (name) values
@@ -115,8 +112,8 @@ insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
 set @authorID = (select id from author where name = 'Gosho Aoyama');
 set @publisherID = (select id from publisher where name = 'Kim Dong');
 insert into book (title, publisherID, publishingDate, language)
-values ('Conan Tap 12', @publisherID, '2019-01-01', 'Vietnamese');
-set @bookId = (select isbn from book where title = 'Conan Tap 12');
+values ('Miko Tap 12', @publisherID, '2019-01-01', 'Vietnamese');
+set @bookId = (select isbn from book where title = 'Miko Tap 12');
 insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
 
 set @authorID = (select id from author where name = 'Edgar Allan Poe');
@@ -165,8 +162,6 @@ set @authorID = (select id from author where name = 'Noam Chomsky');
 set @publisherID = (select id from publisher where name = 'Nha Nam');
 set @bookId = (select isbn from book where title = 'Astrophysics for People in a Hurry');
 insert into bookAuthor (bookID, authorID) values (@bookId, @authorID);
-select * from book;
-
 
 set @adminID1 = (select a.id from user u join admin a on u.id = a.userID where email = 'thu.admin@bms.com');
 set @adminID2 = (select a.id from user u join admin a on u.id = a.userID where email = 'kha.admin@bms.com');
@@ -204,7 +199,7 @@ update importSheet set totalPrice = totalPrice + 55000 * 300 where id = @importS
 update book set quantity = quantity + 300 where isbn = @bookID;
 update book set salePrice = 55000 * 1.12 where isbn = @bookID;
 
-set @bookID = (select isbn from book where title = 'Conan Tap 12');
+set @bookID = (select isbn from book where title = 'Miko Tap 12');
 set @categoryID = (select id from category where name = 'Comics');
 insert into bookCategory (bookID, categoryID) values (@bookID, @categoryID);
 insert into bookBatch(quantity, importPrice, importSheetID, bookID)  values (200, 15000, @importSheetID, @bookID);
@@ -267,11 +262,6 @@ update importSheet set totalPrice = totalPrice + 200000 * 100 where id = @import
 update book set quantity = quantity + 100 where isbn = @bookID;
 update book set salePrice = 200000 * 1.4 where isbn = @bookID;
 
-select * from bookCategory;
-select * from bookBatch;
-select * from importSheet;
-select * from book;
-
 -- insert data for table customer
 insert into customer (id) values ('1');
 
@@ -280,37 +270,31 @@ insert into customer (name, phone) values ('Huong', '0903032321');
 insert into customer (name, phone) values ('Thao', '0123456789');
 select * from customer;
 
--- insert data for table orderSheet
-set @customerID = (select id from customer where name = 'Anonymous');
-insert into orderSheet (employeeID, customerID) values (@employeeID2, @customerID);
+-- insert data for ta-- ble orderSheet
+-- set @customerID = (select id from customer where name = 'Anonymous');
+-- insert into orderSheet (employeeID, customerID) values (@employeeID2, @customerID);
 
-select * from orderSheet;
+-- -- insert data for table orderBooksDetails
+-- set @orderID = (
+--     select id
+--     from orderSheet
+--     where employeeID = @employeeID2 and customerID = @customerID and orderDate = CURRENT_DATE()
+-- );
+-- set @bookBatchID = (select id from bookBatch batch join book b on batch.bookID = b.isbn where b.title = 'Toi thay hoa vang tren co xanh');
+-- set @salePrice = (select importPrice from bookBatch where id = @bookBatchID) * 1.2;
+-- insert into orderBooksDetails(orderID, bookBatchID, quantity, salePrice)
+-- values (@orderID, @bookBatchID, 1, @salePrice);
+-- set @bookID = (select isbn from book where title = 'Toi thay hoa vang tren co xanh');
+-- update book set quantity = quantity - 1 where isbn = @bookID;
 
--- insert data for table orderBooksDetails
-set @orderID = (
-    select id
-    from orderSheet
-    where employeeID = @employeeID2 and customerID = @customerID and orderDate = CURRENT_DATE()
-);
-set @bookBatchID = (select id from bookBatch batch join book b on batch.bookID = b.isbn where b.title = 'Toi thay hoa vang tren co xanh');
-set @salePrice = (select importPrice from bookBatch where id = @bookBatchID) * 1.2;
-insert into orderBooksDetails(orderID, bookBatchID, quantity, salePrice)
-values (@orderID, @bookBatchID, 1, @salePrice);
-set @bookID = (select isbn from book where title = 'Toi thay hoa vang tren co xanh');
-update book set quantity = quantity - 1 where isbn = @bookID;
-select * from book;
-
-set @orderID = (
-    select id
-    from orderSheet
-    where employeeID = @employeeID2 and customerID = @customerID and orderDate = current_date()
-);
-set @bookBatchID = (select id from bookBatch batch join book b on batch.bookID = b.isbn where b.title = 'Harry Potter Va Chiec Coc Lua');
-set @salePrice = (select importPrice from bookBatch where id = @bookBatchID) * 1.2;
-insert into orderBooksDetails(orderID, bookBatchID,  quantity, salePrice)
-values (@orderID, @bookBatchID, 1, @salePrice);
-set @bookID = (select isbn from book where title = 'Harry Potter Va Chiec Coc Lua');
-update book set quantity = quantity - 1 where isbn = @bookID;
-
-select * from orderBooksDetails;
-select * from book;
+-- set @orderID = (
+--     select id
+--     from orderSheet
+--     where employeeID = @employeeID2 and customerID = @customerID and orderDate = current_date()
+-- );
+-- set @bookBatchID = (select id from bookBatch batch join book b on batch.bookID = b.isbn where b.title = 'Harry Potter Va Chiec Coc Lua');
+-- set @salePrice = (select importPrice from bookBatch where id = @bookBatchID) * 1.2;
+-- insert into orderBooksDetails(orderID, bookBatchID,  quantity, salePrice)
+-- values (@orderID, @bookBatchID, 1, @salePrice);
+-- set @bookID = (select isbn from book where title = 'Harry Potter Va Chiec Coc Lua');
+-- update book set quantity = quantity - 1 where isbn = @bookID;

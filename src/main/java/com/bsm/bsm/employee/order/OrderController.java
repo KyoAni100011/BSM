@@ -292,7 +292,7 @@ public class OrderController implements Initializable  {
     // fix this
     private void updateOrdersList() throws IOException {
         pnItems.getChildren().clear();
-        int itemsPerPage = 10;
+        int itemsPerPage = 9;
         int startIndex = isSearchAndPagination ? ((currentPage - 1) * itemsPerPage) : (isSearch ? 0 : (currentPage - 1) * itemsPerPage);
         int endIndex = Math.min(startIndex + itemsPerPage, orders.size());
 
