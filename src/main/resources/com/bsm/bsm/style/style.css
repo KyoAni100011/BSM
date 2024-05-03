@@ -326,3 +326,7 @@
     -fx-background-position: center;
     -fx-background-size: 70% 70%; /* Adjust the size of the icon */
 }
+
+.text-bold {
+    -fx-font-family: "Roboto Bold";
+}

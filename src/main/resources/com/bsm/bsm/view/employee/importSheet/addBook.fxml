@@ -46,7 +46,7 @@
             <Font size="18.0" />
         </font>
     </Button>
-    <Label layoutX="223.0" layoutY="47.0" text="ADD BOOK">
+    <Label layoutX="223.0" layoutY="47.0" text="ADD BOOK BATCH">
         <font>
             <Font size="25.0" />
         </font>

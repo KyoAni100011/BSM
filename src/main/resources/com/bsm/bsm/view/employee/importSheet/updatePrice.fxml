@@ -2,35 +2,24 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-            prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.importSheet.UpdatePriceController">
-    <Label layoutX="191.0" layoutY="48.0" text="UPDATE SELL PRICE">
-        <font>
-            <Font size="25.0"/>
-        </font>
-    </Label>
-    <Label layoutX="76.0" layoutY="117.0" text="Book Name">
-        <font>
-            <Font size="18.0"/>
-        </font>
-    </Label>
-    <Label layoutX="76.0" layoutY="205.0" text="Sell Price">
-        <font>
-            <Font size="18.0"/>
-        </font>
-    </Label>
-    <TextField fx:id="bookNameField" disable="true" layoutX="75.0" layoutY="138.0" prefHeight="40.0" prefWidth="450.0"/>
-    <TextField fx:id="sellPriceTextField" layoutX="75.0" layoutY="225.0" prefHeight="40.0" prefWidth="450.0"/>
-    <Button layoutX="371.0" layoutY="304.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="153.0" text="Save">
-        <font>
-            <Font size="18.0"/>
-        </font>
-    </Button>
-    <Label fx:id="bookNameErrorLabel" layoutX="76.0" layoutY="178.0" prefHeight="17.0" prefWidth="307.0"/>
-    <Label fx:id="sellPriceErrorLabel" layoutX="76.0" layoutY="265.0" prefHeight="17.0" prefWidth="307.0"/>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.importSheet.UpdatePriceController">
+   <Label layoutX="189.0" layoutY="22.0" styleClass="title-form" text="Update Selling Price">
+      <font>
+         <Font size="25.0" />
+      </font>
+   </Label>
+   <ScrollPane layoutY="100.0" prefHeight="458.0" prefWidth="600.0">
+      <VBox fx:id="pnItems" prefHeight="458.0" prefWidth="584.0" style="-fx-border-color: #CECECE; -fx-border-width: 1 0 0 0; -fx-background-color: white;" />
+   </ScrollPane>
+   <Button layoutX="409.0" layoutY="582.0" minHeight="40.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefWidth="150.0" styleClass="button-custom-employee" text="Save">
+      <font>
+         <Font size="18.0" />
+      </font>
+   </Button>
+   <Label layoutX="165.0" layoutY="61.0" style="-fx-text-fill: #F5A11C;" styleClass="text-bold" text="Selling price must be 10% higher than import price" />
 </AnchorPane>
