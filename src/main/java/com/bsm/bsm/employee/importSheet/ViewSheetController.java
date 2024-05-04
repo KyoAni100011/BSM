@@ -83,6 +83,10 @@ public class ViewSheetController {
         currentPage = 1;
         inputSearch.setText("");
         idSortLabel.setContent("");
+        dateImportSortLabel.setContent("");
+        employeeSortLabel.setContent("");
+        quantitySortLabel.setContent("");
+        totalPriceSortLabel.setContent("");
         loadAllSheets();
     }
 
