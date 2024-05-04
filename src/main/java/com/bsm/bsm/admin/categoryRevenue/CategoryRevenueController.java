@@ -1,8 +1,6 @@
 package com.bsm.bsm.admin.categoryRevenue;
 
-import com.bsm.bsm.book.Book;
 import com.bsm.bsm.category.Category;
-import com.bsm.bsm.revenue.ResultStatistic;
 import com.bsm.bsm.revenue.RevenueStatisticService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -10,7 +8,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;

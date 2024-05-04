@@ -232,7 +232,11 @@ public class UserAccountController implements Initializable {
             currentPage = Integer.parseInt(buttonClicked.getText());
         }
 
-        loadAllUsers(getRoleFromButton());
+        try {
+            updateUsersList(getRoleFromButton());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void updatePaginationButtons(int totalPages) {
