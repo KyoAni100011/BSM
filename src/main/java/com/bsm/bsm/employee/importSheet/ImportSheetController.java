@@ -119,6 +119,7 @@ public class ImportSheetController {
     private void updateBookList() throws Exception {
         pnItems.getChildren().clear();
         for (BookBatch b : bookBatches) {
+            System.out.println(b);
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/importSheet/itemImport.fxml"));
                 Node item = fxmlLoader.load();
