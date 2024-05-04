@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.bsm.bsm.utils.DateUtils.convertDOBFormat;
 
@@ -79,7 +80,7 @@ public class OrderDetailController {
             date = convertDOBFormat(date);
         }
         importDatePicker.setValue(LocalDate.parse(date, dateFormatter));
-        customerPhoneField.setText(order.getCustomer().getPhone());
+        customerPhoneField.setText(Objects.equals(order.getCustomer().getPhone(), "0000000000") ? "" : order.getCustomer().getPhone());
     }
 
     private void updateSheet() {

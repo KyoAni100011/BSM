@@ -60,7 +60,7 @@ public class CreateOrderController implements Initializable {
             List<Book> books = bookService.display();
 
             for (var book : books) {
-                if (book.isEnabled())
+                if (book.isEnabled() && book.getQuantity() > 0 && book.getSalePrice().compareTo(BigDecimal.ZERO) > 0)
                     bookNames.add(book.getTitle());
             }
 
