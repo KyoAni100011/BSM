@@ -53,6 +53,7 @@ public class BookRevenueController {
     private boolean isDailyActive = false;
     private boolean isMonthActive = false;
     private boolean isWeekActive = false;
+    private boolean isMonthTab = false;
 
     public void initialize() {
         currentDate = LocalDate.now();
@@ -66,7 +67,7 @@ public class BookRevenueController {
         datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 if(isMonthActive) {
-                    handleByMonth();
+                    if(isMonthTab) handleByMonth();
                 } else if (isWeekActive) {
                     handleByWeek();
                 } else if (isDailyActive) {
@@ -114,7 +115,8 @@ public class BookRevenueController {
     @FXML
     private void handleByMonth() {
         datePicker.setShowWeekNumbers(false);
-        datePicker.setValue(currentDate);
+        if(!isMonthTab) datePicker.setValue(currentDate);
+        isMonthTab = true;
         isMonthActive = true;
         isDailyActive = false;
         isWeekActive = false;
@@ -136,6 +138,7 @@ public class BookRevenueController {
     @FXML
     private void handleByWeek() {
         datePicker.setShowWeekNumbers(true);
+        isMonthTab = false;
         isMonthActive = false;
         isDailyActive = false;
         isWeekActive = true;
@@ -205,6 +208,7 @@ public class BookRevenueController {
     private void handleByDate() {
         isDailyActive = true;
         isMonthActive = false;
+        isMonthTab = false;
         isWeekActive = false;
         updateDatePickerCellStyle();
         datePicker.setShowWeekNumbers(false);
@@ -233,6 +237,7 @@ public class BookRevenueController {
         isMonthActive = false;
         isWeekActive = false;
         isDailyActive = false;
+        isMonthTab = false;
         setVisibility(true);
         updateDatePickerCellStyle();
         executorService.submit(() -> {
