@@ -7,35 +7,40 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="482.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.employee.bookPublishers.AddPublisherController">
-    <children>
-        <Label fx:id="fullNameErrorLabel" layoutX="76.0" layoutY="178.0" prefHeight="17.0" prefWidth="307.0" styleClass="error-label" />
-        <Label fx:id="addressErrorLabel" layoutX="75.0" layoutY="372.0" prefHeight="17.0" prefWidth="361.0" styleClass="error-label" />
+<AnchorPane prefHeight="482.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.bsm.bsm.employee.bookPublishers.AddPublisherController">
+    <Label fx:id="fullNameErrorLabel" layoutX="76.0" layoutY="178.0" prefHeight="17.0" prefWidth="307.0"
+           styleClass="error-label"/>
+    <Label fx:id="addressErrorLabel" layoutX="75.0" layoutY="372.0" prefHeight="17.0" prefWidth="361.0"
+           styleClass="error-label"/>
 
-        <Label layoutX="76.0" layoutY="117.0" styleClass="label-bold" text="Publisher Name">
-            <font>
-                <Font size="18.0" />
-            </font>
-        </Label>
-        <Label layoutX="76.0" layoutY="205.0" styleClass="label-bold" text="Address">
-            <font>
-                <Font size="18.0" />
-            </font>
-        </Label>
+    <Label layoutX="76.0" layoutY="117.0" styleClass="label-bold" text="Publisher Name">
+        <font>
+            <Font size="18.0"/>
+        </font>
+    </Label>
+    <Label layoutX="76.0" layoutY="205.0" styleClass="label-bold" text="Address">
+        <font>
+            <Font size="18.0"/>
+        </font>
+    </Label>
 
-        <TextField fx:id="fullNameField" layoutX="75.0" layoutY="138.0" prefHeight="40.0" prefWidth="450.0" promptText="Enter publisher name" styleClass="input-field-add" />
-        <TextArea fx:id="addressTextField" layoutX="75.0" layoutY="225.0" prefHeight="147.0" prefWidth="450.0" promptText="Enter publisher address" style="-fx-control-inner-background: #F4F4F4;" styleClass="input-field-add" wrapText="true" />
+    <TextField fx:id="fullNameField" layoutX="75.0" layoutY="138.0" prefHeight="40.0" prefWidth="450.0"
+               promptText="Enter publisher name" styleClass="input-field-add"/>
+    <TextArea fx:id="addressTextField" layoutX="75.0" layoutY="225.0" prefHeight="147.0" prefWidth="450.0"
+              promptText="Enter publisher address" style="-fx-control-inner-background: #F4F4F4;"
+              styleClass="input-field-add" wrapText="true"/>
 
 
-        <Button layoutX="371.0" layoutY="405.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="40.0" prefWidth="153.0" styleClass="button-custom-employee" text="Save" textFill="WHITE">
-            <font>
-                <Font size="18.0" />
-            </font>
-        </Button>
-        <Label layoutX="215.0" layoutY="48.0" text="ADD PUBLISHER">
-            <font>
-                <Font size="25.0" />
-            </font>
-        </Label>
-    </children>
+    <Button layoutX="371.0" layoutY="405.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="40.0"
+            prefWidth="153.0" styleClass="button-custom-employee" text="Save" textFill="WHITE">
+        <font>
+            <Font size="18.0"/>
+        </font>
+    </Button>
+    <Label layoutX="215.0" layoutY="48.0" text="ADD PUBLISHER">
+        <font>
+            <Font size="25.0"/>
+        </font>
+    </Label>
 </AnchorPane>
