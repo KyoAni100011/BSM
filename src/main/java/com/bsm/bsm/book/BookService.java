@@ -73,7 +73,7 @@ public class BookService implements Activable, Searchable<Book>, Sortable<Book>,
 
     @Override
     public List<Book> search(String keyword) {
-        List<Book> books = display();
+        List<Book> books = getAllBooksForViewList();
         String finalKeyword = keyword.toLowerCase();
         return books.stream()
                 .filter(book ->

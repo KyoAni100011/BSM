@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -39,17 +40,22 @@ public class CategoryRevenueController {
     @FXML private BarChart<String, Number> categoryBarChart;
     @FXML private DatePicker datePicker, datePicker1;
     @FXML private AnchorPane datePickerContainer;
+    @FXML
+    private Group arrowDate;
 
     private LocalDate currentDate;
     private boolean isDailyActive = false;
     private boolean isMonthActive = false;
     private boolean isWeekActive = false;
 
+    private boolean isMonthTab = false;
+
     public void initialize() {
         currentDate = LocalDate.now();
         datePicker.setValue(currentDate);
         datePicker1.setValue(currentDate);
         datePicker1.setVisible(false);
+        arrowDate.setVisible(false);
         handleByMonth();
 
         setupDatePicker();
@@ -57,7 +63,7 @@ public class CategoryRevenueController {
         datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 if(isMonthActive) {
-                    handleByMonth();
+                    if(isMonthTab) handleByMonth();
                 } else if (isWeekActive) {
                     handleByWeek();
                 } else if (isDailyActive) {
@@ -80,6 +86,8 @@ public class CategoryRevenueController {
     @FXML
     private void handleByMonth() {
         datePicker.setShowWeekNumbers(false);
+        if(!isMonthTab) datePicker.setValue(currentDate);
+        isMonthTab = true;
         isMonthActive = true;
         isDailyActive = false;
         isWeekActive = false;
@@ -101,6 +109,7 @@ public class CategoryRevenueController {
     @FXML
     private void handleByWeek() {
         datePicker.setShowWeekNumbers(true);
+        isMonthTab = false;
         isMonthActive = false;
         isDailyActive = false;
         isWeekActive = true;
@@ -196,6 +205,7 @@ public class CategoryRevenueController {
     private void handleByDate() {
         isDailyActive = true;
         isMonthActive = false;
+        isMonthTab = false;
         isWeekActive = false;
         updateDatePickerCellStyle();
         datePicker.setShowWeekNumbers(false);
@@ -223,6 +233,7 @@ public class CategoryRevenueController {
         datePicker.setShowWeekNumbers(false);
         isMonthActive = false;
         isWeekActive = false;
+        isMonthTab = false;
         isDailyActive = false;
         setVisibility(true);
         updateDatePickerCellStyle();
@@ -248,6 +259,7 @@ public class CategoryRevenueController {
 
     private void setVisibility(boolean fromDateToDateActive) {
         datePicker1.setVisible(fromDateToDateActive);
+        arrowDate.setVisible(fromDateToDateActive);
         if (fromDateToDateActive) {
             datePicker.prefWidthProperty().unbind();
             datePicker.setPrefWidth(datePickerContainer.getWidth() / 2);
@@ -310,15 +322,15 @@ public class CategoryRevenueController {
             Tooltip.install(data.getNode(), tooltip);
         });
     }
+
     private void updateButtonStyle(Button selectedButton) {
         Platform.runLater(() -> {
             Arrays.asList(btnByMonth, btnByWeek, btnByDate, btnFromDateToDate).forEach(button -> {
                 if (button == selectedButton) {
-                    button.getStyleClass().removeAll("chartActionButton-admin");
+                    button.getStyleClass().remove("chartActionButton-admin-selected");
                     button.getStyleClass().add("chartActionButton-admin-selected");
                 } else {
                     button.getStyleClass().remove("chartActionButton-admin-selected");
-                    button.getStyleClass().add("chartActionButton-admin");
                 }
             });
         });

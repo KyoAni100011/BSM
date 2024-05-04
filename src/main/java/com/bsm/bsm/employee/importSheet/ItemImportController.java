@@ -38,7 +38,8 @@ public class ItemImportController {
         for (var author: authors) {
             authorsName.append(author.getName().trim()).append(", ");
         }
-        authorLabel.setText(authorsName.toString());
+        authorsName.deleteCharAt(authorsName.length() - 2);
+        authorLabel.setText(authors.size() == 1 ? authors.getFirst().getName() : authors.getFirst().getName() + "...");
 
         publisherLabel.setText(bookBatch.getBook().getPublisher().getName());
         qtyLabel.setText(String.valueOf(bookBatch.getQuantity()));
@@ -48,7 +49,8 @@ public class ItemImportController {
         for (var category: categories) {
             categoriesName.append(category.getName().trim()).append(", ");
         }
-        typeLabel.setText(categoriesName.toString());
+        categoriesName.deleteCharAt(categoriesName.length() - 2);
+        typeLabel.setText(categories.size() == 1 ? categories.getFirst().getName() : categories.getFirst().getName() + "...");
 
         priceLabel.setText(String.valueOf(bookBatch.getImportPrice()));
 

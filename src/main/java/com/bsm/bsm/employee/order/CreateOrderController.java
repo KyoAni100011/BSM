@@ -60,7 +60,7 @@ public class CreateOrderController implements Initializable {
             List<Book> books = bookService.display();
 
             for (var book : books) {
-                if (book.isEnabled())
+                if (book.isEnabled() && book.getQuantity() > 0 && book.getSalePrice().compareTo(BigDecimal.ZERO) > 0)
                     bookNames.add(book.getTitle());
             }
 
@@ -89,6 +89,14 @@ public class CreateOrderController implements Initializable {
                     totalLabel.setText(total.toString());
                 } else {
                     discountLabel.setText("0%");
+                    totalLabel.setText(subtotalLabel.getText());
+
+                }
+                if(!MoneyTextField.getText().isEmpty()){
+                    BigDecimal totalLabelValue = totalLabel.getText().isEmpty() ? BigDecimal.ZERO : new BigDecimal(totalLabel.getText());
+                    BigDecimal moneyReceive =  new BigDecimal(MoneyTextField.getText());
+                    BigDecimal moneyReturn = moneyReceive.subtract(totalLabelValue);
+                    MoneyReturnLabel.setText(moneyReturn.toString());
                 }
             });
 
@@ -101,8 +109,16 @@ public class CreateOrderController implements Initializable {
 
                     discountLabel.setText("(-5%) " + discount);
                     totalLabel.setText(String.valueOf(total));
+
                 } else {
+                    totalLabel.setText(subtotalLabel.getText());
                     discountLabel.setText("0%");
+                }
+                if(!MoneyTextField.getText().isEmpty()){
+                    BigDecimal totalLabelValue = totalLabel.getText().isEmpty() ? BigDecimal.ZERO : new BigDecimal(totalLabel.getText());
+                    BigDecimal moneyReceive =  new BigDecimal(MoneyTextField.getText());
+                    BigDecimal moneyReturn = moneyReceive.subtract(totalLabelValue);
+                    MoneyReturnLabel.setText(moneyReturn.toString());
                 }
             });
 
@@ -189,6 +205,12 @@ public class CreateOrderController implements Initializable {
         } else {
             totalLabel.setText(subtotal.toString());
         }
+        if(!MoneyTextField.getText().isEmpty()){
+            BigDecimal totalLabelValue = totalLabel.getText().isEmpty() ? BigDecimal.ZERO : new BigDecimal(totalLabel.getText());
+            BigDecimal moneyReceive =  new BigDecimal(MoneyTextField.getText());
+            BigDecimal moneyReturn = moneyReceive.subtract(totalLabelValue);
+            MoneyReturnLabel.setText(moneyReturn.toString());
+        }
     }
 
 
@@ -217,7 +239,7 @@ public class CreateOrderController implements Initializable {
         }
 
         Customer customer = null;
-        if ((!handleNameField.getText().isEmpty() && (handlePhoneField.getText().length() == 11 || handlePhoneField.getText().length() == 10) || (handleNameField.getText().isEmpty() && handlePhoneField.getText().isEmpty())) && (!MoneyTextField.getText().isEmpty()) && new BigDecimal(MoneyReturnLabel.getText()).compareTo(BigDecimal.ZERO) > 0) {
+        if ((!handleNameField.getText().isEmpty() && (handlePhoneField.getText().length() == 11 || handlePhoneField.getText().length() == 10) || (handleNameField.getText().isEmpty() && handlePhoneField.getText().isEmpty())) && (!MoneyTextField.getText().isEmpty()) && new BigDecimal(MoneyReturnLabel.getText()).compareTo(BigDecimal.ZERO) >= 0) {
             //get customer information
 
             boolean isMember = !handleNameField.getText().isEmpty();

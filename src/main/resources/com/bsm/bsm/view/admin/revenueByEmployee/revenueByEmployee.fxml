@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -9,6 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="553.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.admin.employeeRevenue.EmployeeRevenueController">
@@ -20,40 +22,49 @@
                 <Button id="btnByDate" fx:id="btnByDate" mnemonicParsing="false" onAction="#handleByDate" prefHeight="40.0" prefWidth="90.0" styleClass="chartActionButton" text="By date" />
                 <Button id="btnFromDateToDate" fx:id="btnFromDateToDate" mnemonicParsing="false" onAction="#handleFromDateToDate" prefHeight="40.0" prefWidth="150.0" styleClass="chartActionButton" text="From date to date" />
                 <HBox prefHeight="40.0" prefWidth="310.0" style="-fx-background-color: #F7E4DB;">
-                    <AnchorPane fx:id="datePickerContainer" prefHeight="200.0" prefWidth="200.0">
-                        <DatePicker fx:id="datePicker1" layoutX="110.0" layoutY="7.0" prefHeight="26.0" prefWidth="110.0" />
-                        <DatePicker fx:id="datePicker" layoutY="7.0" prefHeight="26.0" prefWidth="110.0" />
-                  <HBox.margin>
-                     <Insets left="40.0" />
-                  </HBox.margin>
-                    </AnchorPane>
+                    <children>
+                        <AnchorPane fx:id="datePickerContainer" prefHeight="200.0" prefWidth="200.0">
+                            <HBox.margin>
+                                <Insets left="40.0" />
+                            </HBox.margin>
+                            <children>
+                                <DatePicker fx:id="datePicker1" layoutX="132.0" layoutY="7.0" prefHeight="26.0" prefWidth="110.0" />
+                                <DatePicker fx:id="datePicker" layoutX="-32.0" layoutY="7.0" prefHeight="26.0" prefWidth="110.0" />
+                                <Group fx:id="arrowDate" layoutX="-127.0" layoutY="-236.0" styleClass="chartActionButton">
+                                    <children>
+                                        <SVGPath content="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l370.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128z" layoutX="-17.0" scaleX="0.04" scaleY="0.04" />
+                                    </children>
+                                </Group>
+                            </children>
+                        </AnchorPane>
+                    </children>
                 </HBox>
             </HBox>
         </AnchorPane>
-<!--        <AnchorPane fx:id="AncBookBarChart" prefHeight="560.0" prefWidth="700.0">-->
-<!--            <BarChart fx:id="bookBarChart" alternativeRowFillVisible="false" barGap="10.0" legendSide="TOP" prefHeight="560.0" prefWidth="700.0" titleSide="BOTTOM" verticalGridLinesVisible="false">-->
-<!--                <xAxis>-->
-<!--                    <CategoryAxis label="Book Name" maxHeight="50.0" prefHeight="50.0" styleClass="axis-label" tickLabelGap="20.0" tickLength="5.0">-->
-<!--                        <tickLabelFont>-->
-<!--                            <Font name="Roboto Bold" size="14.0" />-->
-<!--                        </tickLabelFont>-->
-<!--                        <opaqueInsets>-->
-<!--                            <Insets />-->
-<!--                        </opaqueInsets>-->
-<!--                        <padding>-->
-<!--                            <Insets bottom="20.0" />-->
-<!--                        </padding>-->
-<!--                    </CategoryAxis>-->
-<!--                </xAxis>-->
-<!--                <yAxis>-->
-<!--                    <NumberAxis label="Revenue (VNĐ)" side="LEFT" styleClass="axis-label">-->
-<!--                        <tickLabelFont>-->
-<!--                            <Font name="Roboto Bold" size="14.0" />-->
-<!--                        </tickLabelFont>-->
-<!--                    </NumberAxis>-->
-<!--                </yAxis>-->
-<!--            </BarChart>-->
-<!--        </AnchorPane>-->
+        <!--        <AnchorPane fx:id="AncBookBarChart" prefHeight="560.0" prefWidth="700.0">-->
+        <!--            <BarChart fx:id="bookBarChart" alternativeRowFillVisible="false" barGap="10.0" legendSide="TOP" prefHeight="560.0" prefWidth="700.0" titleSide="BOTTOM" verticalGridLinesVisible="false">-->
+        <!--                <xAxis>-->
+        <!--                    <CategoryAxis label="Book Name" maxHeight="50.0" prefHeight="50.0" styleClass="axis-label" tickLabelGap="20.0" tickLength="5.0">-->
+        <!--                        <tickLabelFont>-->
+        <!--                            <Font name="Roboto Bold" size="14.0" />-->
+        <!--                        </tickLabelFont>-->
+        <!--                        <opaqueInsets>-->
+        <!--                            <Insets />-->
+        <!--                        </opaqueInsets>-->
+        <!--                        <padding>-->
+        <!--                            <Insets bottom="20.0" />-->
+        <!--                        </padding>-->
+        <!--                    </CategoryAxis>-->
+        <!--                </xAxis>-->
+        <!--                <yAxis>-->
+        <!--                    <NumberAxis label="Revenue (VNĐ)" side="LEFT" styleClass="axis-label">-->
+        <!--                        <tickLabelFont>-->
+        <!--                            <Font name="Roboto Bold" size="14.0" />-->
+        <!--                        </tickLabelFont>-->
+        <!--                    </NumberAxis>-->
+        <!--                </yAxis>-->
+        <!--            </BarChart>-->
+        <!--        </AnchorPane>-->
 
         <AnchorPane fx:id="AncBookBarChart" prefHeight="511.0" prefWidth="700.0">
             <BarChart fx:id="employeeBarChart" alternativeRowFillVisible="false" barGap="10.0" legendSide="TOP" prefHeight="511.0" prefWidth="700.0" titleSide="BOTTOM" verticalGridLinesVisible="false">

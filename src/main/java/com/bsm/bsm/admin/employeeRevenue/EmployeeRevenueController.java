@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -38,11 +39,15 @@ public class EmployeeRevenueController {
     @FXML private BarChart<String, Number> employeeBarChart;
     @FXML private DatePicker datePicker, datePicker1;
     @FXML private AnchorPane datePickerContainer;
+    @FXML
+    private Group arrowDate;
 
     private LocalDate currentDate;
     private boolean isDailyActive = false;
     private boolean isMonthActive = false;
     private boolean isWeekActive = false;
+
+    private boolean isMonthTab = false;
 
     public void initialize() {
         currentDate = LocalDate.now();
@@ -55,7 +60,7 @@ public class EmployeeRevenueController {
         datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 if(isMonthActive) {
-                    handleByMonth();
+                    if(isMonthTab) handleByMonth();
                 } else if (isWeekActive) {
                     handleByWeek();
                 } else if (isDailyActive) {
@@ -78,6 +83,8 @@ public class EmployeeRevenueController {
     @FXML
     private void handleByMonth() {
         datePicker.setShowWeekNumbers(false);
+        if(!isMonthTab) datePicker.setValue(currentDate);
+        isMonthTab = true;
         isMonthActive = true;
         isDailyActive = false;
         isWeekActive = false;
@@ -126,6 +133,7 @@ public class EmployeeRevenueController {
         datePicker.setShowWeekNumbers(true);
         isMonthActive = false;
         isDailyActive = false;
+        isMonthTab = false;
         isWeekActive = true;
         updateDatePickerCellStyle();  // Update the cell style for week view
         setVisibility(false);
@@ -194,6 +202,7 @@ public class EmployeeRevenueController {
         isDailyActive = true;
         isMonthActive = false;
         isWeekActive = false;
+        isMonthTab = false;
         updateDatePickerCellStyle();
         datePicker.setShowWeekNumbers(false);
         setVisibility(false);
@@ -219,6 +228,7 @@ public class EmployeeRevenueController {
     private void handleFromDateToDate() {
         datePicker.setShowWeekNumbers(false);
         isMonthActive = false;
+        isMonthTab = false;
         isWeekActive = false;
         isDailyActive = false;
         setVisibility(true);
@@ -245,6 +255,7 @@ public class EmployeeRevenueController {
 
     private void setVisibility(boolean fromDateToDateActive) {
         datePicker1.setVisible(fromDateToDateActive);
+        arrowDate.setVisible(fromDateToDateActive);
         if (fromDateToDateActive) {
             datePicker.prefWidthProperty().unbind();
             datePicker.setPrefWidth(datePickerContainer.getWidth() / 2);
@@ -311,11 +322,10 @@ public class EmployeeRevenueController {
         Platform.runLater(() -> {
             Arrays.asList(btnByMonth, btnByWeek, btnByDate, btnFromDateToDate).forEach(button -> {
                 if (button == selectedButton) {
-                    button.getStyleClass().removeAll("chartActionButton-admin");
+                    button.getStyleClass().remove("chartActionButton-admin-selected");
                     button.getStyleClass().add("chartActionButton-admin-selected");
                 } else {
                     button.getStyleClass().remove("chartActionButton-admin-selected");
-                    button.getStyleClass().add("chartActionButton-admin");
                 }
             });
         });
