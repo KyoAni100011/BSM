@@ -215,6 +215,7 @@ public class CreateOrderController implements Initializable {
 
 
     public void handlePayActionButton(MouseEvent mouseEvent) {
+        System.out.println("hi");
         List<String> selectedBooks = new ArrayList<>();
         List<Integer> quantities = new ArrayList<>();
         List<BigDecimal> salePrices = new ArrayList<>();
@@ -245,7 +246,7 @@ public class CreateOrderController implements Initializable {
             boolean isMember = !handleNameField.getText().isEmpty();
             customer = new Customer(handleNameField.getText(), handlePhoneField.getText(), isMember);
             if (!isMember) customer.setName("Anonymous");
-
+            System.out.println("all select" + selectedBooks);
             if (orderService.createOrder(selectedBooks, quantities, salePrices, customer)) {
                 try {
                     Order order = orderService.getOrderByCustomer(customer);
@@ -295,6 +296,14 @@ public class CreateOrderController implements Initializable {
         totalQuantityItems.setText("Total: 0 items");
         orderItemController = new ArrayList<>();
         pnItems.getChildren().clear();
+        bookNames.clear();
+        BookService bookService = new BookService();
+        List<Book> books = bookService.display();
+
+        for (var book : books) {
+            if (book.isEnabled() && book.getQuantity() > 0 && book.getSalePrice().compareTo(BigDecimal.ZERO) > 0)
+                bookNames.add(book.getTitle());
+        }
     }
 
 }

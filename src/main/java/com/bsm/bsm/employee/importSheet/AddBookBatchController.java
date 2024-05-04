@@ -102,6 +102,9 @@ public class AddBookBatchController {
             if (category.isEnabled())
                 categoriesItems.add(category.getName());
         }
+        languageComboBox.setOnAction(event -> {
+            bookNameField.setFocusTraversable(false);
+        });
 
         for (var author: authorService.display()) {
             if (author.isEnabled())
