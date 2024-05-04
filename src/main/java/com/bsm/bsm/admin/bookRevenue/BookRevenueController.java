@@ -1,22 +1,18 @@
 package com.bsm.bsm.admin.bookRevenue;
 
 import com.bsm.bsm.book.Book;
-import com.bsm.bsm.revenue.ResultStatistic;
 import com.bsm.bsm.revenue.RevenueStatisticService;
-import com.bsm.bsm.utils.NumericValidationUtils;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Tooltip;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
@@ -29,23 +25,22 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.Comparator;
-import java.util.stream.Collectors;
 
 public class BookRevenueController {
     private final RevenueStatisticService revenueStatisticService = new RevenueStatisticService();
     private final ExecutorService executorService = Executors.newCachedThreadPool();
     public AnchorPane AncBookBarChart;
-    @FXML private Button btnByMonth, btnByWeek, btnByDate, btnFromDateToDate;
-    @FXML private BarChart<String, Number> bookBarChart;
-    @FXML private DatePicker datePicker, datePicker1;
-    @FXML private AnchorPane datePickerContainer;
+    @FXML
+    private Button btnByMonth, btnByWeek, btnByDate, btnFromDateToDate;
+    @FXML
+    private BarChart<String, Number> bookBarChart;
+    @FXML
+    private DatePicker datePicker, datePicker1;
+    @FXML
+    private AnchorPane datePickerContainer;
     @FXML
     private Group arrowDate;
 
@@ -53,7 +48,6 @@ public class BookRevenueController {
     private boolean isDailyActive = false;
     private boolean isMonthActive = false;
     private boolean isWeekActive = false;
-    private boolean isMonthTab = false;
 
     public void initialize() {
         currentDate = LocalDate.now();
@@ -66,14 +60,14 @@ public class BookRevenueController {
 
         datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
-                if(isMonthActive) {
-                    if(isMonthTab) handleByMonth();
+                if (isMonthActive) {
+                    executeMonth();
                 } else if (isWeekActive) {
-                    handleByWeek();
+                    executeWeek();
                 } else if (isDailyActive) {
-                    handleByDate();
+                    executeDate();
                 } else if (datePicker1.isVisible()) {
-                    handleFromDateToDate();
+                    executeDataToDate();
                 }
             });
         });
@@ -81,7 +75,7 @@ public class BookRevenueController {
         datePicker1.valueProperty().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 if (!isDailyActive && datePicker1.isVisible()) {
-                    handleFromDateToDate();
+                    executeDataToDate();
                 }
             });
         });
@@ -115,13 +109,17 @@ public class BookRevenueController {
     @FXML
     private void handleByMonth() {
         datePicker.setShowWeekNumbers(false);
-        if(!isMonthTab) datePicker.setValue(currentDate);
-        isMonthTab = true;
+        datePicker.setValue(currentDate);
         isMonthActive = true;
         isDailyActive = false;
         isWeekActive = false;
         updateDatePickerCellStyle();  // Update the cell style
         setVisibility(false);
+        executeMonth();
+        updateButtonStyle(btnByMonth);
+    }
+
+    private void executeMonth() {
         LocalDate selectedDate = datePicker.getValue();
         String chartTitle = getChartTitle("Month", selectedDate);
         executorService.submit(() -> {
@@ -132,17 +130,21 @@ public class BookRevenueController {
                 e.printStackTrace();
             }
         });
-        updateButtonStyle(btnByMonth);
     }
 
     @FXML
     private void handleByWeek() {
         datePicker.setShowWeekNumbers(true);
-        isMonthTab = false;
+        datePicker.setValue(currentDate);
         isMonthActive = false;
         isDailyActive = false;
         isWeekActive = true;
         updateDatePickerCellStyle();  // Update the cell style for week view
+        executeWeek();
+        updateButtonStyle(btnByWeek);
+    }
+
+    private void executeWeek() {
         setVisibility(false);
         LocalDate selectedDate = datePicker.getValue();
         String chartTitle = getChartTitle("Week", selectedDate);
@@ -154,7 +156,6 @@ public class BookRevenueController {
                 e.printStackTrace();
             }
         });
-        updateButtonStyle(btnByWeek);
     }
 
     private String getChartTitle(String tagType, LocalDate selectedDate) {
@@ -206,11 +207,16 @@ public class BookRevenueController {
 
     @FXML
     private void handleByDate() {
+        datePicker.setValue(currentDate);
         isDailyActive = true;
         isMonthActive = false;
-        isMonthTab = false;
         isWeekActive = false;
         updateDatePickerCellStyle();
+        executeDate();
+        updateButtonStyle(btnByDate);
+    }
+
+    private void executeDate() {
         datePicker.setShowWeekNumbers(false);
         setVisibility(false);
         LocalDate selectedDate = datePicker.getValue();
@@ -223,7 +229,6 @@ public class BookRevenueController {
                 e.printStackTrace();
             }
         });
-        updateButtonStyle(btnByDate);
     }
 
     private String getFormattedDate(LocalDate date) {
@@ -234,10 +239,15 @@ public class BookRevenueController {
     @FXML
     private void handleFromDateToDate() {
         datePicker.setShowWeekNumbers(false);
+        datePicker.setValue(currentDate);
         isMonthActive = false;
         isWeekActive = false;
         isDailyActive = false;
-        isMonthTab = false;
+        executeDataToDate();
+        updateButtonStyle(btnFromDateToDate);
+    }
+
+    private void executeDataToDate() {
         setVisibility(true);
         updateDatePickerCellStyle();
         executorService.submit(() -> {
@@ -257,7 +267,6 @@ public class BookRevenueController {
                 });
             }
         });
-        updateButtonStyle(btnFromDateToDate);
     }
 
     private void setVisibility(boolean fromDateToDateActive) {
@@ -325,7 +334,6 @@ public class BookRevenueController {
             Tooltip.install(data.getNode(), tooltip);
         });
     }
-
 
 
     private void updateButtonStyle(Button selectedButton) {

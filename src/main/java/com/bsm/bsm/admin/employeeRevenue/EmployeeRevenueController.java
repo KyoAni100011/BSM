@@ -35,10 +35,14 @@ public class EmployeeRevenueController {
     private final RevenueStatisticService revenueStatisticService = new RevenueStatisticService();
     private final ExecutorService executorService = Executors.newCachedThreadPool();
     public AnchorPane AncBookBarChart;
-    @FXML private Button btnByMonth, btnByWeek, btnByDate, btnFromDateToDate;
-    @FXML private BarChart<String, Number> employeeBarChart;
-    @FXML private DatePicker datePicker, datePicker1;
-    @FXML private AnchorPane datePickerContainer;
+    @FXML
+    private Button btnByMonth, btnByWeek, btnByDate, btnFromDateToDate;
+    @FXML
+    private BarChart<String, Number> employeeBarChart;
+    @FXML
+    private DatePicker datePicker, datePicker1;
+    @FXML
+    private AnchorPane datePickerContainer;
     @FXML
     private Group arrowDate;
 
@@ -59,14 +63,14 @@ public class EmployeeRevenueController {
 
         datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
-                if(isMonthActive) {
-                    if(isMonthTab) handleByMonth();
+                if (isMonthActive) {
+                    executeMonth();
                 } else if (isWeekActive) {
-                    handleByWeek();
+                    executeWeek();
                 } else if (isDailyActive) {
-                    handleByDate();
+                    executeDate();
                 } else if (datePicker1.isVisible()) {
-                    handleFromDateToDate();
+                    executeDateToDate();
                 }
             });
         });
@@ -74,7 +78,7 @@ public class EmployeeRevenueController {
         datePicker1.valueProperty().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 if (!isDailyActive && datePicker1.isVisible()) {
-                    handleFromDateToDate();
+                    executeDateToDate();
                 }
             });
         });
@@ -83,12 +87,16 @@ public class EmployeeRevenueController {
     @FXML
     private void handleByMonth() {
         datePicker.setShowWeekNumbers(false);
-        if(!isMonthTab) datePicker.setValue(currentDate);
-        isMonthTab = true;
+        datePicker.setValue(currentDate);
         isMonthActive = true;
         isDailyActive = false;
         isWeekActive = false;
         updateDatePickerCellStyle();  // Update the cell style
+        executeMonth();
+        updateButtonStyle(btnByMonth);
+    }
+
+    private void executeMonth() {
         setVisibility(false);
         LocalDate selectedDate = datePicker.getValue();
         String chartTitle = getChartTitle("Month", selectedDate);
@@ -100,7 +108,6 @@ public class EmployeeRevenueController {
                 e.printStackTrace();
             }
         });
-        updateButtonStyle(btnByMonth);
     }
 
     private void setupDatePicker() {
@@ -131,11 +138,16 @@ public class EmployeeRevenueController {
     @FXML
     private void handleByWeek() {
         datePicker.setShowWeekNumbers(true);
+        datePicker.setValue(currentDate);
         isMonthActive = false;
         isDailyActive = false;
-        isMonthTab = false;
         isWeekActive = true;
         updateDatePickerCellStyle();  // Update the cell style for week view
+        executeWeek();
+        updateButtonStyle(btnByWeek);
+    }
+
+    private void executeWeek() {
         setVisibility(false);
         LocalDate selectedDate = datePicker.getValue();
         String chartTitle = getChartTitle("Week", selectedDate);
@@ -147,7 +159,6 @@ public class EmployeeRevenueController {
                 e.printStackTrace();
             }
         });
-        updateButtonStyle(btnByWeek);
     }
 
     private String getChartTitle(String tagType, LocalDate selectedDate) {
@@ -199,12 +210,18 @@ public class EmployeeRevenueController {
 
     @FXML
     private void handleByDate() {
+        datePicker.setShowWeekNumbers(false);
+        datePicker.setValue(currentDate);
         isDailyActive = true;
         isMonthActive = false;
         isWeekActive = false;
-        isMonthTab = false;
         updateDatePickerCellStyle();
-        datePicker.setShowWeekNumbers(false);
+executeDate();
+        updateButtonStyle(btnByDate);
+    }
+
+    private void executeDate()
+    {
         setVisibility(false);
         LocalDate selectedDate = datePicker.getValue();
         String chartTitle = getChartTitle("Date", selectedDate);
@@ -216,7 +233,6 @@ public class EmployeeRevenueController {
                 e.printStackTrace();
             }
         });
-        updateButtonStyle(btnByDate);
     }
 
     private String getFormattedDate(LocalDate date) {
@@ -227,10 +243,16 @@ public class EmployeeRevenueController {
     @FXML
     private void handleFromDateToDate() {
         datePicker.setShowWeekNumbers(false);
+        datePicker.setValue(currentDate);
         isMonthActive = false;
-        isMonthTab = false;
         isWeekActive = false;
         isDailyActive = false;
+       executeDateToDate();
+        updateButtonStyle(btnFromDateToDate);
+    }
+
+    private void executeDateToDate()
+    {
         setVisibility(true);
         updateDatePickerCellStyle();
         executorService.submit(() -> {
@@ -250,7 +272,6 @@ public class EmployeeRevenueController {
                 });
             }
         });
-        updateButtonStyle(btnFromDateToDate);
     }
 
     private void setVisibility(boolean fromDateToDateActive) {
