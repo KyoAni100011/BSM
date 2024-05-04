@@ -161,6 +161,9 @@ public class CategoriesController implements Initializable {
         currentPage = 1;
         inputSearch.setText("");
         idSortLabel.setContent("");
+        nameSortLabel.setContent("");
+        introductionSortLabel.setContent("");
+        actionSortLabel.setContent("");
         loadAllCategory();
     }
 
