@@ -27,7 +27,10 @@ public class RevenueStatisticService {
     }
 
     public Map<Book, BigDecimal> getBookMonthlyRevenue(int year, int month) throws SQLException {
-        TimeRange timeRange = new TimeRange(year + "-" + month + "-01", year + "-" + month + "-31");
+        LocalDate start = LocalDate.of(year, month, 1);
+        LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
+        TimeRange timeRange = new TimeRange(start.toString(), end.toString());
+
         return revenueStatisticDAO.getTop10BooksRevenue(timeRange);
     }
 
@@ -54,7 +57,9 @@ public class RevenueStatisticService {
     }
 
     public Map<Category, BigDecimal> getCategoryMonthlyRevenue(int year, int month) throws SQLException {
-        TimeRange timeRange = new TimeRange(year + "-" + month + "-01", year + "-" + month + "-31");
+        LocalDate start = LocalDate.of(year, month, 1);
+        LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
+        TimeRange timeRange = new TimeRange(start.toString(), end.toString());
         return revenueStatisticDAO.getTop10CategoriesRevenue(timeRange);
     }
 
@@ -79,7 +84,9 @@ public class RevenueStatisticService {
     }
 
     public Map<Customer, BigDecimal> getCustomerMonthlyRevenue(int year, int month) throws SQLException {
-        TimeRange timeRange = new TimeRange(year + "-" + month + "-01", year + "-" + month + "-31");
+        LocalDate start = LocalDate.of(year, month, 1);
+        LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
+        TimeRange timeRange = new TimeRange(start.toString(), end.toString());
         return revenueStatisticDAO.getTop10CustomersRevenue(timeRange);
     }
 
@@ -104,7 +111,9 @@ public class RevenueStatisticService {
     }
 
     public Map<EmployeeModel, BigDecimal> getEmployeeMonthlyRevenue(int year, int month) throws SQLException {
-        TimeRange timeRange = new TimeRange(year + "-" + month + "-01", year + "-" + month + "-31");
+        LocalDate start = LocalDate.of(year, month, 1);
+        LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
+        TimeRange timeRange = new TimeRange(start.toString(), end.toString());
         return revenueStatisticDAO.getTop10EmployeeRevenue(timeRange);
     }
 
