@@ -1,7 +1,6 @@
 package com.bsm.bsm.admin.employeeRevenue;
 
 import com.bsm.bsm.employee.EmployeeModel;
-import com.bsm.bsm.revenue.ResultStatistic;
 import com.bsm.bsm.revenue.RevenueStatisticService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
