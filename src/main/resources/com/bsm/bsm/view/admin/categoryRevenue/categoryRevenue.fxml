@@ -22,22 +22,20 @@
                 <Button id="btnByDate" fx:id="btnByDate" mnemonicParsing="false" onAction="#handleByDate" prefHeight="40.0" prefWidth="90.0" styleClass="chartActionButton" text="By date" />
                 <Button id="btnFromDateToDate" fx:id="btnFromDateToDate" mnemonicParsing="false" onAction="#handleFromDateToDate" prefHeight="40.0" prefWidth="150.0" styleClass="chartActionButton" text="From date to date" />
                 <HBox prefHeight="40.0" prefWidth="310.0" style="-fx-background-color: #F7E4DB;">
-                    <children>
-                        <AnchorPane fx:id="datePickerContainer" prefHeight="200.0" prefWidth="200.0">
-                            <HBox.margin>
-                                <Insets left="40.0" />
-                            </HBox.margin>
-                            <children>
-                                <DatePicker fx:id="datePicker1" layoutX="132.0" layoutY="7.0" prefHeight="26.0" prefWidth="110.0" />
-                                <DatePicker fx:id="datePicker" layoutX="-32.0" layoutY="7.0" prefHeight="26.0" prefWidth="110.0" />
-                                <Group fx:id="arrowDate" layoutX="-127.0" layoutY="-236.0" styleClass="chartActionButton">
-                                    <children>
-                                        <SVGPath content="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l370.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128z" layoutX="-17.0" scaleX="0.04" scaleY="0.04" />
-                                    </children>
-                                </Group>
-                            </children>
-                        </AnchorPane>
-                    </children>
+                    <AnchorPane fx:id="datePickerContainer" prefHeight="200.0" prefWidth="200.0">
+                        <HBox.margin>
+                            <Insets left="40.0"/>
+                        </HBox.margin>
+                        <DatePicker fx:id="datePicker1" layoutX="132.0" layoutY="7.0" prefHeight="26.0"
+                                    prefWidth="110.0"/>
+                        <DatePicker fx:id="datePicker" layoutX="-32.0" layoutY="7.0" prefHeight="26.0"
+                                    prefWidth="110.0"/>
+                        <Group fx:id="arrowDate" layoutX="-127.0" layoutY="-236.0" styleClass="chartActionButton">
+                            <SVGPath
+                                    content="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l370.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128z"
+                                    layoutX="-17.0" scaleX="0.04" scaleY="0.04"/>
+                        </Group>
+                    </AnchorPane>
                 </HBox>
             </HBox>
         </AnchorPane>
