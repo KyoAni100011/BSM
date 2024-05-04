@@ -126,8 +126,6 @@ public class AddBookBatchController {
                     throw new RuntimeException(e);
                 }
             }
-
-
         }
 
         List<String> languages = bookService.getLanguages();

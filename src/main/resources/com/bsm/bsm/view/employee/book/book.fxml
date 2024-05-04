@@ -42,78 +42,93 @@
          </Button>
       </AnchorPane>
       <AnchorPane prefHeight="550.0" prefWidth="700.0">
-         <children>
-            <HBox alignment="CENTER_LEFT" layoutY="7.0" prefHeight="45.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 10px 10px 0px 0px; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: #F3F3F3;">
-               <Button fx:id="bookButton" mnemonicParsing="false" onAction="#handleBookButton" prefHeight="43.2" prefWidth="160.0" style="-fx-background-color: transparent;" text="Book" textAlignment="CENTER">
-                  <HBox.margin>
-                     <Insets />
-                  </HBox.margin>
-               </Button>
-               <Button fx:id="newBookButton" mnemonicParsing="false" onAction="#handleNewBookButton" prefHeight="43.2" prefWidth="160.0" style="-fx-background-color: transparent;" text="Hot/new book" textAlignment="CENTER">
-                  <HBox.margin>
-                     <Insets />
-                  </HBox.margin>
-               </Button>
-               <Button fx:id="outOfStockBookButton" mnemonicParsing="false" onAction="#handleOutOfStockBookButton" prefHeight="43.2" prefWidth="160.0" style="-fx-background-color: transparent;" text="Out of stock book" textAlignment="CENTER" />
-            </HBox>
-            <VBox fx:id="pnItems" layoutY="97.0" prefHeight="403.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 0px 0px 10px 10px;" />
-            <HBox alignment="CENTER_LEFT" layoutX="-1.0" layoutY="52.0" prefHeight="46.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-color: #F3F3F3; -fx-border-width: 0px 0px 2px 0px;">
-               <Label alignment="CENTER" prefWidth="20.0">
-                  <HBox.margin>
-                     <Insets left="30.0" right="20.0" />
-                  </HBox.margin>
-               </Label>
-               <AnchorPane prefHeight="44.0" prefWidth="121.0">
-                  <children>
-                     <Button fx:id="idLabel" layoutX="-3.0" layoutY="9.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="121.0" style="-fx-background-color: transparent;" text="ISBN">
-                        <graphic>
-                           <Group>
-                              <SVGPath fx:id="idSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-47.0" layoutY="-2.0" scaleX="0.03" scaleY="0.03" />
-                           </Group>
-                        </graphic>
-                     </Button>
-                  </children>
-               </AnchorPane>
-               <AnchorPane prefHeight="44.0" prefWidth="177.0">
-                  <Button fx:id="bookNameLabel" layoutX="-1.0" layoutY="9.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="183.0" style="-fx-background-color: transparent;" text="Book Name">
-                     <graphic>
-                        <Group>
-                           <children>
-                              <SVGPath fx:id="bookNameSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-47.0" layoutY="-2.0" scaleX="0.03" scaleY="0.03" />
-                           </children>
-                        </Group>
-                     </graphic>
-                  </Button>
-               </AnchorPane>
-               <AnchorPane prefHeight="43.0" prefWidth="82.0">
-                  <Button fx:id="quantityLabel" layoutX="-1.0" layoutY="9.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" style="-fx-background-color: transparent;" text="Quantity">
-                     <graphic>
-                        <Group>
-                           <children>
-                              <SVGPath fx:id="quantitySortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-47.0" layoutY="-2.0" scaleX="0.03" scaleY="0.03" />
-                           </children>
-                        </Group>
-                     </graphic>
-                  </Button>
-               </AnchorPane>
-               <AnchorPane prefHeight="43.0" prefWidth="87.0">
-                  <Button fx:id="priceLabel" layoutX="3.0" layoutY="9.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: transparent;" text="Price">
-                     <graphic>
-                        <Group>
-                           <SVGPath fx:id="priceSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-48.0" layoutY="-4.0" scaleX="0.03" scaleY="0.03" />
-                        </Group>
-                     </graphic>
-                  </Button>
-               </AnchorPane>
-               <Button fx:id="actionLabel" mnemonicParsing="false" prefHeight="25.0" prefWidth="123.0" style="-fx-background-color: transparent;" text="Enable/Disable">
+         <HBox alignment="CENTER_LEFT" layoutY="7.0" prefHeight="45.0" prefWidth="700.0"
+               style="-fx-background-color: white; -fx-background-radius: 10px 10px 0px 0px; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: #F3F3F3;">
+            <Button fx:id="bookButton" mnemonicParsing="false" onAction="#handleBookButton" prefHeight="43.2"
+                    prefWidth="160.0" style="-fx-background-color: transparent;" text="Book" textAlignment="CENTER">
+               <HBox.margin>
+                  <Insets/>
+               </HBox.margin>
+            </Button>
+            <Button fx:id="newBookButton" mnemonicParsing="false" onAction="#handleNewBookButton" prefHeight="43.2"
+                    prefWidth="160.0" style="-fx-background-color: transparent;" text="Hot/new book"
+                    textAlignment="CENTER">
+               <HBox.margin>
+                  <Insets/>
+               </HBox.margin>
+            </Button>
+            <Button fx:id="outOfStockBookButton" mnemonicParsing="false" onAction="#handleOutOfStockBookButton"
+                    prefHeight="43.2" prefWidth="160.0" style="-fx-background-color: transparent;"
+                    text="Out of stock book" textAlignment="CENTER"/>
+         </HBox>
+         <VBox fx:id="pnItems" layoutY="97.0" prefHeight="403.0" prefWidth="700.0"
+               style="-fx-background-color: white; -fx-background-radius: 0px 0px 10px 10px;"/>
+         <HBox alignment="CENTER_LEFT" layoutX="-1.0" layoutY="52.0" prefHeight="46.0" prefWidth="700.0"
+               style="-fx-background-color: white; -fx-border-color: #F3F3F3; -fx-border-width: 0px 0px 2px 0px;">
+            <Label alignment="CENTER" prefWidth="20.0">
+               <HBox.margin>
+                  <Insets left="30.0" right="20.0"/>
+               </HBox.margin>
+            </Label>
+            <AnchorPane prefHeight="44.0" prefWidth="121.0">
+               <Button fx:id="idLabel" layoutX="-3.0" layoutY="9.0" mnemonicParsing="false" prefHeight="26.0"
+                       prefWidth="121.0" style="-fx-background-color: transparent;" text="ISBN">
                   <graphic>
                      <Group>
-                        <SVGPath fx:id="actionSortLabel" content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" layoutX="-48.0" layoutY="-4.0" scaleX="0.03" scaleY="0.03" />
+                        <SVGPath fx:id="idSortLabel"
+                                 content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
+                                 layoutX="-47.0" layoutY="-2.0" scaleX="0.03" scaleY="0.03"/>
                      </Group>
                   </graphic>
                </Button>
-            </HBox>
-         </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="44.0" prefWidth="177.0">
+               <Button fx:id="bookNameLabel" layoutX="-1.0" layoutY="9.0" mnemonicParsing="false" prefHeight="25.0"
+                       prefWidth="183.0" style="-fx-background-color: transparent;" text="Book Name">
+                  <graphic>
+                     <Group>
+                        <SVGPath fx:id="bookNameSortLabel"
+                                 content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
+                                 layoutX="-47.0" layoutY="-2.0" scaleX="0.03" scaleY="0.03"/>
+                     </Group>
+                  </graphic>
+               </Button>
+            </AnchorPane>
+            <AnchorPane prefHeight="43.0" prefWidth="82.0">
+               <Button fx:id="quantityLabel" layoutX="-1.0" layoutY="9.0" mnemonicParsing="false" prefHeight="25.0"
+                       prefWidth="90.0" style="-fx-background-color: transparent;" text="Quantity">
+                  <graphic>
+                     <Group>
+                        <SVGPath fx:id="quantitySortLabel"
+                                 content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
+                                 layoutX="-47.0" layoutY="-2.0" scaleX="0.03" scaleY="0.03"/>
+                     </Group>
+                  </graphic>
+               </Button>
+            </AnchorPane>
+            <AnchorPane prefHeight="43.0" prefWidth="87.0">
+               <Button fx:id="priceLabel" layoutX="3.0" layoutY="9.0" mnemonicParsing="false" prefHeight="25.0"
+                       prefWidth="100.0" style="-fx-background-color: transparent;" text="Price">
+                  <graphic>
+                     <Group>
+                        <SVGPath fx:id="priceSortLabel"
+                                 content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
+                                 layoutX="-48.0" layoutY="-4.0" scaleX="0.03" scaleY="0.03"/>
+                     </Group>
+                  </graphic>
+               </Button>
+            </AnchorPane>
+            <Button fx:id="actionLabel" mnemonicParsing="false" prefHeight="25.0" prefWidth="123.0"
+                    style="-fx-background-color: transparent;" text="Enable/Disable">
+               <graphic>
+                  <Group>
+                     <SVGPath fx:id="actionSortLabel"
+                              content="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
+                              layoutX="-48.0" layoutY="-4.0" scaleX="0.03" scaleY="0.03"/>
+                  </Group>
+               </graphic>
+            </Button>
+         </HBox>
       </AnchorPane>
    </VBox>
    <HBox alignment="CENTER" layoutY="509.0" prefHeight="50.0" prefWidth="700.0" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 15px;">

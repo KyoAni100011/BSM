@@ -7,33 +7,37 @@
 
 <?import com.bsm.bsm.admin.userAccount.ToggleSwitch?> <!-- Import your ToggleSwitch class -->
 
-<HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleTableItemDoubleClick" prefHeight="45.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: #F3F3F3;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bsm.bsm.admin.userAccount.TableItemController">
-   <children>
-      <ToggleButton fx:id="toogleButton" onAction="#handleRadioButtonClick" prefHeight="28.0" prefWidth="26.0" style="-fx-border-color: #F3F3F3; -fx-background-color: transparent; -fx-background-radius: 5; -fx-border-radius: 5;" styleClass="toggle-button">
-         <HBox.margin>
-            <Insets left="30.0" />
-         </HBox.margin>
-      </ToggleButton>
-      <Label fx:id="idLabel" alignment="CENTER" prefWidth="100.0" text="11115678">
-         <HBox.margin>
-            <Insets />
-         </HBox.margin>
-      </Label>
-      <Label fx:id="nameLabel" alignment="CENTER" prefWidth="150.0" text="Nguyen Phan Minh Triet">
-         <HBox.margin>
-            <Insets />
-         </HBox.margin>
-      </Label>
-      <Label fx:id="emailLabel" alignment="CENTER" prefWidth="150.0" text="npmtriet.admin@bms.com">
-         <HBox.margin>
-            <Insets />
-         </HBox.margin>
-      </Label>
-      <Label fx:id="lastLoginLabel" alignment="CENTER" prefWidth="150.0" text="24/04/2003">
-         <HBox.margin>
-            <Insets />
-         </HBox.margin>
-      </Label>
-      <ToggleSwitch fx:id="isOn" alignment="CENTER" onMouseClicked="#handleToggleSwitchClick" />
-   </children>
+<HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      onMouseClicked="#handleTableItemDoubleClick" prefHeight="45.0" prefWidth="700.0"
+      style="-fx-background-color: white; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: #F3F3F3;"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.bsm.bsm.admin.userAccount.TableItemController">
+   <ToggleButton fx:id="toogleButton" onAction="#handleRadioButtonClick" prefHeight="28.0" prefWidth="26.0"
+                 style="-fx-border-color: #F3F3F3; -fx-background-color: transparent; -fx-background-radius: 5; -fx-border-radius: 5;"
+                 styleClass="toggle-button">
+      <HBox.margin>
+         <Insets left="30.0"/>
+      </HBox.margin>
+   </ToggleButton>
+   <Label fx:id="idLabel" alignment="CENTER" prefWidth="100.0" text="11115678">
+      <HBox.margin>
+         <Insets/>
+      </HBox.margin>
+   </Label>
+   <Label fx:id="nameLabel" alignment="CENTER" prefWidth="150.0" text="Nguyen Phan Minh Triet">
+      <HBox.margin>
+         <Insets/>
+      </HBox.margin>
+   </Label>
+   <Label fx:id="emailLabel" alignment="CENTER" prefWidth="150.0" text="npmtriet.admin@bms.com">
+      <HBox.margin>
+         <Insets/>
+      </HBox.margin>
+   </Label>
+   <Label fx:id="lastLoginLabel" alignment="CENTER" prefWidth="150.0" text="24/04/2003">
+      <HBox.margin>
+         <Insets/>
+      </HBox.margin>
+   </Label>
+   <ToggleSwitch fx:id="isOn" alignment="CENTER" onMouseClicked="#handleToggleSwitchClick"/>
 </HBox>
