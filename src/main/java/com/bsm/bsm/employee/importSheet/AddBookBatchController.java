@@ -161,7 +161,7 @@ public class AddBookBatchController {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                } else if (book.contains(newValue)) {
+                } else if (book.toLowerCase().contains(newValue.toLowerCase())) {
                     try {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/importSheet/itemSearch.fxml"));
                     Node no = fxmlLoader.load();
@@ -347,8 +347,7 @@ public class AddBookBatchController {
 
         publisherComboBox.setValue(publishers);
         languageComboBox.setValue(language);
-//                bookQuantityField.setText(String.valueOf(quanity));
-//                bookPriceField.setText(String.valueOf(salePrice));
+
         releaseDatePicker.setValue(LocalDate.parse(releaseDate, dateFormatter));
 
     }
