@@ -316,11 +316,10 @@ public class CustomerRevenueController {
         Platform.runLater(() -> {
             Arrays.asList(btnByMonth, btnByWeek, btnByDate, btnFromDateToDate).forEach(button -> {
                 if (button == selectedButton) {
-                    button.getStyleClass().removeAll("chartActionButton-admin");
+                    button.getStyleClass().remove("chartActionButton-admin-selected");
                     button.getStyleClass().add("chartActionButton-admin-selected");
                 } else {
                     button.getStyleClass().remove("chartActionButton-admin-selected");
-                    button.getStyleClass().add("chartActionButton-admin");
                 }
             });
         });
