@@ -106,7 +106,7 @@ public class sidebarController {
     @FXML
     void handleLogOut(ActionEvent event) throws IOException {
         userController.logout();
-        sceneSwitch.SceneSwitchDifferSize(anchorPaneAdmin, "/com/bsm/bsm/view/login.fxml");
+        sceneSwitch.sceneSwitchLogout(anchorPaneAdmin, "/com/bsm/bsm/view/login.fxml", 10);
     }
 
     @FXML

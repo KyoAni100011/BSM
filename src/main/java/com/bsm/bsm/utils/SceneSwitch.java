@@ -2,6 +2,7 @@ package com.bsm.bsm.utils;
 
 import com.bsm.bsm.App;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -34,7 +35,7 @@ public class SceneSwitch {
         resizeSceneAndStage(nextAnchorPane);
     }
 
-    public SceneSwitch(AnchorPane currentAnchorPane, String fxml) throws IOException {
+    public void sceneSwitchLogout(AnchorPane currentAnchorPane, String fxml, double paddingBottom) throws IOException {
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(App.class.getResource(fxml)));
         AnchorPane nextAnchorPane = loader.load();
 
@@ -48,8 +49,32 @@ public class SceneSwitch {
         currentAnchorPane.getChildren().clear();
         currentAnchorPane.getChildren().add(nextAnchorPane);
 
+        // Set padding for the currentAnchorPane to increase its height
+        double additionalHeight = nextAnchorPane.getPrefHeight() - currentAnchorPane.getPrefHeight();
+        double additionalWidth = nextAnchorPane.getPrefWidth() - currentAnchorPane.getPrefWidth();
+        currentAnchorPane.setPadding(new Insets(0, additionalWidth, paddingBottom + additionalHeight, 0));
+
         // Resize the scene and stage based on the content
-        resizeSceneAndStage(nextAnchorPane);
+        resizeSceneAndStageLogout(nextAnchorPane);
+    }
+
+    private void resizeSceneAndStageLogout(AnchorPane anchorPane) {
+        Stage stage = (Stage) anchorPane.getScene().getWindow();
+        if (stage != null) {
+            stage.setResizable(true); // Ensure the stage is resizable
+
+            // Set the size of the stage
+            stage.setWidth(anchorPane.getPrefWidth());
+            stage.setHeight(anchorPane.getPrefHeight() + 20);
+
+            // Calculate the center position of the screen
+            double centerX = (Screen.getPrimary().getVisualBounds().getWidth() - stage.getWidth()) / 2;
+            double centerY = (Screen.getPrimary().getVisualBounds().getHeight() - stage.getHeight()) / 2;
+
+            // Set the position of the stage
+            stage.setX(centerX);
+            stage.setY(centerY);
+        }
     }
 
     private void resizeSceneAndStage(AnchorPane anchorPane) {

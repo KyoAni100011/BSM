@@ -10,6 +10,7 @@ import com.bsm.bsm.category.Category;
 import com.bsm.bsm.category.CategoryService;
 import com.bsm.bsm.publisher.Publisher;
 import com.bsm.bsm.publisher.PublisherService;
+import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.DateUtils;
 import com.bsm.bsm.utils.NumericValidationUtils;
 import com.bsm.bsm.utils.ValidationUtils;
@@ -538,11 +539,15 @@ public class AddBookBatchController {
 
             Book book = new Book(title, publisher, publishingDateConverted, selectedLanguage, authors, categories);
             BookBatch bookBatch = new BookBatch(Integer.parseInt(quantity), new BigDecimal(importPrice), book);
-            importSheetController.setBookBatch(bookBatch);
-
-            // Close the current stage
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.close();
+             if (importSheetController.setBookBatch(bookBatch)) {
+                    clearInputs();
+                    // Close the current stage
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    stage.close();
+                }
+             else {
+                 AlertUtils.showAlert("Add Book Batch", "Failed to add book batch.", Alert.AlertType.ERROR);
+             }
 
         }
     }
