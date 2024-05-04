@@ -48,6 +48,8 @@ public class CategoryRevenueController {
     private boolean isMonthActive = false;
     private boolean isWeekActive = false;
 
+    private boolean isMonthTab = false;
+
     public void initialize() {
         currentDate = LocalDate.now();
         datePicker.setValue(currentDate);
@@ -61,7 +63,7 @@ public class CategoryRevenueController {
         datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 if(isMonthActive) {
-                    handleByMonth();
+                    if(isMonthTab) handleByMonth();
                 } else if (isWeekActive) {
                     handleByWeek();
                 } else if (isDailyActive) {
@@ -84,6 +86,8 @@ public class CategoryRevenueController {
     @FXML
     private void handleByMonth() {
         datePicker.setShowWeekNumbers(false);
+        if(!isMonthTab) datePicker.setValue(currentDate);
+        isMonthTab = true;
         isMonthActive = true;
         isDailyActive = false;
         isWeekActive = false;
@@ -105,6 +109,7 @@ public class CategoryRevenueController {
     @FXML
     private void handleByWeek() {
         datePicker.setShowWeekNumbers(true);
+        isMonthTab = false;
         isMonthActive = false;
         isDailyActive = false;
         isWeekActive = true;
@@ -200,6 +205,7 @@ public class CategoryRevenueController {
     private void handleByDate() {
         isDailyActive = true;
         isMonthActive = false;
+        isMonthTab = false;
         isWeekActive = false;
         updateDatePickerCellStyle();
         datePicker.setShowWeekNumbers(false);
@@ -227,6 +233,7 @@ public class CategoryRevenueController {
         datePicker.setShowWeekNumbers(false);
         isMonthActive = false;
         isWeekActive = false;
+        isMonthTab = false;
         isDailyActive = false;
         setVisibility(true);
         updateDatePickerCellStyle();
