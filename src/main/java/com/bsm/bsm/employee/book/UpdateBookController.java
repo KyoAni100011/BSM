@@ -37,6 +37,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class UpdateBookController {
     @FXML
@@ -128,15 +129,12 @@ public class UpdateBookController {
         categoryCheckCombo.addEventHandler(ComboBox.ON_HIDDEN, event -> {
             categorySearch.focusedProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue) {
+                    categoryCheckCombo.show();
                     // Author search field is focused
-                    if (!isPopupOpen(categoryCheckCombo)) {
-                        categoryCheckCombo.show();
-                    }
+
                 } else {
                     // Author search field lost focus
-                    if (!isPopupOpen(categoryCheckCombo)) {
-                        categorySearch.setVisible(false);
-                    }
+                    categorySearch.setVisible(false);
                 }
             });
         });
@@ -169,13 +167,26 @@ public class UpdateBookController {
                     for (String item : c.getAddedSubList()) {
                         if (!selectedCategories.contains(item) && item != null ) {
                             selectedCategories.add(item);
+                            ObservableList<String> cate = categoryCheckCombo.getCheckModel().getCheckedItems();
+                            List<String> elementsMissing = cate.stream()
+                                    .filter(element -> !selectedAuthors.contains(element))
+                                    .toList();
+                            for(String a :elementsMissing){
+                                categoryCheckCombo.getCheckModel().check(a);
+                            }
                         }
                     }
                 }
                 if (c.wasRemoved()) {
                     for (String item : c.getRemoved()) {
                         selectedCategories.remove(item);
-
+                        ObservableList<String> cate = categoryCheckCombo.getCheckModel().getCheckedItems();
+                        List<String> elementsMissing = cate.stream()
+                                .filter(element -> !selectedAuthors.contains(element))
+                                .toList();
+                        for(String a :elementsMissing){
+                            categoryCheckCombo.getCheckModel().check(a);
+                        }
                     }
                 }
             }
@@ -192,14 +203,12 @@ public class UpdateBookController {
             authorSearch.focusedProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue) {
                     // Author search field is focused
-                    if (!isPopupOpen(authorNameCheckCombo)) {
-                        authorNameCheckCombo.show();
-                    }
+                    authorNameCheckCombo.show();
+
                 } else {
                     // Author search field lost focus
-                    if (!isPopupOpen(authorNameCheckCombo)) {
-                        authorSearch.setVisible(false);
-                    }
+                    authorSearch.setVisible(false);
+
                 }
             });
         });
@@ -234,12 +243,28 @@ public class UpdateBookController {
                     for (String item : c.getAddedSubList()) {
                         if (!selectedAuthors.contains(item) && item != null) {
                             selectedAuthors.add(item);
+                            System.out.println("this select add" + selectedAuthors);
+                        }
+                        ObservableList<String> author = authorNameCheckCombo.getCheckModel().getCheckedItems();
+                        List<String> elementsMissing = author.stream()
+                                .filter(element -> !selectedAuthors.contains(element))
+                                .toList();
+                        for(String a :elementsMissing){
+                            authorNameCheckCombo.getCheckModel().check(a);
                         }
                     }
                 }
                 if (c.wasRemoved()) {
                     for (String item : c.getRemoved()) {
                         selectedAuthors.remove(item);
+
+                        ObservableList<String> author = authorNameCheckCombo.getCheckModel().getCheckedItems();
+                        List<String> elementsMissing = author.stream()
+                                .filter(element -> !selectedAuthors.contains(element))
+                                .toList();
+                        for(String a :elementsMissing){
+                            authorNameCheckCombo.getCheckModel().check(a);
+                        }
                     }
                 }
             }
@@ -300,6 +325,8 @@ public class UpdateBookController {
         }
         ObservableList<String> checkedAuthors =  FXCollections.observableArrayList(authorNameCheckCombo.getCheckModel().getCheckedItems());
         authorNameCheckCombo.getCheckModel().clearChecks();
+        System.out.println("all cate " + checkedAuthors);
+
         selectedAuthors.setAll(checkedAuthors);
         authorNameCheckCombo.getItems().clear();
         authorNameCheckCombo.getItems().setAll(filteredAuthorItems);
@@ -316,13 +343,7 @@ public class UpdateBookController {
 
     }
 
-    private boolean isPopupOpen(CheckComboBox<?> checkComboBox) {
-        // Get the popup window of the CheckComboBox
-        Node popup = checkComboBox.getSkin().getNode().lookup(".combo-box-popup");
 
-        // Return true if the popup is not null and visible, false otherwise
-        return popup != null && popup.isVisible();
-    }
 
     private void setBookInfo(Book thisBook) {
         fullNameField.setText(thisBook.getTitle());

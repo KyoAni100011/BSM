@@ -227,14 +227,11 @@ public class AddBookBatchController {
             categorySearch.focusedProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue) {
                     // Author search field is focused
-                    if (!isPopupOpen(categoryCheckCombo)) {
                         categoryCheckCombo.show();
-                    }
+
                 } else {
                     // Author search field lost focus
-                    if (!isPopupOpen(categoryCheckCombo)) {
-                        categorySearch.setVisible(false);
-                    }
+                       categorySearch.setVisible(false);
                 }
             });
         });
@@ -263,14 +260,28 @@ public class AddBookBatchController {
             while (c.next()) {
                 if (c.wasAdded()) {
                     for (String item : c.getAddedSubList()) {
-                        if (!selectedCategories.contains(item) && item != null) {
+                        if (!selectedCategories.contains(item) && item != null ) {
                             selectedCategories.add(item);
+                            ObservableList<String> cate = categoryCheckCombo.getCheckModel().getCheckedItems();
+                            List<String> elementsMissing = cate.stream()
+                                    .filter(element -> !selectedAuthors.contains(element))
+                                    .toList();
+                            for(String a :elementsMissing){
+                                categoryCheckCombo.getCheckModel().check(a);
+                            }
                         }
                     }
                 }
                 if (c.wasRemoved()) {
                     for (String item : c.getRemoved()) {
                         selectedCategories.remove(item);
+                        ObservableList<String> cate = categoryCheckCombo.getCheckModel().getCheckedItems();
+                        List<String> elementsMissing = cate.stream()
+                                .filter(element -> !selectedAuthors.contains(element))
+                                .toList();
+                        for(String a :elementsMissing){
+                            categoryCheckCombo.getCheckModel().check(a);
+                        }
                     }
                 }
             }
@@ -284,14 +295,12 @@ public class AddBookBatchController {
             authorSearch.focusedProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue) {
                     // Author search field is focused
-                    if (!isPopupOpen(authorNameCheckCombo)) {
-                        authorNameCheckCombo.show();
-                    }
+                    authorNameCheckCombo.show();
+
                 } else {
                     // Author search field lost focus
-                    if (!isPopupOpen(authorNameCheckCombo)) {
-                        authorSearch.setVisible(false);
-                    }
+                    authorSearch.setVisible(false);
+
                 }
             });
         });
@@ -318,17 +327,34 @@ public class AddBookBatchController {
         });
 
         authorNameCheckCombo.getCheckModel().getCheckedItems().addListener((ListChangeListener<String>) c -> {
+
             while (c.next()) {
                 if (c.wasAdded()) {
                     for (String item : c.getAddedSubList()) {
                         if (!selectedAuthors.contains(item) && item != null) {
                             selectedAuthors.add(item);
+                            System.out.println("this select add" + selectedAuthors);
+                        }
+                        ObservableList<String> author = authorNameCheckCombo.getCheckModel().getCheckedItems();
+                        List<String> elementsMissing = author.stream()
+                                .filter(element -> !selectedAuthors.contains(element))
+                                .toList();
+                        for(String a :elementsMissing){
+                            authorNameCheckCombo.getCheckModel().check(a);
                         }
                     }
                 }
                 if (c.wasRemoved()) {
                     for (String item : c.getRemoved()) {
                         selectedAuthors.remove(item);
+
+                        ObservableList<String> author = authorNameCheckCombo.getCheckModel().getCheckedItems();
+                        List<String> elementsMissing = author.stream()
+                                .filter(element -> !selectedAuthors.contains(element))
+                                .toList();
+                        for(String a :elementsMissing){
+                            authorNameCheckCombo.getCheckModel().check(a);
+                        }
                     }
                 }
             }
@@ -444,13 +470,7 @@ public class AddBookBatchController {
         }
     }
 
-    private boolean isPopupOpen(CheckComboBox<?> checkComboBox) {
-        // Get the popup window of the CheckComboBox
-        Node popup = checkComboBox.getSkin().getNode().lookup(".combo-box-popup");
 
-        // Return true if the popup is not null and visible, false otherwise
-        return popup != null && popup.isVisible();
-    }
 
 
     private void setupDatePicker() {

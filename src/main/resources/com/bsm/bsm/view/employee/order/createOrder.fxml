@@ -108,7 +108,7 @@
             </HBox>
          </children>
       </AnchorPane>
-      <Label layoutX="21.0" text="ADD ORDERS">
+      <Label layoutX="21.0" text="ADD ORDER">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>
