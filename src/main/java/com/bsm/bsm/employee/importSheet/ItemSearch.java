@@ -5,8 +5,11 @@ import javafx.scene.control.Button;
 
 public class ItemSearch {
     @FXML
-    public Button titleButton;
+    private Button titleButton;
     private AddBookBatchController add;
+    public String getTitleButton(){
+        return titleButton.getText();
+    }
     void addName(String title,AddBookBatchController parentadd){
         titleButton.setText(title);
         add = parentadd;
