@@ -7,7 +7,10 @@ import com.bsm.bsm.employee.EmployeeModel;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class RevenueStatisticService {
@@ -29,7 +32,14 @@ public class RevenueStatisticService {
     }
 
     public Map<Book, BigDecimal> getBookWeeklyRevenue(int year, int week) throws SQLException {
-        TimeRange timeRange = new TimeRange(year + "-" + week + "-01", year + "-" + week + "-31");
+        // convert week of year to date range
+        LocalDate date = LocalDate.now()
+                .withYear(year)
+                .with(WeekFields.of(Locale.getDefault()).weekOfYear(), week)
+                .with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1);
+
+        TimeRange timeRange = new TimeRange(date.plusDays(1).toString(), date.plusDays(7).toString());
+
         return revenueStatisticDAO.getTop10BooksRevenue(timeRange);
     }
 
@@ -49,7 +59,12 @@ public class RevenueStatisticService {
     }
 
     public Map<Category, BigDecimal> getCategoryWeeklyRevenue(int year, int week) throws SQLException {
-        TimeRange timeRange = new TimeRange(year + "-" + week + "-01", year + "-" + week + "-31");
+        LocalDate date = LocalDate.now()
+                .withYear(year)
+                .with(WeekFields.of(Locale.getDefault()).weekOfYear(), week)
+                .with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1);
+
+        TimeRange timeRange = new TimeRange(date.plusDays(1).toString(), date.plusDays(7).toString());
         return revenueStatisticDAO.getTop10CategoriesRevenue(timeRange);
     }
 
@@ -69,7 +84,12 @@ public class RevenueStatisticService {
     }
 
     public Map<Customer, BigDecimal> getCustomerWeeklyRevenue(int year, int week) throws SQLException {
-        TimeRange timeRange = new TimeRange(year + "-" + week + "-01", year + "-" + week + "-31");
+        LocalDate date = LocalDate.now()
+                .withYear(year)
+                .with(WeekFields.of(Locale.getDefault()).weekOfYear(), week)
+                .with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1);
+
+        TimeRange timeRange = new TimeRange(date.plusDays(1).toString(), date.plusDays(7).toString());
         return revenueStatisticDAO.getTop10CustomersRevenue(timeRange);
     }
 
