@@ -89,6 +89,14 @@ public class CreateOrderController implements Initializable {
                     totalLabel.setText(total.toString());
                 } else {
                     discountLabel.setText("0%");
+                    totalLabel.setText(subtotalLabel.getText());
+
+                }
+                if(!MoneyTextField.getText().isEmpty()){
+                    BigDecimal totalLabelValue = totalLabel.getText().isEmpty() ? BigDecimal.ZERO : new BigDecimal(totalLabel.getText());
+                    BigDecimal moneyReceive =  new BigDecimal(MoneyTextField.getText());
+                    BigDecimal moneyReturn = moneyReceive.subtract(totalLabelValue);
+                    MoneyReturnLabel.setText(moneyReturn.toString());
                 }
             });
 
@@ -101,8 +109,16 @@ public class CreateOrderController implements Initializable {
 
                     discountLabel.setText("(-5%) " + discount);
                     totalLabel.setText(String.valueOf(total));
+
                 } else {
+                    totalLabel.setText(subtotalLabel.getText());
                     discountLabel.setText("0%");
+                }
+                if(!MoneyTextField.getText().isEmpty()){
+                    BigDecimal totalLabelValue = totalLabel.getText().isEmpty() ? BigDecimal.ZERO : new BigDecimal(totalLabel.getText());
+                    BigDecimal moneyReceive =  new BigDecimal(MoneyTextField.getText());
+                    BigDecimal moneyReturn = moneyReceive.subtract(totalLabelValue);
+                    MoneyReturnLabel.setText(moneyReturn.toString());
                 }
             });
 
@@ -189,6 +205,12 @@ public class CreateOrderController implements Initializable {
         } else {
             totalLabel.setText(subtotal.toString());
         }
+        if(!MoneyTextField.getText().isEmpty()){
+            BigDecimal totalLabelValue = totalLabel.getText().isEmpty() ? BigDecimal.ZERO : new BigDecimal(totalLabel.getText());
+            BigDecimal moneyReceive =  new BigDecimal(MoneyTextField.getText());
+            BigDecimal moneyReturn = moneyReceive.subtract(totalLabelValue);
+            MoneyReturnLabel.setText(moneyReturn.toString());
+        }
     }
 
 
@@ -217,7 +239,7 @@ public class CreateOrderController implements Initializable {
         }
 
         Customer customer = null;
-        if ((!handleNameField.getText().isEmpty() && (handlePhoneField.getText().length() == 11 || handlePhoneField.getText().length() == 10) || (handleNameField.getText().isEmpty() && handlePhoneField.getText().isEmpty())) && (!MoneyTextField.getText().isEmpty()) && Integer.parseInt(MoneyReturnLabel.getText()) > 0) {
+        if ((!handleNameField.getText().isEmpty() && (handlePhoneField.getText().length() == 11 || handlePhoneField.getText().length() == 10) || (handleNameField.getText().isEmpty() && handlePhoneField.getText().isEmpty())) && (!MoneyTextField.getText().isEmpty()) && new BigDecimal(MoneyReturnLabel.getText()).compareTo(BigDecimal.ZERO) >= 0) {
             //get customer information
 
             boolean isMember = !handleNameField.getText().isEmpty();
@@ -242,7 +264,7 @@ public class CreateOrderController implements Initializable {
             }
         } else if (MoneyTextField.getText().isEmpty()) {
             AlertUtils.showAlert("Error", "Please fill in the money received field", Alert.AlertType.CONFIRMATION);
-        } else if(Integer.parseInt(MoneyReturnLabel.getText()) < 0) {
+        } else if(new BigDecimal(MoneyReturnLabel.getText()).compareTo(BigDecimal.ZERO) < 0) {
             AlertUtils.showAlert("Error", "Money return should greater than total price", Alert.AlertType.CONFIRMATION);
         } else {
             AlertUtils.showAlert("Error", "Please fill in the user's information completely", Alert.AlertType.CONFIRMATION);

@@ -10,6 +10,7 @@ import com.bsm.bsm.category.Category;
 import com.bsm.bsm.category.CategoryService;
 import com.bsm.bsm.publisher.Publisher;
 import com.bsm.bsm.publisher.PublisherService;
+import com.bsm.bsm.utils.AlertUtils;
 import com.bsm.bsm.utils.DateUtils;
 import com.bsm.bsm.utils.NumericValidationUtils;
 import com.bsm.bsm.utils.ValidationUtils;
@@ -33,10 +34,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
@@ -80,7 +78,6 @@ public class AddBookBatchController {
     private ObservableList<String> filteredCategoriesItems = FXCollections.observableArrayList(); // Store filtered category items
     private ObservableList<String> filteredAuthorItems = FXCollections.observableArrayList(); // Store filtered category items
     private ObservableList<String> filteredBookItems = FXCollections.observableArrayList();
-
     // Khai báo biến kiểm tra số nguyên
     private final UnaryOperator<TextFormatter.Change> integerFilter = change -> {
         // Kiểm tra nếu chuỗi mới chứa chỉ chứa các ký tự số hoặc là chuỗi rỗng
@@ -141,14 +138,32 @@ public class AddBookBatchController {
         languageComboBox.setItems(languageItems);
         publisherComboBox.getItems().addAll(publisherItems);
         setupDatePicker();
+
+        bookNameField.setOnKeyPressed(event -> {
+            // Check if the pressed key is Enter
+            if (event.getCode().getName().equals("Enter")) {
+                for (String bookItem : bookItems) {
+                    if(Objects.equals(bookItem.toLowerCase(), bookNameField.getText().toLowerCase())){
+                        handleChoiceAction(bookItem);
+                        bookNameField.setText(bookItem);
+                    }
+                    else{
+                        scrollPanelBook.setVisible(false);
+                    }
+                }
+                // Handle the Enter key press event here
+
+                // You can perform any action you want here
+            }
+        });
         bookNameField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue){
                 scrollPanelBook.setVisible(true);
             }
         });
         bookNameField.textProperty().addListener((observable, oldValue, newValue) -> {
-            int i = 0;
             itemBook.getChildren().clear();
+            scrollPanelBook.setVisible(true);
             clearInputs();
             for (String book : bookItems) {
                 if (newValue == null || newValue.isEmpty()) {
@@ -161,7 +176,7 @@ public class AddBookBatchController {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                } else if (book.contains(newValue)) {
+                } else if (book.toLowerCase().contains(newValue.toLowerCase())) {
                     try {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bsm/bsm/view/employee/importSheet/itemSearch.fxml"));
                     Node no = fxmlLoader.load();
@@ -186,12 +201,19 @@ public class AddBookBatchController {
                 }
             }
         });
+
         scrollPanelBook.getParent().addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
             // Check if the mouse event target is outside the bookNameField
             if (!scrollPanelBook.getBoundsInParent().contains(event.getX(), event.getY())) {
-                // Mouse is pressed outside the bookNameField
-                scrollPanelBook.setVisible(false);
-
+                for (String bookItem : bookItems) {
+                    if(Objects.equals(bookItem.toLowerCase(), bookNameField.getText().toLowerCase())){
+                        handleChoiceAction(bookItem);
+                        bookNameField.setText(bookItem);
+                    }
+                    else{
+                        scrollPanelBook.setVisible(false);
+                    }
+                }
             }
         });
         categorySearch.setVisible(false);
@@ -347,8 +369,7 @@ public class AddBookBatchController {
 
         publisherComboBox.setValue(publishers);
         languageComboBox.setValue(language);
-//                bookQuantityField.setText(String.valueOf(quanity));
-//                bookPriceField.setText(String.valueOf(salePrice));
+
         releaseDatePicker.setValue(LocalDate.parse(releaseDate, dateFormatter));
 
     }
@@ -518,11 +539,15 @@ public class AddBookBatchController {
 
             Book book = new Book(title, publisher, publishingDateConverted, selectedLanguage, authors, categories);
             BookBatch bookBatch = new BookBatch(Integer.parseInt(quantity), new BigDecimal(importPrice), book);
-            importSheetController.setBookBatch(bookBatch);
-
-            // Close the current stage
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.close();
+             if (importSheetController.setBookBatch(bookBatch)) {
+                    clearInputs();
+                    // Close the current stage
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    stage.close();
+                }
+             else {
+                 AlertUtils.showAlert("Add Book Batch", "Failed to add book batch.", Alert.AlertType.ERROR);
+             }
 
         }
     }

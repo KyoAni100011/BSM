@@ -107,14 +107,20 @@ public class ImportSheetController {
         }
     }
 
-    void setBookBatch(BookBatch bookBatch) {
+    boolean setBookBatch(BookBatch bookBatch) {
+        if (bookBatches.stream().anyMatch(b -> b.getBook().getTitle().equals(bookBatch.getBook().getTitle()))) {
+            return false;
+        }
         bookBatches.add(bookBatch);
         try {
             updateBookList();
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return false;
         }
+        return true;
     }
+
 
     private void updateBookList() throws Exception {
         pnItems.getChildren().clear();

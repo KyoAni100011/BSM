@@ -59,7 +59,8 @@ public class OrderItemController {
                 try {
                     if (Integer.parseInt(newValue) > quantity) {
                         AlertUtils.showAlert("Error", "There are only " + quantity + " book left", Alert.AlertType.ERROR);
-                        QuantityField.setText(String.valueOf(1));
+                        QuantityField.setText(String.valueOf(quantity));
+
                     }
 
                     itemQuan = Integer.parseInt(QuantityField.getText());

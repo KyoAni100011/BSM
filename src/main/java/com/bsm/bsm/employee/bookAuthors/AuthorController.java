@@ -148,7 +148,7 @@ public class AuthorController implements Initializable {
     void handleUpdateAuthorButton(ActionEvent event) {
         try {
             if (id != null) {
-                if (!authorService.checkAuthorExists(id)) {
+                if (!authorService.isEnabled(id)) {
                     AlertUtils.showAlert("Error", "Need to enable author to update", Alert.AlertType.ERROR);
                     return;
                 }
