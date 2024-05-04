@@ -206,7 +206,6 @@ public class UpdateBookController {
 
         //if people type search field, filter the list data to choose.
         authorSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("first");
             authorNameCheckCombo.show();
             try {
                 updateFilteredAuthor(newValue.toLowerCase());

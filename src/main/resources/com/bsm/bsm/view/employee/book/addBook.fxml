@@ -46,7 +46,7 @@
     <DatePicker fx:id="releaseDatePicker" layoutX="317.0" layoutY="289.0" prefHeight="40.0" prefWidth="207.0" promptText="Select release date" style="-fx-control-inner-background:#F4F4F4;" styleClass="input-field-add" />
 
 
-    <Button fx:id="saveChangesButton" layoutX="370.0" layoutY="546.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="40.0" prefWidth="153.0" styleClass="button-custom-admin" text="Save" textFill="WHITE">
+    <Button fx:id="saveChangesButton" layoutX="370.0" layoutY="546.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="40.0" prefWidth="153.0" styleClass="button-custom-employee" text="Save" textFill="WHITE">
         <font>
             <Font size="18.0" />
         </font>
